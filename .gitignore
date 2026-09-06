@@ -1,0 +1,27 @@
+# PlatformIO build output and downloaded dependencies
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Local editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# OS and temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.log
+__pycache__/
+
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
+secrets.h
+
+# Local measurement output
+data/
