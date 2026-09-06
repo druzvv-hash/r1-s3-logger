@@ -1,8 +1,8 @@
-# R1-S3: pin map
+# R1-S3 pin map
 
-Номери нижче — **GPIO ESP32-S3**, не порядкові номери контактів роз'єму.
+Numbers below are **ESP32-S3 GPIO numbers**, not connector pin positions.
 
-| Інтерфейс | Сигнал | GPIO |
+| Interface | Signal | GPIO |
 |---|---|---:|
 | I²C | SDA | 8 |
 | I²C | SCL | 9 |
@@ -12,17 +12,17 @@
 | SD / SPI | MISO | 13 |
 | INA228 | ALERT | 14 |
 
-I²C спільна для чотирьох пристроїв. Перевірити спільну землю та підтяжки SDA/SCL до 3.3 V; не допускати підтяжок до 5 V. Тип і підтяжку ALERT звірити зі схемою конкретного модуля перед тестом.
+All four I²C devices share the bus. Verify common ground and SDA/SCL pull-ups to 3.3 V, not 5 V. Check the actual INA228 module schematic for ALERT wiring and pull-up requirements before testing.
 
-## Очікувані I²C-адреси
+## I²C addresses
 
-| Пристрій | Адреса, 7 біт | Статус |
+| Device | 7-bit address | Evidence |
 |---|---|---|
-| INA228 | `0x40` | Очікувана, перевірити перемички |
-| OLED | `0x3C` | ACK підтверджено; модель ще не уточнена |
-| EEPROM 24C32 | `0x50` | Очікувана, залежить від A0–A2 |
-| RTC | `0x68` | ACK підтверджено; модель ще не уточнена |
+| INA228 | `0x40` | ACK confirmed; device ID and measurements pending |
+| SH1106G OLED, 128×64 | `0x3C` | ACK and readable image confirmed; rotation 180° |
+| EEPROM 24C32 | `0x50` | ACK and sample write/restore test PASS |
+| DS3231 RTC | `0x68` | Owner identified model; ticking with OSF=1 |
 
-Усі чотири адреси підтверджені повторними скануваннями. OLED працює з SH1106G 128x64, поворот 180 градусів. ACK на адресі підтверджує відповідь на шині, але не ідентичність або повну справність пристрою.
+Repeated scans found all four addresses without bus errors. Address ACK alone does not establish device identity or full functionality. EEPROM address depends on A0–A2; INA228 address depends on its address configuration.
 
-Програмні константи: [firmware/include/pins.h](../firmware/include/pins.h). При зміні підключення оновлювати обидва файли разом.
+Keep this map and [firmware/include/pins.h](../firmware/include/pins.h) synchronized when wiring changes.

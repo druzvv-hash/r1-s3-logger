@@ -1,12 +1,12 @@
-# Прошивка HWTEST v0.6
+# HWTEST v0.6 firmware
 
-PlatformIO + Arduino, ESP32-S3 N32R16V. Працювати з кореня репозиторію, не з цієї папки. Актуальні команди та профілі: [README](../README.md).
+PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 
-- `src/main.cpp`: пам’ять, повторний I²C scan, SD-тест, OLED SH1106 128×64 із поворотом 180°.
-- `src/eeprom_test.cpp`: backup 24C32 на SD, вибірковий запис, відновлення та повне порівняння.
-- `src/rtc_test.cpp`: DS3231 read-only, календар/BCD, температура, OSF/EOSC, перевірка приросту часу.
-- `include/pins.h`: GPIO, узгоджені з hardware/pinmap.md.
+- `src/main.cpp`: memory information, repeated I²C scans, SD test and SH1106G 128×64 OLED rotated 180°.
+- `src/eeprom_test.cpp`: 24C32 backup to SD, sample write, restoration and full-image comparison.
+- `src/rtc_test.cpp`: read-only DS3231 calendar/BCD, temperature, OSF/EOSC and tick checks.
+- `include/pins.h`: GPIO constants matching [hardware/pinmap.md](../hardware/pinmap.md).
 
-SD-тест зберігає контрольний рядок v0.2; новий файл створюється при кожному boot. RTC не змінює час. EEPROM write-test є тимчасовим діагностичним кроком; не вимикати живлення до завершення restore.
+The SD test retains its v0.2 payload and creates a new file on every boot. The RTC test never sets time. The EEPROM write test is temporary diagnostic code; keep power connected until restoration completes.
 
-Основний профіль: esp32-s3-uart-manual. UART/USB експериментальні варіанти збережені в platformio.ini. Збірки v0.6 проходили; надійність входу у bootloader ще не підтверджено. Докладні результати: [bring-up](../docs/bring-up.md).
+The default environment is `esp32-s3-uart-manual`. Automatic UART reset and experimental native USB environments remain in `platformio.ini`. Firmware builds passed; reliable bootloader entry is still unresolved. See [bring-up results](../docs/bring-up.md).

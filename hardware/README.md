@@ -1,10 +1,10 @@
-# Апаратна частина
+# Hardware
 
-Поточний стан — зібраний тестовий стенд ESP32-S3 з зовнішнім модулем INA228. За повідомленням власника, напруги перевірено й вони в нормі; числові результати ще не записані.
+The current bench consists of an ESP32-S3 board and external INA228 module, shared I²C peripherals and SPI SD storage. Initial supply checks were reported as normal; a complete numerical measurement record is still needed.
 
-- [pinmap.md](pinmap.md) — зафіксовані GPIO.
-- [План bring-up](../docs/bring-up.md) — порядок перевірок.
+- [Pin map](pinmap.md)
+- [Bring-up plan and results](../docs/bring-up.md)
 
-Модуль за маркуванням власника — ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash / 16 MB Octal PSRAM. USB–UART CP210x визначено Windows як COM5. Flash 32 MiB і PSRAM близько 16 MiB визначені прошивкою; стрес-тест не виконано.
+The owner reports ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash / 16 MB Octal PSRAM. Firmware detects 32 MiB Flash and approximately 16 MiB PSRAM; no stress test has been performed. The bench CP210x USB–UART bridge currently appears as COM5 on Windows.
 
-Тут надалі зберігати схеми, BOM, фото підключень і дані шунта. Поки схема та PCB у репозиторій не додані. Потрібно уточнити ревізію плати ESP32-S3, схему підключення OLED SH1106 128×64 і RTC DS3231, живлення SD-модуля, номінал і допустимий струм шунта.
+Store schematics, BOM, wiring photos and shunt specifications here as they become available. No schematic or PCB files are included yet. Record the exact board revision, SH1106G OLED and DS3231 module wiring, SD module power circuitry, shunt resistance and allowable current.

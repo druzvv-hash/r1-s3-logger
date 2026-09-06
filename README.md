@@ -1,65 +1,72 @@
 # R1-S3 Logger
 
-Відновлений Logger R1 на **ESP32-S3 + INA228**. Поточний етап — hardware bring-up, прошивка **HWTEST v0.6**. Старий код R1 ще не перенесено.
+**English** | [Українська](README.uk.md)
 
-## Апаратна архітектура
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.6**, focused on hardware bring-up. The original R1 application has not been ported yet.
 
-- ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
-- I²C на GPIO8/9: INA228 (0x40), OLED SH1106 128×64 (0x3C), EEPROM 24C32 (0x50), RTC DS3231 (0x68).
-- SD через SPI: CS=10, MOSI=11, SCK=12, MISO=13.
-- INA228 ALERT=14; зовнішній шунт, номінал ще потрібно уточнити.
-- OLED повернуто на 180°. UART/CP210x на поточному ПК — COM5.
+## Hardware
 
-Докладні підключення: [pinmap](hardware/pinmap.md). Ревізія плати, схема SD-модуля та параметри шунта потребують документування.
+- ESP32-S3-WROOM-2-N32R16V (reported marking MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
+- Shared I²C bus: SDA GPIO8, SCL GPIO9, 100 kHz; INA228 `0x40`, SH1106G 128×64 OLED `0x3C`, 24C32 EEPROM `0x50`, DS3231 RTC `0x68`.
+- SPI SD: CS GPIO10, MOSI GPIO11, SCK GPIO12, MISO GPIO13.
+- INA228 ALERT: GPIO14. External shunt specifications are still to be documented.
+- OLED rotation: 180°. The current bench uses a CP210x USB–UART bridge.
 
-## Підтверджені результати
+See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and shunt ratings remain to be recorded.
 
-| Вузол | Стан |
+## Verified status
+
+| Component | Result |
 |---|---|
-| Flash/PSRAM | Визначаються; стрес-тест не виконано |
-| I²C | Чотири адреси, повторні сканування без помилок |
-| SD | 10 MHz, запис/закриття/перемонтування/читання PASS; файли перевірено на ПК |
-| OLED | SH1106 128×64, зображення і поворот підтверджено |
-| EEPROM | Власник підтвердив EEP PASS: backup, тест запису, повне порівняння після відновлення |
-| RTC | Хід є; SET TIME означає OSF=1, час ще не встановлено |
-| INA228 | Поки лише ACK; функціональний тест попереду |
+| Flash / PSRAM | Detected; no memory stress test performed |
+| I²C | Four expected addresses responding in repeated scans without bus errors |
+| SD | 10 MHz write, close, remount and exact readback PASS; output files checked on a PC |
+| OLED | SH1106G 128×64 image and 180° rotation confirmed by the owner |
+| EEPROM | Owner confirmed EEP PASS: backup, sample write, restore and full-image comparison |
+| RTC | Ticking; SET TIME indicates OSF=1. Time has not been set |
+| INA228 | Address ACK only; functional testing pending |
 
-Вхід у завантажувач нестабільний. Були успішні прошивання та помилки No serial data / Wrong boot mode. Причина не встановлена; потрібні заміри BOOT/EN під час підключення. Native USB порт поки не підтверджено.
+Bootloader entry remains intermittent: successful uploads and No serial data / Wrong boot mode errors have both occurred. The cause is unresolved. BOOT/EN measurements are the next diagnostic step; native USB operation is not confirmed.
 
 ## VS Code / PlatformIO
 
-Відкрити всю папку **C:\Projects\r1-s3-logger**, встановити PlatformIO IDE. Arduino platform зафіксована на espressif32 6.12.0 (Arduino 2.0.17); OLED — Adafruit SH110X 2.1.12.
+Open the repository root in VS Code with PlatformIO IDE installed. Dependencies are pinned to `espressif32@6.12.0` (Arduino 2.0.17) and `Adafruit SH110X@2.1.12`.
 
 ```sh
 pio run
 ```
 
-Профіль за замовчуванням — `esp32-s3-uart-manual`: CDC=0, COM5, 115200, автоматичне скидання esptool до/після Upload вимкнено. Закрити Termite/Serial Monitor; увійти в download mode через BOOT + RESET, потім:
+The default environment is `esp32-s3-uart-manual`: UART console, CDC disabled, 115200 baud, and esptool reset sequences disabled before and after upload. `COM5` is the current bench setting; change the UART environment ports in `platformio.ini` for another workstation.
+
+Close Termite / Serial Monitor. With the UART cable connected, hold BOOT, press and release RESET, then release BOOT before uploading:
 
 ```sh
 pio run -e esp32-s3-uart-manual -t upload
 pio device monitor -e esp32-s3-uart-manual
 ```
 
-Після успішного Upload потрібен ручний RESET. Цей профіль ще не доведено як надійне вирішення проблеми завантаження. Якщо Windows призначає інший порт, змінити COM5 у UART-профілі або передати порт явно.
+Press RESET after a successful upload to start the application. This profile is a diagnostic workaround, not a verified fix for the intermittent connection problem.
 
-Інші профілі: `esp32-s3` — UART з автоскиданням; `esp32-s3-usb` — експериментальний native USB Serial/JTAG (USB_MODE=1, USB_CDC_ON_BOOT=1), без фіксованого COM. USB-профіль маршрутизує Serial у роз’єм USB; він не усуває апаратні проблеми входу в ROM-завантажувач.
+Other environments:
 
-## Поведінка HWTEST
+- `esp32-s3`: UART with automatic reset.
+- `esp32-s3-usb`: experimental native USB Serial/JTAG, `USB_MODE=1`, `USB_CDC_ON_BOOT=1`, no fixed COM port. Serial output uses the native USB connector in this build.
 
-При старті: інформація про пам’ять, I²C scan, SD-тест у новому файлі, OLED, EEPROM backup/test/restore, читання RTC. Потім I²C і RTC перевіряються кожні 10 секунд.
+## HWTEST behavior
 
-EEPROM-тест виконується лише з робочою SD та перевіреною резервною копією 4096 bytes. Змінює 16 bytes останньої сторінки лише якщо сторінка суцільно FF/00; відновлює початкові байти та порівнює весь образ. Не вимикати живлення до завершення. Це тимчасовий bring-up тест, не штатний запис при кожному запуску майбутнього приладу.
+At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C and RTC checks repeat every 10 seconds.
 
-RTC-тест не встановлює час і не очищає OSF. Наявність ACK не визначає модель чи повну справність пристрою.
+The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
 
-## Структура
+The RTC test does not set time or clear OSF. An I²C ACK proves an address response, not device identity or full functionality.
 
-- `firmware/src/` — main.cpp, EEPROM і RTC тести.
-- `firmware/include/` — GPIO та заголовки тестів.
-- `hardware/` — опис апаратури та pinmap.
-- [docs/bring-up.md](docs/bring-up.md) — план, історія тестів і обмеження.
-- [docs/sd-test-v0.2-serial.txt](docs/sd-test-v0.2-serial.txt) — збережений результат SD.
-- [docs/project-context-review.md](docs/project-context-review.md) — історичний огляд C:\Projects і C:\Projekts до перенесення поточного репозиторію.
+## Repository guide
 
-Подальші етапи: стабілізація Upload, встановлення/перевірка RTC, INA228 ID/VBUS/VSHUNT/temp/ALERT, потім поетапне відновлення функцій R1.
+- [firmware/](firmware/README.md): Arduino test firmware and GPIO constants.
+- [hardware/](hardware/README.md): hardware notes and pin map.
+- [Bring-up plan and results](docs/bring-up.md).
+- [SD serial evidence](docs/sd-test-v0.2-serial.txt).
+- [Project context](docs/project-context-review.md): relevant findings from earlier logger work.
+- [Ukrainian owner notes](docs/uk/README.md): historical bench notes and local workspace review.
+
+Next: stabilize uploads, set and validate RTC time and battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.

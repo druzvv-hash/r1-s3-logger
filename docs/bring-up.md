@@ -1,102 +1,86 @@
 # Hardware bring-up
 
-Мета — окремо підтвердити роботу кожного вузла до перенесення старого R1. HWTEST v0.2 реалізує інформацію про пам’ять, I²C scan та SD write/read; інші тести нижче ще потрібно реалізувати.
+Status: 2026-09-06, HWTEST v0.6. Validate each subsystem before porting the original R1 application. Results below distinguish owner reports and captured logs from checks still pending.
 
-Оновлення 2026-09-06 за логом власника: v0.1 працює на платі, Flash 33554432 bytes, PSRAM 16774755 bytes. Повторні сканування знаходять 0x3C, 0x40, 0x50, 0x68 без помилок. Тривала стабільність і причина попередніх збоїв не встановлені. v0.2 зібрано; завантаження заблоковане зайнятим/недоступним COM5 (Access denied). Результат SD: NOT RUN.
+## 1. Power and boot stability
 
-Спроба 2026-09-06: HWTEST v0.1 успішно зібрано на espressif32 6.12.0 / Arduino 2.0.17. Завантаження через COM5 не почалося: Windows повернула помилку 433 (пристрій не існує). Апаратні результати: NOT RUN.
+- [ ] Record actual supply voltages, measurement conditions and common ground.
+- [ ] Verify 3.3 V logic and no SDA/SCL pull-ups to 5 V against module schematics.
+- [ ] Establish stable startup and reliable bootloader entry.
 
-## 1. Power check
-
-- [ ] Записати фактичні напруги живлення ESP32-S3 та периферії, перевірити спільну землю.
-- [ ] Перевірити 3.3 V для логіки й відсутність підтяжок SDA/SCL до 5 V; живлення модулів звірити з їхніми схемами.
-- [ ] Переконатися у стабільному старті ESP32-S3 без перезавантажень.
-
-Власник вже повідомив, що напруги в нормі. Для протоколу потрібні числові значення й умови вимірювання.
+Initial voltages were reported as normal. Later measurements reported LDO 3.35 V, GPIO0 at 0 V with BOOT pressed and varying roughly 3.17–3.7 V released. Repeat measurements on a cool board using the same ground point, especially EN and GPIO0 during Connecting. Cleaning/heating preceded temporary improvement but does not establish a cause.
 
 ## 2. I²C scan
 
-- [ ] Запустити сканування на SDA=8, SCL=9, початкова частота 100 kHz.
-- [ ] Зафіксувати всі знайдені 7-бітні адреси. Очікуються INA228 `0x40`, OLED `0x3C`, 24C32 `0x50`, RTC `0x68`.
-- [ ] Повторити сканування: усі чотири пристрої стабільно відповідають без зависань шини.
+- [x] Scan SDA=8, SCL=9 at 100 kHz.
+- [x] Observe `0x3C`, `0x40`, `0x50`, `0x68` repeatedly with zero bus errors.
 
-Якщо адреса відрізняється, перевірити модель/перемички та оновити документацію. Успішний scan не замінює функціональні тести.
+ACK confirms an address response, not identity or complete functionality. Check module configuration if addresses change.
 
-## 3. SD test
+## 3. SD
 
-У v0.2 тест виконується один раз при старті, SPI 10 MHz. Створюється перший вільний файл `/r1s3_test_0000.txt` … `/r1s3_test_9999.txt`, записується контрольний рядок, файл закривається, карта перемонтовується, розмір і вміст порівнюються побайтно. Успіх: `SD PASS: write, close, remount and exact readback matched.` Файл залишається на карті; автоматичного форматування немає. При кожному RESET створюється наступний файл. Це ще не перевірка збереження після вимкнення живлення. Вставляти картку при вимкненому живленні; закривати Termite/Serial Monitor перед Upload.
+- [x] Initialize SCK=12, MISO=13, MOSI=11, CS=10 at 10 MHz.
+- [x] Create a unique file, write the known payload, close and remount.
+- [x] Compare file size and every byte; check output files on a PC.
+- [ ] Test explicit power-loss retention, long recordings and fault recovery.
 
-- [ ] Ініціалізувати SPI явно: SCK=12, MISO=13, MOSI=11, CS=10. Почати з 10 MHz; при нестабільності знизити частоту.
-- [ ] На тестовій картці створити новий файл з унікальним ім'ям, записати відомий рядок і закрити файл.
-- [ ] Відкрити файл, прочитати й порівняти вміст; повторити після перезапуску.
+The startup test selects the first unused `/r1s3_test_0000.txt` through `/r1s3_test_9999.txt`. It never formats the card or overwrites an existing file. Each boot creates another file; the payload retains its v0.2 identifier. Insert the card with power off.
 
-Критерій: запис і читання збігаються, дані зберігаються після перезапуску. Наявні файли не перезаписувати.
+Captured v0.2 result: 29818 MiB card, 10 MHz SPI, `/r1s3_test_0001.txt`, 39/39 bytes written, close/remount/exact readback PASS. Two subsequent I²C scans found all four addresses with no errors. See [serial log](sd-test-v0.2-serial.txt). Both supplied test files were also checked on a PC.
 
 ## 4. OLED
 
-- [ ] Уточнити контролер і роздільність, обрати відповідний драйвер.
-- [ ] Вивести назву R1-S3 та тестовий текст; перевірити читабельність і відсутність артефактів.
-- [ ] Статуси I²C/SD показувати за реальними результатами тестів.
+- [x] Identify a working driver: SH1106G 128×64, address `0x3C`.
+- [x] Confirm readable image and 180° rotation (`setRotation(2)`).
+- [x] Display actual subsystem results.
+
+The v0.3 SSD1306 driver produced noise and unreadable characters. Switching to Adafruit SH110X 2.1.12 in v0.4 produced a readable image; the owner subsequently confirmed rotation. Library initialization alone is not a visual test.
 
 ## 5. EEPROM 24C32
 
-- [ ] Перевірити адресу, стан WP та параметри запису за документацією конкретного чипа.
-- [ ] Вибрати тестову ділянку поза даними калібрування; зберегти її початковий вміст.
-- [ ] Записати шаблон з урахуванням меж сторінки та часу завершення запису, прочитати й порівняти.
-- [ ] Відновити початковий вміст та перевірити відновлення читанням.
+- [x] Back up all 4096 bytes to a new `/eeprom_before_NNNN.bin` file on SD and verify it.
+- [x] Write a sample pattern without crossing a page boundary, then verify it.
+- [x] Restore original bytes and compare the entire 4096-byte image.
+- [ ] Define the production calibration layout.
 
-Критерій: шаблон і відновлені дані читаються точно, без змін сусідніх адрес.
+The owner confirmed EEP PASS. The implementation uses 16-bit memory addresses at I²C `0x50`. It skips writes unless SD backup verification succeeds and the last page `0x0FE0–0x0FFF` is uniformly FF or 00. Only 16 bytes `0x0FE0–0x0FEF` are modified. ACK polling allows up to 25 ms; restoration is attempted even after a failed pattern write. PASS requires full-image equality.
 
-## 6. RTC
+This tests a sample region, not every cell. It currently runs at startup as temporary bring-up code. Keep power connected until restoration finishes. On RESTORE FAIL, preserve the backup and stop further writes.
 
-- [ ] Уточнити модель; прочитати дату, час і доступні ознаки втрати живлення/зупинки генератора.
-- [ ] Перевірити, що час збільшується між двома читаннями.
-- [ ] За наявності резервної батареї перевірити збереження ходу після вимкнення основного живлення.
+Address/page reference: [Microchip AT24C32/64 documentation](https://ww1.microchip.com/downloads/en/DeviceDoc/doc0336.pdf).
 
-Не встановлювати час автоматично при кожному старті. Критерій: коректне читання та стабільний хід; валідність часу перевіряється окремо.
+## 6. DS3231 RTC
+
+- [x] Owner identified the RTC as DS3231.
+- [x] Implement read-only register, BCD/calendar, 12/24-hour format, OSF/EOSC and temperature checks.
+- [x] Owner reports SET TIME: tick check passes with OSF=1.
+- [ ] Agree on UTC/local-time policy and set the clock once.
+- [ ] Verify date/time accuracy and battery-backed retention with main power removed.
+
+v0.6 reads registers `0x00–0x12` at `0x68` without writing time, alarms or control/status registers. Every 10 seconds it compares RTC advancement with millis, allowing 1.5 seconds for reading granularity. Display states: WAIT, TICK OK, SET TIME, TICK FAIL, BAD DATE, READ FAIL. TICK OK does not verify the actual date or battery. Century interpretation uses a 2000 base; timezone is not assigned.
+
+Register reference: [DS3231 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/ds3231.pdf).
 
 ## 7. INA228
 
-- [ ] Прочитати Manufacturer ID / Device ID та звірити з документацією INA228.
-- [ ] Без значного струму перевірити VBUS, сире значення напруги шунта та температуру чипа.
-- [ ] Порівняти VBUS і напругу шунта з мультиметром; записати полярність і нульове зміщення.
-- [ ] Уточнити номінал шунта й діапазон вимірювання до обчислення струму та калібрування.
-- [ ] Перевірити ALERT на GPIO14 через керовану тестову умову: встановлення та скидання сигналу.
+Only address ACK has been confirmed. All functional checks are pending:
 
-Критерій: ідентифікація збігається, вимірювання узгоджуються з еталоном у заздалегідь обраних допусках, ALERT працює за налаштуванням.
+- [ ] Read and validate Manufacturer ID and Device ID.
+- [ ] With no substantial current, read VBUS, raw shunt voltage and die temperature.
+- [ ] Compare voltage readings with a meter; record polarity, offset and agreed tolerances.
+- [ ] Record shunt resistance and measurement range before computing/calibrating current.
+- [ ] Exercise ALERT on GPIO14 using a controlled condition and verify assertion/clearing.
 
-## Протокол результатів
+## Upload diagnosis and history
 
-Для кожного кроку записати дату, ревізію/фото стенда, Git commit прошивки, версію PlatformIO/platform, параметри тесту, очікуване й отримане значення, PASS/FAIL і посилання на Serial-лог. Невиконані перевірки позначати NOT RUN.
+Early v0.1/v0.2 attempts encountered Windows error 433 (device missing) and Access denied (port unavailable/in use), followed by successful uploads. Separate No serial data / Wrong boot mode errors remain intermittent. Native USB enumeration is not confirmed. These are distinct observations, not one established diagnosis.
 
-Після успішних тестів усіх вузлів — починати поетапне перенесення функцій R1: вимірювання, калібрування, CSV/SD-буфер, OLED UI та Web UI.
+The default `esp32-s3-uart-manual` environment uses COM5, CDC=0, 115200 baud and esptool `no_reset` before/after upload. Close serial applications, hold BOOT, press/release RESET, release BOOT, then upload. Press RESET after a successful upload. Disabling esptool reset sequences does not guarantee that opening the port has no electrical effect through the driver/bridge circuit.
 
-## SD v0.2: підтверджений запуск 2026-09-06
+Builds passed with espressif32 6.12.0 / Arduino 2.0.17. Reliable entry into ROM download mode is still unproven. Next steps are EN/GPIO0 measurements during Connecting and inspection of USB–UART, BOOT/RESET and solder joints. Do not infer eFuse changes from an upload error.
 
-Прошивку успішно завантажено через COM5; перевірка запису esptool пройдена. Після керованого RESET через RTS: SD 29818 MiB, SPI 10 MHz, файл `/r1s3_test_0001.txt`, запис 39/39 bytes, закриття, перемонтування та побайтне читання — PASS. Після SD ще два I²C scan: усі чотири адреси, 0 помилок. Перевірка після повного вимкнення живлення і тривалий тест не виконані. Лог: [sd-test-v0.2-serial.txt](sd-test-v0.2-serial.txt).
+## Recording evidence
 
-## OLED v0.3
+For each test record the date, board revision/photos, firmware commit, platform versions, test parameters, expected and observed values, PASS/FAIL/NOT RUN and serial-log link. Historical Ukrainian notes are preserved in [the owner notes](uk/README.md); earlier pending statuses there are superseded by the results above.
 
-Попередній драйвер: Adafruit SSD1306 2.5.13, 128x64, адреса 0x3C, I2C 100 kHz на GPIO8/9. На екрані рамка по краях, R1-S3, HWTEST v0.3, число I2C-адрес/помилок, фактичний SD PASS/FAIL та uptime з оновленням раз на секунду. SD-тест зберігає формат рядка v0.2 для сумісності. I2C scan продовжується кожні 10 секунд. Успішна ініціалізація бібліотеки не визначає модель контролера і не підтверджує видиме зображення. Потрібне візуальне підтвердження власника; при порожньому або зміщеному зображенні перевірити модель (зокрема SH1106).
-
-## OLED v0.4
-
-За повідомленням власника, v0.3 завантажено, але SSD1306 дає шум і нечитабельні символи. У v0.4 використано SH1106G 128x64 (Adafruit SH110X 2.1.12), адреса 0x3C, GPIO8/9, 100 kHz. Зображення малюється один раз: рамка по всіх краях, R1-S3, назва драйвера, початкові результати I2C/SD, STATIC TEST v0.4. Періодичний I2C scan у Serial збережено. Візуальна перевірка ще не виконана.
-
-OLED v0.4: власник підтвердив читабельне зображення з драйвером SH1106. Для монтажної орієнтації додано поворот 180 градусів (setRotation(2)); очікує повторного прошивання.
-
-## EEPROM v0.5
-
-24C32, 4096 bytes, I2C 0x50, 16-bit memory address. Перед записом читається повний образ і зберігається в новий файл /eeprom_before_NNNN.bin на SD; файл закривається та перевіряється побайтно. Якщо SD не працює або остання сторінка 0x0FE0–0x0FFF містить дані, відмінні від суцільних FF чи 00, запис пропускається. Тест змінює лише 16 bytes 0x0FE0–0x0FEF, не перетинає межу сторінки, очікує ACK до 25 ms, перевіряє шаблон і відновлює початкові байти навіть після невдалого запису. PASS потребує повного порівняння всіх 4096 bytes з початковим образом. Це вибіркова перевірка запису, не тест усіх комірок. Тест виконується раз на старт; не вимикати живлення до завершення. При RESTORE FAIL зберегти резервну копію й припинити записи. OLED зберігає поворот 180 градусів та показує EEP:PASS/FAIL/SKIP.
-
-Протокол адресації та сторінок: https://ww1.microchip.com/downloads/en/DeviceDoc/doc0336.pdf. Апаратний результат v0.5 ще не підтверджено.
-
-## RTC v0.6
-
-Власник підтвердив SD PASS / EEP PASS на v0.5 та модель RTC DS3231. v0.6 читає регістри 0x00–0x12 з адреси 0x68 без зміни часу, будильників, control/status чи OSF. Перевіряє BCD, календар, 12/24-годинний формат, друкує дату/час, OSF, EOSC та температуру. Кожні 10 секунд порівнює приріст RTC з millis (допуск 1.5 секунди через дискретність читання). На OLED RTC:WAIT, TICK OK, SET TIME (хід є, OSF=1), TICK FAIL, BAD DATE або READ FAIL. TICK OK не підтверджує правильність поточної дати/часу чи батарейне резервування. Century інтерпретується від бази 2000; часовий пояс не призначено. Поворот OLED 180 градусів збережено.
-
-Джерело регістрів: https://www.analog.com/media/en/technical-documentation/data-sheets/ds3231.pdf. Апаратна перевірка v0.6 очікується.
-
-## Поточний режим: UART з ручним входом у завантажувач
-
-За замовчуванням обрано `esp32-s3-uart-manual`, COM5, CDC=0. У ньому `board_upload.before_reset = no_reset` і `board_upload.after_reset = no_reset`. Закрити Serial Monitor/Termite, залишити кабель у UART, затиснути BOOT, натиснути й відпустити RESET, потім відпустити BOOT. Далі запускати Upload саме для esp32-s3-uart-manual. Після успіху натиснути RESET для запуску програми. Профіль вимикає послідовність автоматичного скидання esptool; електричний вплив відкриття порту залежить від USB–UART і схеми плати. USB-профіль збережено для подальшої діагностики, його роботу поки не підтверджено. Конфігурацію та успадкування параметрів перевірено; завантаження цим профілем очікує ручного входу в bootloader.
+After subsystem validation, restore R1 functions incrementally: measurements, calibration, CSV/SD buffering, OLED UI and Web UI.
