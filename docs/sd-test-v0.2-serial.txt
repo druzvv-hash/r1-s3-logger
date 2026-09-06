@@ -1,0 +1,50 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0xa (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+Octal Flash Mode Enabled
+For OPI Flash, Use Default Flash Boot Mode
+mode:SLOW_RD, clock div:1
+load:0x3fce3808,len:0x41c
+load:0x403c9700,len:0x9a8
+load:0x403cc700,len:0x28d0
+entry 0x403c98b8
+
+R1-S3 HWTEST v0.2: memory info + I2C scan + SD test
+Chip: ESP32-S3 rev 0, CPU 240 MHz
+Flash: 33554432 bytes, 80000000 Hz
+PSRAM: DETECTED, total 16774755 bytes, free 16774511 bytes
+Memory sizes only; no memory stress test performed.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+
+SD test: CS=10 MOSI=11 SCK=12 MISO=13, 10 MHz
+SD capacity: 29818 MiB
+SD file: /r1s3_test_0001.txt; written 39/39 bytes
+SD PASS: write, close, remount and exact readback matched.
+Test file retained. Power-cycle persistence not tested.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
