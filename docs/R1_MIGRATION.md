@@ -151,3 +151,11 @@ Unchanged HWTEST v0.9, read-only COM5 capture:
 | 12:31:32 | 0.296875 | 151.8750 | +1.0125 | 35.992 |
 
 All three conversions returned ADC OK, correct identity and verified ADC_CONFIG restoration. I2C errors were zero. Nominal current is approximately 1 A; VBUS is approximately 0.30 V, but actual bench-supply output voltage and simultaneous reference current remain to be reported. Do not mark voltage accuracy as passed without that comparison. ALERT remains LOW and untested; die temperature is still changing. No calibration or firmware modifications were made. See [serial evidence](ina228-v0.9-low-side-vbus.txt).
+
+### 2026-09-07 — OLED live measurements (HWTEST v0.10)
+
+Owner reports actual bench-supply voltage 0.43 V, versus the previous INA228 capture near 0.30 V. Voltage comparison remains unresolved: the measurements were not captured simultaneously at identical terminals. No gain correction was applied.
+
+OLED now displays VBUS in volts and signed nominal current in amperes in double-size text, die temperature above, and alternating SD/EEPROM and RTC/I2C status below. Retains SH1106G 128x64 and rotation 180 degrees. Measurement/display refresh is approximately 1 second; I2C scan and RTC remain at 10 seconds. The ADC test retains its triggered-conversion/restore behavior and serial diagnostics. Invalid reads, identity errors, ADC rails and restore failures invalidate the display snapshot, replacing numeric readings with dashes and an error status. Current remains based on the nominal 150-microohm shunt; no calibration changes.
+
+Build and automatic UART upload passed with verified flash hashes. Post-upload capture contains 11 ADC OK results, nominal current 0.9521–1.0500 A, VBUS 0.294336–0.298047 V and zero I2C errors; RTC tick passed. See [serial evidence](ina228-v0.10-oled-serial.txt). Screen geometry was checked against the 128x64 character grid; physical visual confirmation is pending from the owner. Two-decimal formatting above 1000 A keeps ADC-range values within the screen width; this is formatting, not an approved operating current.

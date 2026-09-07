@@ -5,6 +5,7 @@
 #include "shunt_config.h"
 
 namespace {
+Ina228Reading latest;
 constexpr uint8_t address = 0x40;
 constexpr int32_t signed20(uint32_t word) {
     return (word >> 4) & 0x80000 ? int32_t(word >> 4) - 0x100000 : int32_t(word >> 4);
@@ -40,6 +41,7 @@ bool writeRegister(uint8_t reg, uint16_t value) {
 }
 
 const char* testIna228() {
+    latest.valid = false;
     static bool restoreFailed = false;
     if (restoreFailed) return "RESTORE FAIL";
     uint32_t manufacturer, device, config, adc;
@@ -99,6 +101,10 @@ const char* testIna228() {
             result = "SHUNT LIMIT";
             Serial.println("INA228: shunt ADC at rail; current withheld.");
         } else {
+            latest.busVolts = (bus >> 4) * 0.0001953125;
+            latest.currentAmps = shunt::ampsFromMicrovolts(shuntMicrovolts);
+            latest.temperatureC = signed16(temperature) * 0.0078125;
+            latest.valid = true;
             Serial.printf("INA228 I_nominal=%+.4f A (60 mV / 400 A, %.1f uOhm; no offset/gain correction)\n",
                           shunt::ampsFromMicrovolts(shuntMicrovolts), shunt::microOhms);
         }
@@ -108,3 +114,5 @@ const char* testIna228() {
     Serial.printf("INA228 result: %s\n", result);
     return result;
 }
+
+const Ina228Reading& latestIna228Reading() { return latest; }

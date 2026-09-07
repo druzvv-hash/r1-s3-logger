@@ -1,4 +1,4 @@
-# HWTEST v0.9 firmware
+# HWTEST v0.10 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 

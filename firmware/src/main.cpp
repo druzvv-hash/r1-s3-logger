@@ -23,18 +23,35 @@ void updateOled() {
     if (!oledReady) return;
     oled.clearDisplay();
     oled.setTextColor(SH110X_WHITE);
-    oled.setTextSize(2);
-    oled.setCursor(4, 4);
-    oled.print("R1-S3");
+    oled.setTextWrap(false);
     oled.setTextSize(1);
-    oled.setCursor(4, 23);
-    oled.printf("RTC:%s", rtcStatus);
-    oled.setCursor(4, 33);
-    oled.printf("I2C:%u ERR:%u", i2cCount, i2cErrors);
-    oled.setCursor(4, 43);
-    oled.printf("SD:%s EEP:%s", sdPassed ? "PASS" : "FAIL", eepromStatus);
+    oled.setCursor(4, 3);
+    oled.print("R1-S3");
+    const auto& reading = latestIna228Reading();
+    if (reading.valid) {
+        oled.setCursor(58, 3);
+        oled.printf("T:%5.1f C", reading.temperatureC);
+        oled.setTextSize(2);
+        oled.setCursor(4, 15);
+        oled.printf("%7.3f V", reading.busVolts);
+        oled.setCursor(4, 33);
+        if (reading.currentAmps >= 1000 || reading.currentAmps <= -1000)
+            oled.printf("%+8.2f A", reading.currentAmps);
+        else
+            oled.printf("%+8.3f A", reading.currentAmps);
+    } else {
+        oled.setCursor(4, 18);
+        oled.printf("INA: %s", inaStatus);
+        oled.setCursor(4, 33);
+        oled.print("U: ---  I: ---");
+    }
+    oled.setTextSize(1);
     oled.setCursor(4, 53);
-    oled.printf("INA:%s", inaStatus);
+    // Alternate diagnostics without crowding the two measurement lines.
+    if ((millis() / 3000) % 2 == 0)
+        oled.printf("SD:%s EEP:%s", sdPassed ? "PASS" : "FAIL", eepromStatus);
+    else
+        oled.printf("RTC:%s E:%u", rtcStatus, i2cErrors);
     oled.drawRect(0, 0, 128, 64, SH110X_WHITE);
     oled.display();
 }
@@ -162,7 +179,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 HWTEST v0.9: memory + I2C + SD + OLED + EEPROM + DS3231 + INA228 nominal current");
+    Serial.println("\nR1-S3 HWTEST v0.10: OLED voltage/current + INA228 nominal current");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
                   ESP.getChipRevision(), ESP.getCpuFreqMHz());
     Serial.printf("Flash: %u bytes, %u Hz\n", ESP.getFlashChipSize(),
@@ -193,6 +210,7 @@ void setup() {
 
 void loop() {
     static uint32_t lastScan = millis();
+    static uint32_t lastMeasurement = millis();
     if (i2cReady && handleRtcSerial()) {
         rtcStatus = pollRtc();
         updateOled();
@@ -203,7 +221,11 @@ void loop() {
         lastScan = now;
         scanI2c();
         rtcStatus = pollRtc();
+        updateOled();
+    }
+    if (i2cReady && millis() - lastMeasurement >= 1000) {
         inaStatus = testIna228();
+        lastMeasurement = millis();
         updateOled();
     }
     delay(10);

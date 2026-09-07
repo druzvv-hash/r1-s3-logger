@@ -1,0 +1,113 @@
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001EB0 VBUS=0x005F20 TEMP=0x0BCF DIAG=0x0003
+INA228 VBUS=0.297266 V; VSHUNT=153.4375 uV; die=23.617 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0229 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001E40 VBUS=0x005F20 TEMP=0x0BCE DIAG=0x0003
+INA228 VBUS=0.297266 V; VSHUNT=151.2500 uV; die=23.609 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0083 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001DC0 VBUS=0x005F20 TEMP=0x0BCC DIAG=0x0003
+INA228 VBUS=0.297266 V; VSHUNT=148.7500 uV; die=23.594 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.9917 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001E10 VBUS=0x005F00 TEMP=0x0BC9 DIAG=0x0003
+INA228 VBUS=0.296875 V; VSHUNT=150.3125 uV; die=23.570 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0021 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001E50 VBUS=0x005F30 TEMP=0x0BCC DIAG=0x0003
+INA228 VBUS=0.297461 V; VSHUNT=151.5625 uV; die=23.594 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0104 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001F80 VBUS=0x005E30 TEMP=0x0BC8 DIAG=0x0003
+INA228 VBUS=0.294336 V; VSHUNT=157.5000 uV; die=23.562 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0500 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=26.00 C
+RTC: 2026-09-07 12:40:02 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10407 ms
+RTC: wall-clock accuracy and battery retention not verified.
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001C90 VBUS=0x005EF0 TEMP=0x0BC9 DIAG=0x0003
+INA228 VBUS=0.296680 V; VSHUNT=142.8125 uV; die=23.570 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.9521 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001CC0 VBUS=0x005F30 TEMP=0x0BC7 DIAG=0x0003
+INA228 VBUS=0.297461 V; VSHUNT=143.7500 uV; die=23.555 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.9583 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001E50 VBUS=0x005F60 TEMP=0x0BC5 DIAG=0x0003
+INA228 VBUS=0.298047 V; VSHUNT=151.5625 uV; die=23.539 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0104 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001DB0 VBUS=0x005EC0 TEMP=0x0BC6 DIAG=0x0003
+INA228 VBUS=0.296094 V; VSHUNT=148.4375 uV; die=23.547 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.9896 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x001E40 VBUS=0x005EB0 TEMP=0x0BC3 DIAG=0x0003
+INA228 VBUS=0.295898 V; VSHUNT=151.2500 uV; die=23.523 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+1.0083 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+

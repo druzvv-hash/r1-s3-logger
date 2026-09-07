@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.9**, focused on hardware bring-up. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.10**, focused on hardware bring-up. The original R1 application has not been ported yet.
 
 ## Hardware
 
@@ -54,7 +54,7 @@ Other environments:
 
 ## HWTEST behavior
 
-At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C, RTC and INA228 checks repeat every 10 seconds. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it reports nominal current using the 150-microohm shunt, without gain/offset calibration.
+At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C and RTC checks repeat every 10 seconds; INA228 measurements and the OLED refresh approximately once per second. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it reports nominal current using the 150-microohm shunt, without gain/offset calibration.
 
 The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
 
