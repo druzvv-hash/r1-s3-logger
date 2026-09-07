@@ -160,7 +160,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 HWTEST v0.6: memory + I2C + SD + OLED + EEPROM + DS3231");
+    Serial.println("\nR1-S3 HWTEST v0.7: memory + I2C + SD + OLED + EEPROM + DS3231");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
                   ESP.getChipRevision(), ESP.getCpuFreqMHz());
     Serial.printf("Flash: %u bytes, %u Hz\n", ESP.getFlashChipSize(),
@@ -190,6 +190,11 @@ void setup() {
 
 void loop() {
     static uint32_t lastScan = millis();
+    if (i2cReady && handleRtcSerial()) {
+        rtcStatus = pollRtc();
+        updateOled();
+        lastScan = millis();
+    }
     const uint32_t now = millis();
     if (i2cReady && now - lastScan >= 10000) {
         lastScan = now;

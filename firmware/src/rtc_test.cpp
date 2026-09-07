@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <cstring>
 #include "rtc_test.h"
 
 namespace {
@@ -55,7 +56,7 @@ const char* pollRtc() {
         Serial.println("RTC FAIL: invalid calendar/BCD; time left unchanged.");
         return "BAD DATE";
     }
-    Serial.printf("RTC: %04d-%02d-%02d %02d:%02d:%02d DOW=%u (timezone unspecified)\n",
+    Serial.printf("RTC: %04d-%02d-%02d %02d:%02d:%02d DOW=%u (UTC after browser synchronization)\n",
                   year, month, day, hour, minute, second, r[3]);
     uint64_t days = 0;
     for (int y = 2000; y < year; ++y) days += leap(y) ? 366 : 365;
@@ -78,4 +79,103 @@ const char* pollRtc() {
     previousMillis = sampledAt;
     previousValid = true;
     return result;
+}
+
+namespace {
+bool readRtcRegisters(uint8_t address, uint8_t* data, size_t count) {
+    Wire.beginTransmission(0x68);
+    Wire.write(address);
+    if (Wire.endTransmission(false) != 0 ||
+        Wire.requestFrom(static_cast<uint8_t>(0x68), count) != count) return false;
+    for (size_t i = 0; i < count; ++i) data[i] = Wire.read();
+    return true;
+}
+bool writeRtcRegisters(uint8_t address, const uint8_t* data, size_t count) {
+    Wire.beginTransmission(0x68);
+    Wire.write(address);
+    Wire.write(data, count);
+    return Wire.endTransmission() == 0;
+}
+uint8_t toBcd(unsigned value) { return (value / 10) * 16 + value % 10; }
+void encodeUtc(uint64_t epoch, uint8_t* r) {
+    const uint64_t since2000 = epoch - 946684800ULL;
+    unsigned days = since2000 / 86400;
+    unsigned remaining = since2000 % 86400;
+    r[0] = toBcd(remaining % 60);
+    r[1] = toBcd(remaining / 60 % 60);
+    r[2] = toBcd(remaining / 3600); // 24-hour mode
+    r[3] = (days + 6) % 7 + 1; // Sunday=1, 2000-01-01 was Saturday
+    unsigned year = 2000;
+    while (days >= (leap(year) ? 366U : 365U)) {
+        days -= leap(year) ? 366 : 365;
+        ++year;
+    }
+    const unsigned monthDays[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    unsigned month = 0;
+    while (true) {
+        unsigned length = monthDays[month] + (month == 1 && leap(year) ? 1 : 0);
+        if (days < length) break;
+        days -= length;
+        ++month;
+    }
+    r[4] = toBcd(days + 1);
+    r[5] = toBcd(month + 1);
+    r[6] = toBcd(year - 2000);
+}
+bool setRtcUtc(uint64_t epoch) {
+    uint8_t control;
+    if (!readRtcRegisters(0x0E, &control, 1)) return false;
+    const uint8_t enabled = control & 0x7F; // Enable oscillator on battery, preserve other bits.
+    if (enabled != control && !writeRtcRegisters(0x0E, &enabled, 1)) return false;
+    uint8_t expected[7], actual[7], next[7];
+    encodeUtc(epoch, expected);
+    encodeUtc(epoch + 1, next);
+    previousValid = false;
+    if (!writeRtcRegisters(0, expected, 7) || !readRtcRegisters(0, actual, 7)) return false;
+    if (memcmp(actual, expected, 7) != 0 && memcmp(actual, next, 7) != 0) return false;
+    uint8_t status;
+    if (!readRtcRegisters(0x0F, &status, 1)) return false;
+    // Alarm flags are cleared by writing zero: write ones to preserve even newly raised flags.
+    const uint8_t cleared = (status & 0x7F) | 0x03;
+    if (!writeRtcRegisters(0x0F, &cleared, 1) || !readRtcRegisters(0x0F, &status, 1)) return false;
+    if (status & 0x80) return false;
+    return readRtcRegisters(0x0E, &control, 1) && !(control & 0x80);
+}
+}
+
+bool handleRtcSerial() {
+    static char line[48];
+    static size_t length = 0;
+    static bool overflow = false;
+    while (Serial.available()) {
+        const char ch = Serial.read();
+        if (ch == '\r') continue;
+        if (ch != '\n') {
+            if (length < sizeof(line) - 1) line[length++] = ch;
+            else overflow = true;
+            continue;
+        }
+        line[length] = 0;
+        uint64_t epoch = 0;
+        bool valid = !overflow && length > 9 && strncmp(line, "TIME UTC ", 9) == 0 && length <= 19;
+        for (size_t i = 9; valid && i < length; ++i) {
+            valid = line[i] >= '0' && line[i] <= '9';
+            if (valid) epoch = epoch * 10 + line[i] - '0';
+        }
+        // Restrict this bring-up protocol to 2000–2099; allow a one-second readback rollover.
+        valid = valid && epoch >= 946684800ULL && epoch < 4102444799ULL;
+        length = 0;
+        overflow = false;
+        if (!valid) {
+            Serial.println("RTC SET ERROR: expected TIME UTC <Unix seconds, 2000-2099>");
+            continue;
+        }
+        if (!setRtcUtc(epoch)) {
+            Serial.println("RTC SET ERROR: I2C/write/readback/status verification failed; inspect RTC");
+            return true;
+        }
+        Serial.printf("RTC SET OK UTC %llu: readback verified, OSF=0 EOSC=0\n", epoch);
+        return true;
+    }
+    return false;
 }

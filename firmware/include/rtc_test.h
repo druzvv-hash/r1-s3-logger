@@ -1,3 +1,6 @@
 #pragma once
 // Read-only DS3231 check. Call periodically; never sets time or clears OSF.
 const char* pollRtc();
+
+// Explicit TIME UTC command only; never sets time automatically on boot.
+bool handleRtcSerial();

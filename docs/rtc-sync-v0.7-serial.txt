@@ -1,0 +1,40 @@
+RTC SET ERROR: expected TIME UTC <Unix seconds, 2000-2099>
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=36.25 C
+RTC: 2026-09-07 05:04:37 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10009 ms
+RTC: wall-clock accuracy and battery retention not verified.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=36.25 C
+RTC: 2026-09-07 05:04:47 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10009 ms
+RTC: wall-clock accuracy and battery retention not verified.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=36.25 C
+RTC: 2026-09-07 05:04:57 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10009 ms
+RTC: wall-clock accuracy and battery retention not verified.

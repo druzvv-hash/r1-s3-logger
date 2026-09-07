@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.6**, focused on hardware bring-up. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.7**, focused on hardware bring-up. The original R1 application has not been ported yet.
 
 ## Hardware
 
@@ -23,7 +23,7 @@ See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and s
 | SD | 10 MHz write, close, remount and exact readback PASS; output files checked on a PC |
 | OLED | SH1106G 128×64 image and 180° rotation confirmed by the owner |
 | EEPROM | Owner confirmed EEP PASS: backup, sample write, restore and full-image comparison |
-| RTC | Ticking; SET TIME indicates OSF=1. Time has not been set |
+| RTC | Browser UTC synchronization verified; OSF=0, tick PASS; battery retention pending |
 | INA228 | Address ACK only; functional testing pending |
 
 Bootloader entry remains intermittent: successful uploads and No serial data / Wrong boot mode errors have both occurred. The cause is unresolved. BOOT/EN measurements are the next diagnostic step; native USB operation is not confirmed.
@@ -58,7 +58,7 @@ At startup: memory information, I²C scan, SD test using a new file, OLED, EEPRO
 
 The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
 
-The RTC test does not set time or clear OSF. An I²C ACK proves an address response, not device identity or full functionality.
+Periodic RTC checks do not write time. Explicit [browser synchronization](docs/rtc-sync.md) sets UTC, verifies readback and clears OSF. An I²C ACK proves an address response, not device identity or full functionality.
 
 ## Repository guide
 
@@ -69,4 +69,4 @@ The RTC test does not set time or clear OSF. An I²C ACK proves an address respo
 - [Project context](docs/project-context-review.md): relevant findings from earlier logger work.
 - [Ukrainian owner notes](docs/uk/README.md): historical bench notes and local workspace review.
 
-Next: stabilize uploads, set and validate RTC time and battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.
+Next: verify continued upload reliability and RTC battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.

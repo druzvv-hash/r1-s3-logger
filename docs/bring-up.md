@@ -84,3 +84,9 @@ Builds passed with espressif32 6.12.0 / Arduino 2.0.17. Reliable entry into ROM 
 For each test record the date, board revision/photos, firmware commit, platform versions, test parameters, expected and observed values, PASS/FAIL/NOT RUN and serial-log link. Historical Ukrainian notes are preserved in [the owner notes](uk/README.md); earlier pending statuses there are superseded by the results above.
 
 After subsystem validation, restore R1 functions incrementally: measurements, calibration, CSV/SD buffering, OLED UI and Web UI.
+
+## v0.7 browser time sync — 2026-09-07
+
+After the owner swapped/reworked the USB–UART controllers, the connected board completed automatic UART upload with verified flash hashes and RTS reset. This establishes a successful test, not the root cause or long-term reliability of both boards.
+
+HWTEST v0.7 adds explicit browser-sourced UTC synchronization over UART. The browser sent 2026-09-07T05:03:47Z; firmware verified calendar readback and OSF=0/EOSC=0. Subsequent serial checks showed the correct UTC date, tick PASS and all four I²C addresses with zero errors. A malformed TIME command was rejected. See [instructions](rtc-sync.md) and [serial evidence](rtc-sync-v0.7-serial.txt). Battery retention and precision clock accuracy remain untested.

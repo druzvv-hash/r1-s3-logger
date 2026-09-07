@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R1-S3 — синхронізація часу</title>
+<style>
+body{font:18px system-ui;background:#111820;color:#edf3f7;max-width:720px;margin:70px auto;padding:24px}h1{font-size:32px}section{background:#1c2732;border-radius:16px;padding:24px;margin:24px 0}p{line-height:1.6}button{background:#80dfb6;color:#10261d;border:0;border-radius:10px;padding:16px 24px;font:600 18px system-ui;cursor:pointer}button:disabled{opacity:.5}#result{white-space:pre-wrap}small{color:#afbfcb}
+</style>
+<h1>R1-S3 · Час із браузера</h1>
+<p>Запис часу в DS3231 після прошивання. Годинник браузера використовує системний час комп’ютера — перевір його перед синхронізацією.</p>
+<section><div>Місцевий час: <strong id="local"></strong></div><p>У RTC буде записано UTC:<br><strong id="utc"></strong></p><small>Після перезапуску збережений час не переписується.</small></section>
+<button id="sync">Встановити час із браузера</button>
+<p id="result" role="status">Закрий Termite та Serial Monitor, залиш плату підключеною через UART.</p>
+<script>
+const local = document.getElementById('local'), utc = document.getElementById('utc');
+const result = document.getElementById('result'), button = document.getElementById('sync');
+function clock(){const now=new Date();local.textContent=now.toLocaleString('uk-UA');utc.textContent=now.toISOString();}
+clock();setInterval(clock,250);
+button.onclick=async()=>{
+ button.disabled=true;result.textContent='Передаю час і чекаю перевірки запису…';
+ try{
+  const response=await fetch('/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({browserMs:Date.now()})});
+  const data=await response.json();
+  if(!response.ok || !data.ok)throw new Error(data.message);
+  result.textContent='Час встановлено й перевірено: '+new Date(data.epoch*1000).toISOString()+'\nOSF=0, генератор увімкнений. Перевірка ходу й батарейки — окремі кроки.';
+ }catch(error){result.textContent='Не підтверджено: '+error.message;}
+ finally{button.disabled=false;}
+};
+</script>
+</html>
