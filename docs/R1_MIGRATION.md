@@ -159,3 +159,17 @@ Owner reports actual bench-supply voltage 0.43 V, versus the previous INA228 cap
 OLED now displays VBUS in volts and signed nominal current in amperes in double-size text, die temperature above, and alternating SD/EEPROM and RTC/I2C status below. Retains SH1106G 128x64 and rotation 180 degrees. Measurement/display refresh is approximately 1 second; I2C scan and RTC remain at 10 seconds. The ADC test retains its triggered-conversion/restore behavior and serial diagnostics. Invalid reads, identity errors, ADC rails and restore failures invalidate the display snapshot, replacing numeric readings with dashes and an error status. Current remains based on the nominal 150-microohm shunt; no calibration changes.
 
 Build and automatic UART upload passed with verified flash hashes. Post-upload capture contains 11 ADC OK results, nominal current 0.9521–1.0500 A, VBUS 0.294336–0.298047 V and zero I2C errors; RTC tick passed. See [serial evidence](ina228-v0.10-oled-serial.txt). Screen geometry was checked against the 128x64 character grid; physical visual confirmation is pending from the owner. Two-decimal formatting above 1000 A keeps ADC-range values within the screen width; this is formatting, not an approved operating current.
+
+### 2026-09-07 — owner-reported XDM1241 comparison, approximately 4 A
+
+Owner confirmed readable OLED measurements and reported the following operating point on HWTEST v0.10:
+
+| Instrument | Voltage (V) | Current (A) |
+|---|---:|---:|
+| Bench supply display | 5.37 | 4.000 |
+| XDM1241 multimeter | 4.9035 | Not reported |
+| R1-S3 display | 4.906 | 3.995 |
+
+R1-S3 minus XDM1241 is +0.0025 V (+0.0510% relative to the meter reading). R1-S3 minus the supply current display is -0.005 A (-0.125%). These are differences at one owner-reported point, not calibrated accuracy specifications; current has not been independently compared with the XDM1241.
+
+The supply voltage display exceeds the meter by 0.4665 V. Measurement locations, lead/contact drops and supply display accuracy must be distinguished before attributing that difference to one cause. The agreement with XDM1241 supports the INA228 voltage reading at this point; no gain/offset correction was introduced. Multi-point and zero-current checks remain pending for calibration acceptance.
