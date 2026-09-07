@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewer-token" content="__TOKEN__"><title>R1 · Вювер записів</title><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body><header><div class="brand">R1<span> / </span>S3</div><span class="offline">● Локально · без інтернету</span></header>
+<main><section class="intro"><p class="eyebrow">ВЮВЕР ЗАПИСІВ / P2</p><h1>Записи напруги та струму.</h1><p>Відкрий запис, вибери ділянку й перевір напругу, струм та енергію.</p></section>
+<section class="panel upload" id="drop"><div><h2>Запис R1 або R1-S3</h2><p id="filename">Перетягни CSV сюди або вибери файл. Оригінал залишиться незмінним.</p></div><label class="button" for="file">Вибрати файл <span>↗</span></label><input id="file" type="file" accept=".csv,.part,.txt,.bin" hidden></section>
+<details class="panel import"><summary>Налаштування імпорту старих файлів</summary><div class="controls">
+<label>Колонки<select id="mapping"><option value="auto">Визначити за заголовком</option><option value="short">Підтверджую: ms, A, V, W, Wh net</option><option value="headerless-six">Без заголовка: час, ms, A, V, W, Wh net</option><option value="headerless-eight">Без заголовка: + Whc, Whd</option></select></label>
+<label>Роздільник<select id="delimiter"><option value=",">Кома</option><option value=";">Крапка з комою</option><option value="tab">Табуляція</option></select></label>
+<label>Десятковий знак<select id="decimal"><option value="dot">Крапка</option><option value="comma">Кома (лише з ; або табуляцією)</option></select></label>
+<label>Часовий пояс<input id="zone" type="number" placeholder="Невідомий" min="-720" max="840" step="1"><small>Зсув від UTC у хвилинах; порожнє = невідомий</small></label>
+<label>Поріг пропуску, мс<input id="gap" type="number" value="1000" min="1" max="3600000"><small>За відсутності interval_us у файлі</small></label>
+<button id="reload" class="secondary">Застосувати й перечитати</button></div><p class="muted">Короткі назви колонок потребують твого підтвердження одиниць. Pss_Wh зберігається окремо: його точний зміст поки не підтверджений.</p></details>
+<div id="status" role="status" aria-live="polite">Готовий до відкриття файлу.</div><pre id="preview" hidden></pre>
+<section id="workspace" hidden>
+<div class="overview"><div><span class="eyebrow">ВІДКРИТИЙ ЗАПИС</span><h2 id="format"></h2></div><div id="counts"></div></div>
+<section class="panel controls range"><label>Сегмент<select id="segment"></select></label><label>Від, с<input id="start" type="number" min="0" step="any" value="0"></label><label>До, с<input id="end" type="number" min="0" step="any"></label><button id="apply">Показати ділянку</button><button id="reset" class="secondary">Увесь сегмент</button><label>Другий графік<select id="channel"></select></label></section>
+<div class="cards" id="cards"></div><section class="panel plot"><div class="plot-title"><h2>Струм <span>A</span></h2><span>Виділи ділянку мишею · подвійний клік — увесь сегмент</span></div><canvas id="current" aria-label="Графік струму" role="img"></canvas></section>
+<section class="panel plot"><div class="plot-title"><h2 id="other-title">Напруга <span>V</span></h2><span>Мінімуми й максимуми збережено навіть на загальному огляді</span></div><canvas id="other" aria-label="Другий графік вимірювань" role="img"></canvas></section>
+<p class="muted">Середнє та інтеграли обчислено з усіх придатних вимірів обраної ділянки, а не з точок екрана. Пропуски не з’єднуються. Неперевірений хвіст перерваного файлу не входить у графіки.</p>
+<details class="panel"><summary>Перевірки, метадані та походження</summary><button id="report" class="secondary">Зберегти звіт JSON</button><div id="diagnostics"></div><pre id="metadata"></pre></details>
+</section><footer>R1-S3 Logger · Офлайн-вювер 0.1 · R1 CSV / R1S3 CSV v1</footer></main></body></html>

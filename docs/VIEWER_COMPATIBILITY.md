@@ -1,6 +1,6 @@
 # Viewer compatibility contract and implementation gates
 
-Status: P1 inventory/mapping and synthetic acceptance corpus. New offline viewer is P2; no claim that old HTML viewers already support the new format. Source hashes: [sources.json](../tests/fixtures/sources.json). Public synthetic files and expected outcomes: [manifest.json](../tests/fixtures/manifest.json). Owner recordings are unchanged and not published.
+Status: P2 offline viewer implemented for the documented R1/native support matrix; see [results](P2_VIEWER.md) and [launcher](../viewer/README.md). This does not add features to old HTML viewers. Source hashes: [sources.json](../tests/fixtures/sources.json). Public synthetic files and expected outcomes: [manifest.json](../tests/fixtures/manifest.json). Owner recordings are unchanged and not published.
 
 ## Detection and mapping
 
@@ -8,12 +8,12 @@ First identify magic for native R1S3, LYLI or RFL2. Otherwise inspect CSV header
 
 | Family / observed header | Known interpretation | P1/P2 disposition |
 |---|---|---|
-| `timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd` | R1 STAB writer: relative milliseconds, A,V,W, signed net and separate positive/negative Wh | Verified source mapping; P2 adapter required. Existing values already scaled/calibrated; no new coefficients applied |
+| `timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd` | R1 STAB writer: relative milliseconds, A,V,W, signed net and separate positive/negative Wh | Verified source mapping; P2 adapter implemented. Existing values already scaled/calibrated; no new coefficients applied |
 | `timestamp,ms_from_start,I_A,U_V,P_W,Pss_Wh` | Named time/I/U/P fields retained; exact Pss_Wh accumulator semantics not matched to writer | Detect distinct family; preserve original Pss_Wh channel and label meaning unresolved; do not alias to Wh_net |
 | `timestamp,ms,I,U,P,Wh` | Observed layout, short names alone do not prove units/time or net-energy semantics | Require confirmed saved mapping or matching writer; preserve original names |
 | `timestamp,ms,I,U,P,Wh,Whc,Whd` | Observed variant, not automatically the STAB writer | Same explicit mapping gate |
 | Headerless rows | Multiple possible orders/units | Require user-selected mapping and preview |
-| R1S3 CSV schema1 | [Exact native contract](FILE_FORMAT.md) | Host reference and golden tests implemented; P2 UI adapter pending |
+| R1S3 CSV schema1 | [Exact native contract](FILE_FORMAT.md) | Host reference, streaming adapter and offline UI tested |
 | LYLI BIN v2 | Multiple block/TLV/checksum variants | P8 pending; matching writer and real de-identified binary fixture required |
 | R3 RFL2/END2 FILELOG | DATA/TCHK and timing/config interpretation differ from LYLI | P8 pending; do not count timing records as ADC samples |
 
@@ -29,7 +29,7 @@ Min/max envelopes are for previews only. Statistics, integration and marker rang
 
 ## P2 acceptance work
 
-Port the native reference behavior and implement the verified R1 header adapter first. Run every synthetic fixture with exact expected counts, signs, nulls and integrity states. Add reordered/extra columns, quoting, semicolon/decimal-comma confirmation, malformed rows, resets and UTC choices. These P2 cases are listed requirements, not already passing UI tests. Test real archived files locally without publishing private content. Any unresolved short/Pss semantics must remain visible in the support matrix.
+Port the native reference behavior and implement the verified R1 header adapter first. Run every synthetic fixture with exact expected counts, signs, nulls and integrity states. Add reordered/extra columns, quoting, semicolon/decimal-comma confirmation, malformed rows, resets and UTC choices. These cases now have host coverage; actual browser smoke covers import, range/reset, mobile layout, mapping confirmation and corruption rejection. See P2_VIEWER.md for exact evidence. Test real archived files locally without publishing private content. Any unresolved short/Pss semantics must remain visible in the support matrix.
 
 Retain useful Plotly R5 marker/range/plugin concepts, but replace metadata-as-zero parsing and every-Nth-point decimation. Deliver pinned bundled dependencies for offline use. A legacy export is a separate, explicitly lossy eight-column file for verified old-viewer profiles; native originals retain raw evidence, metadata and quality. An unchanged positional old viewer is not a compatibility acceptance target.
 
