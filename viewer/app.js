@@ -1,10 +1,13 @@
 'use strict';
 const $=id=>document.getElementById(id), token=document.querySelector('meta[name=viewer-token]').content;
+const directFile=location.protocol==='file:';
+const launchHelp='Ця версія потребує локального запуску. Закрий index.html і запусти viewer/start.cmd або python viewer/server.py — браузер відкриється за правильною адресою.';
 let file=null, summary=null, latest=null, requestVersion=0, busy=false;
 const number=v=>v===null||v===undefined?'—':Number(v).toLocaleString('uk-UA',{maximumFractionDigits:6});
 function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
 async function api(path,options={}){const response=await fetch(path,{...options,headers:{'X-Viewer-Token':token,...options.headers}});const body=await response.json();if(!response.ok)throw body;return body;}
 async function openFile(selected){
+ if(directFile){status(launchHelp,true);return;}
  if(!selected||busy)return;file=selected;busy=true;requestVersion++;$('workspace').hidden=true;$('preview').hidden=true;
  $('filename').textContent=file.name;status('Читаю файл і перевіряю дані…');$('reload').disabled=true;
  const options={mapping:$('mapping').value,delimiter:$('delimiter').value==='tab'?'\t':$('delimiter').value,decimal_comma:$('decimal').value==='comma',max_gap_ms:Number($('gap').value),utc_offset_min:$('zone').value===''?null:Number($('zone').value)};
@@ -51,3 +54,4 @@ $('file').addEventListener('change',e=>openFile(e.target.files[0]));$('reload').
 $('drop').addEventListener('dragover',e=>{e.preventDefault();$('drop').classList.add('dragging');});$('drop').addEventListener('dragleave',()=>$('drop').classList.remove('dragging'));$('drop').addEventListener('drop',e=>{e.preventDefault();$('drop').classList.remove('dragging');openFile(e.dataTransfer.files[0]);});
 $('report').onclick=()=>{if(!summary)return;const blob=new Blob([JSON.stringify({summary,selection:latest},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='r1-viewer-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 window.addEventListener('resize',()=>{if(latest)render();});
+if(directFile){status(launchHelp,true);$('file').disabled=true;$('reload').disabled=true;$('filename').textContent='Відкрито index.html напряму. Для читання записів запусти start.cmd.';}

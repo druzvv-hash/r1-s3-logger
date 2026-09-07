@@ -1,6 +1,6 @@
 # R1-S3 engineering and compatibility plan
 
-Plan version 1.2, 2026-09-07. Status: P0 completed on the bench; P1 contracts/reference fixtures and P2 offline viewer core completed; P3 next. Production recorder/settings stages remain pending. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
+Plan version 1.3, 2026-09-07. Status: P0 completed on the bench; P1 contracts and P2 data-reading foundation completed; R5 feature migration P2.1 is now required before P3. Production recorder/settings stages remain pending. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
 ## 1. Product and scope
 
@@ -176,4 +176,4 @@ State model: BOOT -> READY or DEGRADED/ERROR; READY -> RECORDING -> STOPPING -> 
 - Create synthetic or owner-approved de-identified public fixtures; do not publish unrelated recordings, credentials or private notes.
 - New requirements go through an explicit plan revision with reason and affected gates. Do not silently change units, sign, time, checksum or file schema.
 - Maintain English technical documents/code and Ukrainian owner notes. This plan is the roadmap; `R1_MIGRATION.md` records what actually happened.
-- **P0–P2 complete**: see P0_BASELINE.md, CONFIG_SCHEMA.md, FILE_FORMAT.md and VIEWER_COMPATIBILITY.md. P2 uses a local Python/SQLite core to reuse P1 semantics, with bundled browser UI; the TypeScript-only core remains an alternative, not the delivered runtime. See P2_VIEWER.md. Next implementation task is **P3: transactional firmware settings**. No production settings have been written to EEPROM. Short/Pss legacy semantics and binary adapters retain explicit evidence gates.
+- **P0–P2 complete**: see P0_BASELINE.md, CONFIG_SCHEMA.md, FILE_FORMAT.md and VIEWER_COMPATIBILITY.md. P2 uses a local Python/SQLite core to reuse P1 semantics, with bundled browser UI; the TypeScript-only core remains an alternative, not the delivered runtime. See P2_VIEWER.md. Owner correction: the minimal P2 UI does not replace R5. Next is **P2.1: R5 interaction/analysis/plugin recovery**, before P3; see [feature matrix](R5_FEATURE_MIGRATION.md). Live/device-log integration retains its P6 firmware dependency. No production settings have been written to EEPROM. Short/Pss legacy semantics and binary adapters retain explicit evidence gates.

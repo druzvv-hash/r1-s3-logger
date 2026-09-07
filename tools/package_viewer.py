@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 FILES=['viewer/core.py','viewer/server.py','viewer/index.html','viewer/style.css','viewer/app.js','viewer/start.cmd','viewer/README.md',
        'tools/contracts.py','tools/make_contract_fixtures.py','tools/benchmark_viewer.py','tools/package_viewer.py',
        'tests/test_contracts.py','tests/test_viewer.py','tests/smoke_viewer.cjs',
-       'schemas/config-v1.json','docs/CONFIG_SCHEMA.md','docs/FILE_FORMAT.md','docs/VIEWER_COMPATIBILITY.md','docs/P2_VIEWER.md']
+       'schemas/config-v1.json','docs/CONFIG_SCHEMA.md','docs/FILE_FORMAT.md','docs/VIEWER_COMPATIBILITY.md','docs/P2_VIEWER.md','docs/R5_FEATURE_MIGRATION.md']
 
 
 def main():

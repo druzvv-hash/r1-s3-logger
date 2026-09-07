@@ -40,4 +40,4 @@ P2 core supports verified R1 headers and native R1S3 v1. Pss remains separate/un
 
 Native corrupt files fail rather than returning a misleading partial clean result; interrupted files expose only checksum-verified rows to analysis. Legacy has no checksum and cannot prove freshness from nominal timing metadata. Recorded totals and recomputed totals are displayed separately.
 
-P2 exit gate is met for this documented support matrix. Next **P3: firmware configuration lifecycle and actual transactional EEPROM save**, using the frozen schema and its host vectors. Existing bring-up calibration/ALERT/acquisition timing gates remain open.
+The P2 data-core gate is met for this support matrix, but the owner correctly identified missing R5 workflows. **P2.1 R5 feature recovery precedes P3**; see [feature matrix](R5_FEATURE_MIGRATION.md). This minimal UI is not the completed R5 replacement. Existing bring-up calibration/ALERT/acquisition timing gates remain open.

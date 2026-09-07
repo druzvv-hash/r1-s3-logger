@@ -205,3 +205,9 @@ Added a local-only Python/SQLite viewer with bundled browser UI, exact P1 native
 Twenty-nine host tests passed; Chrome smoke/desktop/mobile visual checks passed. Read-only private archive run: 45 canonical + 25 Pss CSV imported, 14 layouts require confirmation, 2,870,946 rows total. Native synthetic 350,000-row/20,933,349-byte file verified with streaming reader; detailed timing/allocation/disk results in P2_VIEWER.md. Portable source ZIP requires Python 3.10+ and no additional runtime dependencies.
 
 Plan v1.2 records Python/SQLite instead of the proposed TypeScript core to reuse verified contract semantics; standalone HTML, plugins/C-D markers, cross-part stitching, legacy export and binary adapters remain outside P2. Current support matrix is explicit. Next stage P3: actual firmware config lifecycle/transactional EEPROM persistence. See [viewer guide](../viewer/README.md), [P2 evidence](P2_VIEWER.md), [Ukrainian notes](uk/P2_VIEWER.md).
+
+### 2026-09-07 — owner correction: preserve R5 features before P3
+
+Owner pointed out that R5 already contained substantial useful work missing from the new interface. Re-read the primary R5 UI, marker/plugin APIs and battery/advanced-starter modules. Added R5_FEATURE_MIGRATION.md with concrete source evidence and P2.1a–c recovery/acceptance work; live/device-log portions retain P6 dependencies. P2 is the data-reading foundation, not a full R5 replacement. Plan revised to 1.3; P3 follows R5 recovery.
+
+Screenshot also showed direct file:// opening of viewer/index.html, which cannot use this version's local service API. Added an explicit launcher explanation and disabled direct-file import rather than allowing Failed to fetch. This change does not yet implement the missing R5 features or standalone HTML operation.

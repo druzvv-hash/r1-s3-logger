@@ -1,11 +1,15 @@
 // Optional real-browser UI check. Usage: node tests/smoke_viewer.cjs <viewer URL>
 const {chromium}=require('playwright');
 const path=require('path'),fs=require('fs');
+const {pathToFileURL}=require('url');
 (async()=>{
  const browser=await chromium.launch({headless:true,channel:'chrome'});
  const page=await browser.newPage({viewport:{width:1440,height:1080}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{
+  await page.goto(pathToFileURL(path.resolve('viewer/index.html')).href);
+  if(!(await page.locator('#status').innerText()).includes('start.cmd'))throw Error('Missing direct-file launch help');
+  if(!await page.locator('#file').isDisabled())throw Error('Direct-file import should not attempt fetch');
   await page.goto(process.argv[2]);
   await page.locator('#file').setInputFiles(path.resolve('tests/fixtures/native-sign-crossing.csv'));
   await page.locator('.card strong').first().waitFor();

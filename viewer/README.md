@@ -42,3 +42,7 @@ Input cap: 1 GiB, 10 million rows and 1000 time segments; disk space must accomm
 Run `python -m unittest discover -s tests -v`. Optional UI smoke test uses Playwright/Chrome supplied by the developer environment: `node tests/smoke_viewer.cjs <printed URL>`. It is not a runtime dependency. `python tools/benchmark_viewer.py --rows 350000` tests streaming native input above the P1 oracle's 16 MiB limit. [P2 results](../docs/P2_VIEWER.md) record measured scope and remaining limits.
 
 Build a portable folder ZIP (Python runtime not included): `python tools/package_viewer.py`. Unzip before launching `viewer/start.cmd`.
+
+## R5 preservation correction
+
+This release is the file-reading foundation, not a feature-complete replacement for R5. Marker/series/analysis/plugin recovery is now P2.1 before firmware P3; see [migration matrix](../docs/R5_FEATURE_MIGRATION.md). Direct index.html opening now shows launcher instructions and disables nonworking file import.
