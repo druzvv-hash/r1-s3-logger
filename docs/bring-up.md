@@ -1,6 +1,6 @@
 # Hardware bring-up
 
-Historical checklist: 2026-09-06, HWTEST v0.6. Latest status: [migration journal](R1_MIGRATION.md), HWTEST v0.8, 2026-09-07; dated additions below supersede earlier pending items. Validate each subsystem before porting the original R1 application. Results below distinguish owner reports and captured logs from checks still pending.
+Historical checklist: 2026-09-06, HWTEST v0.6. Latest status: [migration journal](R1_MIGRATION.md), HWTEST v0.9, 2026-09-07; dated additions below supersede earlier pending items. Validate each subsystem before porting the original R1 application. Results below distinguish owner reports and captured logs from checks still pending.
 
 ## 1. Power and boot stability
 
@@ -98,3 +98,7 @@ RTC retained the expected UTC time after owner-reported main-power removal and r
 INA228 manufacturer 0x5449 / device 0x2281 matched. Three fresh triggered ADC samples passed and the original ADC_CONFIG was restored and verified each time. VBUS was near zero, VSHUNT 1.25–3.75 microvolts and die temperature about 25.7 C. Input wiring and meter comparison remain to be confirmed. ALERT GPIO14 read LOW passively; this is not an ALERT functional pass. No current calibration was applied. Build and automatic UART upload passed.
 
 See [migration journal](R1_MIGRATION.md) for test behavior/limits and [serial capture](ina228-v0.8-serial.txt).
+
+## v0.9 nominal shunt current — 2026-09-07
+
+Owner confirmed a connected 60 mV / 400 A shunt (150 microohms). Firmware now prints signed nominal current from raw shunt voltage; measured gain/offset calibration remains pending. Build/upload and two fresh ADC samples passed. See [migration journal](R1_MIGRATION.md) and [serial capture](ina228-v0.9-serial.txt) for observed values and unconfirmed load conditions.

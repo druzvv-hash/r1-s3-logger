@@ -162,7 +162,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 HWTEST v0.8: memory + I2C + SD + OLED + EEPROM + DS3231 + INA228");
+    Serial.println("\nR1-S3 HWTEST v0.9: memory + I2C + SD + OLED + EEPROM + DS3231 + INA228 nominal current");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
                   ESP.getChipRevision(), ESP.getCpuFreqMHz());
     Serial.printf("Flash: %u bytes, %u Hz\n", ESP.getFlashChipSize(),

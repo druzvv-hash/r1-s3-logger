@@ -1,0 +1,44 @@
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=28.00 C
+RTC: 2026-09-07 05:37:03 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10400 ms
+RTC: wall-clock accuracy and battery retention not verified.
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x000B20 VBUS=0x000AC0 TEMP=0x0C6B DIAG=0x0003
+INA228 VBUS=0.033594 V; VSHUNT=55.6250 uV; die=24.836 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.3708 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=28.00 C
+RTC: 2026-09-07 05:37:13 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10000 ms
+RTC: wall-clock accuracy and battery retention not verified.
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x000580 VBUS=0x0009C0 TEMP=0x0CB7 DIAG=0x0003
+INA228 VBUS=0.030469 V; VSHUNT=27.5000 uV; die=25.430 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+0.1833 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK

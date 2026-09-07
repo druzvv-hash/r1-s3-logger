@@ -1,4 +1,4 @@
-# HWTEST v0.8 firmware
+# HWTEST v0.9 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 
@@ -12,3 +12,5 @@ The SD test retains its v0.2 payload and creates a new file on every boot. Perio
 The default environment is `esp32-s3-uart-manual`. Automatic UART reset and experimental native USB environments remain in `platformio.ini`. Automatic UART uploads passed after USB-UART controller rework; long-term reliability remains to be established. See [bring-up results](../docs/bring-up.md).
 
 - `src/ina228_test.cpp`: identity, fresh triggered VBUS/VSHUNT/temperature sample, ADC_CONFIG restoration and passive ALERT level. See the [migration journal](../docs/R1_MIGRATION.md) for test side effects and acceptance limits.
+
+- `include/shunt_config.h`: nominal 60 mV / 400 A shunt; signed current conversion with compile-time checks. Current is printed in Serial and is not yet calibrated against a reference.

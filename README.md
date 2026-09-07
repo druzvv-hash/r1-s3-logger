@@ -2,14 +2,14 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.8**, focused on hardware bring-up. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.9**, focused on hardware bring-up. The original R1 application has not been ported yet.
 
 ## Hardware
 
 - ESP32-S3-WROOM-2-N32R16V (reported marking MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
 - Shared I²C bus: SDA GPIO8, SCL GPIO9, 100 kHz; INA228 `0x40`, SH1106G 128×64 OLED `0x3C`, 24C32 EEPROM `0x50`, DS3231 RTC `0x68`.
 - SPI SD: CS GPIO10, MOSI GPIO11, SCK GPIO12, MISO GPIO13.
-- INA228 ALERT: GPIO14. External shunt specifications are still to be documented.
+- INA228 ALERT: GPIO14. External shunt: owner-confirmed 60 mV / 400 A (150 microohms).
 - OLED rotation: 180°. The current bench uses a CP210x USB–UART bridge.
 
 See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and shunt ratings remain to be recorded.
@@ -54,7 +54,7 @@ Other environments:
 
 ## HWTEST behavior
 
-At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C, RTC and INA228 checks repeat every 10 seconds. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it does not calculate calibrated current.
+At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C, RTC and INA228 checks repeat every 10 seconds. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it reports nominal current using the 150-microohm shunt, without gain/offset calibration.
 
 The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
 

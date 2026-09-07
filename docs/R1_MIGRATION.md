@@ -43,7 +43,8 @@ RTC retention evidence on 2026-09-07: set to `05:03:47Z`; after the owner discon
 - [x] Set RTC explicitly from browser UTC and check retention after disconnection.
 - [x] Validate INA228 identity and fresh ADC readings.
 - [ ] Compare INA228 voltage readings with a known input and meter.
-- [ ] Record shunt resistance, rating, wiring, polarity and required current range.
+- [x] Record owner-confirmed shunt nameplate: 60 mV / 400 A = 150 microohms.
+- [ ] Confirm sensing wiring, polarity, load conditions and required current range.
 - [ ] Test ALERT assertion and clearing on GPIO14.
 - [ ] Implement measurement error reporting, fresh-sample timing and calibration.
 - [ ] Define EEPROM calibration schema, checksum/version and recovery behavior.
@@ -77,3 +78,11 @@ Observed VBUS: 0 / 0.007227 / 0 V; VSHUNT: 3.125 / 1.250 / 3.750 microvolts; die
 See [captured serial evidence](ina228-v0.8-serial.txt). Next physical acceptance requires known input voltage and a meter comparison, followed by shunt details and a controlled ALERT test.
 
 For future entries include firmware commit/version, test setup, observed results, evidence link and remaining limits. Never mark a stage passed solely because it compiled or its I2C address acknowledged.
+
+### 2026-09-07 — nominal shunt current (HWTEST v0.9)
+
+Owner reports the shunt is connected and rated 60 mV / 400 A. Nominal resistance is 0.00015 ohm (150 microohms), configured in `firmware/include/shunt_config.h`. Compute signed current directly as VSHUNT_uV / 150, without modifying INA228 SHUNT_CAL or EEPROM. No zero suppression, offset subtraction or old R1 gain is applied. Invalid sample encoding or a shunt ADC rail withholds current output.
+
+The observed ADCRANGE=0 (+/-163.84 mV) covers the 60 mV nameplate drop. The narrow range (+/-40.96 mV) would clip before 400 A, so the test reports a warning if it encounters that range. ADC range is not the shunt's allowable current rating. Actual shunt tolerance, temperature coefficient, input wiring, VBUS connection and load conditions remain unverified. Positive current means positive IN+ minus IN- voltage, not yet an agreed charge/discharge convention.
+
+Compile-time checks cover zero, +1 A and +/-400 A conversion. Build and automatic COM5 upload passed. Two captured fresh samples at 05:37:03Z / 05:37:13Z reported VSHUNT 55.625 / 27.500 microvolts, I_nominal +0.3708 / +0.1833 A, VBUS 0.033594 / 0.030469 V and ADC OK. Load and VBUS wiring have not yet been confirmed, so these values are observations, not verified real current or a zero-offset measurement. No zero correction was applied. I2C had zero errors and RTC ticking passed. See [serial evidence](ina228-v0.9-serial.txt); calibrated-current acceptance remains open.

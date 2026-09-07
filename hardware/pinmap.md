@@ -18,10 +18,10 @@ All four I²C devices share the bus. Verify common ground and SDA/SCL pull-ups t
 
 | Device | 7-bit address | Evidence |
 |---|---|---|
-| INA228 | `0x40` | ACK confirmed; device ID and measurements pending |
+| INA228 | `0x40` | ID 0x5449/0x2281 and fresh ADC readings confirmed; analog comparison pending |
 | SH1106G OLED, 128×64 | `0x3C` | ACK and readable image confirmed; rotation 180° |
 | EEPROM 24C32 | `0x50` | ACK and sample write/restore test PASS |
-| DS3231 RTC | `0x68` | Owner identified model; ticking with OSF=1 |
+| DS3231 RTC | `0x68` | UTC synchronization and ticking confirmed, OSF=0; time retained after main-power removal |
 
 Repeated scans found all four addresses without bus errors. Address ACK alone does not establish device identity or full functionality. EEPROM address depends on A0–A2; INA228 address depends on its address configuration.
 

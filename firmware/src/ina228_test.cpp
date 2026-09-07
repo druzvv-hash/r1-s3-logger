@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include "pins.h"
 #include "ina228_test.h"
+#include "shunt_config.h"
 
 namespace {
 constexpr uint8_t address = 0x40;
@@ -85,13 +86,23 @@ const char* testIna228() {
                       (unsigned long)shunt, (unsigned long)bus,
                       (unsigned long)temperature, (unsigned long)diag);
         const bool narrow = config & 0x10;
+        const double shuntMicrovolts = signed20(shunt) * (narrow ? 0.078125 : 0.3125);
         Serial.printf("INA228 VBUS=%.6f V; VSHUNT=%.4f uV; die=%.3f C; range=+/-%s mV\n",
                       (bus >> 4) * 0.0001953125,
-                      signed20(shunt) * (narrow ? 0.078125 : 0.3125),
+                      shuntMicrovolts,
                       signed16(temperature) * 0.0078125, narrow ? "40.96" : "163.84");
         Serial.printf("INA228 ALERT GPIO14=%d (passive level only); ADC_CONFIG restored.\n",
                       digitalRead(pins::INA228_ALERT));
-        if ((bus & 0x80000F) || (shunt & 0x0F)) result = "DATA FAIL";
+        if ((bus & 0x80000F) || (shunt & 0x0F)) {
+            result = "DATA FAIL";
+        } else if (signed20(shunt) == -524288 || signed20(shunt) == 524287) {
+            result = "SHUNT LIMIT";
+            Serial.println("INA228: shunt ADC at rail; current withheld.");
+        } else {
+            Serial.printf("INA228 I_nominal=%+.4f A (60 mV / 400 A, %.1f uOhm; no offset/gain correction)\n",
+                          shunt::ampsFromMicrovolts(shuntMicrovolts), shunt::microOhms);
+        }
+        if (narrow) Serial.println("INA228: narrow range cannot cover this shunt's full 400 A rating.");
         Serial.println("No current calibration, external voltage comparison or active ALERT test performed.");
     }
     Serial.printf("INA228 result: %s\n", result);

@@ -2,14 +2,14 @@
 
 [English](README.md) | **Українська**
 
-Відновлений Logger R1 на **ESP32-S3 + INA228**. Поточний етап — hardware bring-up, прошивка **HWTEST v0.8**. Старий код R1 ще не перенесено.
+Відновлений Logger R1 на **ESP32-S3 + INA228**. Поточний етап — hardware bring-up, прошивка **HWTEST v0.9**. Старий код R1 ще не перенесено.
 
 ## Апаратна архітектура
 
 - ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
 - I²C на GPIO8/9: INA228 (0x40), OLED SH1106 128×64 (0x3C), EEPROM 24C32 (0x50), RTC DS3231 (0x68).
 - SD через SPI: CS=10, MOSI=11, SCK=12, MISO=13.
-- INA228 ALERT=14; зовнішній шунт, номінал ще потрібно уточнити.
+- INA228 ALERT=14; зовнішній шунт 60 мВ / 400 А (150 мкОм).
 - OLED повернуто на 180°. UART/CP210x на поточному ПК — COM5.
 
 Докладні підключення: [pinmap](hardware/pinmap.md). Ревізія плати, схема SD-модуля та параметри шунта потребують документування.
