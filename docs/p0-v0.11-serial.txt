@@ -1,0 +1,127 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x2a (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+Octal Flash Mode Enabled
+For OPI Flash, Use Default Flash Boot Mode
+mode:SLOW_RD, clock div:1
+load:0x3fce3808,len:0x41c
+load:0x403c9700,len:0x9a8
+load:0x403cc700,len:0x28d0
+entry 0x403c98b8
+
+R1-S3 BASE v0.11: OLED measurements, storage read checks
+NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP
+Chip: ESP32-S3 rev 0, CPU 240 MHz
+Flash: 33554432 bytes, 80000000 Hz
+PSRAM: DETECTED, total 16774755 bytes, free 16774511 bytes
+Memory sizes only; no memory stress test performed.
+
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+SD READ: mount/root read only; no test files or formatting.
+OLED: SH1106 128x64 static test started; confirm complete border and readable text.
+EEPROM READ OK: 4096 bytes, repeated read matched, CRC32=8C31ED44; no writes.
+RTC DS3231: OSF=0 EOSC=0 temperature=27.00 C
+RTC: 2026-09-07 17:39:57 DOW=2 (UTC after browser synchronization)
+RTC: wall-clock accuracy and battery retention not verified.
+
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007770 VBUS=0x0616C0 TEMP=0x0C18 DIAG=0x0003
+INA228 VBUS=4.871094 V; VSHUNT=597.1875 uV; die=24.188 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9813 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007760 VBUS=0x061710 TEMP=0x0C16 DIAG=0x0003
+INA228 VBUS=4.872070 V; VSHUNT=596.8750 uV; die=24.172 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9792 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007790 VBUS=0x0616E0 TEMP=0x0C12 DIAG=0x0003
+INA228 VBUS=4.871484 V; VSHUNT=597.8125 uV; die=24.141 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9854 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x0077A0 VBUS=0x0616F0 TEMP=0x0C15 DIAG=0x0003
+INA228 VBUS=4.871680 V; VSHUNT=598.1250 uV; die=24.164 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9875 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007770 VBUS=0x0617F0 TEMP=0x0C14 DIAG=0x0003
+INA228 VBUS=4.874805 V; VSHUNT=597.1875 uV; die=24.156 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9813 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007740 VBUS=0x061710 TEMP=0x0C15 DIAG=0x0003
+INA228 VBUS=4.872070 V; VSHUNT=596.2500 uV; die=24.164 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9750 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007700 VBUS=0x061860 TEMP=0x0C1A DIAG=0x0003
+INA228 VBUS=4.876172 V; VSHUNT=595.0000 uV; die=24.203 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9667 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x0076D0 VBUS=0x061790 TEMP=0x0C17 DIAG=0x0003
+INA228 VBUS=4.873633 V; VSHUNT=594.0625 uV; die=24.180 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9604 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007870 VBUS=0x061790 TEMP=0x0C17 DIAG=0x0003
+INA228 VBUS=4.873633 V; VSHUNT=602.1875 uV; die=24.180 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+4.0146 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+INA228: identity and fresh triggered ADC test at 0x40
+INA228 manufacturer=0x5449 device=0x2281 CONFIG=0x0000 ADC=0xFB68
+INA228 raw VSHUNT=0x007790 VBUS=0x061810 TEMP=0x0C1B DIAG=0x0003
+INA228 VBUS=4.875195 V; VSHUNT=597.8125 uV; die=24.211 C; range=+/-163.84 mV
+INA228 ALERT GPIO14=0 (passive level only); ADC_CONFIG restored.
+INA228 I_nominal=+3.9854 A (60 mV / 400 A, 150.0 uOhm; no offset/gain correction)
+No current calibration, external voltage comparison or active ALERT test performed.
+INA228 result: ADC OK
+I2C scan: SDA=8 SCL=9, 100 kHz (7-bit addresses)
+  ACK 0x3C
+  ACK 0x40
+  ACK 0x50
+  ACK 0x68
+Devices: 4; bus errors: 0
+Expected addresses: OLED 0x3C=ACK, INA228 0x40=ACK, 24C32 0x50=ACK, RTC 0x68=ACK
+ACK confirms an address response, not device identity.
+RTC DS3231: OSF=0 EOSC=0 temperature=27.00 C
+RTC: 2026-09-07 17:40:07 DOW=2 (UTC after browser synchronization)
+RTC tick PASS: RTC advanced 10 s over 10408 ms
+RTC: wall-clock accuracy and battery retention not verified.
+

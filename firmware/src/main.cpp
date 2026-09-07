@@ -8,9 +8,15 @@
 #include "eeprom_test.h"
 #include "rtc_test.h"
 #include "ina228_test.h"
+#include "storage_check.h"
+
+#ifndef R1_SERVICE_TESTS
+#define R1_SERVICE_TESTS 0
+#endif
 
 bool i2cReady = false;
 bool sdPassed = false;
+const char* sdStatus = "WAIT";
 bool oledReady = false;
 const char* eepromStatus = "NOT RUN";
 const char* rtcStatus = "WAIT";
@@ -49,7 +55,7 @@ void updateOled() {
     oled.setCursor(4, 53);
     // Alternate diagnostics without crowding the two measurement lines.
     if ((millis() / 3000) % 2 == 0)
-        oled.printf("SD:%s EEP:%s", sdPassed ? "PASS" : "FAIL", eepromStatus);
+        oled.printf("SD:%s EEP:%s", sdStatus, eepromStatus);
     else
         oled.printf("RTC:%s E:%u", rtcStatus, i2cErrors);
     oled.drawRect(0, 0, 128, 64, SH110X_WHITE);
@@ -72,6 +78,7 @@ void initOled() {
     updateOled();
 }
 
+#if R1_SERVICE_TESTS
 void testSd() {
     constexpr uint32_t frequency = 10000000;
     constexpr char payload[] = "R1-S3 HWTEST v0.2: SD write/read test\r\n";
@@ -145,6 +152,21 @@ void testSd() {
                          : "SD FAIL: readback size or content mismatch.");
     Serial.println("Test file retained. Power-cycle persistence not tested.");
 }
+#else
+void checkSdReadOnly() {
+    pinMode(pins::SD_CS, OUTPUT);
+    digitalWrite(pins::SD_CS, HIGH);
+    SPI.begin(pins::SD_SCK, pins::SD_MISO, pins::SD_MOSI, pins::SD_CS);
+    if (SD.begin(pins::SD_CS, SPI, 10000000, "/sd", 5, false) && SD.cardType() != CARD_NONE) {
+        File root = SD.open("/", FILE_READ);
+        sdPassed = root && root.isDirectory();
+        root.close();
+    }
+    sdStatus = sdPassed ? "READ" : "FAIL";
+    Serial.printf("SD %s: mount/root read only; no test files or formatting.\n", sdStatus);
+    SD.end();
+}
+#endif
 
 void scanI2c() {
     bool found[128] = {};
@@ -179,7 +201,9 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 HWTEST v0.10: OLED voltage/current + INA228 nominal current");
+    Serial.println("\nR1-S3 BASE v0.11: OLED measurements, storage read checks");
+    Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
+                                 : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
                   ESP.getChipRevision(), ESP.getCpuFreqMHz());
     Serial.printf("Flash: %u bytes, %u Hz\n", ESP.getFlashChipSize(),
@@ -195,14 +219,23 @@ void setup() {
     } else {
         Serial.println("FAIL: I2C initialization failed.");
     }
+#if R1_SERVICE_TESTS
     testSd();
+    sdStatus = sdPassed ? "PASS" : "FAIL";
+#else
+    checkSdReadOnly();
+#endif
     initOled();
+#if R1_SERVICE_TESTS
     if (i2cReady && sdPassed) {
         eepromStatus = testEeprom();
         updateOled();
     } else {
         Serial.println("EEPROM SKIP: I2C and SD must pass first.");
     }
+#else
+    if (i2cReady) eepromStatus = checkEepromReadOnly();
+#endif
     if (i2cReady) rtcStatus = pollRtc();
     if (i2cReady) inaStatus = testIna228();
     updateOled();

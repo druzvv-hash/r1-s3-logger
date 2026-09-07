@@ -143,6 +143,8 @@ bool setRtcUtc(uint64_t epoch) {
 }
 }
 
+#include "storage_check.h"
+
 bool handleRtcSerial() {
     static char line[48];
     static size_t length = 0;
@@ -156,6 +158,11 @@ bool handleRtcSerial() {
             continue;
         }
         line[length] = 0;
+        if (!overflow && strcmp(line, "EEPROM DUMP") == 0) {
+            length = 0;
+            dumpEepromReadOnly();
+            return false;
+        }
         uint64_t epoch = 0;
         bool valid = !overflow && length > 9 && strncmp(line, "TIME UTC ", 9) == 0 && length <= 19;
         for (size_t i = 9; valid && i < length; ++i) {
