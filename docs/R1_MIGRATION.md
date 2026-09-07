@@ -109,3 +109,17 @@ The populated onboard shunt loads the external Kelvin/sense wiring. Sense-wire a
 Next hardware step: with power removed, remove/isolate R015 for external-shunt-only sensing; leave its pads open, never bridge them. Retain IN+/IN- sensing connections to the external shunt and keep load current in the external power circuit. Repeat measurement against the clamp reading before applying any software gain correction. No hardware change has yet been confirmed.
 
 VBUS is a separate input. Confirm high-side versus low-side wiring before deciding whether to connect it separately or close the VIN+-VBUS jumper. See [Adafruit pinouts](https://learn.adafruit.com/adafruit-ina228-i2c-power-monitor/pinouts). Near-zero VBUS readings do not establish supply failure when this input is unconnected. Photos remain in the owner's photo folder and were not published to this repository.
+
+### 2026-09-07 — external shunt only, after R015 removal
+
+Owner reports R015 removed and a 1 A load applied. Read-only COM5 capture using unchanged HWTEST v0.9 produced:
+
+| RTC UTC | VSHUNT (microvolts) | Nominal current (A) | Die temperature (C) |
+|---|---:|---:|---:|
+| 11:05:12 | 143.7500 | +0.9583 | 45.625 |
+| 11:05:22 | 144.3750 | +0.9625 | 43.812 |
+| 11:05:32 | 143.4375 | +0.9563 | 42.102 |
+
+All three samples returned ADC OK, correct identity and verified ADC_CONFIG restoration; I2C errors remained zero. Current is now approximately 0.959 A and materially more stable than the previous 0.129–0.235 A readings. The improvement after removing R015 supports onboard-shunt/sense-lead loading as the previous fault mechanism. Exact lead resistance has not been measured. The load is owner-reported; the earlier 0.94 A clamp value was not recaptured simultaneously, so this is not an accuracy calibration.
+
+Die temperature fell during the capture, consistent with cooling after recent soldering; allow thermal settling before a zero/gain check. VBUS remained 0.081–0.158 V with its connection unconfirmed, and ALERT stayed LOW passively. These two checks remain open. No gain/offset changes or firmware upload were performed. Next: thermally settled zero-current reading with electronics powered, followed by comparison against a simultaneous known current. See [serial evidence](ina228-v0.9-external-shunt-only.txt).
