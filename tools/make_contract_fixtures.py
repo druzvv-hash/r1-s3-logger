@@ -98,7 +98,7 @@ def main():
     for name, raw in files.items():
         (OUT/name).write_bytes(raw)
         manifest['fixtures'][name] = dict(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest(), expected=expectations.get(name, {'config_generation':1}))
-    (OUT/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf8')
+    (OUT/'manifest.json').write_bytes((json.dumps(manifest, indent=2)+'\n').encode('utf8'))
 
 
 if __name__ == '__main__':

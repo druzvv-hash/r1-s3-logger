@@ -1,2 +1,4 @@
 # Golden checksum fixtures must retain their exact LF/CRLF/BOM bytes on every OS.
 tests/fixtures/* -text
+# This legacy fixture intentionally tests CRLF, which is not trailing whitespace.
+tests/fixtures/r1-bom-crlf.csv whitespace=cr-at-eol
