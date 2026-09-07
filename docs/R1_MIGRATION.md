@@ -1,5 +1,7 @@
 # R1 migration journal
 
+Roadmap: [R1-S3 engineering plan](R1_S3_PLAN.md), with an [owner-facing Ukrainian edition](uk/R1_S3_PLAN.md). The P0-P8 stages in that plan supersede the preliminary ordering below.
+
 This is the continuing record of the R1-to-R1-S3 migration. Update it with each completed stage, test evidence, decisions and unresolved issues. Main documentation and code are English; personal Ukrainian notes live in `docs/uk/`.
 
 ## Baseline and scope
@@ -173,3 +175,9 @@ Owner confirmed readable OLED measurements and reported the following operating 
 R1-S3 minus XDM1241 is +0.0025 V (+0.0510% relative to the meter reading). R1-S3 minus the supply current display is -0.005 A (-0.125%). These are differences at one owner-reported point, not calibrated accuracy specifications; current has not been independently compared with the XDM1241.
 
 The supply voltage display exceeds the meter by 0.4665 V. Measurement locations, lead/contact drops and supply display accuracy must be distinguished before attributing that difference to one cause. The agreement with XDM1241 supports the INA228 voltage reading at this point; no gain/offset correction was introduced. Multi-point and zero-current checks remain pending for calibration acceptance.
+
+### 2026-09-07 — implementation roadmap v1.0
+
+Created `R1_S3_PLAN.md` and `uk/R1_S3_PLAN.md` after reviewing the recovered R1/Plotly analysis, current HWTEST and EEPROM test, R3 configuration/FILELOG architecture, and two LYLI binary reader/type definitions plus their checksum implementation. The plan chooses raw plus engineering-value self-contained CSV first, versioned configuration with A/B EEPROM, explicit runtime/persisted settings, and a shared viewer model with separate format adapters. R1/R1-S3 compatibility precedes the new recorder; LYLI/R3 support follows with matched writer fixtures.
+
+This is a planning/documentation milestone only. No firmware changes, device upload, EEPROM writes or alterations to legacy source were performed. Next implementation stage: P0 baseline preservation and diagnostic separation, then P1 exact schemas and compatibility fixtures. Earlier hardware logs remain historical evidence; calibrated-current accuracy, active ALERT and sustained recording are not marked complete.

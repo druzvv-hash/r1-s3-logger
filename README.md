@@ -74,3 +74,5 @@ Next: verify continued upload reliability and RTC battery retention, test INA228
 Legacy recovery: [R1 firmware and viewer review](docs/legacy-r1-analysis.md).
 
 - [Migration journal](docs/R1_MIGRATION.md): migration stages, decisions and dated hardware evidence.
+
+- [Engineering plan](docs/R1_S3_PLAN.md): architecture, EEPROM, self-contained recording and cross-version viewer roadmap.
