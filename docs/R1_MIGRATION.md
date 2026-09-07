@@ -123,3 +123,17 @@ Owner reports R015 removed and a 1 A load applied. Read-only COM5 capture using 
 All three samples returned ADC OK, correct identity and verified ADC_CONFIG restoration; I2C errors remained zero. Current is now approximately 0.959 A and materially more stable than the previous 0.129–0.235 A readings. The improvement after removing R015 supports onboard-shunt/sense-lead loading as the previous fault mechanism. Exact lead resistance has not been measured. The load is owner-reported; the earlier 0.94 A clamp value was not recaptured simultaneously, so this is not an accuracy calibration.
 
 Die temperature fell during the capture, consistent with cooling after recent soldering; allow thermal settling before a zero/gain check. VBUS remained 0.081–0.158 V with its connection unconfirmed, and ALERT stayed LOW passively. These two checks remain open. No gain/offset changes or firmware upload were performed. Next: thermally settled zero-current reading with electronics powered, followed by comparison against a simultaneous known current. See [serial evidence](ina228-v0.9-external-shunt-only.txt).
+
+### 2026-09-07 — owner-confirmed zero-load check
+
+After the owner indicated the load was switched off while electronics remained powered, unchanged HWTEST v0.9 reported three fresh ADC OK samples:
+
+| RTC UTC | VSHUNT (microvolts) | Nominal current (A) | Die temperature (C) |
+|---|---:|---:|---:|
+| 11:07:12 | -3.7500 | -0.0250 | 31.922 |
+| 11:07:22 | +1.2500 | +0.0083 | 31.258 |
+| 11:07:32 | -0.3125 | -0.0021 | 30.711 |
+
+The readings are near zero and include both signs; the temperature is still falling. Three single-conversion samples during thermal settling do not establish a stable offset, noise specification or calibration coefficient. No zero subtraction, deadband, gain correction or EEPROM write was applied. Manufacturer/device identity and ADC_CONFIG restoration passed; all four I2C addresses responded with zero bus errors. Serial capture was read-only and the port was released. See [serial evidence](ina228-v0.9-zero-current.txt).
+
+Next: confirm whether the external shunt is installed in the positive or negative power lead before wiring VBUS, then compare bus voltage with a meter. A longer thermally settled zero-current sample set remains necessary before deciding on offset calibration.
