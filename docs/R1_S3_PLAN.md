@@ -1,12 +1,12 @@
 # R1-S3 engineering and compatibility plan
 
-Plan version 1.0, 2026-09-07. Status: implementation baseline; no production migration stages below are implemented merely by publishing this plan. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
+Plan version 1.1, 2026-09-07. Status: P0 completed on the bench; P1 contracts/reference fixtures completed on the host; P2 next. Production recorder/settings stages remain pending. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
 ## 1. Product and scope
 
 Build a dependable single-shunt voltage/current/energy logger, easier to operate than the old R1 and more explicit about data quality. Retain ESP32-S3, INA228, SH1106G 128x64 at 180 degrees, DS3231 UTC, 24C32 and SPI SD. Current shunt is nominal 60 mV / 400 A = 150 microohms; the module's R015 has been removed by the owner. GPIOs remain in `hardware/pinmap.md`.
 
-The current v0.10 firmware is a hardware test, not a recorder. ID, fresh conversions, basic storage, OLED and RTC work. At one owner-reported point, R1-S3 measured 4.906 V versus XDM1241 4.9035 V and 3.995 A versus the supply's 4.000 A. This is useful evidence, not a full calibration. ALERT, sustained timing, zero drift, power-loss handling and independent current accuracy remain open.
+The preserved v0.10 baseline and current BASE v0.11 are bring-up firmware, not a recorder. v0.11 removes normal startup SD/EEPROM write tests. ID, fresh conversions, basic storage, OLED and RTC work. At one owner-reported point, R1-S3 measured 4.906 V versus XDM1241 4.9035 V and 3.995 A versus the supply's 4.000 A. This is useful evidence, not a full calibration. ALERT, sustained timing, zero drift, power-loss handling and independent current accuracy remain open.
 
 Interpret “self-contained” in both useful senses: this document explains the architecture without old chats, and every native recording carries everything needed to interpret it without the original device, EEPROM or a companion settings file.
 
@@ -81,7 +81,7 @@ Config lifecycle: edit draft -> validate -> apply/read back while stopped -> exp
 
 ## 5. EEPROM 24C32, 4096 bytes
 
-Proposed allocation, finalized with serialization-size tests in P3:
+P1 byte allocation and host size tests are defined in CONFIG_SCHEMA.md; physical transactional writes remain P3:
 
 | Address | Bytes | Purpose |
 |---|---:|---|
@@ -101,16 +101,17 @@ Export/import a versioned human-readable settings JSON with validation and previ
 
 Choose a new **R1S3 CSV schema v1** as the initial native format: easy to inspect, compatible with the R1 workload, and testable before adding a new binary container. It contains raw counts as well as engineering values. Binary optimization requires throughput/file-size evidence and a new adapter, not a silent change to the CSV contract.
 
-Structure to freeze in P1 (illustrative, not a parser-ready byte specification yet):
+Structure frozen in P1: FILE_FORMAT.md is the normative byte specification. META_CRC32 was added to protect interpretation when END is absent; final totals are in the last row rather than duplicated in END. The following is only a structural overview:
 
 ```text
 # R1S3_LOG schema=1
 # META {JSON session and interpretation metadata}
+# META_CRC32 XXXXXXXX
 timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd,seq,t_us,vshunt_raw,vbus_raw,temp_raw,quality,Ah_net,Ahc,Ahd
 ...rows...
 # CHECKPOINT {sequence bounds, row count, byte bounds, CRC32}
 ...rows...
-# END {counts, gaps, final totals, stop reason, digest, clean close}
+# END {row count, stop reason, digest, clean close}
 ```
 
 Preserve the first eight R1 column names and semantics where verified. Additional fields are named, typed and versioned. Keep legacy `Whc/Whd` aliases for positive/negative energy; recording metadata defines the actual polarity convention. Define decoded signed 20-bit VSHUNT counts, unsigned VBUS counts and signed temperature counts plus ADC range/LSBs. Missing/invalid fields are empty/null with quality flags, never zero. A skipped opportunity/event and a valid sensor sample must be distinguishable by record/quality semantics.
@@ -175,4 +176,4 @@ State model: BOOT -> READY or DEGRADED/ERROR; READY -> RECORDING -> STOPPING -> 
 - Create synthetic or owner-approved de-identified public fixtures; do not publish unrelated recordings, credentials or private notes.
 - New requirements go through an explicit plan revision with reason and affected gates. Do not silently change units, sign, time, checksum or file schema.
 - Maintain English technical documents/code and Ukrainian owner notes. This plan is the roadmap; `R1_MIGRATION.md` records what actually happened.
-- The next implementation task is **P0, then P1**. This planning change itself must not reflash the device or write production settings into EEPROM.
+- **P0 and P1 complete**: see P0_BASELINE.md, CONFIG_SCHEMA.md, FILE_FORMAT.md and VIEWER_COMPATIBILITY.md. Next implementation task is **P2: offline viewer core**. No production settings have been written to EEPROM. Short/Pss legacy semantics and binary adapters retain explicit evidence gates.

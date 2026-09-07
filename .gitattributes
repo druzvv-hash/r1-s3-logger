@@ -1,0 +1,2 @@
+# Golden checksum fixtures must retain their exact LF/CRLF/BOM bytes on every OS.
+tests/fixtures/* -text

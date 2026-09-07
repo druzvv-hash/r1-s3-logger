@@ -1,0 +1,131 @@
+{
+  "origin": "All payloads synthetic; legacy header layouts only are copied from inventory.",
+  "fixtures": {
+    "native-sign-crossing.csv": {
+      "bytes": 2664,
+      "sha256": "95d3bd5fe2cb2f1df8851aab7c282d1b3b8f7fe8b679364fa563c177e3a12fd0",
+      "expected": {
+        "verified_rows": 4,
+        "clean": true,
+        "last_I_A": -1,
+        "last_U_V": 5,
+        "Whc": 3.472222222222222e-05,
+        "Whd": 3.472222222222222e-05
+      }
+    },
+    "native-gap.csv": {
+      "bytes": 2470,
+      "sha256": "1c278010cf2e3d05504ff75a2d8e93fa5fb13f3aef512deb6ffda58535119dfe",
+      "expected": {
+        "verified_rows": 4,
+        "clean": true,
+        "invalid_rows": 1,
+        "last_quality": 24,
+        "Whc": 0,
+        "Whd": 2.777777777777778e-05
+      }
+    },
+    "native-interrupted.csv": {
+      "bytes": 2542,
+      "sha256": "dd7485c3ef43b94d5401e0a7740316876c66999cd7b70536cfb6ecfc395b079c",
+      "expected": {
+        "verified_rows": 4,
+        "clean": false
+      }
+    },
+    "native-truncated.csv": {
+      "bytes": 2438,
+      "sha256": "f2b34a0f459b023429820078522b7c0d30b60f38f90815fe0cb5185df688cb8f",
+      "expected": {
+        "verified_rows": 2,
+        "clean": false,
+        "unverified_rows": 1,
+        "partial_line": true
+      }
+    },
+    "native-bad-crc.csv": {
+      "bytes": 2664,
+      "sha256": "944193fa88176a80199052fff48cf9c13fd091f0c2137661c73103ec25a6f1eb",
+      "expected": {
+        "error": "corrupt"
+      }
+    },
+    "native-unknown.csv": {
+      "bytes": 2664,
+      "sha256": "110d9fdf5c9226e4a497fb9d17046c1610a9fdf64b0519f4edf3c698e60459db",
+      "expected": {
+        "error": "unsupported"
+      }
+    },
+    "config-default-slot.hex": {
+      "bytes": 3073,
+      "sha256": "7b2b619f52ca9cc5d0da3903fedb4888385fdc37df76f6e86468b41744d52bd2",
+      "expected": {
+        "config_generation": 1
+      }
+    },
+    "config-default.json": {
+      "bytes": 807,
+      "sha256": "cfdb2a75d0f5802f200323358d79ea1ec4360ce601498178acec6ed44438ac61",
+      "expected": {
+        "config_generation": 1
+      }
+    },
+    "r1-eight.csv": {
+      "bytes": 161,
+      "sha256": "f4ffe849cda7737cbcfdea9ed8f25706c54588740d682d64690bc731d7a06025",
+      "expected": {
+        "adapter": "r1-eight",
+        "rows": 2,
+        "utc": "unknown timezone",
+        "comments_are_rows": false
+      }
+    },
+    "r1-pss.csv": {
+      "bytes": 73,
+      "sha256": "6607b68d1e7559881fc76bb633f309c25f25221cf980cb586e268b4aac61b023",
+      "expected": {
+        "adapter": "r1-pss",
+        "energy": "preserve Pss_Wh, meaning unresolved"
+      }
+    },
+    "r1-short.csv": {
+      "bytes": 52,
+      "sha256": "86012d0bd60642781ed6dad784229b1efe142a046fbfaaab600a0875494cc6ad",
+      "expected": {
+        "adapter": "needs-confirmed-mapping"
+      }
+    },
+    "r1-short-eight.csv": {
+      "bytes": 64,
+      "sha256": "48f4df494f3ee7355ee93531fc20a524f99c6a13eee6e349034942838aecfa69",
+      "expected": {
+        "adapter": "needs-confirmed-mapping"
+      }
+    },
+    "r1-bom-crlf.csv": {
+      "bytes": 104,
+      "sha256": "ec9828e47bc2f4e476e0017393402b5d5333f93f5c977ba63412983a64554968",
+      "expected": {
+        "adapter": "r1-eight",
+        "rows": 1
+      }
+    },
+    "r1-invalid.csv": {
+      "bytes": 86,
+      "sha256": "ce381f9d57b0d6009116ecf2678a3f0df3f80e84ac24067315f2449fc474e2f9",
+      "expected": {
+        "adapter": "r1-eight",
+        "invalid_rows": 1,
+        "substitute_zero": false
+      }
+    },
+    "r1-headerless.csv": {
+      "bytes": 30,
+      "sha256": "54dc9bfd6343963d425c4cbef4d3d8a71c3f3e301762d23198f5350fda90a0a1",
+      "expected": {
+        "adapter": "needs-confirmed-mapping"
+      }
+    }
+  }
+}

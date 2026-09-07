@@ -1,0 +1,53 @@
+{
+  "note": "Read-only donor provenance, not copied source code or proof of binary-format support.",
+  "sources": [
+    {
+      "root": "Logger_Analysis",
+      "path": "Projects/bekup/main21_12_3STAB.cpp",
+      "bytes": 43678,
+      "sha256": "1d0edfc54f643a21b107ef2b3a71ed473151b79f182681db0b43e943f958441f"
+    },
+    {
+      "root": "Logger_Analysis",
+      "path": "Viewer/Plugins/viewer_ultimate_Plugins_R5.html",
+      "bytes": 58266,
+      "sha256": "0304076793a9cdf447c89abb0c1a02a8977559859109c38e671d6f4c4554e540"
+    },
+    {
+      "root": "Logger_Analysis",
+      "path": "Projects/23_01_26/src/bin/reader.ts",
+      "bytes": 25260,
+      "sha256": "a65132f2807d4e67ca790ecd95665333ebaaa6451ae6da70bae2ee863ee09c56"
+    },
+    {
+      "root": "Logger_Analysis",
+      "path": "Projects/23_01_26/src/bin/types.ts",
+      "bytes": 1378,
+      "sha256": "3dff157adfddc5a96eb4b83af195599d5bb9b5459036c4876f6a4fbe0d919998"
+    },
+    {
+      "root": "Logger_Analysis",
+      "path": "Projects/23_01_26/src/data/binV2.ts",
+      "bytes": 7869,
+      "sha256": "e597554890d551fac948c7fab4bdf6dc1ac3d86f510016ad0ce6160207191418"
+    },
+    {
+      "root": "Logger_Analysis",
+      "path": "Projects/23_01_26/src/data/crc.ts",
+      "bytes": 1475,
+      "sha256": "dddfeeabe8c224dbe9d89656e7a1d811738ac0257ec8d000eb6a6699f0aee645"
+    },
+    {
+      "root": "lily-logger-r3",
+      "path": "firmware/stm32/CM7/Core/Inc/r3_config.h",
+      "bytes": 1822,
+      "sha256": "537e9320f4848e9c4bf956ce3ee636913e82517214eee4d609713b78550702e4"
+    },
+    {
+      "root": "lily-logger-r3",
+      "path": "firmware/stm32/CM7/Core/Src/r3_config.c",
+      "bytes": 4550,
+      "sha256": "fe0a1f5bdf24aae054f44f7716fde8e4ee2063bb17d7264ed2e656cdeaa7329a"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+﻿# rate_hz=50
+timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd
+2025-01-01 00:00:00,0,1,5,5,0,0,0

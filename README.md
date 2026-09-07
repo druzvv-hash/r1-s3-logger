@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.10**, focused on hardware bring-up. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **BASE v0.11**, with live measurements and non-writing storage checks. The original R1 application has not been ported yet.
 
 ## Hardware
 
@@ -12,7 +12,7 @@ Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0
 - INA228 ALERT: GPIO14. External shunt: owner-confirmed 60 mV / 400 A (150 microohms).
 - OLED rotation: 180°. The current bench uses a CP210x USB–UART bridge.
 
-See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and shunt ratings remain to be recorded.
+See the [pin map](hardware/pinmap.md). Board revision and SD module circuitry remain to be recorded.
 
 ## Verified status
 
@@ -24,7 +24,7 @@ See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and s
 | OLED | SH1106G 128×64 image and 180° rotation confirmed by the owner |
 | EEPROM | Owner confirmed EEP PASS: backup, sample write, restore and full-image comparison |
 | RTC | Browser UTC synchronization verified; OSF=0, tick PASS; retention checked after owner-reported power disconnection |
-| INA228 | Identity and three fresh ADC samples passed; voltage comparison, current calibration and active ALERT pending |
+| INA228 | Fresh ADC and owner-reported voltage comparison established; independent current calibration and active ALERT pending |
 
 Automatic UART uploads succeeded after USB-UART controller rework. The cause of earlier intermittent bootloader failures remains unproven; native USB operation is not confirmed.
 
@@ -36,29 +36,20 @@ Open the repository root in VS Code with PlatformIO IDE installed. Dependencies 
 pio run
 ```
 
-The default environment is `esp32-s3-uart-manual`: UART console, CDC disabled, 115200 baud, and esptool reset sequences disabled before and after upload. `COM5` is the current bench setting; change the UART environment ports in `platformio.ini` for another workstation.
-
-Close Termite / Serial Monitor. With the UART cable connected, hold BOOT, press and release RESET, then release BOOT before uploading:
+The default environment is `esp32-s3`: automatic UART upload, CDC disabled, COM5 at 115200 baud. Close Termite / Serial Monitor before uploading. Change the port for another workstation.
 
 ```sh
-pio run -e esp32-s3-uart-manual -t upload
-pio device monitor -e esp32-s3-uart-manual
+pio run -e esp32-s3 -t upload
+pio device monitor -e esp32-s3
 ```
 
-Press RESET after a successful upload to start the application. This profile is a diagnostic workaround, not a verified fix for the intermittent connection problem.
+`esp32-s3-uart-manual` retains the BOOT + RESET fallback (manual RESET after upload). `esp32-s3-usb` is an unverified native-USB alternative. The explicit `esp32-s3-service` build enables the original SD/EEPROM write tests; ordinary builds exclude them.
 
-Other environments:
+## Current behavior and migration
 
-- `esp32-s3`: UART with automatic reset.
-- `esp32-s3-usb`: experimental native USB Serial/JTAG, `USB_MODE=1`, `USB_CDC_ON_BOOT=1`, no fixed COM port. Serial output uses the native USB connector in this build.
+Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / EEP READ` indicate read checks. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 still uses the diagnostic conversion/restore path; production recording is pending.
 
-## HWTEST behavior
-
-At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C and RTC checks repeat every 10 seconds; INA228 measurements and the OLED refresh approximately once per second. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it reports nominal current using the 150-microohm shunt, without gain/offset calibration.
-
-The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
-
-Periodic RTC checks do not write time. Explicit [browser synchronization](docs/rtc-sync.md) sets UTC, verifies readback and clears OSF. An I²C ACK proves an address response, not device identity or full functionality.
+[P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; standard library). Next stage: P2 offline viewer core.
 
 ## Repository guide
 
@@ -69,7 +60,7 @@ Periodic RTC checks do not write time. Explicit [browser synchronization](docs/r
 - [Project context](docs/project-context-review.md): relevant findings from earlier logger work.
 - [Ukrainian owner notes](docs/uk/README.md): historical bench notes and local workspace review.
 
-Next: verify continued upload reliability and RTC battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.
+See the staged plan below for remaining acquisition, calibration, ALERT and recording acceptance work.
 
 Legacy recovery: [R1 firmware and viewer review](docs/legacy-r1-analysis.md).
 
