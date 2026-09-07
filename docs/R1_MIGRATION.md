@@ -137,3 +137,17 @@ After the owner indicated the load was switched off while electronics remained p
 The readings are near zero and include both signs; the temperature is still falling. Three single-conversion samples during thermal settling do not establish a stable offset, noise specification or calibration coefficient. No zero subtraction, deadband, gain correction or EEPROM write was applied. Manufacturer/device identity and ADC_CONFIG restoration passed; all four I2C addresses responded with zero bus errors. Serial capture was read-only and the port was released. See [serial evidence](ina228-v0.9-zero-current.txt).
 
 Next: confirm whether the external shunt is installed in the positive or negative power lead before wiring VBUS, then compare bus voltage with a meter. A longer thermally settled zero-current sample set remains necessary before deciding on offset calibration.
+
+### 2026-09-07 — low-side wiring and VBUS capture
+
+Owner reported moving the shunt into the negative lead and confirmed completion after instructions to connect IN- and module GND to supply negative, IN+ to the load-side shunt sense contact, and VBUS to supply positive, leaving the VIN+-VBUS jumper open. Actual wiring has not been independently inspected.
+
+Unchanged HWTEST v0.9, read-only COM5 capture:
+
+| RTC UTC | VBUS (V) | VSHUNT (microvolts) | Nominal current (A) | Die temperature (C) |
+|---|---:|---:|---:|---:|
+| 12:31:12 | 0.301758 | 149.3750 | +0.9958 | 39.070 |
+| 12:31:22 | 0.297266 | 149.6875 | +0.9979 | 37.367 |
+| 12:31:32 | 0.296875 | 151.8750 | +1.0125 | 35.992 |
+
+All three conversions returned ADC OK, correct identity and verified ADC_CONFIG restoration. I2C errors were zero. Nominal current is approximately 1 A; VBUS is approximately 0.30 V, but actual bench-supply output voltage and simultaneous reference current remain to be reported. Do not mark voltage accuracy as passed without that comparison. ALERT remains LOW and untested; die temperature is still changing. No calibration or firmware modifications were made. See [serial evidence](ina228-v0.9-low-side-vbus.txt).
