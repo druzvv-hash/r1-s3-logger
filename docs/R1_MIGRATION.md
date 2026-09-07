@@ -65,6 +65,19 @@ Reference: [TI INA228 datasheet](https://www.ti.com/lit/ds/symlink/ina228.pdf), 
 
 ## Dated journal
 
+### 2026-09-07 — comparison with owner-reported clamp reading
+
+On HWTEST v0.9 (commit `27a2c40`), the owner reported 0.94 A after zeroing the clamp meter, a 1 A bench-supply current limit, and sense wires connected to IN+ / IN-. Read-only COM5 capture at 05:44:13Z through 05:44:43Z produced four fresh ADC OK samples:
+
+| UTC | VSHUNT (microvolts) | Nominal current (A) | VBUS (V) |
+|---|---:|---:|---:|
+| 05:44:13 | 27.5000 | +0.1833 | 0.000000 |
+| 05:44:23 | 31.5625 | +0.2104 | 0.000000 |
+| 05:44:33 | 35.3125 | +0.2354 | 0.000000 |
+| 05:44:43 | 19.3750 | +0.1292 | 0.016211 |
+
+At 0.94 A, the nominal 150-microohm shunt would develop 141 microvolts. The observed readings disagree substantially. The clamp reading is owner-reported, not an independently calibrated reference, and was not continuously captured alongside these samples. I2C had zero errors, identity matched and ADC_CONFIG restoration passed. No firmware changes or calibration corrections were made during this capture. Wiring, actual differential voltage and module circuitry must be checked before choosing a gain correction. See [serial evidence](ina228-v0.9-clamp-comparison.txt).
+
 ### 2026-09-07 — baseline recovery
 
 Recorded recovered R1 source and viewer compatibility findings in commit `5fe8ccf`. Legacy calibration values are historical evidence only. In particular, viewer variants do not consistently parse the existing eight-column CSV or leading metadata comments.
