@@ -1,4 +1,4 @@
-# HWTEST v0.7 firmware
+# HWTEST v0.8 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 
@@ -9,4 +9,6 @@ PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root
 
 The SD test retains its v0.2 payload and creates a new file on every boot. Periodic checks never set time; the explicit browser command does. See [RTC sync](../docs/rtc-sync.md). The EEPROM write test is temporary diagnostic code; keep power connected until restoration completes.
 
-The default environment is `esp32-s3-uart-manual`. Automatic UART reset and experimental native USB environments remain in `platformio.ini`. Firmware builds passed; reliable bootloader entry is still unresolved. See [bring-up results](../docs/bring-up.md).
+The default environment is `esp32-s3-uart-manual`. Automatic UART reset and experimental native USB environments remain in `platformio.ini`. Automatic UART uploads passed after USB-UART controller rework; long-term reliability remains to be established. See [bring-up results](../docs/bring-up.md).
+
+- `src/ina228_test.cpp`: identity, fresh triggered VBUS/VSHUNT/temperature sample, ADC_CONFIG restoration and passive ALERT level. See the [migration journal](../docs/R1_MIGRATION.md) for test side effects and acceptance limits.

@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.7**, focused on hardware bring-up. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **HWTEST v0.8**, focused on hardware bring-up. The original R1 application has not been ported yet.
 
 ## Hardware
 
@@ -23,10 +23,10 @@ See the [pin map](hardware/pinmap.md). Board revision, SD module circuitry and s
 | SD | 10 MHz write, close, remount and exact readback PASS; output files checked on a PC |
 | OLED | SH1106G 128×64 image and 180° rotation confirmed by the owner |
 | EEPROM | Owner confirmed EEP PASS: backup, sample write, restore and full-image comparison |
-| RTC | Browser UTC synchronization verified; OSF=0, tick PASS; battery retention pending |
-| INA228 | Address ACK only; functional testing pending |
+| RTC | Browser UTC synchronization verified; OSF=0, tick PASS; retention checked after owner-reported power disconnection |
+| INA228 | Identity and three fresh ADC samples passed; voltage comparison, current calibration and active ALERT pending |
 
-Bootloader entry remains intermittent: successful uploads and No serial data / Wrong boot mode errors have both occurred. The cause is unresolved. BOOT/EN measurements are the next diagnostic step; native USB operation is not confirmed.
+Automatic UART uploads succeeded after USB-UART controller rework. The cause of earlier intermittent bootloader failures remains unproven; native USB operation is not confirmed.
 
 ## VS Code / PlatformIO
 
@@ -54,7 +54,7 @@ Other environments:
 
 ## HWTEST behavior
 
-At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C and RTC checks repeat every 10 seconds.
+At startup: memory information, I²C scan, SD test using a new file, OLED, EEPROM backup/test/restore, and read-only RTC inspection. I²C, RTC and INA228 checks repeat every 10 seconds. INA228 temporarily triggers a fresh ADC conversion, reads voltage/temperature and restores ADC_CONFIG; it does not calculate calibrated current.
 
 The EEPROM test requires working SD storage and a verified 4096-byte backup. It changes 16 bytes in the last page only if the entire page contains uniform FF or 00, restores the original bytes, and compares the full image. Keep power connected until restoration completes. This is temporary bring-up behavior, not the intended production startup sequence.
 
@@ -72,3 +72,5 @@ Periodic RTC checks do not write time. Explicit [browser synchronization](docs/r
 Next: verify continued upload reliability and RTC battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.
 
 Legacy recovery: [R1 firmware and viewer review](docs/legacy-r1-analysis.md).
+
+- [Migration journal](docs/R1_MIGRATION.md): migration stages, decisions and dated hardware evidence.

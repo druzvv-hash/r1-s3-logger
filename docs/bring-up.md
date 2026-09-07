@@ -1,6 +1,6 @@
 # Hardware bring-up
 
-Status: 2026-09-06, HWTEST v0.6. Validate each subsystem before porting the original R1 application. Results below distinguish owner reports and captured logs from checks still pending.
+Historical checklist: 2026-09-06, HWTEST v0.6. Latest status: [migration journal](R1_MIGRATION.md), HWTEST v0.8, 2026-09-07; dated additions below supersede earlier pending items. Validate each subsystem before porting the original R1 application. Results below distinguish owner reports and captured logs from checks still pending.
 
 ## 1. Power and boot stability
 
@@ -90,3 +90,11 @@ After subsystem validation, restore R1 functions incrementally: measurements, ca
 After the owner swapped/reworked the USB–UART controllers, the connected board completed automatic UART upload with verified flash hashes and RTS reset. This establishes a successful test, not the root cause or long-term reliability of both boards.
 
 HWTEST v0.7 adds explicit browser-sourced UTC synchronization over UART. The browser sent 2026-09-07T05:03:47Z; firmware verified calendar readback and OSF=0/EOSC=0. Subsequent serial checks showed the correct UTC date, tick PASS and all four I²C addresses with zero errors. A malformed TIME command was rejected. See [instructions](rtc-sync.md) and [serial evidence](rtc-sync-v0.7-serial.txt). Battery retention and precision clock accuracy remain untested.
+
+## v0.8 INA228 and RTC retention — 2026-09-07
+
+RTC retained the expected UTC time after owner-reported main-power removal and reconnection; OSF=0/EOSC=0 and tick PASS. Outage duration was not measured; long-term drift remains untested.
+
+INA228 manufacturer 0x5449 / device 0x2281 matched. Three fresh triggered ADC samples passed and the original ADC_CONFIG was restored and verified each time. VBUS was near zero, VSHUNT 1.25–3.75 microvolts and die temperature about 25.7 C. Input wiring and meter comparison remain to be confirmed. ALERT GPIO14 read LOW passively; this is not an ALERT functional pass. No current calibration was applied. Build and automatic UART upload passed.
+
+See [migration journal](R1_MIGRATION.md) for test behavior/limits and [serial capture](ina228-v0.8-serial.txt).

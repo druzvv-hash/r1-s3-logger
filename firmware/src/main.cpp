@@ -7,12 +7,14 @@
 #include "pins.h"
 #include "eeprom_test.h"
 #include "rtc_test.h"
+#include "ina228_test.h"
 
 bool i2cReady = false;
 bool sdPassed = false;
 bool oledReady = false;
 const char* eepromStatus = "NOT RUN";
 const char* rtcStatus = "WAIT";
+const char* inaStatus = "WAIT";
 unsigned i2cCount = 0;
 unsigned i2cErrors = 0;
 Adafruit_SH1106G oled(128, 64, &Wire, -1, 100000, 100000);
@@ -30,9 +32,9 @@ void updateOled() {
     oled.setCursor(4, 33);
     oled.printf("I2C:%u ERR:%u", i2cCount, i2cErrors);
     oled.setCursor(4, 43);
-    oled.print(sdPassed ? "SD: PASS" : "SD: FAIL");
+    oled.printf("SD:%s EEP:%s", sdPassed ? "PASS" : "FAIL", eepromStatus);
     oled.setCursor(4, 53);
-    oled.printf("EEP:%s", eepromStatus);
+    oled.printf("INA:%s", inaStatus);
     oled.drawRect(0, 0, 128, 64, SH110X_WHITE);
     oled.display();
 }
@@ -160,7 +162,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 HWTEST v0.7: memory + I2C + SD + OLED + EEPROM + DS3231");
+    Serial.println("\nR1-S3 HWTEST v0.8: memory + I2C + SD + OLED + EEPROM + DS3231 + INA228");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
                   ESP.getChipRevision(), ESP.getCpuFreqMHz());
     Serial.printf("Flash: %u bytes, %u Hz\n", ESP.getFlashChipSize(),
@@ -185,6 +187,7 @@ void setup() {
         Serial.println("EEPROM SKIP: I2C and SD must pass first.");
     }
     if (i2cReady) rtcStatus = pollRtc();
+    if (i2cReady) inaStatus = testIna228();
     updateOled();
 }
 
@@ -200,6 +203,7 @@ void loop() {
         lastScan = now;
         scanI2c();
         rtcStatus = pollRtc();
+        inaStatus = testIna228();
         updateOled();
     }
     delay(10);
