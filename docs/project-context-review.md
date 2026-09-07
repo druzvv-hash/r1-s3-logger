@@ -31,3 +31,7 @@ OLED output cannot identify which UART/USB build environment was flashed because
 ## Review limits
 
 The review covered folder mapping, key documentation, selected authored firmware, Git history and working-tree diffs, source comparisons and archive inspection. It was not a line-by-line review of vendor code, a test of every binary, or a repeat of historical hardware validation. Old project files and archives were not modified.
+
+## Additional source discovery — 2026-09-07
+
+The later review of Desktop/Logger_Analysis **did locate INA226/R1 firmware**, including an archived STAB candidate. This supersedes the earlier search's limited finding that R1 was not found in the directories then reviewed. See [legacy R1 and viewer analysis](legacy-r1-analysis.md).

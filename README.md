@@ -70,3 +70,5 @@ Periodic RTC checks do not write time. Explicit [browser synchronization](docs/r
 - [Ukrainian owner notes](docs/uk/README.md): historical bench notes and local workspace review.
 
 Next: verify continued upload reliability and RTC battery retention, test INA228 ID/VBUS/VSHUNT/temperature/ALERT, then restore R1 functionality incrementally.
+
+Legacy recovery: [R1 firmware and viewer review](docs/legacy-r1-analysis.md).
