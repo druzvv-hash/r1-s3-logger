@@ -553,3 +553,12 @@ ESP32 application hang. The original volatile 100 Hz configuration was restored
 over Wi-Fi, with EEPROM generation 3 unchanged. UART endurance testing remains
 pending physical USB reconnection; software device restart was denied by Windows.
 See [UART diagnostic evidence and next checks](UART_DIAGNOSTICS.md).
+
+Follow-up after another reconnect captured raw PC UART bytes and simultaneous
+logger Wi-Fi state. In a 156-request controlled run, 143 replies were valid and
+Windows reported seven `CE_FRAME` notifications; neither buffer-overflow flag
+was reported. Wi-Fi showed one boot ID and 1,882 new samples across 55 snapshots.
+Failures occurred without resets and with either PC reader implementation;
+Wi-Fi association did not consistently prevent them. This narrows the search
+to low-level serial reception rather than a complete application hang, but does
+not identify a failed component. No diagnostic firmware was flashed.

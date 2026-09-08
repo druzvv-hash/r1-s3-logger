@@ -41,15 +41,79 @@ that both circuit timing and OS/driver behavior can affect reset. See
 and [connection troubleshooting](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/troubleshooting.html).
 These are diagnostic possibilities, not a confirmed cause on this board.
 
+## 2026-09-08 — simultaneous PC byte capture and logger Wi-Fi state
+
+After another owner reconnect, UART responses were already corrupted before any
+new test reset. This round performed **no reset, firmware upload or settings
+SAVE**. Device-side evidence consists of the logger's existing Wi-Fi state
+snapshots; this is not an instrumented ESP32 UART ISR/TX log or an oscilloscope
+capture. PC evidence includes exact transmitted/received bytes and error masks
+returned by Windows `ClearCommError`, captured before pySerial discards them.
+
+The first direct bulk-read run passed all 24 requests (short deterministic error
+replies, STATE, 2,018-byte requests and LIVE). Simultaneous Wi-Fi provided 16
+snapshots with one boot ID and 326 additional samples. A subsequent comparison
+of the panel's line reader and a bulk reader failed all four initial requests,
+including damaged UTF-8; neither reader consistently eliminated the fault.
+
+A controlled run kept the **same COM5 handle open at 115200, 8N1**, with DTR/RTS
+inactive, while switching the PC's Wi-Fi association. It alternated STATE and
+short read-only protocol probes. No Flash/EEPROM operation was sent.
+
+| Network condition, in execution order | Valid UART replies / requests |
+| --- | --- |
+| Original PC network, before switching | 28 / 31 |
+| Logger AP, with simultaneous HTTP state polling | 38 / 38 |
+| Logger AP, without HTTP polling | 42 / 42 |
+| Original PC network again | 25 / 28 |
+| Logger AP again, with HTTP polling | 10 / 17 |
+
+Total: **143/156 valid UART replies**, with 98 UTF-8 replacement characters in
+the failing received byte streams. Here valid means a complete parseable JSON
+reply with the matching request ID; STATE does not carry an end-to-end frame
+CRC, so this is not proof that every bit of those replies was correct.
+The seven reported Windows error events all
+had mask **`0x0008` (`CE_FRAME`)**. These are seven error notifications, not a
+count of damaged bytes or necessarily seven individual bad frames. No
+`CE_RXOVER`, `CE_OVERRUN` or parity error was reported. Lack of a driver error
+notification on another failed request does not establish clean transmission.
+
+Microsoft defines `CE_FRAME` as a hardware-detected framing error; buffer
+overflow uses different flags. See
+[ClearCommError error masks](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-clearcommerror).
+The evidence therefore points below the panel's JSON parser, particularly at
+the receive path **ESP32 UART TX → wiring → CP210x RX → driver**. It does not
+identify whether signal levels/timing, ground/power integrity, the bridge or its
+driver is responsible. A framing error is distinct from USB packet CRC failure.
+
+During the controlled run, 55 Wi-Fi snapshots retained the same ESP32 boot ID;
+device uptime advanced 37,642 ms and its sample counter advanced by 1,882.
+The application remained READY at the persisted 50 Hz profile. Short good and
+bad UART periods occurred with and without AP association, including failures
+on the second AP visit: Wi-Fi connection alone is not a demonstrated fix or
+cause. The PC's original network was restored after each roundtrip.
+
+Final Wi-Fi verification restored the exact previously selected volatile 100 Hz
+profile and confirmed READY with EEPROM generation 3 unchanged. No SAVE was
+performed. UART remains intermittent; successful Wi-Fi restoration is not a
+UART recovery claim.
+
+Raw exchanges and paired state/error reports are retained privately under
+`data/uart-both-ends/`. Source-level UART receive/transmit counters have not been
+installed: this round deliberately tested the existing v0.22 binary.
+
 ## Next controlled check
 
-1. Physically disconnect/reconnect USB to reinitialize the bridge, keeping the
-   new cable and the same PC port. Verify recovery before another auto-reset.
-2. Run continuous UART state/live traffic first; then repeat the same ROM-only
-   auto-entry command, with no Flash writes. Preserve failures separately.
-3. If auto-reset triggers failure again, compare physical BOOT/RESET entry and
-   capture EN, GPIO0 and UART signals around the failing transition. A matching
-   old/new cable comparison can then isolate any cable contribution.
+1. Capture UART0 TX at ESP32 GPIO43 and at the CP210x RX connection while the
+   same known request is repeated. Compare levels, bit timing and missing or
+   malformed transitions with the PC error timestamps. Check ground and supply
+   integrity at both devices; the error notification alone cannot name a part.
+2. Isolate the bridge/PC path with a known-good external USB-UART adapter or
+   another PC, ensuring only one transmitter drives each UART input. Keep the
+   same firmware and load for a useful comparison.
+3. Once continuous UART traffic is reliable, repeat automatic ROM entry and
+   examine EN/GPIO0 timing if boot-mode failures remain. Reset circuitry is not
+   the only suspect now that failures also occur without resets.
 
 Raw logs, private state snapshots and diagnostic helpers are in the ignored
 `data/uart-new-cable/` directory. No network credentials or full state payloads
