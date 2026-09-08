@@ -10,7 +10,7 @@
 <article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
 <article class="meter power"><label>ПОТУЖНІСТЬ</label><div><strong id="watts">—</strong><span>W</span></div><small id="temperature">Температура INA228: —</small></article>
 </section>
-<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
 <section id="live" class="page">
 <div class="panel live-controls">
 <label>Частота вимірів <select id="quick-rate"><option value="10">10 Гц</option><option value="50">50 Гц</option><option value="100">100 Гц</option></select></label>
@@ -23,6 +23,14 @@
 <div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button><button id="sync-time">Час із цього пристрою → RTC</button></div></div>
 <div class="panel"><h2>Запис і пам’ять</h2><p class="standby">Режим тестування</p><p>Запис сесій на microSD буде наступним етапом. Зараз можна перевіряти показники, вузли та налаштування.</p><dl id="memory"></dl><p class="muted">FIFO підготовлений у PSRAM; виміри ще не передаються до записувача. Енкодер очікує встановлення.</p></div></div>
 </section>
+<section id="files" class="page" hidden>
+<div class="panel"><div class="section-title"><div><h2>Файли на microSD</h2><p>Завантажуй записи на комп’ютер або телефон, залишаючи картку в логері.</p></div><span id="file-transfer" class="badge">Очікування</span></div>
+<div class="button-row"><button id="files-refresh" class="primary">Оновити список</button><button id="files-up">На рівень вище</button><span id="files-path">/</span></div>
+<p id="files-status" role="status" aria-live="polite">Натисни «Оновити список», щоб прочитати картку.</p>
+<div id="file-list"></div><button id="files-more" hidden>Ще файли</button>
+<p class="muted">Файли залишаються на картці. Для великих записів Wi-Fi швидший; через USB завантаження може тривати довго. Прогрес і скасування — у завантаженнях браузера.</p>
+<iframe id="file-download" name="file-download" title="Завантаження файлу" hidden></iframe>
+</div></section>
 <section id="settings" class="page" hidden>
 <div class="panel"><div class="section-title"><div><h2>Параметри логера</h2><p id="config-state">Очікування конфігурації</p></div><span id="generation" class="badge">EEPROM —</span></div>
 <p class="muted">Застосувати — змінити роботу зараз. Зберегти — записати застосовані значення в EEPROM для наступного запуску.</p>

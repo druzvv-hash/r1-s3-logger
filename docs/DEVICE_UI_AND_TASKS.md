@@ -74,4 +74,10 @@ The confirmed recording target is microSD; internal Flash is not the session sto
 
 Acceptance must record core IDs, stack high-water marks, sample jitter/late counts, queue high-water, OLED transaction maximum, I2C wait time, SD write/flush maximum, and deliberate slow-client/SD-stall behavior. Reload/disconnect the UI during a run; acquisition/session state must survive. Run a complete local start/stop and settings apply/save cycle with Wi-Fi off. Verify input bounce generates no duplicate session actions, STOP remains reachable under event load, and concurrent stale local/web commands cannot overwrite a newer applied config. UI screenshots alone do not establish timing or persistence.
 
-Current CONFIG v0.13 source still uses the diagnostic Arduino loop and has no device web server or production recorder. It adds an encoder stub and [PSRAM FIFO / block-buffer foundation](BUFFERING_AND_REUSE.md), with boot-time memory reservation. This document is the design/acceptance contract, not a claim that the tasks/UI are already implemented.
+Implementation status at PANEL v0.16: core 1 owns timed acquisition/I2C plus a separate
+lower-priority SD read service; core 0 serves web, UART and a separate HTTP download
+task. OLED frame rendering remains with the I2C owner, using bounded transfers.
+The [PSRAM FIFO / block-buffer foundation](BUFFERING_AND_REUSE.md) is reserved at boot.
+The encoder remains a stub. Local menus and production recording are still pending;
+P5 must extend the existing SD owner instead of introducing concurrent card access.
+See [live acquisition](P4B_LIVE_ACQUISITION.md) and [downloads](SD_DOWNLOADS.md).

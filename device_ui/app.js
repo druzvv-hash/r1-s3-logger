@@ -109,6 +109,7 @@ function render(s){
   $('generation').textContent='EEPROM · покоління '+s.generation;
   $('config-state').textContent=({'SAVED':'Застосовано та збережено','UNSAVED':'Застосовано, ще не збережено','BLOCKED':'EEPROM заблоковано: перевір формат','APPLY FAIL':'Помилка застосування'})[s.settings_status]||s.settings_status;
   $('footer-device').textContent='R1-S3 · прошивка '+s.firmware+' · '+(s.boot||'');
+  $('file-transfer').textContent=s.file_transfer?'Передача / читання SD':s.files_available?'Готово до читання':'Потрібна прошивка v0.16+';
   if(!base)reload();
   // Preserve a dirty draft when another client changes the configuration.
   else if(!dirty&&stale())reload();
@@ -134,6 +135,50 @@ async function command(verb,arg='',useDraft=false){
     notice((verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
   }catch(e){notice('Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
   finally{busy=false;controls();}
+}
+
+let fileDirectory='/',fileSession=0,fileBusy=false;
+function pathHex(path){return Array.from(new TextEncoder().encode(path),b=>b.toString(16).padStart(2,'0')).join('');}
+function pathText(hex){return new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(hex.match(/../g),s=>parseInt(s,16)));}
+function fileNotice(text){$('files-status').textContent=text;}
+async function filesCommand(command){const r=await api('/api/files?command='+encodeURIComponent(command));if(!r.ok)throw Error(r.message||'Помилка читання SD');return r;}
+async function closeDirectory(){const id=fileSession;fileSession=0;$('files-more').hidden=true;if(id)await filesCommand('CLOSE '+id);}
+function fileSize(size){return size<1024?size+' B':size<1048576?(size/1024).toFixed(1)+' KiB':(size/1048576).toFixed(2)+' MiB';}
+async function listFiles(directory=fileDirectory,more=false){
+  if(fileBusy)return;
+  if(!online||!state?.files_available){fileNotice('Потрібне підключення до логера з прошивкою v0.16+.');return;}
+  fileBusy=true;$('files-refresh').disabled=true;$('files-more').disabled=true;
+  try{
+    fileNotice('Читання картки…');
+    if(!more){await closeDirectory();fileDirectory=directory;$('files-path').textContent=directory;$('file-list').replaceChildren();}
+    const result=await filesCommand(more?'NEXT '+fileSession:'LIST '+pathHex(directory));
+    fileSession=result.more?result.session:0;
+    for(const entry of result.entries){
+      const row=document.createElement('div'),name=document.createElement('span'),size=document.createElement('small'),button=document.createElement('button');
+      row.className='file-row';name.textContent=(entry.directory?'📁 ':'')+entry.name;
+      size.textContent=entry.directory?'Папка':fileSize(entry.size);button.textContent=entry.directory?'Відкрити':'Завантажити';
+      button.disabled=!entry.path;
+      button.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
+      row.append(name,size,button);$('file-list').append(row);
+    }
+    $('files-more').hidden=!result.more;$('files-up').disabled=directory==='/';
+    fileNotice($('file-list').children.length?'Файлів і папок: '+$('file-list').children.length+(result.more?' · є наступна сторінка':''):'Папка порожня.');
+  }catch(e){fileSession=0;$('files-more').hidden=true;fileNotice(e.message+' · Спробуй оновити список.');}
+  finally{fileBusy=false;$('files-refresh').disabled=false;$('files-more').disabled=false;}
+}
+async function downloadFile(entry){
+  if(fileBusy)return;fileBusy=true;
+  try{
+    await closeDirectory();
+    // Check access now so card/busy errors appear in the panel, before starting a browser download.
+    const opened=await filesCommand('OPEN '+entry.path);
+    await filesCommand('CLOSE '+opened.session);
+    const token=new URLSearchParams(location.search).get('token');
+    const a=document.createElement('a');a.href='/api/download?path='+entry.path+(token?'&token='+encodeURIComponent(token):'');
+    a.download=entry.name;a.target='file-download';document.body.append(a);a.click();a.remove();
+    fileNotice('Завантаження «'+entry.name+'» запитано. Прогрес і результат — у завантаженнях браузера.');
+  }catch(e){fileNotice('Не вдалося завантажити: '+e.message);}
+  finally{fileBusy=false;}
 }
 
 function acceptLive(batch){
@@ -213,6 +258,10 @@ function animate(now){
   requestAnimationFrame(animate);
 }
 makeFields();
+$('files-refresh').onclick=()=>listFiles();
+$('files-more').onclick=()=>listFiles(fileDirectory,true);
+$('files-up').onclick=()=>listFiles(fileDirectory.slice(0,fileDirectory.lastIndexOf('/'))||'/');
+$('file-download').onload=()=>{try{const text=$('file-download').contentDocument.body.textContent;if(text){const r=JSON.parse(text);if(r.message)fileNotice('Не вдалося завантажити: '+r.message);}}catch{}};
 $('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',updateDraft);
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));

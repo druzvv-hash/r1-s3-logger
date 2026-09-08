@@ -1,8 +1,10 @@
 """Loopback-only USB bridge for the on-device R1-S3 test panel (no fake data)."""
 import argparse
+import binascii
 import hmac
 import json
 import secrets
+import socket
 import threading
 import time
 import urllib.parse
@@ -13,6 +15,40 @@ import serial
 
 ROOT=Path(__file__).resolve().parents[1]
 SESSION=ROOT/'data/device-panel/session.json'
+
+def file_path(hex_path):
+    if not hex_path or len(hex_path)%2 or len(hex_path)>=480 or any(c not in '0123456789abcdefABCDEF' for c in hex_path):
+        raise ValueError('Invalid SD path')
+    raw=bytes.fromhex(hex_path)
+    if not raw.startswith(b'/') or any(c<32 or c==127 for c in raw) or b'\\' in raw or b':' in raw:
+        raise ValueError('Invalid SD path')
+    if raw!=b'/' and any(p in (b'',b'.',b'..') for p in raw[1:].split(b'/')):
+        raise ValueError('Invalid SD path')
+    return raw
+
+def file_command(text):
+    parts=text.split(' ')
+    if len(parts)==2 and parts[0] in ('LIST','OPEN'):
+        file_path(parts[1])
+    elif len(parts)==(3 if parts[0]=='READ' else 2) and parts[0] in ('READ','NEXT','CLOSE'):
+        if not all(p.isascii() and p.isdecimal() and len(p)<=10 and int(p)<=0xffffffff for p in parts[1:]):
+            raise ValueError('Invalid SD cursor')
+    else:raise ValueError('Invalid SD command')
+    return 'FILES '+text
+
+def file_reply(device,command):
+    result=device.request(file_command(command))
+    if result.get('ok') is not True:raise RuntimeError(result.get('message','SD file operation failed'))
+    return result
+
+def read_chunk(device,session,size,offset):
+    reply=file_reply(device,f'READ {session} {offset}')
+    if reply.get('session')!=session or reply.get('size')!=size or reply.get('offset')!=offset:
+        raise ValueError('SD transfer identity or offset mismatch')
+    data=bytes.fromhex(reply['hex'])
+    if len(data)!=min(2048,size-offset) or binascii.crc32(data)!=reply.get('crc32'):
+        raise ValueError('SD transfer CRC/length mismatch; download incomplete')
+    return data
 
 class Device:
     def __init__(self,port):
@@ -106,7 +142,50 @@ class Handler(BaseHTTPRequestHandler):
                 state['transport']='usb'
                 self.send_json(200,state)
             except Exception as e:self.send_json(503,dict(message=str(e)))
+        elif path=='/api/files':
+            command=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get('command',[''])[0]
+            try:command=file_command(command)
+            except ValueError as e:self.send_json(400,dict(message=str(e)));return
+            try:self.send_json(200,self.server.device.request(command))
+            except Exception as e:self.send_json(503,dict(message=str(e)))
+        elif path=='/api/download':self.download()
         else:self.send_json(404,dict(message='Not found'))
+    def download(self):
+        path=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get('path',[''])[0]
+        try:raw=file_path(path)
+        except ValueError as e:self.send_json(400,dict(message=str(e)));return
+        session=None;started=False
+        try:
+            opened=file_reply(self.server.device,'OPEN '+path)
+            session,size=opened['session'],opened['size']
+            if type(session) is not int or not 0<session<=0xffffffff or type(size) is not int or not 0<=size<=0xffffffff:
+                raise ValueError('Invalid SD file metadata')
+            # Validate the first block before sending headers. Never buffer a whole recording.
+            block=read_chunk(self.server.device,session,size,0)
+            self.connection.settimeout(10)
+            self.send_response(200)
+            self.send_header('Content-Type','application/octet-stream')
+            self.send_header('Content-Length',str(size))
+            self.send_header('Content-Disposition',"attachment; filename=\"r1s3-download.bin\"; filename*=UTF-8''"+urllib.parse.quote_from_bytes(raw.rsplit(b'/',1)[-1],safe=''))
+            self.send_header('Cache-Control','no-store')
+            self.send_header('X-Content-Type-Options','nosniff')
+            self.send_header('Referrer-Policy','no-referrer')
+            self.end_headers();started=True
+            offset=0
+            while offset<size:
+                self.wfile.write(block);offset+=len(block)
+                if offset<size:block=read_chunk(self.server.device,session,size,offset)
+        except Exception as e:
+            if not started:self.send_json(503,dict(message=str(e)))
+            else:
+                # A short HTTP body must remain visibly incomplete, never a successful corrupt file.
+                self.close_connection=True
+                try:self.connection.shutdown(socket.SHUT_RDWR)
+                except OSError:pass
+        finally:
+            if session:
+                try:file_reply(self.server.device,f'CLOSE {session}')
+                except Exception:pass # Firmware also expires abandoned sessions after 30 seconds.
     def do_POST(self):
         if not self.authorized(post=True):self.send_json(403,dict(message='Origin/token/header rejected'));return
         path=urllib.parse.urlsplit(self.path).path

@@ -2,11 +2,14 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.15**, with a USB/Wi-Fi test panel, selectable 10/50/100 Hz measurements and a 30/60 FPS live chart, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. The timed acquisition/live path is active; production SD session recording is still pending.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.16**, with a USB/Wi-Fi test panel, selectable 10/50/100 Hz measurements and a 30/60 FPS live chart, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. The timed acquisition/live path is active; production SD session recording is still pending.
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
 panel's Diagnostics tab. [Test-panel guide](docs/P4A_TEST_PANEL.md).
+
+**SD files:** the **Файли SD** tab lists folders and downloads existing files through
+USB or Wi-Fi, without removing the card. [File transfer guide](docs/SD_DOWNLOADS.md).
 
 ## Hardware
 

@@ -4,6 +4,7 @@
 #include "rtc_test.h"
 #include "recording_memory.h"
 #include "live_history.h"
+#include "sd_files.h"
 #include "panel_assets.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -101,14 +102,59 @@ void serialTask(void*){
     }
 }
 
+void downloadTask(void*){
+    WebServer server(81);
+    server.on("/api/download",HTTP_GET,[&]{
+        sd_files::Request q;q.op=sd_files::Op::Open;
+        if(!sd_files::decodePath(server.arg("path").c_str(),q.path)){
+            server.send(400,"text/plain","Invalid file path");return;
+        }
+        sd_files::Response r;
+        if(!sd_files::request(q,r)){server.send(409,"application/json",r.json);return;}
+        const uint32_t id=r.session,size=r.size;
+        const char* name=strrchr(q.path,'/')+1;
+        String encoded;const char* hex="0123456789ABCDEF";
+        for(const char* p=name;*p;++p){encoded+='%';encoded+=hex[uint8_t(*p)>>4];encoded+=hex[uint8_t(*p)&15];}
+        server.sendHeader("Content-Disposition","attachment; filename=\"r1s3-download.bin\"; filename*=UTF-8''"+encoded);
+        server.sendHeader("Cache-Control","no-store");server.sendHeader("X-Content-Type-Options","nosniff");
+        server.setContentLength(size);server.send(200,"application/octet-stream","");
+        WiFiClient client=server.client();bool complete=true;
+        for(uint32_t offset=0;offset<size&&client.connected();){
+            q.op=sd_files::Op::Read;q.session=id;q.offset=offset;
+            if(!sd_files::request(q,r)||!r.count){complete=false;break;}
+            size_t sent=0;const uint32_t began=millis();
+            while(sent<r.count&&client.connected()&&millis()-began<10000){
+                sent+=client.write(r.data+sent,r.count-sent);vTaskDelay(pdMS_TO_TICKS(1));
+            }
+            if(sent!=r.count){complete=false;break;}offset+=r.count;
+        }
+        if(!complete)client.stop(); // Content-Length makes a partial transfer fail at the receiver.
+        q.op=sd_files::Op::Close;q.session=id;sd_files::request(q,r);
+    });
+    server.begin();
+    for(;;){server.handleClient();vTaskDelay(pdMS_TO_TICKS(5));}
+}
+
 void webTask(void*){
     WiFi.mode(WIFI_AP);
     networkReady.store(WiFi.softAP(ssid,password,1,0,2));
+    xTaskCreatePinnedToCore(downloadTask,"file-http",24576,nullptr,1,nullptr,0);
     WebServer server(80);
     const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
     server.on("/",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");server.send_P(200,"text/html; charset=utf-8",reinterpret_cast<const char*>(PANEL_HTML),sizeof(PANEL_HTML));});
     server.on("/api/state",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",snapshot());});
     server.on("/api/live",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",live(server.hasArg("after")?server.arg("after").c_str():"0"));});
+    server.on("/api/files",HTTP_GET,[&]{
+        server.sendHeader("Cache-Control","no-store");
+        server.send(200,"application/json",sd_files::protocol(server.arg("command").c_str()));
+    });
+    server.on("/api/download",HTTP_GET,[&]{
+        char path[sd_files::PATH_BYTES];
+        if(!sd_files::decodePath(server.arg("path").c_str(),path)){server.send(400,"text/plain","Invalid file path");return;}
+        server.sendHeader("Cache-Control","no-store");
+        server.sendHeader("Location",String("http://")+WiFi.softAPIP().toString()+":81/api/download?path="+sd_files::encodePath(path));
+        server.send(302,"text/plain","");
+    });
     server.on("/api/command",HTTP_POST,[&]{
         if(server.header("X-R1-Panel")!="1" || (server.hasHeader("Origin")&&server.header("Origin")!=String("http://")+server.hostHeader())){server.send(403,"application/json","{\"ok\":false,\"message\":\"Origin/header rejected\"}");return;}
         const String body=server.arg("plain");
@@ -151,7 +197,7 @@ void panelPublish(const PanelHardware& h){
     const auto& r=latestIna228Reading();const auto payload=settings::encode(appliedSettings());
     String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
     String s;s.reserve(4800);
-    s="{\"ready\":true,\"firmware\":\"0.15\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
+    s="{\"ready\":true,\"firmware\":\"0.16\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
     char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
     s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
     s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";
@@ -171,6 +217,7 @@ void panelPublish(const PanelHardware& h){
     s+=",\"max_late_us\":"+String(a.maxLateUs)+",\"max_read_us\":"+String(a.maxReadUs);
     s+=",\"maintenance_count\":"+String(a.maintenance)+",\"maintenance_ms\":"+String(a.maintenanceMs);
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
+    s+=",\"files_available\":true,\"file_transfer\":"+String(sd_files::active()?"true":"false");
     s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);
@@ -183,6 +230,7 @@ bool panelHandleSerial(const char* line){
     if(!strcmp(line+n,"STATE"))response=snapshot();
     else if(!strncmp(line+n,"DO ",3))response=submit(line+n+3);
     else if(!strncmp(line+n,"LIVE ",5))response=live(line+n+5);
+    else if(!strncmp(line+n,"FILES ",6))response=sd_files::protocol(line+n+6);
     else response="{\"ok\":false,\"message\":\"Unknown panel request\"}";
     Serial.printf("PANEL %u %s\n",id,response.c_str());return true;
 }

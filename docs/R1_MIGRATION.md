@@ -283,3 +283,34 @@ Before/after complete EEPROM images match generation 3 / CRC32 EBDAE9A1.
 Normal firmware is deployed; service build only compiled. Mid-write UART disconnects
 required upload retries; long-term transport reliability remains open.
 See [implementation and measured limits](P4B_LIVE_ACQUISITION.md).
+
+### 2026-09-08 — SD files available through the device panel
+
+Owner requested file retrieval through the UI so recordings can be checked without
+removing microSD. PANEL v0.16 adds folder pagination and original-name attachments
+over the USB bridge and native AP. The storage task owns runtime read/mount/close on
+core 1 at lower priority than acquisition. Core 0 handles transports, including a
+separate port-81 download server so native downloads do not occupy the main UI server.
+USB blocks carry checked session/size/offset/CRC32; incomplete transfers fail through
+the HTTP content-length contract. No card writes, deletion or formatting were added.
+
+Physical USB enumeration returned 163 root entries. Downloaded r1s3_test_0000.txt
+and r1s3_test_0001.txt (39 bytes each), plus eeprom_before_0000.bin (4096 bytes), twice
+each with identical bytes. The TXT contains the expected HWTEST v0.2 write/read line.
+Chrome desktop/mobile acceptance used the actual download button and verified the
+filename and bytes. Concurrent repeated 2048-byte SD reads at 100 Hz produced no
+invalid samples or missed periods. Wrong-session, out-of-bounds and expired-session
+requests were rejected; an abandoned directory released the card after 30 seconds.
+Restored 50 Hz. EEPROM images before/after match generation 3 / CRC32 EBDAE9A1.
+
+46 host tests and browser fixture/regression checks pass. Normal/service builds pass;
+only normal is deployed. UART upload still needed a retry at 57600 baud. Native Wi-Fi
+download code is built but phone-to-AP transfer remains unverified; the physical
+acceptance above is USB. Large recordings/card-removal testing remain future checks.
+Downloaded data and EEPROM copies stay in ignored/private directories.
+
+The final directory page limit is six entries to keep long FAT filenames and hex
+paths inside the bounded response. Production session recording remains P5. Its SD
+writer must extend this owner and exclude file downloads before starting a recording;
+the new recording admission hook is preparatory, not a complete recorder lock.
+See [file-transfer contract](SD_DOWNLOADS.md) and [owner notes](uk/SD_FILES.md).

@@ -15,6 +15,7 @@
 #include "recording_memory.h"
 #include "test_panel.h"
 #include "live_history.h"
+#include "sd_files.h"
 #include <esp_timer.h>
 
 #ifndef R1_SERVICE_TESTS
@@ -262,7 +263,9 @@ bool runPanelAction(const char* verb, const char* argument, const char*& message
 #if R1_SERVICE_TESTS
         message="SD command disabled in service build";return false;
 #else
-        checkSdReadOnly();message=sdPassed?"SD mount/root read passed":"SD mount/root read failed";return sdPassed;
+        sd_files::Request q;sd_files::Response r;
+        sdPassed=sd_files::request(q,r);sdStatus=sdPassed?"READ":"FAIL";
+        message=sdPassed?"SD mount/root read passed":"SD unavailable or file transfer active";return sdPassed;
 #endif
     }
     if (!strcmp(verb,"EEPROM") && !*argument) {
@@ -287,7 +290,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.15: USB/Wi-Fi test panel + settings");
+    Serial.println("\nR1-S3 PANEL v0.16: USB/Wi-Fi panel + SD downloads");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -335,6 +338,7 @@ void setup() {
                   static_cast<unsigned long>(buffersReady ? recording::SD_BLOCK_BYTES : 0));
     Serial.println("BUFFER: reserved only; production acquisition/recorder not connected yet.");
     Serial.printf("LIVE history in PSRAM: %s\n",liveHistoryBegin()?"READY":"FAIL");
+    sd_files::begin();
     panelBegin(runPanelAction);
     panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
     updateOled();
