@@ -10,6 +10,9 @@ panel's Diagnostics tab. [Test-panel guide](docs/P4A_TEST_PANEL.md).
 
 **SD files:** the **Файли SD** tab lists folders and downloads existing files through
 USB or Wi-Fi, without removing the card. [File transfer guide](docs/SD_DOWNLOADS.md).
+The scrolling explorer includes search, sorting and automatic full-folder loading.
+[Measured rate/noise limits](docs/RATE_BENCHMARK.md) distinguish usable control from
+the experimental recording ceiling; released presets remain 10/50/100 Hz.
 
 ## Hardware
 

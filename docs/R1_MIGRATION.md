@@ -438,3 +438,54 @@ and P7 long-duration/fault tests remain open. USB upload required retries and a
 confirmed ROM DOWNLOAD response before the final hash-verified 38,400-baud write;
 no permanent USB repair is claimed. See [P6 evidence](P6_WIFI.md) and
 [owner connection steps](uk/WIFI.md).
+
+### 2026-09-08 — SD explorer and measured rate/noise limits
+
+PANEL v0.21 adds a bounded scrolling SD table with sticky columns, search, sorting,
+file-type filters, breadcrumbs and automatic reading of every directory page.
+Cancellation, navigation, download and START release the active directory cursor.
+The browser fixture passes with 601 entries, hostile-looking literal filenames,
+desktop/mobile layouts and downloads. Physical Chrome acceptance reads all 164
+root entries, scrolls/searches the complete list and downloads the expected 39-byte
+`r1s3_test_0000.txt`. No existing card files were removed or renamed.
+
+An explicitly selected benchmark build varies frequency, ADC conversion time and
+I2C speed, independently stops timed tests and restores the preceding volatile
+profile. EEPROM writes are disabled in that build; normal validation still offers
+10/50/100 Hz. A bounded private UART diagnostic log and reset-reason reporting were
+added. Normal and benchmark builds, six panel host tests, four settings firmware
+tests and browser regression/Explorer fixtures pass.
+
+The full sweep covers requested 100–1000 Hz, CT codes 0/2/3/5 and 100/400 kHz I2C.
+All 31 experiment artifacts (43,779,187 bytes, 209,623 checkpoint-verified rows)
+were downloaded through native Wi-Fi and passed both readers' integrity/semantic
+checks. Overload cases retain correctly marked sequence gaps. The initial unexpected
+100 Hz reboot, which the owner confirms was not manual, left an interrupted PART
+with 13,808 verified rows. Its cause is unresolved; the subsequent sweep did not
+reproduce it. The artifact remains on SD and PC.
+
+The unchanged ADC/100 kHz profile passed a subsequent 300-second 100 Hz file with
+30,031 rows and no sequence loss. Fast ADC/400 kHz reached a verified 330.031 Hz
+for 90 seconds (29,615 rows), but state/OLED publication starved; 350 Hz already
+lost sequences. A 200 Hz / 150 us-per-channel / 400 kHz candidate passed 120 seconds
+and 23,959 rows without in-file gaps. USB live preview sometimes lagged even with
+60 FPS animation. A separate direct-Wi-Fi browser test produced 5,957 clean rows,
+fresh preview in all 28 observed RUNNING snapshots, about 59.87 FPS and 46 OLED
+frames, without lost periods or a reboot. Faster ADC increases observed dispersion;
+no faster production preset or calibration change was silently adopted.
+
+Normal v0.21 is deployed from clean commit
+`0781a4047c34cd411e33868540fb15e0a129398b`. Its post-upload smoke file
+`r1s3_2026-09-08_13-51-24Z_aca2c445_8a382472_0000.csv` has 628 rows, 134,223 bytes,
+99.999234 Hz and no sequence gaps/invalid rows; CRC/SHA/raw/integration checks and
+ordinary viewer import pass. File metadata confirms the clean firmware commit.
+The logger is READY at the exact owner's original volatile 100 Hz configuration,
+I2C 100 kHz, saved generation 3 unchanged. No Save or clock adjustment was issued.
+The original PC Wi-Fi network is restored; the USB panel is running again.
+
+UART uploading remains intermittent. Both completed v0.21 writes used ROM/no-stub
+at 38,400 baud with flash hash verification; the final one required a separately
+confirmed DOWNLOAD entry after automatic connection failures. No permanent USB
+repair or long-duration stability claim is made. See the
+[complete results and next preset decision](RATE_BENCHMARK.md) and
+[owner notes](uk/RATE_TESTS_2026-09-08.md). P7 endurance/fault work remains open.
