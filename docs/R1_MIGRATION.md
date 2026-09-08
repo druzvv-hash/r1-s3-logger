@@ -525,12 +525,19 @@ and fresh owner state in all 109 observations. During the long run, the revised
 USB preview was fresh in all 76 RUNNING observations, about 59.83 FPS.
 
 The first native Wi-Fi 300 Hz browser run exposed preview lag despite a clean
-8,232-row file; delivery was adjusted afterward. Acquisition firmware `d52defe`
-was flashed with hash verification. The final embedded panel build `ab1e7d0`
-awaits physical UART reconnection: COM5 remained present but two ROM-entry
-attempts received no bytes and made no Flash writes. Completed tests restored
-the exact initial volatile 100 Hz profile and left EEPROM generation 3 unchanged;
-state after the later reset attempts needs re-verification. See
+8,232-row file; delivery was adjusted afterward. After the owner replaced the
+USB cable, final clean v0.22 build `ab1e7d0` uploaded on COM5 with Flash hash
+verification. The revised embedded Wi-Fi panel passed 25/25 fresh observations
+at 300 Hz, median 59.90 FPS, with no browser errors or FIFO overflows. Its new
+8,376-row CSV passed both readers at 300.029294 Hz with no missing/invalid/gap
+rows. The first download timed out; a separate complete download succeeded.
+Total acceptance is now 16 files / 69,135 rows / 14,411,655 bytes.
+
+Final checks confirm READY at 100 Hz, the exact initial volatile config payload,
+I2C 100 kHz and unchanged EEPROM generation 3. No EEPROM SAVE was performed.
+The USB panel is connected with advancing sample/uptime values; the PC's
+original network was restored after native Wi-Fi testing. Successful upload
+after cable replacement does not establish the cause of every earlier failure. See
 [measurement-rate implementation and results](MEASUREMENT_RATES.md) and
 [owner instructions](uk/MEASUREMENT_RATES.md). Prior USB instability and P7
 endurance work remain open.
