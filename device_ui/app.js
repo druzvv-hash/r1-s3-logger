@@ -66,23 +66,28 @@ function values(){const out={};for(const f of REGISTRY){const el=$('f-'+f.name);
 function fill(config){for(const f of REGISTRY){const el=$('f-'+f.name);if(f.type==='bool')el.checked=config[f.name];else el.value=config[f.name];}updateDraft();}
 function reload(){if(!state)return;base=decodeConfig(state.config_hex,REGISTRY);baseBoot=state.boot;baseRevision=state.revision;fill(base);}
 function stale(){return !!state&&(baseBoot!==state.boot||baseRevision!==state.revision);}
+function recordingBusy(){return ['STARTING','RUNNING','STOPPING'].includes(state?.recording_state);}
 function updateDraft(){
   const current=values(),changes=base?REGISTRY.filter(f=>current[f.name]!==base[f.name]):[];
   dirty=changes.length>0;let invalid='';
   try{validateConfig(current,REGISTRY);}catch(e){invalid=e.message;}
   $('changes').textContent=changes.map(f=>labels[f.name][0]+': '+String(base[f.name])+' → '+String(current[f.name])).join('\n');
   $('draft-note').textContent=stale()?'Стан змінився. Прочитай з логера заново.':invalid|| (dirty?'Змін у чернетці: '+changes.length:'Чернетка відповідає логеру');
-  $('apply').disabled=!online||busy||!base||stale()||!dirty||!!invalid;
-  $('save').disabled=!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
+  $('apply').disabled=recordingBusy()||!online||busy||!base||stale()||!dirty||!!invalid;
+  $('save').disabled=recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
   $('export').disabled=!base||!!invalid;
 }
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
 function setOffline(error){online=false;document.body.classList.add('offline');$('connection').textContent='Немає зв’язку';$('connection').classList.remove('online');for(const id of ['amps','volts','watts'])$(id).textContent='—';$('temperature').textContent='Температура INA228: —';notice(error,true);controls();}
 function controls(){
-  $('apply-rate').disabled=busy||!online||dirty||stale()||!state||Number($('quick-rate').value)===state.requested_hz;
+  $('apply-rate').disabled=recordingBusy()||busy||!online||dirty||stale()||!state||Number($('quick-rate').value)===state.requested_hz;
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
-  for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=busy||!online;updateDraft();}
+  for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=recordingBusy()||busy||!online;
+  $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
+  $('record-stop').disabled=busy||!online||state?.recording_state!=='RUNNING';
+  $('record-files').disabled=recordingBusy()||busy||!online;
+  $('files-refresh').disabled=recordingBusy()||!online;updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
   // HTTP may still answer from core 0 when the hardware owner's snapshot stops.
@@ -110,6 +115,14 @@ function render(s){
   $('config-state').textContent=({'SAVED':'Застосовано та збережено','UNSAVED':'Застосовано, ще не збережено','BLOCKED':'EEPROM заблоковано: перевір формат','APPLY FAIL':'Помилка застосування'})[s.settings_status]||s.settings_status;
   $('footer-device').textContent='R1-S3 · прошивка '+s.firmware+' · '+(s.boot||'');
   $('file-transfer').textContent=s.file_transfer?'Передача / читання SD':s.files_available?'Готово до читання':'Потрібна прошивка v0.16+';
+  const phase=s.recording_state||'UNAVAILABLE';
+  $('record-state').textContent=({READY:'Готовий',STARTING:'Відкриття файлу…',RUNNING:'● ЗАПИС',STOPPING:'Збереження…',ERROR:'Помилка запису'})[phase]||'Потрібна прошивка v0.18+';
+  $('record-state').classList.toggle('recording',phase==='RUNNING');
+  $('record-path').textContent=s.recording_path||'';
+  $('record-note').textContent=phase==='ERROR'?(s.recording_error+' · Незавершений файл залишено для перевірки.'):
+    phase==='RUNNING'?'Виміри записуються на картку. Можна закрити браузер.':phase==='STOPPING'?'Дописування буфера й закриття файлу — зачекай.':phase==='STARTING'?'Перевірка картки та створення нового файлу.':s.recording_path?'Файл збережено. Можна завантажити його у вкладці «Файли SD».':'Почни новий запис, коли навантаження готове.';
+  rows('record-stats',[['Тривалість',number(s.recording_seconds,1)+' с'],['Відліків / записано байтів',(s.recording_rows||0)+' / '+fileSize(s.recording_bytes||0)],['Енергія / заряд',number(s.recording_wh,6)+' Wh / '+number(s.recording_ah,6)+' Ah'],['FIFO: зараз / максимум',(s.recording_queued||0)+' / '+(s.recording_high_water||0)],['Переповнення FIFO',s.recording_overflows||0],['Найдовший запис / синхронізація',number(s.recording_write_us/1000,2)+' / '+number(s.recording_sync_us/1000,2)+' ms']]);
+  if(recordingBusy())$('file-transfer').textContent='Доступ після Stop';
   if(!base)reload();
   // Preserve a dirty draft when another client changes the configuration.
   else if(!dirty&&stale())reload();
@@ -132,7 +145,7 @@ async function command(verb,arg='',useDraft=false){
     // Owner publishes a new snapshot at most 500 ms after the acknowledged command.
     await new Promise(r=>setTimeout(r,600));await refresh();
     if(verb==='APPLY'||verb==='SAVE')reload();
-    notice((verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
+    notice(verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
   }catch(e){notice('Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
   finally{busy=false;controls();}
 }
@@ -259,6 +272,9 @@ function animate(now){
 }
 makeFields();
 $('files-refresh').onclick=()=>listFiles();
+$('record-start').onclick=async()=>{try{await closeDirectory();await command('START');}catch(e){notice(e.message,true);}};
+$('record-stop').onclick=()=>command('STOP');
+$('record-files').onclick=()=>{document.querySelector('[data-tab="files"]').click();listFiles('/records');};
 $('files-more').onclick=()=>listFiles(fileDirectory,true);
 $('files-up').onclick=()=>listFiles(fileDirectory.slice(0,fileDirectory.lastIndexOf('/'))||'/');
 $('file-download').onload=()=>{try{const text=$('file-download').contentDocument.body.textContent;if(text){const r=JSON.parse(text);if(r.message)fileNotice('Не вдалося завантажити: '+r.message);}}catch{}};
@@ -276,7 +292,7 @@ $('save').onclick=()=>command('SAVE','',true);
 $('reload-config').onclick=async()=>{try{await refresh();reload();notice('Конфігурацію прочитано з логера.');}catch(e){notice(e.message,true);}};
 $('defaults').onclick=()=>{fill(Object.fromEntries(REGISTRY.map(f=>[f.name,f.default])));notice('Типові значення лише в чернетці.');};
 $('quick-rate').onchange=controls;
-$('apply-rate').onclick=()=>{if(!state||dirty||stale())return;const config=decodeConfig(state.config_hex,REGISTRY);config.requested_rate_hz=Number($('quick-rate').value);command('APPLY',encodeConfig(config,REGISTRY));};
+$('apply-rate').onclick=()=>{if(!state||dirty||stale())return;const config=decodeConfig(state.config_hex,REGISTRY);config.requested_rate_hz=Number($('quick-rate').value);config.max_gap_us=Math.max(config.max_gap_us,2*1000000/config.requested_rate_hz);command('APPLY',encodeConfig(config,REGISTRY));};
 $('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';};
 $('clear-chart').onclick=()=>{points=[];draw();};
 $('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify({schema:'r1s3-config',major:1,minor:0,values:v},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};

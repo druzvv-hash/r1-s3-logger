@@ -1,5 +1,6 @@
 #include "sd_files.h"
 #include "pins.h"
+#include "recorder.h"
 #include <SD.h>
 #include <SPI.h>
 #include <esp_system.h>
@@ -12,7 +13,7 @@ namespace sd_files {
 namespace {
 QueueHandle_t requests=nullptr, responses=nullptr;
 SemaphoreHandle_t gate=nullptr;
-std::atomic<bool> busy{false}, recording{false};
+std::atomic<bool> busy{false};
 File file;
 uint32_t session=0, expectedSize=0, touched=0;
 bool directory=false;
@@ -67,11 +68,11 @@ uint32_t crc32(const uint8_t* data,size_t n){
 }
 void execute(const Request& q,Response& r){
     if(session&&millis()-touched>30000)close();
+    if(recorder::busy()){error(r,"Stop recording before reading SD files");return;}
     if(q.op==Op::Close){
         if(session&&q.session!=session){error(r,"Expired or foreign file session");return;}
         close();r.ok=true;strlcpy(r.json,"{\"ok\":true}",sizeof(r.json));return;
     }
-    if(recording.load()){error(r,"Stop recording before reading SD files");return;}
     if(q.op==Op::List||q.op==Op::Open||q.op==Op::Check){
         if(session){error(r,"SD busy: another file transfer is active");return;}
         if(!mount()){close();error(r,"SD mount failed: check card and connection");return;}
@@ -102,7 +103,8 @@ void execute(const Request& q,Response& r){
 void task(void*){
     Work work{};static Done done;
     for(;;){
-        if(xQueueReceive(requests,&work,pdMS_TO_TICKS(250))==pdTRUE){
+        recorder::storageStep(session!=0);
+        if(xQueueReceive(requests,&work,pdMS_TO_TICKS(recorder::busy()?1:20))==pdTRUE){
             done={};done.id=work.id;
             if(int32_t(millis()-work.expires)>0)error(done.response,"Expired SD request");
             else execute(work.request,done.response);
@@ -151,7 +153,6 @@ bool request(const Request& input,Response& output){
     xSemaphoreGive(gate);return received&&output.ok;
 }
 bool active(){return busy.load();}
-void setRecording(bool v){recording.store(v);}
 String protocol(const char* command){
     char text[600];if(strlen(command)>=sizeof(text))return "{\"ok\":false,\"message\":\"File command too large\"}";
     strlcpy(text,command,sizeof(text));char* save=nullptr;

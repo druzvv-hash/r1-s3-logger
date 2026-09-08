@@ -25,3 +25,4 @@ secrets.h
 
 # Local measurement output
 data/
+firmware/include/build_provenance.h

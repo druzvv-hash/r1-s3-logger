@@ -337,3 +337,37 @@ use hardware counters, sampled tails and complete-file hashes. PSRAM FIFO-to-SD
 session recording remains P5. Load setpoints are owner-reported, not independent
 reference readings; no calibration was changed. See [complete acceptance and
 limitations](LOAD_TEST_2026-09-08.md) and [owner notes](uk/LOAD_TEST_2026-09-08.md).
+
+### 2026-09-08 — P5 session recording, verified files and rotation
+
+Owner continued from load acceptance to Start/Stop and actual microSD sessions.
+PANEL v0.18 connects the priority-3 core 1 acquisition producer to the existing
+32-byte PSRAM SPSC FIFO. The same priority-1 SD owner handles serialization,
+8 KiB checked writes, timed checkpoint/sync, finalization and rotation. Core 0
+retains UI/transports; settings/diagnostics/time and downloads reject during a
+recording without pausing acquisition. The encoder remains a no-GPIO stub.
+
+Files carry frozen configuration/TLV hash, generation, actual INA identity/ADC,
+UTC uncertainty, firmware provenance, raw samples, gap/invalid flags, sign-split
+Wh/Ah, CRC checkpoints and SHA END. Unique .part files become .csv only after
+checked sync/close/rename; rotation links complete-file hashes and preserves totals.
+Stopped queue resizing retains old pools on allocation failure. Errors preserve
+partial files and diagnostics rather than silently overwriting/retrying data.
+
+Physical browser Start/Stop/download at 50 Hz produced 537 verified rows. A 100 Hz
+run produced 5878 rows across two rotation files (1,235,957 bytes), with no missed,
+invalid or gap rows. FIFO high-water 35/2048 absorbed a 94.627 ms maximum write;
+maximum sync was 64.901 ms. Full-file downloads, checksums, viewer import and the
+rotation-boundary integral passed. Desktop rendering averaged 59.90 FPS.
+
+The initial 10 Hz profile exposed its too-short 40 ms gap threshold. Quick rate
+changes now raise the threshold to at least two periods when necessary, and START
+refuses a threshold no longer than one period. Mobile 10 Hz recording with 200 ms
+gap allowance produced 68 rows and positive energy. Original 50 Hz configuration
+and saved generation 3 restored, with no Save or calibration/clock changes.
+
+51 host tests and normal/service builds pass. Short-write/sync failures and
+interrupted-file recovery are tested on host; physical power cuts, card full/removal
+and long-duration operation remain open. See [P5 behavior and acceptance](P5_RECORDING.md)
+and [owner controls](uk/RECORDING.md). Remaining R5 viewer features and local menus
+continue according to the staged plan; there are now real logger files to use.

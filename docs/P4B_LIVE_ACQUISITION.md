@@ -78,9 +78,9 @@ live_hz controls the batch-delivery target, not ADC or rendering cadence.
 
 ## Remaining work
 
-This implements the cadence/live portion of P4b. Production FIFO-to-SD recording,
-session totals, backpressure acceptance, encoder input and local menus
-remain open. Phone-to-AP acceptance and long-duration timing under simultaneous SD
+This implements the cadence/live portion of P4b. [P5](P5_RECORDING.md) subsequently
+connects FIFO-to-SD recording and session totals. Extended backpressure acceptance,
+encoder input and local menus remain open. Phone-to-AP acceptance and long-duration timing under simultaneous SD
 writes require separate physical tests. USB test captures are private under ignored
 data/device-panel; publish only aggregate acceptance evidence.
 

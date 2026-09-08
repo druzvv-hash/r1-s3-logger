@@ -4,6 +4,7 @@
 // Diagnostic-rate triggered conversion with applied coefficients; restores ADC_CONFIG.
 bool applyInaSettings(const settings::Config& config);
 bool inaSettingsHealthy();
+bool captureInaIdentity(uint16_t& manufacturer,uint16_t& device,uint16_t& adc);
 const char* testIna228();
 
 struct Ina228Reading {

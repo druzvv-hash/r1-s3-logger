@@ -15,7 +15,7 @@ using namespace recording;
 static unsigned allocations = 0, frees = 0, failAllocation = 0;
 void* heap_caps_malloc(size_t n, uint32_t caps) {
     ++allocations;
-    assert(caps == (allocations == 1 ? (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)
+    assert(caps == (allocations != 2 ? (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)
         : (MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA | MALLOC_CAP_8BIT)));
     if (allocations == failAllocation) return nullptr;
     return std::malloc(n);
@@ -168,6 +168,13 @@ int main(int argc, char** argv) {
             assert(ready && memoryReady() && allocatedQueueBytes() == 65536);
             assert(sampleQueue().capacity() == 2048 && outputBlock().freeBytes() == 8192);
             assert(prepareMemory(65536) && !prepareMemory(131072) && allocations == 2);
+            assert(sampleQueue().tryPush(sample(1)));
+            failAllocation=allocations+1;
+            assert(!resetMemory(131072)&&sampleQueue().queuedApprox()==1&&allocatedQueueBytes()==65536);
+            failAllocation=0;
+            assert(resetMemory(131072)&&sampleQueue().queuedApprox()==0&&allocatedQueueBytes()==131072);
+            assert(sampleQueue().capacity()==4096&&sampleQueue().highWater()==0);
+            assert(resetMemory(65536)&&allocatedQueueBytes()==65536&&outputBlock().pending()==0);
         }
         std::cout << "MEMORY PASS " << mode << '\n';
         return 0;

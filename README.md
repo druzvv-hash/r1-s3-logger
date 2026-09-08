@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.17**, with a USB/Wi-Fi test panel, selectable 10/50/100 Hz measurements and a 30/60 FPS live chart, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. The timed acquisition/live path is active; production SD session recording is still pending.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.18**, with USB/Wi-Fi Start/Stop controls, selectable 10/50/100 Hz measurements, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
@@ -56,13 +56,13 @@ pio device monitor -e esp32-s3
 
 ## Current behavior and migration
 
-Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 uses timed 10/50/100 Hz acquisition; production recording is pending.
+Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 uses timed 10/50/100 Hz acquisition. Explicit START creates a session; STOP drains, verifies and closes it before publishing the CSV.
 
 [3 A / 3 V load acceptance](docs/LOAD_TEST_2026-09-08.md): all three rates passed without missed samples or I2C errors; 40 verified USB downloads passed alongside 100 Hz acquisition. v0.17 fixes delayed panel-state publication found during these tests.
 
-The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is implemented and host-tested. Boot reserves the configured sample budget in PSRAM plus 8 KiB internal SD staging; these buffers are not yet a running recorder. P4a now has a working web test panel on core 0 and a hardware command owner on core 1. [P4b live acquisition](docs/P4B_LIVE_ACQUISITION.md) now uses timed INA conversions, chunked OLED transfers and batched PSRAM preview. Local menus and P5 files remain.
+The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is implemented and host-tested. Boot reserves the configured sample budget in PSRAM plus 8 KiB internal SD staging; the recorder now uses these buffers after explicit Start. P4a now has a working web test panel on core 0 and a hardware command owner on core 1. [P4b live acquisition](docs/P4B_LIVE_ACQUISITION.md) now uses timed INA conversions, chunked OLED transfers and batched PSRAM preview. [P5 session files](docs/P5_RECORDING.md) are implemented; local menus remain.
 
-[P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; firmware-core tests also need a native C++ compiler). P2 viewer is implemented: launch `viewer/start.cmd` or `python viewer/server.py`. [Viewer guide](viewer/README.md) · [P2 results](docs/P2_VIEWER.md). P3 settings/EEPROM are implemented: [commands and evidence](docs/P3_SETTINGS.md). Next: connect acquisition to P5 recording. The owner deferred remaining R5 analysis/plugins until real logger files exist. The current viewer is a data-reading foundation, not a feature-complete R5 replacement.
+[P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; firmware-core tests also need a native C++ compiler). P2 viewer is implemented: launch `viewer/start.cmd` or `python viewer/server.py`. [Viewer guide](viewer/README.md) · [P2 results](docs/P2_VIEWER.md). P3 settings/EEPROM are implemented: [commands and evidence](docs/P3_SETTINGS.md). P5 connects acquisition to session recording, checkpoints and rotation; physical acceptance and limits are in the recording guide. The owner deferred remaining R5 analysis/plugins until real logger files exist. The current viewer is a data-reading foundation, not a feature-complete R5 replacement.
 
 ## Repository guide
 

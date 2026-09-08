@@ -5,6 +5,7 @@
 #include "recording_memory.h"
 #include "live_history.h"
 #include "sd_files.h"
+#include "recorder.h"
 #include "panel_assets.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -14,7 +15,7 @@
 #include <cstring>
 
 namespace {
-constexpr size_t STATE_BYTES=6000, COMMAND_BYTES=3100;
+constexpr size_t STATE_BYTES=8192, COMMAND_BYTES=3100;
 char cached[STATE_BYTES]="{\"ready\":false}";
 portMUX_TYPE snapshotLock=portMUX_INITIALIZER_UNLOCKED;
 char bootId[9], ssid[24], password[17];
@@ -185,19 +186,26 @@ void panelBegin(PanelAction action){
 }
 void panelPoll(){
     Command command{};if(!commands||xQueueReceive(commands,&command,0)!=pdTRUE)return;
-    acquisitionPause();
+    const bool recording=recorder::busy();
+    setSettingsRecording(recording);
+    if(!recording)acquisitionPause();
     String response;
     if(int32_t(millis()-command.expires)>0)response=result(false,"Expired command; no action taken");
+    else if(recording){
+        char boot[9]={},verb[16]={};unsigned revision=0;int consumed=0;
+        const bool stop=!command.legacy&&sscanf(command.text,"%8s %u %15s%n",boot,&revision,verb,&consumed)==3&&!strcmp(verb,"STOP")&&command.text[consumed]==0;
+        response=stop?execute(command.text):result(false,"STOP required before settings, time or diagnostic commands");
+    }
     else if(command.legacy){handleLegacyLine(command.text);response=result(true,"Legacy command completed");}
     else response=execute(command.text);
-    acquisitionResume();
+    if(!recording)acquisitionResume();
     Reply reply{};reply.id=command.id;response.toCharArray(reply.json,sizeof(reply.json));xQueueOverwrite(replies,&reply);
 }
 void panelPublish(const PanelHardware& h){
     const auto& r=latestIna228Reading();const auto payload=settings::encode(appliedSettings());
     String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
     String s;s.reserve(4800);
-    s="{\"ready\":true,\"firmware\":\"0.17\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
+    s="{\"ready\":true,\"firmware\":\"0.18\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
     char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
     s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
     s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";
@@ -209,7 +217,10 @@ void panelPublish(const PanelHardware& h){
     char utc[24];snprintf(utc,sizeof(utc),"%llu",rtcUtcNow());
     s+=",\"i2c_count\":"+String(h.i2cCount)+",\"i2c_errors\":"+String(h.i2cErrors)+",\"utc\":"+String(utc);
     s+=",\"psram_free\":"+String(ESP.getFreePsram())+",\"heap_free\":"+String(ESP.getFreeHeap())+",\"queue_bytes\":"+String(recording::allocatedQueueBytes());
-    s+=",\"buffer_ready\":"+(recording::memoryReady()?String("true"):String("false"))+",\"sd_block_bytes\":"+String(recording::SD_BLOCK_BYTES)+",\"recording_available\":false,\"live_available\":true";
+    s+=",\"buffer_ready\":"+(recording::memoryReady()?String("true"):String("false"))+",\"sd_block_bytes\":"+String(recording::SD_BLOCK_BYTES)+",\"recording_available\":true,\"live_available\":true";
+    const auto rec=recorder::status();
+    s+=",\"recording_state\":"+quoted(recorder::stateName())+",\"recording_path\":"+quoted(rec.path)+",\"recording_error\":"+quoted(rec.error);
+    char counters[600];snprintf(counters,sizeof(counters),",\"recording_rows\":%llu,\"recording_bytes\":%llu,\"recording_seconds\":%.3f,\"recording_wh\":%.12g,\"recording_ah\":%.12g,\"recording_queued\":%lu,\"recording_high_water\":%lu,\"recording_overflows\":%lu,\"recording_write_us\":%lu,\"recording_sync_us\":%lu,\"recording_part\":%lu",(unsigned long long)rec.rows,(unsigned long long)rec.bytes,rec.elapsedUs/1000000.0,rec.wh,rec.ah,(unsigned long)rec.queued,(unsigned long)rec.highWater,(unsigned long)rec.overflows,(unsigned long)rec.maxWriteUs,(unsigned long)rec.maxSyncUs,(unsigned long)rec.part);s+=counters;
 
     const auto& a=acquisitionStats();
     s+=",\"requested_hz\":"+String(a.requestedHz)+",\"measured_hz\":"+String(a.measuredHz,3);
@@ -217,7 +228,7 @@ void panelPublish(const PanelHardware& h){
     s+=",\"max_late_us\":"+String(a.maxLateUs)+",\"max_read_us\":"+String(a.maxReadUs);
     s+=",\"maintenance_count\":"+String(a.maintenance)+",\"maintenance_ms\":"+String(a.maintenanceMs);
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
-    s+=",\"files_available\":true,\"file_transfer\":"+String(sd_files::active()?"true":"false");
+    s+=",\"files_available\":"+String(recorder::busy()?"false":"true")+",\"file_transfer\":"+String(sd_files::active()?"true":"false");
     s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);

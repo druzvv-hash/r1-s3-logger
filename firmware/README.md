@@ -1,11 +1,11 @@
-# PANEL v0.17 firmware
+# PANEL v0.18 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 
 The [device test panel](../docs/P4A_TEST_PANEL.md) now provides USB/Wi-Fi controls.
 The hardware owner remains core 1; the web task on core 0 uses snapshots and commands.
 I²C scanning after startup is explicit, not periodic. Timed 10/50/100 Hz sampling,
-chunked OLED and PSRAM live preview are implemented; production recording remains pending.
+chunked OLED and PSRAM live preview are implemented. [Session recording](../docs/P5_RECORDING.md) uses the PSRAM FIFO and checked SD block writes.
 See [cadence and transport](../docs/P4B_LIVE_ACQUISITION.md).
 Existing SD files can now be downloaded through the panel; the dedicated storage
 owner is in `sd_files.cpp`. See [file transfers](../docs/SD_DOWNLOADS.md).

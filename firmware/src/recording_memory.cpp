@@ -8,6 +8,8 @@ SampleRing queue;
 BlockBuffer block;
 uint32_t requestedBytes = 0, allocatedBytes = 0;
 bool ready = false;
+Sample* ownedSlots=nullptr;
+uint8_t* ownedStaging=nullptr;
 }
 
 bool prepareMemory(uint32_t queueBytes) {
@@ -24,10 +26,23 @@ bool prepareMemory(uint32_t queueBytes) {
     // Inputs have been validated, so both attachments are guaranteed to succeed.
     queue.attach(slots, capacity);
     block.attach(staging, SD_BLOCK_BYTES);
+    ownedSlots=slots;ownedStaging=staging;
     requestedBytes = queueBytes;
     allocatedBytes = bytes;
     ready = true;
     return true;
+}
+bool resetMemory(uint32_t queueBytes) {
+    if(!ready)return prepareMemory(queueBytes);
+    if(queueBytes!=requestedBytes){
+        if(queueBytes<4096||queueBytes>1048576)return false;
+        const uint32_t bytes=capacityForBytes(queueBytes)*sizeof(Sample);
+        auto* slots=static_cast<Sample*>(heap_caps_malloc(bytes,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+        if(!slots)return false;
+        for(uint32_t i=0;i<capacityForBytes(queueBytes);++i)new(&slots[i])Sample{};
+        heap_caps_free(ownedSlots);ownedSlots=slots;allocatedBytes=bytes;requestedBytes=queueBytes;
+    }
+    return queue.attach(ownedSlots,capacityForBytes(queueBytes))&&block.attach(ownedStaging,SD_BLOCK_BYTES);
 }
 bool memoryReady() { return ready; }
 uint32_t allocatedQueueBytes() { return allocatedBytes; }

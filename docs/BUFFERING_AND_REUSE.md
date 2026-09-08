@@ -4,6 +4,10 @@
 
 ## Evidence and selection
 
+Current integration: [v0.18 session recorder](P5_RECORDING.md) connects these
+primitives to acquisition, stopped buffer resizing, SD writes and Start/Stop.
+The remaining sections preserve the original v0.13 foundation review.
+
 Donors were inspected read-only; the implementation is adapted to INA228 and the existing CSV v1 contract, without copying old hardware constants, credentials or binary layouts.
 
 | Donor | Reused idea | Change for R1-S3 |

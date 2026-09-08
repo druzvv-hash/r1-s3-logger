@@ -1,6 +1,6 @@
 # R1-S3 engineering and compatibility plan
 
-Plan version 1.7, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested. P4a now has a usable [USB/Wi-Fi test panel](P4A_TEST_PANEL.md), with web core 0 / hardware owner core 1; local controls and chunked OLED scheduling remain open. Next: complete acquisition/task scheduling (P4b), then microSD recording (P5). Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
+Plan version 1.8, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested. P4a now has a usable [USB/Wi-Fi test panel](P4A_TEST_PANEL.md), with web core 0 / hardware owner core 1; P4b timed acquisition and chunked OLED are implemented. [P5 recording](P5_RECORDING.md) now connects PSRAM FIFO, block writes, session metadata, checkpoints and rotation. Local controls and fault/long-duration physical acceptance remain open. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
 ## 1. Product and scope
 

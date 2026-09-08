@@ -8,4 +8,5 @@
 .file-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}
 .file-row span,#files-path{overflow-wrap:anywhere}.file-row small{color:var(--muted);white-space:nowrap}
 #files-path{align-self:center;font-size:13px;color:var(--cyan)}#files-more{margin-top:16px}
+#record-path{overflow-wrap:anywhere}.badge.recording{color:#ff5989;border-color:#ff5989}#record-stop{border-color:#ff5989}
 @media(max-width:480px){nav{gap:12px}.file-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.file-row span{grid-column:1/-1}}

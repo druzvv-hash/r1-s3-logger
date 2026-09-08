@@ -46,11 +46,10 @@ longer than 239 bytes appear disabled. Filenames are rendered as text in the UI.
 
 ## Integration boundary
 
-The recorder must use the same SD owner and exclude downloads before it starts
-writing. `sd_files::setRecording` is a preparatory admission guard, not a complete
-recorder lock or active-file snapshot. The current build has no production recorder
-and never writes files. Do not attach a second independent SD owner in P5. Sampling
-continues while downloading, but UART bandwidth limits live delivery and USB transfer
+The [v0.18 recorder](P5_RECORDING.md) uses the same SD owner and excludes all file
+requests before it starts writing. START is refused while a transfer is open;
+downloads require READY or ERROR after storage has closed. There is no active-file
+snapshot. Sampling continues while downloading, but UART bandwidth limits live delivery and USB transfer
 speed; a 1 GiB file will take a long time at 115200 baud with hex framing.
 
 ## Validation

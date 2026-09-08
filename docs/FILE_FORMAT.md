@@ -1,6 +1,6 @@
 # R1S3 CSV v1 contract
 
-P1 specification and executable host reference, not yet an SD recorder. [Golden files and expected results](../tests/fixtures/manifest.json), [reference encoder/decoder](../tools/contracts.py), [configuration](CONFIG_SCHEMA.md). Examples contain synthetic data only.
+P1 specification and executable host reference, implemented by the [v0.18 SD recorder](P5_RECORDING.md). [Golden files and expected results](../tests/fixtures/manifest.json), [reference encoder/decoder](../tools/contracts.py), [configuration](CONFIG_SCHEMA.md). Examples contain synthetic data only.
 
 ## Byte grammar
 
@@ -73,4 +73,4 @@ No END means interrupted, not clean. Return checkpoint-verified rows separately 
 
 `python tools/contracts.py tests/fixtures/native-sign-crossing.csv` reports four verified rows and clean=true. `python -m unittest discover -s tests -v` checks signed conversion, zero crossing, invalid/gap behavior, raw/value consistency, config bytes, CRC, torn slot fallback and file interruption/corruption. `python tools/make_contract_fixtures.py` regenerates the synthetic corpus deterministically.
 
-Reference decoder deliberately limits whole files to 16 MiB. The production P2 reader must stream/chunk and retain min/max previews with full-resolution analysis. This reference is the interchange oracle, not a claim that the old viewer or current device firmware already supports native v1.
+Reference decoder deliberately limits whole files to 16 MiB. The production P2 reader must stream/chunk and retain min/max previews with full-resolution analysis. This reference is the interchange oracle, not a claim that an unchanged old viewer supports native v1. The current device writer and current viewer both implement this contract.

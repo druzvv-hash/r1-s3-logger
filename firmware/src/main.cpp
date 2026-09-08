@@ -16,7 +16,10 @@
 #include "test_panel.h"
 #include "live_history.h"
 #include "sd_files.h"
+#include "recorder.h"
+#include "build_provenance.h"
 #include <esp_timer.h>
+#include <esp_system.h>
 
 #ifndef R1_SERVICE_TESTS
 #define R1_SERVICE_TESTS 0
@@ -81,7 +84,9 @@ void updateOled() {
     oled.setTextSize(1);
     oled.setCursor(4, 53);
     // Alternate diagnostics without crowding the two measurement lines.
-    if ((millis() / 3000) % 2 == 0)
+    if (recorder::busy() || recorder::state()==recorder::State::Error)
+        oled.printf("REC:%s",recorder::stateName());
+    else if ((millis() / 3000) % 2 == 0)
         oled.printf("SD:%s %s", sdStatus, settingsStatus());
     else
         oled.printf("RTC:%s E:%u", rtcStatus, i2cErrors);
@@ -252,6 +257,16 @@ void scanI2c() {
 }
 
 bool runPanelAction(const char* verb, const char* argument, const char*& message) {
+    if(!strcmp(verb,"STOP")&&!*argument)return recorder::stop(message);
+    if(!strcmp(verb,"START")&&!*argument){
+        if(!settingsReady()){message="Valid INA settings required";return false;}
+        recording::SessionInfo info;info.config=appliedSettings();info.generation=settingsGeneration();info.revision=settingsRevision();
+        if(!captureInaIdentity(info.manufacturer,info.device,info.adc)){message="INA identity/config readback failed";return false;}
+        rtcStatus=pollRtc(false);info.utcUs=rtcUtcNow()*1000000;info.originUs=esp_timer_get_time();
+        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version="0.18";
+        char id[80];snprintf(id,sizeof(id),"r1s3_%llu_%08lx_%08lx",(unsigned long long)(info.utcUs/1000000),(unsigned long)esp_random(),(unsigned long)esp_random());info.id=id;
+        return recorder::start(info,message);
+    }
     if (!i2cReady) { message="I2C unavailable"; return false; }
     if (!strcmp(verb,"MEASURE") && !*argument) {
         inaStatus=testIna228();message=inaStatus;return latestIna228Reading().valid;
@@ -290,7 +305,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.17: USB/Wi-Fi panel + SD downloads");
+    Serial.println("\nR1-S3 PANEL v0.18: PSRAM FIFO + SD session recording");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -336,7 +351,7 @@ void setup() {
                   static_cast<unsigned long>(recording::sampleQueue().capacity()),
                   static_cast<unsigned>(sizeof(recording::Sample)),
                   static_cast<unsigned long>(buffersReady ? recording::SD_BLOCK_BYTES : 0));
-    Serial.println("BUFFER: reserved only; production acquisition/recorder not connected yet.");
+    Serial.println("BUFFER: acquisition -> PSRAM FIFO -> SD owner; recording starts only on START.");
     Serial.printf("LIVE history in PSRAM: %s\n",liveHistoryBegin()?"READY":"FAIL");
     sd_files::begin();
     panelBegin(runPanelAction);
@@ -348,6 +363,7 @@ void loop() {
     static bool started=false;
     static uint32_t lastRtc=0,lastDisplay=0,lastPublish=0,publishedRevision=0;
     if(!started){vTaskPrioritySet(nullptr,3);acquisitionBegin();started=true;}
+    setSettingsRecording(recorder::busy());
     acquisitionStep();
     if(acquisitionIdle())panelPoll();
     inaStatus=acquisitionStatus();

@@ -23,6 +23,4 @@ String protocol(const char* command);
 bool decodePath(const char* hex, char* output);
 String encodePath(const char* path);
 bool active();
-// Future recorder must also use this storage owner; downloads require stopped recording.
-void setRecording(bool value);
 }

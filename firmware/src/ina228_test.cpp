@@ -5,6 +5,7 @@
 #include "settings.h"
 #include "sample_clock.h"
 #include "live_history.h"
+#include "recorder.h"
 #include <esp_timer.h>
 
 namespace {
@@ -141,6 +142,12 @@ bool applyInaSettings(const settings::Config& c) {
 }
 
 bool inaSettingsHealthy() { return !restoreFailed; }
+bool captureInaIdentity(uint16_t& manufacturer,uint16_t& device,uint16_t& adc){
+    uint32_t m=0,d=0,a=0,c=0;
+    if(!readRegister(0x3e,2,m)||!readRegister(0x3f,2,d)||!readRegister(1,2,a)||!readRegister(0,2,c))return false;
+    manufacturer=m;device=d;adc=a;
+    return m==0x5449&&(d>>4)==0x228&&(a&0x0fff)==settings::adcBits(appliedSettings())&&bool(c&0x10)==bool(appliedSettings().adc_range);
+}
 
 namespace {
 SampleClock sampleClock;
@@ -150,14 +157,18 @@ uint64_t began=0,pollAt=0,sequence=0,windowAt=0,pauseAt=0;
 uint32_t windowSamples=0;
 const char* sampleStatus="WAIT";
 uint8_t sampleQuality=0;
-void completed(const char* status,bool valid,uint8_t quality=0){
-    const uint64_t now=esp_timer_get_time();
+void completed(const char* status,bool valid,uint8_t quality=0,uint64_t observedUs=0){
+    const uint64_t now=observedUs?observedUs:esp_timer_get_time();
     latest.valid=valid;latest.sampledAt=now/1000;latest.sampleId=++sequence;
     pending=false;sampleStatus=status;
     if(valid)++stats.valid;else ++stats.invalid;
     ++windowSamples;
     if(now-windowAt>=2000000){stats.measuredHz=windowSamples*1000000.0/(now-windowAt);windowAt=now;windowSamples=0;}
     liveHistoryPush({sequence,now,valid?latest.busVolts:0,valid?latest.currentAmps:0,settingsRevision(),uint8_t(quality|sampleQuality|(valid?0:1))});
+    recording::Sample s{};s.seq=sequence;s.t_us=now;s.config_revision=settingsRevision();
+    s.quality=quality|sampleQuality|(valid?0:1);s.raw_present=valid?7:0;
+    if(valid){s.vshunt_raw=latest.shuntRaw;s.vbus_raw=latest.busRaw;s.temp_raw=latest.tempRaw;}
+    recorder::push(s);
 }
 }
 void acquisitionBegin(){
@@ -210,5 +221,5 @@ void acquisitionStep(){
     latest.busVolts=(latest.busRaw*0.0001953125-c.u_zero_V)*c.u_gain;
     latest.currentAmps=c.polarity*(latest.shuntMicrovolts-c.i_zero_uV)/c.shunt_uohm*c.i_gain;
     latest.temperatureC=latest.tempRaw*0.0078125;
-    completed("ADC OK",true);
+    completed("ADC OK",true,0,readAt);
 }
