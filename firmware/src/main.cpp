@@ -290,7 +290,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.16: USB/Wi-Fi panel + SD downloads");
+    Serial.println("\nR1-S3 PANEL v0.17: USB/Wi-Fi panel + SD downloads");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -351,6 +351,12 @@ void loop() {
     acquisitionStep();
     if(acquisitionIdle())panelPoll();
     inaStatus=acquisitionStatus();
+    // Publish before optional OLED work consumes the remaining acquisition slack.
+    // Otherwise a healthy 100 Hz acquisition can leave the UI snapshot stale for seconds.
+    if((millis()-lastPublish>=500 || publishedRevision!=settingsRevision()) && acquisitionSlackUs()>1800){
+        panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
+        lastPublish=millis();publishedRevision=settingsRevision();
+    }
     if(i2cReady && millis()-lastRtc>=10000 && acquisitionSlackUs()>4500){
         rtcStatus=pollRtc(false);lastRtc=millis();
     }
@@ -358,9 +364,5 @@ void loop() {
         updateOled();lastDisplay=millis();
     }
     if(acquisitionSlackUs()>2600)oledStep();
-    if((millis()-lastPublish>=500 || publishedRevision!=settingsRevision()) && acquisitionSlackUs()>1800){
-        panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
-        lastPublish=millis();publishedRevision=settingsRevision();
-    }
     delay(1);
 }

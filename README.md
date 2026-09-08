@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.16**, with a USB/Wi-Fi test panel, selectable 10/50/100 Hz measurements and a 30/60 FPS live chart, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. The timed acquisition/live path is active; production SD session recording is still pending.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.17**, with a USB/Wi-Fi test panel, selectable 10/50/100 Hz measurements and a 30/60 FPS live chart, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. The timed acquisition/live path is active; production SD session recording is still pending.
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
@@ -56,7 +56,9 @@ pio device monitor -e esp32-s3
 
 ## Current behavior and migration
 
-Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 still uses the diagnostic conversion/restore path; production recording is pending.
+Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 uses timed 10/50/100 Hz acquisition; production recording is pending.
+
+[3 A / 3 V load acceptance](docs/LOAD_TEST_2026-09-08.md): all three rates passed without missed samples or I2C errors; 40 verified USB downloads passed alongside 100 Hz acquisition. v0.17 fixes delayed panel-state publication found during these tests.
 
 The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is implemented and host-tested. Boot reserves the configured sample budget in PSRAM plus 8 KiB internal SD staging; these buffers are not yet a running recorder. P4a now has a working web test panel on core 0 and a hardware command owner on core 1. [P4b live acquisition](docs/P4B_LIVE_ACQUISITION.md) now uses timed INA conversions, chunked OLED transfers and batched PSRAM preview. Local menus and P5 files remain.
 

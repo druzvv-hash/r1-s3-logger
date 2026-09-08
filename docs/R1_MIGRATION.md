@@ -314,3 +314,26 @@ paths inside the bounded response. Production session recording remains P5. Its 
 writer must extend this owner and exclude file downloads before starting a recording;
 the new recording admission hook is preparatory, not a complete recorder lock.
 See [file-transfer contract](SD_DOWNLOADS.md) and [owner notes](uk/SD_FILES.md).
+
+### 2026-09-08 — 3 A / 3 V load acceptance and panel scheduling fix
+
+Owner connected a nominal 3 A / 3 V load and requested real tests. v0.16 acquisition
+remained healthy, but optional OLED work could starve panel-state publication for
+seconds at 100 Hz. PANEL v0.17 moves due publication before optional RTC/OLED work,
+retaining acquisition priority and the slack guard. Normal/service builds pass;
+normal v0.17 uploaded with verified hashes after one retry at 57600 baud.
+
+Final 10/50/100 Hz windows captured 99/500/3000 consecutive samples over
+10/10/30 seconds, with no invalid/missed samples, I2C errors or preview losses.
+The 100 Hz means were 2.99877 V / 2.99953 A / 8.99489 W. A further 60-second phase
+completed 40 identical 4096-byte USB downloads while counters advanced by 6069
+valid samples, without missed periods, I2C errors or reboot. State age averaged
+432 ms, maximum 708 ms. The real browser subsequently rendered at 59.67 FPS with
+50 Hz acquisition. Original configuration restored, generation 3; no Save issued.
+
+An initial full-Live archive plus repeated downloads exceeded shared UART delivery
+capacity; this does not establish an acquisition failure. Final concurrent checks
+use hardware counters, sampled tails and complete-file hashes. PSRAM FIFO-to-SD
+session recording remains P5. Load setpoints are owner-reported, not independent
+reference readings; no calibration was changed. See [complete acceptance and
+limitations](LOAD_TEST_2026-09-08.md) and [owner notes](uk/LOAD_TEST_2026-09-08.md).

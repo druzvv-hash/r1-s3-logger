@@ -79,10 +79,14 @@ live_hz controls the batch-delivery target, not ADC or rendering cadence.
 ## Remaining work
 
 This implements the cadence/live portion of P4b. Production FIFO-to-SD recording,
-session totals, backpressure acceptance, file download, encoder input and local menus
+session totals, backpressure acceptance, encoder input and local menus
 remain open. Phone-to-AP acceptance and long-duration timing under simultaneous SD
 writes require separate physical tests. USB test captures are private under ignored
 data/device-panel; publish only aggregate acceptance evidence.
+
+File download was subsequently implemented in [v0.16](SD_DOWNLOADS.md).
+[v0.17 load acceptance](LOAD_TEST_2026-09-08.md) covers 3 A / 3 V, simultaneous
+100 Hz acquisition and repeated USB downloads, plus a state-publication scheduling fix.
 
 ## Bench acceptance — 2026-09-08
 
