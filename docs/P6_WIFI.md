@@ -47,3 +47,31 @@ Power-only standalone operation and long-duration/fault tests retain their P7 ga
 
 Evidence and results are appended to [the migration journal](R1_MIGRATION.md).
 Private captures and test recordings remain under ignored `data/wifi-tests/`.
+
+## Physical acceptance — 2026-09-08
+
+Clean commit `a7777f1ac1f2e44fe20fd8e89182a54b6ae8645b` was built and deployed
+as v0.20 with flash hash verification. The PC joined the actual ESP AP using its
+Wi-Fi adapter while the USB bridge was stopped. Chrome used a 390 x 844 viewport.
+The temporary network profile was removed and the original PC connection restored.
+
+| Check | Observed result |
+|---|---|
+| Direct connection | Native HTTP reports `wifi`; one associated station |
+| Browser Start, close for 10 s, reopen, Stop | Same boot/session; 512 additional rows while the browser was closed |
+| Completed recording | 541 rows over 10.800001 s at 50 Hz; 139,320 bytes |
+| Timing and queue | 19.831–20.150 ms intervals; median 20 ms; FIFO high-water 2; no overflow |
+| Independent file checks | Metadata/CRC/SHA and production viewer pass; no missing sequences, quality flags or unverified tail |
+| Browser download | Correct CSV filename and complete bytes through native port 81 |
+| Larger prior recording | All 615,956 bytes match the previously verified local file by SHA-256 |
+| UI during larger download | State response at 207 ms; download completed at 2.72 s |
+| Final state | READY, 50 Hz, saved generation 3; exact configuration and AP password unchanged |
+
+Six panel host tests and the browser fixture/regression suite passed before deployment.
+The real radio test passed without a serial control process. USB still supplied power;
+this is not power-only supply acceptance. Physical Android download/reconnection,
+Wi-Fi-off operation and long-duration/fault tests remain open. The USB flashing link
+needed retries and confirmed ROM download entry before the final 38,400-baud write;
+this increment does not establish a permanent USB repair.
+
+See [Ukrainian connection notes](uk/WIFI.md) for operation from the phone.

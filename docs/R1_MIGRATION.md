@@ -403,3 +403,38 @@ The board is READY at the original 50 Hz, exact applied configuration and genera
 3 unchanged. USB flashing remains intermittent (connection and mid-write failures);
 the successful final write used extended reset timing and 38,400 baud with flash
 hash verification. No permanent transport fix is claimed.
+
+### 2026-09-08 — P6a direct Wi-Fi control and native download acceptance
+
+PANEL v0.20 adds a Wi-Fi tab with connection instructions, explicit USB/native
+transport labels and a cached associated-station count. Core 0 samples the count;
+acquisition/SD ownership, saved configuration, calibration and clock are unchanged.
+Six panel host tests, browser fixture/regression checks and the normal build pass.
+Clean firmware commit `a7777f1ac1f2e44fe20fd8e89182a54b6ae8645b` is deployed.
+
+With the USB bridge stopped, the PC joined the physical ESP AP and ran Chrome
+at a 390 x 844 viewport. Native HTTP reported `wifi` and one associated client.
+Browser Start, closing the browser for ten seconds, reopening and Stop passed;
+512 rows were added during the closed-browser interval without a boot/session change.
+The completed file is
+`r1s3_2026-09-08_12-24-04Z_49c39e42_ce9d31b8_0000.csv`: 541 rows, 139,320 bytes,
+10.800001 s, 50 Hz, intervals 19.831–20.150 ms (median 20 ms). No missed/invalid
+samples, sequence losses, quality flags or FIFO overflows; FIFO high-water was 2.
+Contract CRC/SHA/raw-value/integration checks and production viewer import pass,
+with no unverified tail. Full-file SHA-256 is
+`42c9f60d724044c6e3a2a3de90ca1753cda01eea4aba1253829eeecd2b89d0fb`.
+
+The browser downloaded that file through native port 81 with the correct name and
+length. A second download of the owner's previously verified 615,956-byte recording
+matched its local SHA-256; state replied after 207 ms while the transfer completed
+after 2.72 s. The original PC Wi-Fi profile was restored and the temporary profile
+removed. USB panel restarted; device READY at 50 Hz, exact configuration/AP password
+and saved generation 3 unchanged. Private reports/screenshots/CSV remain under
+ignored `data/wifi-tests/`.
+
+This validates the actual PC-to-AP radio path, not physical Android or power-only
+supply operation. Android reconnect/download, Wi-Fi-off operation, local controls
+and P7 long-duration/fault tests remain open. USB upload required retries and a
+confirmed ROM DOWNLOAD response before the final hash-verified 38,400-baud write;
+no permanent USB repair is claimed. See [P6 evidence](P6_WIFI.md) and
+[owner connection steps](uk/WIFI.md).
