@@ -46,16 +46,16 @@ bool settingsReady(){return ready&&!persisted.blocked&&inaSettingsHealthy();}
 const char* settingsStatus(){if(persisted.blocked)return "BLOCKED";if(!ready||!inaSettingsHealthy())return "APPLY FAIL";if(saveUncertain||persisted.index<0||!settings::equal(applied,persisted.selected.config))return "UNSAVED";return "SAVED";}
 void setSettingsRecording(bool value){recording=value;}
 // Budget for 100 kHz I2C trigger/readback and scheduler overhead, beyond ADC time.
-bool runtimeTimingFeasible(const settings::Config& c){
+bool appliedTimingFeasible(const settings::Config& c){
 #if R1_BENCHMARK
  return settings::timingFeasible(c); // Deliberately measure the scheduling/I2C limit.
 #else
- return settings::timingFeasible(c) && settings::conversionUs(c)+4000<=1000000/c.requested_rate_hz;
+ return settings::runtimeTimingFeasible(c);
 #endif
 }
 void initSettings(){
  persisted=settings::scan(eeprom);draft=persisted.index>=0?persisted.selected.config:settings::Config{};
- ready=runtimeTimingFeasible(draft)&&applyInaSettings(draft);if(ready)applied=draft;
+ ready=appliedTimingFeasible(draft)&&applyInaSettings(draft);if(ready)applied=draft;
  Serial.println("CONFIG: boot read only; defaults/invalid slots never saved automatically.");state();
 }
 bool handleSettingsCommand(const char* line){
@@ -83,7 +83,7 @@ bool handleSettingsCommand(const char* line){
  }
  if(receiving && (!strcmp(line,"CONFIG APPLY") || !strcmp(line,"CONFIG SAVE"))){fail("finish draft transfer first");return true;}
  if(!strcmp(line,"CONFIG APPLY")){
-    if(!runtimeTimingFeasible(draft)){fail("conversion duration exceeds requested period/timeout");return true;}
+    if(!appliedTimingFeasible(draft)){fail("conversion duration exceeds requested period/timeout");return true;}
     if(!applyInaSettings(draft)){fail("hardware apply/readback; previous settings retained or INA latched off");return true;}
     applied=draft;ready=true;Serial.println("CONFIG OK APPLY");state();return true;
  }
@@ -104,7 +104,7 @@ bool panelApplySettings(const settings::Bytes& payload,const char*& error){
  if(recording||receiving){error="STOP required or UART draft transfer active";return false;}
  if(persisted.blocked){error="Unsupported/ambiguous EEPROM configuration";return false;}
  settings::Config candidate;
- if(!settings::decode(payload,candidate)||!runtimeTimingFeasible(candidate)){error="Invalid configuration or ADC timing";return false;}
+ if(!settings::decode(payload,candidate)||!appliedTimingFeasible(candidate)){error="Invalid configuration or ADC timing";return false;}
  ++revision;
  if(!applyInaSettings(candidate)){error="INA apply/readback failed; inspect device state";return false;}
  applied=candidate;draft=candidate;ready=true;return true;

@@ -376,16 +376,19 @@ void loop() {
     inaStatus=acquisitionStatus();
     // Publish before optional OLED work consumes the remaining acquisition slack.
     // Otherwise a healthy 100 Hz acquisition can leave the UI snapshot stale for seconds.
-    if((millis()-lastPublish>=500 || publishedRevision!=settingsRevision()) && acquisitionSlackUs()>1800){
+    if((millis()-lastPublish>=500 || publishedRevision!=settingsRevision()) && acquisitionWorkBudgetUs()>300){
         panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
         lastPublish=millis();publishedRevision=settingsRevision();
     }
-    if(i2cReady && millis()-lastRtc>=10000 && acquisitionSlackUs()>4500){
+    if(i2cReady && millis()-lastRtc>=10000 && acquisitionWorkBudgetUs()>(Wire.getClock()>100000?1600:4500)){
         rtcStatus=pollRtc(false);lastRtc=millis();
     }
-    if(oledOffset==sizeof(oledFrame) && millis()-lastDisplay>=1000/appliedSettings().display_hz && acquisitionSlackUs()>1500){
+    if(oledOffset==sizeof(oledFrame) && millis()-lastDisplay>=1000/appliedSettings().display_hz && acquisitionWorkBudgetUs()>1500){
         updateOled();lastDisplay=millis();
     }
-    if(acquisitionSlackUs()>2600)oledStep();
-    delay(1);
+    if(acquisitionWorkBudgetUs()>(Wire.getClock()>100000?700:2600))oledStep();
+    // Leave a tick for SD/idle whenever it fits. Near a deadline avoid adding a
+    // whole tick to every trigger and conversion-ready check.
+    if(acquisitionWorkBudgetUs()>1300)delay(1);
+    else delayMicroseconds(40);
 }

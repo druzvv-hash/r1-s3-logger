@@ -9,6 +9,7 @@ def build():
         '/*STYLE*/':(ui/'style.css').read_text(encoding='utf8'),
         '/*SCHEMA*/':json.dumps(json.loads((ROOT/'schemas/config-v1.json').read_text(encoding='utf8'))['fields'],ensure_ascii=False,separators=(',',':')),
         '/*CODEC*/':(ui/'codec.js').read_text(encoding='utf8'),
+        '/*RATE_PROFILE*/':(ui/'rate_profile.js').read_text(encoding='utf8'),
         '/*APP*/':(ui/'app.js').read_text(encoding='utf8'),
     }.items(): html=html.replace(key,value)
     data=html.encode('utf8');compressed=gzip.compress(data,compresslevel=9,mtime=0)

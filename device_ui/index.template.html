@@ -14,10 +14,11 @@
 <nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="wifi">Wi-Fi</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
 <section id="live" class="page">
 <div class="panel live-controls">
-<label>Частота вимірів <select id="quick-rate"><option value="10">10 Гц</option><option value="50">50 Гц</option><option value="100">100 Гц</option></select></label>
+<div class="rate-choices"><label>Частота вимірів, Гц<input id="quick-rate" type="number" min="1" max="300" step="1" inputmode="numeric" value="50" aria-describedby="rate-profile rate-note"></label><div id="rate-presets" role="group" aria-label="Швидкий вибір частоти"></div></div>
 <button id="apply-rate" class="primary" disabled>Застосувати частоту</button>
 <label>Плавність графіка <select id="frame-rate"><option value="60">60 FPS</option><option value="30">30 FPS</option></select></label>
 <label>Ділянка <select id="chart-window"><option value="10">10 с</option><option value="30">30 с</option></select></label>
+<p id="rate-profile" role="status"></p>
 <small id="rate-note">Зміна частоти застосовується одразу; збереження в EEPROM — у налаштуваннях.</small>
 </div>
 <div class="panel chart-panel"><div class="section-title"><h2>Струм і напруга</h2><div><span class="legend current">● I, A</span><span class="legend voltage">● U, V</span><button id="pause">Пауза графіка</button><button id="clear-chart">Очистити</button></div></div><canvas id="chart" aria-label="Графік струму і напруги за вибраний проміжок часу"></canvas><div class="chart-note"><span id="stream-status">Очікування потоку</span> · Незалежні шкали U та I · справжні відліки · розриви даних не з’єднуються</div></div>
@@ -54,4 +55,5 @@
 <p class="muted">Це окрема мережа приладу без інтернету. Підключення логера до домашнього роутера поки не налаштовується.</p></div>
 </section>
 <footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
-</main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*APP*/</script></body></html>
+</main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*RATE_PROFILE*/
+/*APP*/</script></body></html>

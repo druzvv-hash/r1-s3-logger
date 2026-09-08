@@ -7,9 +7,9 @@ bool validate(const Config& c) {
     if (!(std::isfinite(c.u_zero_V) && c.u_zero_V >= -10 && c.u_zero_V <= 10)) return false;
     if (!(std::isfinite(c.u_gain) && c.u_gain >= 0.5 && c.u_gain <= 2)) return false;
 #if R1_BENCHMARK
-    if (c.requested_rate_hz < 10 || c.requested_rate_hz > 1000) return false;
+    if (c.requested_rate_hz < 1 || c.requested_rate_hz > 1000) return false;
 #else
-    if (!((c.requested_rate_hz == 10 || c.requested_rate_hz == 50 || c.requested_rate_hz == 100))) return false;
+    if (!(c.requested_rate_hz >= 1 && c.requested_rate_hz <= 300)) return false;
 #endif
     if (!((c.adc_range == 0 || c.adc_range == 1))) return false;
     if (!(c.vshunt_ct_code >= 0 && c.vshunt_ct_code <= 7)) return false;
@@ -17,7 +17,7 @@ bool validate(const Config& c) {
     if (!(c.temp_ct_code >= 0 && c.temp_ct_code <= 7)) return false;
     if (!(c.average_code >= 0 && c.average_code <= 7)) return false;
     if (!(c.ready_timeout_us >= 1000 && c.ready_timeout_us <= 1000000)) return false;
-    if (!(c.max_gap_us >= 1000 && c.max_gap_us <= 1000000)) return false;
+    if (!(c.max_gap_us >= 1000 && c.max_gap_us <= 2000000)) return false;
     if (!(c.flush_interval_ms >= 100 && c.flush_interval_ms <= 10000)) return false;
     if (!(c.queue_bytes >= 4096 && c.queue_bytes <= 1048576)) return false;
     if (!(c.rotation_bytes >= 1048576 && c.rotation_bytes <= 1073741824)) return false;

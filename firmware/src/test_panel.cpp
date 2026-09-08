@@ -27,6 +27,22 @@ std::atomic<unsigned> networkClients{0};
 PanelAction ownerAction=nullptr;
 struct Command { uint32_t id, expires; bool legacy; char text[COMMAND_BYTES]; };
 struct Reply { uint32_t id; char json[256]; };
+// The hardware owner copies a bounded snapshot; JSON formatting belongs to core 0.
+struct PanelSnapshot {
+    PanelHardware hardware;
+    Ina228Reading reading;
+    AcquisitionStats acquisition;
+    uint32_t revision, uptime, i2cHz;
+    uint64_t generation, utc;
+    char configHex[2945], settingsStatus[24];
+    bool benchmarkActive;
+};
+QueueHandle_t publications=nullptr;
+void serializePanel(const PanelSnapshot&);
+void publicationTask(void*) {
+    PanelSnapshot p;
+    for(;;)if(xQueueReceive(publications,&p,portMAX_DELAY)==pdTRUE)serializePanel(p);
+}
 QueueHandle_t commands=nullptr, replies=nullptr;
 SemaphoreHandle_t commandGate=nullptr;
 
@@ -180,6 +196,8 @@ void webTask(void*){
 }
 
 void panelBegin(PanelAction action){
+    publications=xQueueCreate(1,sizeof(PanelSnapshot));
+    if(publications)xTaskCreatePinnedToCore(publicationTask,"panel-state",24576,nullptr,1,nullptr,0);
     ownerAction=action;snprintf(bootId,sizeof(bootId),"%08lx",static_cast<unsigned long>(esp_random()));
     snprintf(ssid,sizeof(ssid),"R1-S3-%04X",unsigned(ESP.getEfuseMac()>>32)&0xFFFF);
     // Only at boot, before the UI task. Credentials never enter EEPROM profiles/log files.
@@ -213,25 +231,42 @@ void panelPoll(){
     Reply reply{};reply.id=command.id;response.toCharArray(reply.json,sizeof(reply.json));xQueueOverwrite(replies,&reply);
 }
 void panelPublish(const PanelHardware& h){
-    const auto& r=latestIna228Reading();const auto payload=settings::encode(appliedSettings());
-    String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
+    if(!publications)return;
+    static PanelSnapshot p{};
+    if(p.revision!=settingsRevision()){
+        const auto payload=settings::encode(appliedSettings());
+        if(payload.size()*2>=sizeof(p.configHex))return;
+        const char* digits="0123456789abcdef";
+        for(size_t i=0;i<payload.size();++i){p.configHex[i*2]=digits[payload[i]>>4];p.configHex[i*2+1]=digits[payload[i]&15];}
+        p.configHex[payload.size()*2]=0;
+    }
+    p.hardware=h;p.reading=latestIna228Reading();p.acquisition=acquisitionStats();
+    p.revision=settingsRevision();p.generation=settingsGeneration();p.utc=rtcUtcNow();
+    p.uptime=millis();p.i2cHz=Wire.getClock();p.benchmarkActive=rateBenchmarkActive();
+    strlcpy(p.settingsStatus,settingsStatus(),sizeof(p.settingsStatus));
+    xQueueOverwrite(publications,&p);
+}
+namespace {
+void serializePanel(const PanelSnapshot& p){
+    const auto& h=p.hardware;const auto& r=p.reading;const auto& a=p.acquisition;
+    const String hex(p.configHex);
     String s;s.reserve(4800);
-    s="{\"ready\":true,\"firmware\":\"" R1_FIRMWARE_VERSION "\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
-    s+=",\"reset_reason\":"+String(unsigned(esp_reset_reason()))+",\"i2c_hz\":"+String(Wire.getClock());
+    s="{\"ready\":true,\"firmware\":\"" R1_FIRMWARE_VERSION "\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(p.revision);
+    s+=",\"reset_reason\":"+String(unsigned(esp_reset_reason()))+",\"i2c_hz\":"+String(p.i2cHz);
 #if R1_BENCHMARK
-    s+=",\"benchmark\":true,\"benchmark_active\":"+String(rateBenchmarkActive()?"true":"false");
+    s+=",\"benchmark\":true,\"benchmark_active\":"+String(p.benchmarkActive?"true":"false");
 #else
     s+=",\"benchmark\":false";
 #endif
-    char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
-    s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
-    s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";
+    char generation[24];snprintf(generation,sizeof(generation),"%llu",p.generation);
+    s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(p.settingsStatus);
+    s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(p.uptime)+",\"owner_core\":"+String(1)+",\"ui_core\":0";
     s+=",\"sample_id\":"+String(r.sampleId)+",\"sample_at_ms\":"+String(r.sampledAt)+",\"valid\":"+(r.valid?"true":"false");
     s+=",\"volts\":"+(r.valid?String(r.busVolts,6):String("null"))+",\"amps\":"+(r.valid?String(r.currentAmps,6):String("null"));
     s+=",\"watts\":"+(r.valid?String(r.busVolts*r.currentAmps,6):String("null"))+",\"temp_c\":"+(r.valid?String(r.temperatureC,3):String("null"));
     s+=",\"shunt_uv\":"+(r.valid?String(r.shuntMicrovolts,5):String("null"))+",\"shunt_raw\":"+String(r.shuntRaw)+",\"bus_raw\":"+String(r.busRaw)+",\"temp_raw\":"+String(r.tempRaw);
     s+=",\"sd\":"+quoted(h.sd)+",\"eeprom\":"+quoted(h.eeprom)+",\"rtc\":"+quoted(h.rtc)+",\"ina\":"+quoted(h.ina)+",\"oled\":"+(h.oled?"true":"false");
-    char utc[24];snprintf(utc,sizeof(utc),"%llu",rtcUtcNow());
+    char utc[24];snprintf(utc,sizeof(utc),"%llu",p.utc);
     s+=",\"i2c_count\":"+String(h.i2cCount)+",\"i2c_errors\":"+String(h.i2cErrors)+",\"utc\":"+String(utc);
     s+=",\"psram_free\":"+String(ESP.getFreePsram())+",\"heap_free\":"+String(ESP.getFreeHeap())+",\"queue_bytes\":"+String(recording::allocatedQueueBytes());
     s+=",\"buffer_ready\":"+(recording::memoryReady()?String("true"):String("false"))+",\"sd_block_bytes\":"+String(recording::SD_BLOCK_BYTES)+",\"recording_available\":true,\"live_available\":true";
@@ -239,7 +274,6 @@ void panelPublish(const PanelHardware& h){
     s+=",\"recording_state\":"+quoted(recorder::stateName())+",\"recording_path\":"+quoted(rec.path)+",\"recording_error\":"+quoted(rec.error);
     char counters[600];snprintf(counters,sizeof(counters),",\"recording_rows\":%llu,\"recording_bytes\":%llu,\"recording_seconds\":%.3f,\"recording_wh\":%.12g,\"recording_ah\":%.12g,\"recording_queued\":%lu,\"recording_high_water\":%lu,\"recording_overflows\":%lu,\"recording_write_us\":%lu,\"recording_sync_us\":%lu,\"recording_part\":%lu",(unsigned long long)rec.rows,(unsigned long long)rec.bytes,rec.elapsedUs/1000000.0,rec.wh,rec.ah,(unsigned long)rec.queued,(unsigned long)rec.highWater,(unsigned long)rec.overflows,(unsigned long)rec.maxWriteUs,(unsigned long)rec.maxSyncUs,(unsigned long)rec.part);s+=counters;
 
-    const auto& a=acquisitionStats();
     s+=",\"requested_hz\":"+String(a.requestedHz)+",\"measured_hz\":"+String(a.measuredHz,3);
     s+=",\"valid_samples\":"+String(a.valid)+",\"invalid_samples\":"+String(a.invalid)+",\"missed_samples\":"+String(a.missed);
     s+=",\"max_late_us\":"+String(a.maxLateUs)+",\"max_read_us\":"+String(a.maxReadUs);
@@ -250,6 +284,7 @@ void panelPublish(const PanelHardware& h){
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);
 }
+} // namespace
 bool panelHandleSerial(const char* line){
     if(strncmp(line,"PANEL ",6))return false;
     unsigned id=0;int n=0;

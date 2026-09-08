@@ -24,6 +24,8 @@ void acquisitionBegin();
 void acquisitionStep();
 bool acquisitionIdle();
 uint32_t acquisitionSlackUs();
+// Time until the next trigger or conversion-ready check, including ADC wait.
+uint32_t acquisitionWorkBudgetUs();
 void acquisitionPause();
 void acquisitionResume();
 const char* acquisitionStatus();

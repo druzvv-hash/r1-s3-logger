@@ -20,7 +20,7 @@ for f in fields:
  if 'max' in f:checks.append(f'{n} <= {literal(f["max"])}')
  if 'enum' in f:checks.append('('+' || '.join(f'{n} == {literal(x)}' for x in f['enum'])+')')
  if f['name']=='requested_rate_hz':
-  lines+=['#if R1_BENCHMARK','    if (c.requested_rate_hz < 10 || c.requested_rate_hz > 1000) return false;','#else']
+  lines+=['#if R1_BENCHMARK','    if (c.requested_rate_hz < 1 || c.requested_rate_hz > 1000) return false;','#else']
  if checks:lines.append('    if (!('+' && '.join(checks)+')) return false;')
  if f['name']=='requested_rate_hz':lines.append('#endif')
 lines+=['    return validDate(c.calibration_utc) && (!c.calibration_valid || (!c.calibration_id.empty() && !c.calibration_note.empty() && !c.calibration_utc.empty()));','}','Bytes encode(const Config& c) {','    Bytes out; if (!validate(c)) return out;']

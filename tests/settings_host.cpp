@@ -30,8 +30,21 @@ int main(int argc,char** argv){
 #if R1_BENCHMARK
  assert(validate(rate));rate.requested_rate_hz=1001;assert(!validate(rate));
 #else
- assert(!validate(rate)); // Experimental rates cannot enter the normal build.
+ assert(validate(rate));rate.requested_rate_hz=301;assert(!validate(rate));
 #endif
+ for(unsigned hz=1;hz<=300;++hz){
+   Config c=a;c.requested_rate_hz=hz;c.max_gap_us=std::max(40000u,(2000000u+hz-1)/hz);
+   c.vshunt_ct_code=c.vbus_ct_code=c.temp_ct_code=hz<=100?5:hz<=200?2:0;
+   assert(validate(c)&&runtimeTimingFeasible(c));assert(busHz(c)==(hz<=100?100000u:400000u));
+   auto image=slot(c,4);auto decoded=inspect(image);assert(decoded.state==SlotState::valid&&equal(decoded.config,c));
+   assert(image[6]==configMinor(c));
+ }
+ rate=a;rate.requested_rate_hz=0;assert(!validate(rate));
+ rate=a;rate.requested_rate_hz=300;assert(!runtimeTimingFeasible(rate));
+ rate.vshunt_ct_code=rate.vbus_ct_code=rate.temp_ct_code=0;assert(runtimeTimingFeasible(rate));
+ auto expanded=slot(rate,2);assert(expanded[6]==1);
+ expanded[6]=0;fixCrc(expanded);assert(inspect(expanded).state==SlotState::invalid);
+ expanded[6]=2;fixCrc(expanded);assert(inspect(expanded).state==SlotState::unsupported);
  Config invalid=a;invalid.average_code=7;assert(validate(invalid)&&!timingFeasible(invalid));invalid=a;invalid.i_gain=0;assert(!validate(invalid));invalid=a;invalid.calibration_utc="2025-02-29T00:00:00Z";assert(!validate(invalid));invalid.calibration_utc="2024-02-29T00:00:00Z";assert(validate(invalid));invalid.calibration_note=std::string("\xc0\x80",2);assert(!validate(invalid));
  Device device;bool latched=false;assert(applyRegisters(device,a,latched));assert(device.regs[0]==0&&device.regs[1]==0x0b68);
  device=Device{};device.failWrite=1;assert(!applyRegisters(device,a,latched)&&!latched);assert(device.regs[0]==0x80&&device.regs[1]==0xfb68);

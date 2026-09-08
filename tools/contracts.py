@@ -113,11 +113,16 @@ def decode_payload(data):
     return values
 
 
+def config_minor(values):
+    return 0 if values['requested_rate_hz'] in (10, 50, 100) and values['max_gap_us'] <= 1000000 else 1
+
+
 def encode_slot(values, generation):
     if type(generation) is not int or not 1 <= generation < 2**64:
         raise ValueError('Generation out of range; never wrap')
     payload = encode_payload(values)
-    header = HEADER.pack(b'R1CF', 1, 0, 32, 0, generation, len(payload), 0, 0)
+    minor = config_minor(values)
+    header = HEADER.pack(b'R1CF', 1, minor, 32, 0, generation, len(payload), 0, 0)
     checksum = crc(header + payload)
     header = header[:24] + struct.pack('<I', checksum) + header[28:]
     footer = struct.pack('<4sQII12s', b'RCMT', generation, checksum, len(payload), bytes(12))
@@ -136,9 +141,12 @@ def decode_slot(data):
     payload = data[32:32+size]
     if crc(header + payload) != checksum:
         raise ValueError('Slot CRC mismatch')
-    if (major, minor) != (1, 0):
+    if major != 1 or minor not in (0, 1):
         raise Unsupported('Unsupported config version; inhibit writes')
-    return gen, decode_payload(payload)
+    values = decode_payload(payload)
+    if minor < config_minor(values):
+        raise ValueError('Extended values require config minor 1')
+    return gen, values
 
 
 def select_slot(a, b):

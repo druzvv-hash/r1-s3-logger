@@ -42,9 +42,12 @@ bool take(const Bytes& b,size_t& pos,unsigned id,unsigned type,std::string& v){c
 }
 #include "config_codec_generated.inc"
 uint32_t crc32(const uint8_t* data,size_t n){uint32_t c=0xffffffff;while(n--){c^=*data++;for(unsigned j=0;j<8;++j)c=(c>>1)^((c&1)?0xedb88320:0);}return ~c;}
+// Keep legacy-compatible values byte-identical; extended values protect rollback
+// by declaring minor 1, which previous firmware treats as write-protected.
+unsigned configMinor(const Config& c){return (c.requested_rate_hz==10||c.requested_rate_hz==50||c.requested_rate_hz==100)&&c.max_gap_us<=1000000?0:1;}
 Bytes slot(const Config& c,uint64_t gen){
     const Bytes payload=encode(c);if(payload.empty()||payload.size()>1472||!gen)return {};
-    Bytes out(slotSize,0xff);std::fill(out.begin(),out.begin()+32,0);memcpy(out.data(),"R1CF",4);put(out,4,1,2);put(out,8,32,2);put(out,12,gen,8);put(out,20,payload.size(),4);std::copy(payload.begin(),payload.end(),out.begin()+32);
+    Bytes out(slotSize,0xff);std::fill(out.begin(),out.begin()+32,0);memcpy(out.data(),"R1CF",4);put(out,4,1,2);put(out,6,configMinor(c),2);put(out,8,32,2);put(out,12,gen,8);put(out,20,payload.size(),4);std::copy(payload.begin(),payload.end(),out.begin()+32);
     uint32_t crc=crc32(out.data(),32+payload.size());put(out,24,crc,4);
     std::fill(out.begin()+footerOffset,out.end(),0);memcpy(out.data()+footerOffset,"RCMT",4);put(out,footerOffset+4,gen,8);put(out,footerOffset+12,crc,4);put(out,footerOffset+16,payload.size(),4);return out;
 }
@@ -54,11 +57,11 @@ Slot inspect(const Bytes& b){
     const auto* f=&b[footerOffset];if(memcmp(f,"RCMT",4)||get(f+4,8)!=gen||get(f+12,4)!=crc||get(f+16,4)!=n)return s;
     for(unsigned i=20;i<32;++i)if(f[i])return s;
     Bytes checked(b.begin(),b.begin()+32+n);std::fill(checked.begin()+24,checked.begin()+28,0);if(crc32(checked.data(),checked.size())!=crc)return s;
-    if(get(&b[4],2)!=1||get(&b[6],2)){s.state=SlotState::unsupported;return s;}
+    if(get(&b[4],2)!=1||get(&b[6],2)>1){s.state=SlotState::unsupported;return s;}
     s.payload.assign(b.begin()+32,b.begin()+32+n);
     // A committed v1 image with an unknown field ID is protected, even if malformed.
     for(size_t p=0;p+8<=s.payload.size();){if(get(&s.payload[p],2)>28){s.state=SlotState::unsupported;return s;}size_t len=get(&s.payload[p+4],2);if(len>s.payload.size()-p-8)break;p+=8+len;}
-    if(!decode(s.payload,s.config))return s;
+    if(!decode(s.payload,s.config)||get(&b[6],2)<configMinor(s.config))return s;
     s.state=SlotState::valid;s.generation=gen;return s;
 }
 Selection scan(Storage& io){
@@ -87,6 +90,15 @@ bool equal(const Config& a,const Config& b){return encode(a)==encode(b);}
 uint16_t adcBits(const Config& c){return (c.vbus_ct_code<<9)|(c.vshunt_ct_code<<6)|(c.temp_ct_code<<3)|c.average_code;}
 uint32_t conversionUs(const Config& c){const unsigned ct[]={50,84,150,280,540,1052,2074,4120},avg[]={1,4,16,64,128,256,512,1024};return (ct[c.vbus_ct_code]+ct[c.vshunt_ct_code]+ct[c.temp_ct_code])*avg[c.average_code];}
 bool timingFeasible(const Config& c){return validate(c)&&conversionUs(c)<c.ready_timeout_us&&conversionUs(c)<1000000/c.requested_rate_hz;}
+uint32_t busHz(const Config& c){return c.requested_rate_hz>100?400000:100000;}
+bool runtimeTimingFeasible(const Config& c){
+    if(!timingFeasible(c))return false;
+    // Reserve trigger/readback, scheduler and display service time. Actual cadence
+    // remains observable; this check is not a claim of measured performance.
+    const uint32_t overhead=busHz(c)==400000?2500:4000;
+    return conversionUs(c)+overhead<=1000000/c.requested_rate_hz
+        && c.max_gap_us>=uint32_t((2000000ull+c.requested_rate_hz-1)/c.requested_rate_hz);
+}
 bool applyRegisters(Registers& io,const Config& c,bool& latchedFailure) {
     if (latchedFailure || !timingFeasible(c)) return false;
     uint32_t manufacturer,device,oldConfig,oldAdc;

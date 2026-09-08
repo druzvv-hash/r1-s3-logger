@@ -103,7 +103,7 @@ const root=path.resolve(__dirname,'..'),hardware=process.argv.includes('--hardwa
   if(hardware)await page.waitForFunction(()=>document.getElementById('amps').textContent!=='—',{timeout:10000});
   if(hardware){
    const baselineRate=await page.evaluate(()=>state.requested_hz);
-   await page.locator('#quick-rate').selectOption('100');
+   await page.locator('#quick-rate').fill('100');
    await page.locator('#apply-rate').click();
    await page.waitForFunction(()=>state.requested_hz===100&&!busy,{timeout:20000});
    try{
@@ -125,7 +125,7 @@ const root=path.resolve(__dirname,'..'),hardware=process.argv.includes('--hardwa
     assert(stream.fps>=Math.min(60,browserFps)*.8&&stream.fps<=65);
     assert.equal(stream.preview_drops,0);
    }finally{
-    await page.locator('#quick-rate').selectOption(String(baselineRate));
+    await page.locator('#quick-rate').fill(String(baselineRate));
     await page.locator('#apply-rate').click();
     await page.waitForFunction(hz=>state.requested_hz===hz&&!busy,baselineRate,{timeout:20000});
    }

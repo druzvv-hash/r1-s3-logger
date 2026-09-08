@@ -19,3 +19,9 @@
 .wifi-steps{padding-left:24px;line-height:1.6}.wifi-steps li{margin:12px 0}#wifi-password{overflow-wrap:anywhere}nav{flex-wrap:wrap}
 #record-path{overflow-wrap:anywhere}.badge.recording{color:#ff5989;border-color:#ff5989}#record-stop{border-color:#ff5989}
 @media(max-width:480px){nav{gap:12px}.file-toolbar{gap:8px}.file-toolbar .file-search{flex-basis:100%}.file-toolbar label{flex:1}.file-selection{align-items:stretch;flex-direction:column}.file-columns,.file-row{min-width:570px}.file-navigation{gap:5px}#files-path{flex-basis:100%}}
+
+.rate-choices{flex:1 1 100%;min-width:0}.rate-choices input{width:140px;min-height:44px;padding:10px 12px;background:#0b1218;color:inherit;border:1px solid #34434e;border-radius:6px;font:inherit}
+#rate-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+#rate-presets button{min-width:45px;padding:9px 12px}
+#rate-presets button[aria-pressed="true"]{border-color:var(--accent,#a4e5c8);color:var(--accent,#a4e5c8)}
+#rate-profile{flex-basis:100%;margin:0;font-size:14px;line-height:1.5}

@@ -6,7 +6,8 @@ struct PanelHardware {
     uint32_t oledFrames, oledChunkUs;
 };
 using PanelAction = bool (*)(const char* verb, const char* argument, const char*& message);
-// Called only by the core 1 hardware owner. HTTP never touches Wire, SD or settings.
+// Called only by core 1. Publish queues a bounded copy for JSON formatting on core 0.
+// HTTP never touches Wire, SD or settings.
 void panelBegin(PanelAction action);
 void panelPoll();
 void panelPublish(const PanelHardware& hardware);

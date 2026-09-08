@@ -136,7 +136,12 @@ bool applyInaSettings(const settings::Config& c) {
         bool read(uint8_t reg,uint32_t& value) override { return readRegister(reg,2,value); }
         bool write(uint8_t reg,uint16_t value) override { return writeRegister(reg,value); }
     } io;
+    const uint32_t previousClock=Wire.getClock();
+#if !R1_BENCHMARK
+    Wire.setClock(settings::busHz(c));
+#endif
     const bool ok=settings::applyRegisters(io,c,restoreFailed);
+    if(!ok)Wire.setClock(previousClock);
     if (ok || restoreFailed) latest.valid=false;
     return ok;
 }
@@ -178,6 +183,10 @@ void acquisitionBegin(){
 }
 bool acquisitionIdle(){return !pending;}
 uint32_t acquisitionSlackUs(){return pending?0:sampleClock.slack(esp_timer_get_time());}
+uint32_t acquisitionWorkBudgetUs(){
+    const uint64_t now=esp_timer_get_time();
+    return pending?(pollAt>now?uint32_t(pollAt-now):0):sampleClock.slack(now);
+}
 const AcquisitionStats& acquisitionStats(){return stats;}
 const char* acquisitionStatus(){return sampleStatus;}
 void acquisitionPause(){

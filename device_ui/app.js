@@ -7,7 +7,7 @@ i_zero_uV:['Нуль струму, µV','Зсув вхідної напруги 
 i_gain:['Коефіцієнт струму','1 = без корекції масштабу'],
 u_zero_V:['Нуль напруги, V','Віднімається перед коефіцієнтом'],
 u_gain:['Коефіцієнт напруги','1 = без корекції масштабу'],
-requested_rate_hz:['Частота вимірів, Hz','Реальна частота INA228: 10, 50 або 100 Hz'],
+requested_rate_hz:['Частота вимірів, Hz','Ціле число 1–300 Hz; для автоматичного вибору ADC користуйся частотою в огляді'],
 adc_range:['Діапазон шунта','0: ±163.84 mV · 1: ±40.96 mV; вузький не охоплює 400 A'],
 vshunt_ct_code:['Час конверсії шунта','Код 0–7: 50, 84, 150, 280, 540, 1052, 2074, 4120 µs'],
 vbus_ct_code:['Час конверсії VBUS','Код 0–7: 50 … 4120 µs'],
@@ -81,7 +81,13 @@ function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,val
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
 function setOffline(error){online=false;document.body.classList.add('offline');$('connection').textContent='Немає зв’язку';$('connection').classList.remove('online');for(const id of ['amps','volts','watts'])$(id).textContent='—';$('temperature').textContent='Температура INA228: —';notice(error,true);controls();}
 function controls(){
-  $('apply-rate').disabled=recordingBusy()||busy||!online||dirty||stale()||!state||Number($('quick-rate').value)===state.requested_hz;
+  const hz=Number($('quick-rate').value);let validRate=true;
+  try{$('rate-profile').textContent='Після застосування: '+rateDescription(hz);}catch(e){validRate=false;$('rate-profile').textContent=e.message;}
+  $('rate-profile').classList.toggle('error',!validRate);
+  const locked=recordingBusy()||busy||!online;
+  $('quick-rate').disabled=locked;
+  for(const b of $('rate-presets').children){b.disabled=locked;b.setAttribute('aria-pressed',String(Number(b.dataset.hz)===hz));}
+  $('apply-rate').disabled=locked||dirty||stale()||!state||!validRate||hz===state.requested_hz;
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
   for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=recordingBusy()||busy||!online;
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
@@ -98,11 +104,7 @@ function render(s){
   const previousRate=state?.requested_hz;
   $('benchmark-notice').hidden=!s.benchmark;
   const rateField=REGISTRY.find(f=>f.name==='requested_rate_hz');
-  const rates=s.benchmark?[...new Set([10,50,100,125,150,200,250,300,400,500,800,1000,s.requested_hz])].sort((a,b)=>a-b):[10,50,100];
-  if(rateField.enum.join()!==rates.join()){
-    rateField.enum=rates;const select=$('f-requested_rate_hz');select.replaceChildren();
-    for(const hz of rates){const option=document.createElement('option');option.value=hz;option.textContent=hz;select.append(option);}
-  }
+  rateField.max=s.benchmark?1000:300;$('f-requested_rate_hz').max=rateField.max;
   state=s;if(previousRate!==s.requested_hz)$('quick-rate').value=s.requested_hz||50;online=true;document.body.classList.remove('offline');
   $('release-usb').hidden=s.transport!=='usb';
   const transport=s.transport==='usb'?'USB через ПК':s.transport==='wifi'?'Wi-Fi напряму':'Підключення до логера';
@@ -366,8 +368,13 @@ $('apply').onclick=()=>{try{command('APPLY',encodeConfig(values(),REGISTRY),true
 $('save').onclick=()=>command('SAVE','',true);
 $('reload-config').onclick=async()=>{try{await refresh();reload();notice('Конфігурацію прочитано з логера.');}catch(e){notice(e.message,true);}};
 $('defaults').onclick=()=>{fill(Object.fromEntries(REGISTRY.map(f=>[f.name,f.default])));notice('Типові значення лише в чернетці.');};
-$('quick-rate').onchange=controls;
-$('apply-rate').onclick=()=>{if(!state||dirty||stale())return;const config=decodeConfig(state.config_hex,REGISTRY);config.requested_rate_hz=Number($('quick-rate').value);config.max_gap_us=Math.max(config.max_gap_us,2*1000000/config.requested_rate_hz);command('APPLY',encodeConfig(config,REGISTRY));};
+for(const hz of RATE_PRESETS){const b=document.createElement('button');b.type='button';b.textContent=hz;b.dataset.hz=hz;
+  b.onclick=()=>{$('quick-rate').value=hz;controls();};$('rate-presets').append(b);}
+$('quick-rate').oninput=controls;
+$('quick-rate').onkeydown=e=>{if(e.key==='Enter'&&!$('apply-rate').disabled)$('apply-rate').click();};
+$('apply-rate').onclick=()=>{if(!state||dirty||stale())return;
+  try{const config=configForRate(decodeConfig(state.config_hex,REGISTRY),Number($('quick-rate').value));command('APPLY',encodeConfig(config,REGISTRY));}
+  catch(e){notice(e.message,true);}};
 $('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';};
 $('clear-chart').onclick=()=>{points=[];draw();};
 $('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify({schema:'r1s3-config',major:1,minor:0,values:v},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};
