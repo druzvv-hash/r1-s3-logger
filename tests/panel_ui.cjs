@@ -87,15 +87,29 @@ const root=path.resolve(__dirname,'..'),hardware=process.argv.includes('--hardwa
    await page.locator('#quick-rate').selectOption('100');
    await page.locator('#apply-rate').click();
    await page.waitForFunction(()=>state.requested_hz===100&&!busy,{timeout:20000});
-   await page.waitForTimeout(12000);
-   const stream=await page.evaluate(()=>({fps,requested:state.requested_hz,measured:state.measured_hz,invalid:state.invalid_samples,missed:state.missed_samples,preview_drops:state.preview_drops,gaps:streamGaps,points:points.length}));
-   console.log('Live 100 Hz / browser:',JSON.stringify(stream));
-   assert(Math.abs(stream.measured-100)<1);
-   assert(stream.fps>=45&&stream.fps<=65);
-   assert.equal(stream.preview_drops,0);
-   await page.locator('#quick-rate').selectOption(String(baselineRate));
-   await page.locator('#apply-rate').click();
-   await page.waitForFunction(hz=>state.requested_hz===hz&&!busy,baselineRate,{timeout:20000});
+   try{
+    await page.waitForTimeout(8000);
+    // Headless Chrome can lower its own rAF cadence when occluded/backgrounded.
+    // Check the application against delivered callbacks, not an assumed display clock.
+    await page.evaluate(()=>{
+     window.rafProbe={count:0,start:performance.now(),active:true};
+     requestAnimationFrame(function probe(){if(!rafProbe.active)return;rafProbe.count++;requestAnimationFrame(probe);});
+    });
+    const frames=[];
+    for(let n=0;n<5;n++){await page.waitForTimeout(1100);frames.push(await page.evaluate(()=>fps));}
+    const browserFps=await page.evaluate(()=>{rafProbe.active=false;return rafProbe.count*1000/(performance.now()-rafProbe.start);});
+    const stream=await page.evaluate(()=>({requested:state.requested_hz,measured:state.measured_hz,invalid:state.invalid_samples,missed:state.missed_samples,preview_drops:state.preview_drops,gaps:streamGaps,points:points.length}));
+    stream.fps=frames.reduce((a,b)=>a+b,0)/frames.length;
+    stream.browser_callbacks_hz=browserFps;
+    console.log('Live 100 Hz / browser:',JSON.stringify(stream));
+    assert(Math.abs(stream.measured-100)<1);
+    assert(stream.fps>=Math.min(60,browserFps)*.8&&stream.fps<=65);
+    assert.equal(stream.preview_drops,0);
+   }finally{
+    await page.locator('#quick-rate').selectOption(String(baselineRate));
+    await page.locator('#apply-rate').click();
+    await page.waitForFunction(hz=>state.requested_hz===hz&&!busy,baselineRate,{timeout:20000});
+   }
   }
   fs.mkdirSync(path.join(root,'data/device-panel'),{recursive:true});
   await page.screenshot({path:path.join(root,'data/device-panel',hardware?'panel-live.png':'panel-fixture.png'),fullPage:true});

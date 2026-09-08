@@ -116,3 +116,10 @@ intermittent transport problem is separate from the successful acquisition windo
 The final normal image uploaded at a one-off 57600 baud with all flash hashes
 verified; the project upload default is still 115200 baud. Final normal static RAM
 is 62,424 bytes, flash 924,637 bytes (dynamic task stacks/pools are additional).
+
+Subsequent headless runs observed Chrome's own callback rate falling to about
+30 Hz; rendering followed that limit while acquisition stayed at 100 Hz. The
+browser test compares rendered FPS to the callbacks actually provided, capped
+at the chosen target, and restores the original measurement rate even on failure.
+Physical history tests also passed ring overwrite/lost indication, latest-tail
+selection, independent cursor replay, empty future cursors and maintenance gap flags.
