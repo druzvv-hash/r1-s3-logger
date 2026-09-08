@@ -562,3 +562,14 @@ Failures occurred without resets and with either PC reader implementation;
 Wi-Fi association did not consistently prevent them. This narrows the search
 to low-level serial reception rather than a complete application hang, but does
 not identify a failed component. No diagnostic firmware was flashed.
+
+After another owner alcohol cleaning, with the bench supply OFF and wiring
+connected, a 471.5-second UART run at a temporary 300 Hz passed 1,578 requests
+and downloaded an existing 1,737,293-byte CSV with block CRC32 and complete
+SHA-256 verification. No UART error flags, missed/invalid samples or unexpected
+reboots occurred. Ten port reopens passed. Nine of ten ROM-only read sessions
+passed; the first entered DOWNLOAD but its register response was truncated.
+All ten returned to application READY. The exact initial 50 Hz configuration
+was restored, EEPROM generation 3 unchanged. Firmware was not written. A
+powered-load repeat is needed to separate cleaning effects from the changed
+test conditions. Full results are in the UART diagnostic report linked above.

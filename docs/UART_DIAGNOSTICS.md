@@ -102,7 +102,54 @@ Raw exchanges and paired state/error reports are retained privately under
 `data/uart-both-ends/`. Source-level UART receive/transmit counters have not been
 installed: this round deliberately tested the existing v0.22 binary.
 
+## 2026-09-08 — repeat after another alcohol cleaning
+
+The owner cleaned the board again. The bench supply was **OFF, with the wires
+still connected**, as confirmed by the owner. Firmware v0.22 was unchanged;
+COM5 used 115200 baud. Initial settings were READY at 50 Hz, SAVED, EEPROM
+generation 3. Earlier failing runs had a powered load, so this comparison does
+not isolate the effect of cleaning from the changed load conditions.
+
+Acquisition was temporarily set to 300 Hz without saving to EEPROM. The
+continuous test included STATE/LIVE polling and a complete existing SD file
+download through UART; no new load recording was made.
+
+| Check | Result |
+| --- | --- |
+| Continuous exchange | 471.5 seconds; 1,578 measured requests; zero request errors |
+| Request breakdown | 196 STATE, 531 LIVE, 849 file chunks, OPEN and CLOSE |
+| SD file transfer | 1,737,293 bytes; every chunk CRC32 and whole-file SHA-256 verified |
+| Application during exchange | One boot ID; zero missed/invalid samples; 1,764 OLED frames |
+| Windows UART flags | None reported, including no `CE_FRAME` |
+| Port close/open/STATE cycles | 10/10 passed; no unexpected reset |
+| Automatic ROM read sessions | 9/10 passed; first response truncated; all ten recovered to READY |
+
+The downloaded existing file was
+`r1s3_2026-09-08_15-27-02Z_3047473d_f5b0eb2c_0000.csv`, with SHA-256
+`aef5a75c9cd200e3377e2da3a6ddf307cb667b16eb58b0e7c1b91e004af58a05`.
+Measured request latency was 375 ms median and 407 ms maximum, including the
+large hexadecimal file replies; this is not the acquisition interval.
+
+Each ROM test used standard esptool reset control, one connection attempt,
+`--no-stub` and read-only `read_mac` at 115200 baud. The **first session entered
+DOWNLOAD and exchanged SYNC replies**, then its READ_REG response was truncated:
+`Packet content transfer stopped (received 9 bytes)`. This was not a failure to
+enter download mode. An automatic recovery reset restored the application;
+the next nine sessions succeeded. No Windows UART error flag was reported in
+any of these sessions. Host traces record requested DTR/RTS changes and raw
+serial bytes, not measured EN/GPIO0 voltage waveforms.
+
+Final state was READY at the exact initial 50 Hz configuration, with EEPROM
+generation 3 unchanged. No firmware write, Flash erase or EEPROM SAVE was
+performed. Continuous UART traffic improved in these conditions, but the
+remaining ROM transfer failure prevents declaring the issue resolved. Evidence
+and private raw captures are under `data/uart-after-clean/`.
+
 ## Next controlled check
+
+First repeat the continuous UART/file test with the previous powered bench load,
+keeping the cleaned board, cable and wiring unchanged. This separates the
+changed load condition from cleaning. If corruption recurs, continue below.
 
 1. Capture UART0 TX at ESP32 GPIO43 and at the CP210x RX connection while the
    same known request is repeated. Compare levels, bit timing and missing or
