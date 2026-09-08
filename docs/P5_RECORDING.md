@@ -123,6 +123,12 @@ its stale ERROR observation was not an SD failure.
 The final host suite has 51 passing tests. Normal and service builds pass; only
 normal is used on the board. Upload continues to need retries on the existing USB
 link; verified flash writes do not establish that transport as permanently fixed.
+The final clean build from commit `28fd38912ea83ac6e10cab4a284c529fc534895b`
+was flashed and checked again: 201 rows / 44,615 bytes at 50 Hz, complete download,
+verified integrity in both readers, zero missed/invalid samples, and matching
+commit metadata with `dirty=false`. The firmware also refused START at 10 Hz with
+the incompatible 40 ms gap threshold. FIFO high-water was 2; maximum write and
+sync were 18.352 ms and 24.725 ms. The board was left READY with the panel running.
 Tests restore the original 50 Hz / 40 ms-gap applied profile and saved generation
 3. No EEPROM Save, calibration change, clock write or card formatting is performed.
 
