@@ -26,6 +26,12 @@ int main(int argc,char** argv){
  }
  assert(crc32(reinterpret_cast<const uint8_t*>("123456789"),9)==0xcbf43926);
  Config a,b;b.i_gain=1.01;b.calibration_note="synthetic test";assert(timingFeasible(a));assert(adcBits(a)==0x0b68);assert(conversionUs(a)==3156);
+ Config rate=a;rate.requested_rate_hz=200;
+#if R1_BENCHMARK
+ assert(validate(rate));rate.requested_rate_hz=1001;assert(!validate(rate));
+#else
+ assert(!validate(rate)); // Experimental rates cannot enter the normal build.
+#endif
  Config invalid=a;invalid.average_code=7;assert(validate(invalid)&&!timingFeasible(invalid));invalid=a;invalid.i_gain=0;assert(!validate(invalid));invalid=a;invalid.calibration_utc="2025-02-29T00:00:00Z";assert(!validate(invalid));invalid.calibration_utc="2024-02-29T00:00:00Z";assert(validate(invalid));invalid.calibration_note=std::string("\xc0\x80",2);assert(!validate(invalid));
  Device device;bool latched=false;assert(applyRegisters(device,a,latched));assert(device.regs[0]==0&&device.regs[1]==0x0b68);
  device=Device{};device.failWrite=1;assert(!applyRegisters(device,a,latched)&&!latched);assert(device.regs[0]==0x80&&device.regs[1]==0xfb68);

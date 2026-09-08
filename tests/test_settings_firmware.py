@@ -9,12 +9,17 @@ class FirmwareSettings(unittest.TestCase):
   compiler=os.environ.get('R1_HOST_CXX') or shutil.which('g++')
   if not compiler and Path('C:/Qt/Tools/mingw1310_64/bin/g++.exe').exists():compiler='C:/Qt/Tools/mingw1310_64/bin/g++.exe'
   if not compiler:raise unittest.SkipTest('Set R1_HOST_CXX to a native C++ compiler')
+  cls.compiler=compiler
   cls.tmp=tempfile.TemporaryDirectory();cls.exe=Path(cls.tmp.name)/'settings-test.exe'
   subprocess.run([compiler,'-std=c++11','-O2','-static','-Ifirmware/include','tests/settings_host.cpp','firmware/src/settings_core.cpp','-o',str(cls.exe)],cwd=ROOT,check=True,capture_output=True)
  @classmethod
  def tearDownClass(cls):cls.tmp.cleanup()
  def test_transaction_fault_injection(self):
   result=subprocess.run([str(self.exe)],check=True,capture_output=True,text=True);self.assertIn('C++ PASS',result.stdout)
+ def test_benchmark_rate_gate_is_explicit(self):
+  exe=Path(self.tmp.name)/'settings-benchmark.exe'
+  subprocess.run([self.compiler,'-std=c++11','-O2','-static','-DR1_BENCHMARK=1','-Ifirmware/include','tests/settings_host.cpp','firmware/src/settings_core.cpp','-o',str(exe)],cwd=ROOT,check=True,capture_output=True)
+  result=subprocess.run([str(exe)],check=True,capture_output=True,text=True);self.assertIn('C++ PASS',result.stdout)
  def test_cpp_codec_matches_python(self):
   variants=[c.defaults()]
   changed=c.defaults();changed.update(polarity=-1,i_gain=1.015,u_gain=.995,calibration_note='Синтетична перевірка',calibration_utc='2024-02-29T00:00:00Z',calibration_valid=True);variants.append(changed)

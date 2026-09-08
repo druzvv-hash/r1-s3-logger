@@ -5,6 +5,7 @@
 <main>
 <div class="topline"><div><span class="eyebrow">INA228 · 400 A / 60 mV</span><h1>Вимірювання наживо</h1></div><div class="clock"><b id="utc">—</b><small id="cadence">Очікування даних</small></div></div>
 <div id="notice" role="status" aria-live="polite">З’єднання з логером…</div>
+<p id="benchmark-notice" hidden>Дослідна прошивка: порівнюємо швидкість і шум. Режими ще не затверджені для роботи. Тест сам зупиняє запис і повертає попередні налаштування; запис у EEPROM вимкнений.</p>
 <section class="meters" aria-label="Поточні показники">
 <article class="meter current"><label>СТРУМ</label><div><strong id="amps">—</strong><span>A</span></div><small>Знак відповідно до полярності шунта</small></article>
 <article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
@@ -25,9 +26,11 @@
 </section>
 <section id="files" class="page" hidden>
 <div class="panel"><div class="section-title"><div><h2>Файли на microSD</h2><p>Завантажуй записи на комп’ютер або телефон, залишаючи картку в логері.</p></div><span id="file-transfer" class="badge">Очікування</span></div>
-<div class="button-row"><button id="files-refresh" class="primary">Оновити список</button><button id="files-up">На рівень вище</button><span id="files-path">/</span></div>
+<div class="button-row file-navigation"><button id="files-up" title="На рівень вище">↑ Вище</button><button id="files-records">Записи</button><button id="files-refresh">↻ Оновити</button><button id="files-cancel" hidden>Зупинити читання</button><div id="files-path" aria-label="Шлях до папки">/</div></div>
+<div class="file-toolbar"><label class="file-search">Пошук у цій папці<input id="files-search" type="search" placeholder="Назва або дата…" autocomplete="off"></label><label>Сортування<select id="files-sort"><option value="date-desc">Спочатку нові</option><option value="date-asc">Спочатку давні</option><option value="name-asc">Назва А → Я</option><option value="name-desc">Назва Я → А</option><option value="size-desc">Спочатку великі</option></select></label><label>Тип<select id="files-type"><option value="all">Усі файли</option><option value="csv">Записи CSV</option><option value="part">Незавершені</option></select></label></div>
 <p id="files-status" role="status" aria-live="polite">Натисни «Оновити список», щоб прочитати картку.</p>
-<div id="file-list"></div><button id="files-more" hidden>Ще файли</button>
+<div id="files-scroll" tabindex="0" role="region" aria-label="Список файлів зі скролом"><div class="file-columns" aria-hidden="true"><span>Назва</span><span>Початок · місцевий час</span><span>Розмір</span><span></span></div><div id="file-list"></div></div>
+<div class="file-selection"><span id="files-selection">Вибери файл, щоб побачити повну назву.</span><button id="files-download-selected" disabled>Завантажити вибраний</button></div>
 <p class="muted">Файли залишаються на картці. Для великих записів Wi-Fi швидший; через USB завантаження може тривати довго. Прогрес і скасування — у завантаженнях браузера.</p>
 <iframe id="file-download" name="file-download" title="Завантаження файлу" hidden></iframe>
 </div></section>

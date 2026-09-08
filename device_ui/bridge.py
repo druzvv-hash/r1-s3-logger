@@ -3,6 +3,8 @@ import argparse
 import binascii
 import hmac
 import json
+import logging
+from logging.handlers import RotatingFileHandler
 import secrets
 import socket
 import threading
@@ -15,6 +17,20 @@ import serial
 
 ROOT=Path(__file__).resolve().parents[1]
 SESSION=ROOT/'data/device-panel/session.json'
+
+def diagnostic(message):
+    # Private bounded evidence for UART failures/reboots; never written to public docs.
+    logger=logging.getLogger('r1.serial')
+    if not logger.handlers:
+        SESSION.parent.mkdir(parents=True,exist_ok=True)
+        handler=RotatingFileHandler(SESSION.parent/'serial-diagnostic.log',maxBytes=2*1024*1024,backupCount=2,encoding='utf8')
+        handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+        logger.addHandler(handler);logger.setLevel(logging.INFO);logger.propagate=False
+    logger.info(message)
+
+def diagnostic_lines(raw):
+    for line in raw.splitlines():
+        if line and not line.startswith('PANEL '):diagnostic(line[:2000])
 
 def file_path(hex_path):
     if not hex_path or len(hex_path)%2 or len(hex_path)>=480 or any(c not in '0123456789abcdefABCDEF' for c in hex_path):
@@ -76,17 +92,21 @@ class Device:
                     link.close()
                     raise
                 self.serial=link
+                diagnostic('UART opened with DTR/RTS inactive')
             self.counter=(self.counter+1)&0xffffffff
             prefix=f'PANEL {self.counter} '
-            self.serial.reset_input_buffer()
+            if self.serial.in_waiting:
+                diagnostic_lines(self.serial.read(self.serial.in_waiting).decode('utf8',errors='replace'))
             self.serial.write((prefix+command+'\n').encode('ascii'))
             deadline=time.monotonic()+11
             while time.monotonic()<deadline:
                 line=self.serial.readline(8192).decode('utf8',errors='replace').strip()
                 if line.startswith(prefix):
                     return json.loads(line[len(prefix):])
+                diagnostic_lines(line)
             raise TimeoutError('Логер не відповів. Перевір прошивку v0.14+ і COM-порт; не повторюй запис без перевірки стану.')
-        except Exception:
+        except Exception as exc:
+            diagnostic('UART request failed: '+str(exc))
             self.close()
             raise
         finally:

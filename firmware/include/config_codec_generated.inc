@@ -6,7 +6,11 @@ bool validate(const Config& c) {
     if (!(std::isfinite(c.i_gain) && c.i_gain >= 0.5 && c.i_gain <= 2)) return false;
     if (!(std::isfinite(c.u_zero_V) && c.u_zero_V >= -10 && c.u_zero_V <= 10)) return false;
     if (!(std::isfinite(c.u_gain) && c.u_gain >= 0.5 && c.u_gain <= 2)) return false;
+#if R1_BENCHMARK
+    if (c.requested_rate_hz < 10 || c.requested_rate_hz > 1000) return false;
+#else
     if (!((c.requested_rate_hz == 10 || c.requested_rate_hz == 50 || c.requested_rate_hz == 100))) return false;
+#endif
     if (!((c.adc_range == 0 || c.adc_range == 1))) return false;
     if (!(c.vshunt_ct_code >= 0 && c.vshunt_ct_code <= 7)) return false;
     if (!(c.vbus_ct_code >= 0 && c.vbus_ct_code <= 7)) return false;

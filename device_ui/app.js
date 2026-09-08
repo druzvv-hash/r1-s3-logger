@@ -74,7 +74,7 @@ function updateDraft(){
   $('changes').textContent=changes.map(f=>labels[f.name][0]+': '+String(base[f.name])+' → '+String(current[f.name])).join('\n');
   $('draft-note').textContent=stale()?'Стан змінився. Прочитай з логера заново.':invalid|| (dirty?'Змін у чернетці: '+changes.length:'Чернетка відповідає логеру');
   $('apply').disabled=recordingBusy()||!online||busy||!base||stale()||!dirty||!!invalid;
-  $('save').disabled=recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
+  $('save').disabled=state?.benchmark||recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
   $('export').disabled=!base||!!invalid;
 }
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
@@ -87,7 +87,7 @@ function controls(){
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||state?.recording_state!=='RUNNING';
   $('record-files').disabled=recordingBusy()||busy||!online;
-  $('files-refresh').disabled=recordingBusy()||!online;updateDraft();}
+  $('files-refresh').disabled=recordingBusy()||!online;fileControls();updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
   // HTTP may still answer from core 0 when the hardware owner's snapshot stops.
@@ -96,6 +96,13 @@ function render(s){
   const wasOffline=!online;
   if(state&&s.boot!==state.boot){resetStream(s.boot);lastSample=null;notice('Логер перезапустився. Перевір стан і налаштування.',true);}
   const previousRate=state?.requested_hz;
+  $('benchmark-notice').hidden=!s.benchmark;
+  const rateField=REGISTRY.find(f=>f.name==='requested_rate_hz');
+  const rates=s.benchmark?[...new Set([10,50,100,125,150,200,250,300,400,500,800,1000,s.requested_hz])].sort((a,b)=>a-b):[10,50,100];
+  if(rateField.enum.join()!==rates.join()){
+    rateField.enum=rates;const select=$('f-requested_rate_hz');select.replaceChildren();
+    for(const hz of rates){const option=document.createElement('option');option.value=hz;option.textContent=hz;select.append(option);}
+  }
   state=s;if(previousRate!==s.requested_hz)$('quick-rate').value=s.requested_hz||50;online=true;document.body.classList.remove('offline');
   $('release-usb').hidden=s.transport!=='usb';
   const transport=s.transport==='usb'?'USB через ПК':s.transport==='wifi'?'Wi-Fi напряму':'Підключення до логера';
@@ -108,7 +115,8 @@ function render(s){
   if(wasOffline)notice('Логер підключений. Можна змінювати навантаження та запускати тести.');
   rows('health',[['INA228',s.ina],['microSD',s.sd==='READ'?'Читання OK':s.sd],['24C32',s.eeprom==='READ'?'Читання OK':s.eeprom],['DS3231',s.rtc],['OLED',s.oled?'Працює':'Недоступний']]);
   rows('memory',[['FIFO в PSRAM',s.buffer_ready?(s.queue_bytes/1024)+' KiB · підготовлено':'Не виділено'],['Блок SD у внутрішній SRAM',(s.sd_block_bytes/1024)+' KiB'],['Вільна PSRAM',(s.psram_free/1048576).toFixed(2)+' MiB'],['Вільна внутрішня пам’ять',(s.heap_free/1024).toFixed(1)+' KiB']]);
-  rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
+  const resetNames=['Невідомо','Живлення / апаратний скидання','Зовнішній скидання','Програмний перезапуск','Помилка програми','Сторожовий таймер переривань','Сторожовий таймер задач','Сторожовий таймер','Вихід зі сну','Просідання живлення','SDIO'];
+  rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Частота I²C',s.i2c_hz?s.i2c_hz/1000+' кГц':'—'],['Останній запуск',resetNames[s.reset_reason]||'—'],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
   rows('timing',[['Задана / виміряна частота',(s.requested_hz||'—')+' / '+number(s.measured_hz,2)+' Hz'],['Коректні / некоректні відліки',s.valid_samples+' / '+s.invalid_samples],['Пропущені періоди',s.missed_samples],['Найбільша затримка старту',(s.max_late_us/1000).toFixed(2)+' ms'],['Читання INA / фрагмент OLED',(s.max_read_us/1000).toFixed(2)+' / '+(s.oled_chunk_us/1000).toFixed(2)+' ms'],['Планові паузи на команди',s.maintenance_count+' · '+s.maintenance_ms+' ms'],['Втрати preview / кадри OLED',s.preview_drops+' / '+s.oled_frames]]);
   rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
   $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
@@ -152,12 +160,22 @@ async function command(verb,arg='',useDraft=false){
   finally{busy=false;controls();}
 }
 
-let fileDirectory='/',fileSession=0,fileBusy=false;
+let fileDirectory='/',fileSession=0,fileBusy=false,fileJob=null,fileEpoch=0;
+let fileEntries=[],fileComplete=false,fileLoaded=false,selectedFile=null;
+const fileCollator=new Intl.Collator('uk-UA',{numeric:true,sensitivity:'base'});
 function pathHex(path){return Array.from(new TextEncoder().encode(path),b=>b.toString(16).padStart(2,'0')).join('');}
 function pathText(hex){return new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(hex.match(/../g),s=>parseInt(s,16)));}
 function fileNotice(text){$('files-status').textContent=text;}
 async function filesCommand(command){const r=await api('/api/files?command='+encodeURIComponent(command));if(!r.ok)throw Error(r.message||'Помилка читання SD');return r;}
-async function closeDirectory(){const id=fileSession;fileSession=0;$('files-more').hidden=true;if(id)await filesCommand('CLOSE '+id);}
+async function closeDirectory(){const id=fileSession;fileSession=0;if(id)await filesCommand('CLOSE '+id);}
+async function stopListing(){++fileEpoch;if(fileJob)await fileJob;await closeDirectory();}
+function fileControls(){
+  const blocked=!online||recordingBusy();
+  $('files-up').disabled=blocked||fileDirectory==='/';$('files-records').disabled=blocked;
+  $('files-cancel').hidden=!fileJob;
+  $('files-download-selected').disabled=blocked||!selectedFile||selectedFile.directory||!selectedFile.path;
+  for(const button of document.querySelectorAll('.file-action,.file-name,#files-path button'))button.disabled=blocked||button.dataset.unavailable==='true';
+}
 function fileSize(size){return size<1024?size+' B':size<1048576?(size/1024).toFixed(1)+' KiB':(size/1048576).toFixed(2)+' MiB';}
 function recordingDate(name){
   // Derive only from our session names, never the FAT modification timestamp.
@@ -166,34 +184,73 @@ function recordingDate(name){
   const date=match?new Date(`${match[1]}T${match[2]}:${match[3]}:${match[4]}Z`):legacy&&Number(legacy[1])>0?new Date(Number(legacy[1])*1000):null;
   return date&&Number.isFinite(date.getTime())?date:null;
 }
-async function listFiles(directory=fileDirectory,more=false){
-  if(fileBusy)return;
-  if(!online||!state?.files_available){fileNotice('Потрібне підключення до логера з прошивкою v0.16+.');return;}
-  fileBusy=true;$('files-refresh').disabled=true;$('files-more').disabled=true;
-  try{
-    fileNotice('Читання картки…');
-    if(!more){await closeDirectory();fileDirectory=directory;$('files-path').textContent=directory;$('file-list').replaceChildren();}
-    const result=await filesCommand(more?'NEXT '+fileSession:'LIST '+pathHex(directory));
-    fileSession=result.more?result.session:0;
-    for(const entry of result.entries){
-      const row=document.createElement('div'),label=document.createElement('div'),name=document.createElement('span'),size=document.createElement('small'),button=document.createElement('button');
-      row.className='file-row';name.textContent=(entry.directory?'📁 ':'')+entry.name;
-      label.className='file-label';label.append(name);
-      const date=entry.directory?null:recordingDate(entry.name);
-      if(date){const time=document.createElement('time');time.dateTime=date.toISOString();time.textContent='Початок: '+date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZoneName:'short'});time.title='Місцевий час браузера. UTC: '+date.toISOString();label.append(time);}
-      else if(!entry.directory&&/^r1s3_(?:0_|time-unknown_)/.test(entry.name)){const note=document.createElement('small');note.textContent='Час початку невідомий';label.append(note);}
-      size.textContent=entry.directory?'Папка':fileSize(entry.size);button.textContent=entry.directory?'Відкрити':'Завантажити';
-      button.disabled=!entry.path;
-      button.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
-      row.append(label,size,button);$('file-list').append(row);
-    }
-    $('files-more').hidden=!result.more;$('files-up').disabled=directory==='/';
-    fileNotice($('file-list').children.length?'Файлів і папок: '+$('file-list').children.length+(result.more?' · є наступна сторінка':''):'Папка порожня.');
-  }catch(e){fileSession=0;$('files-more').hidden=true;fileNotice(e.message+' · Спробуй оновити список.');}
-  finally{fileBusy=false;$('files-refresh').disabled=false;$('files-more').disabled=false;}
+function fileBreadcrumbs(){
+  $('files-path').replaceChildren();
+  const parts=[['microSD','/']];let path='';
+  for(const part of fileDirectory.split('/').filter(Boolean)){path+='/'+part;parts.push([part,path]);}
+  for(const [name,path] of parts){const button=document.createElement('button');button.textContent=name;button.onclick=()=>listFiles(path);button.title=path;$('files-path').append(button);}
+}
+function selectFile(entry){
+  selectedFile=entry;
+  for(const row of document.querySelectorAll('.file-row'))row.classList.toggle('selected',row.dataset.key===entry?.key);
+  $('files-selection').textContent=entry?(entry.directory?'Папка: ':'')+entry.name+(entry.directory?'':' · '+fileSize(entry.size)):'Вибери файл, щоб побачити повну назву.';
+  fileControls();
+}
+function renderFiles(){
+  const query=$('files-search').value.trim().toLocaleLowerCase('uk-UA'),type=$('files-type').value,sort=$('files-sort').value;
+  const filtered=fileEntries.filter(e=>(!query||(e.name+' '+e.dateText).toLocaleLowerCase('uk-UA').includes(query))&&(e.directory||type==='all'||e.name.toLowerCase().endsWith('.'+type)));
+  filtered.sort((a,b)=>{
+    if(a.directory!==b.directory)return a.directory?-1:1;
+    let order=0;
+    if(!a.directory&&sort.startsWith('date'))order=a.date&&b.date?(a.date-b.date)*(sort==='date-desc'?-1:1):a.date?-1:b.date?1:0;
+    if(!a.directory&&sort==='size-desc')order=b.size-a.size;
+    return order||fileCollator.compare(a.name,b.name)*(sort==='name-desc'?-1:1);
+  });
+  const fragment=document.createDocumentFragment();
+  for(const entry of filtered){
+    const row=document.createElement('div'),label=document.createElement('button'),icon=document.createElement('span'),name=document.createElement('span'),date=document.createElement('time'),size=document.createElement('small'),action=document.createElement('button');
+    row.className='file-row';row.dataset.key=entry.key;row.classList.toggle('selected',entry.key===selectedFile?.key);
+    label.className='file-name';label.title=entry.name;icon.className='file-icon';icon.textContent=entry.directory?'▸':'▤';icon.setAttribute('aria-hidden','true');name.className='file-name-text';name.textContent=entry.name;label.append(icon,name);
+    label.onclick=()=>{selectFile(entry);if(entry.directory&&entry.path)listFiles(pathText(entry.path));};
+    label.ondblclick=()=>{if(!entry.directory)downloadFile(entry);};
+    label.onkeydown=e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const next=e.key==='ArrowDown'?row.nextElementSibling:row.previousElementSibling;next?.querySelector('.file-name')?.focus();}if(e.key==='Enter'&&!entry.directory){e.preventDefault();downloadFile(entry);}};
+    date.className='file-date';date.textContent=entry.directory?'—':entry.dateText||'—';if(entry.date){date.dateTime=entry.date.toISOString();date.title='Місцевий час браузера. UTC: '+entry.date.toISOString();}else date.title='Час початку невідомий';
+    size.className='file-size';size.textContent=entry.directory?'Папка':fileSize(entry.size);
+    action.className='file-action';action.textContent=entry.directory?'→':'↓';action.title=entry.directory?'Відкрити':'Завантажити';action.setAttribute('aria-label',action.title);action.dataset.unavailable=String(!entry.path);action.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
+    row.onclick=()=>selectFile(entry);row.append(label,date,size,action);fragment.append(row);
+  }
+  if(!filtered.length){const empty=document.createElement('p');empty.className='files-empty';empty.textContent=fileComplete?(fileEntries.length?'Нічого не знайдено.':'Папка порожня.'):'Читання папки…';fragment.append(empty);}
+  $('file-list').replaceChildren(fragment);
+  fileNotice(fileComplete?(fileEntries.length?'Показано '+filtered.length+' із '+fileEntries.length+' · усю папку прочитано.':'Папка порожня.'):'Прочитано '+fileEntries.length+' · показано '+filtered.length+' · '+(fileJob?'читаємо далі…':'список неповний. Онови папку.'));
+  fileControls();
+}
+async function listFiles(directory=fileDirectory){
+  const epoch=++fileEpoch;if(fileJob)await fileJob;if(epoch!==fileEpoch||fileBusy)return;
+  if(!online||!state?.files_available||recordingBusy()){fileNotice('Доступ до файлів — після зупинки запису та підключення логера.');return;}
+  fileBusy=true;fileLoaded=true;fileDirectory=directory;fileEntries=[];fileComplete=false;selectedFile=null;
+  $('files-search').value='';$('files-scroll').scrollTop=0;fileBreadcrumbs();selectFile(null);
+  fileJob=(async()=>{
+    try{
+      await closeDirectory();let next=false;const seen=new Set();
+      do{
+        const result=await filesCommand(next?'NEXT '+fileSession:'LIST '+pathHex(directory));
+        fileSession=result.more?result.session:0;if(epoch!==fileEpoch)break;
+        for(const entry of result.entries){
+          entry.key=entry.path||entry.name;if(seen.has(entry.key))continue;seen.add(entry.key);
+          entry.date=entry.directory?null:recordingDate(entry.name);entry.dateText=entry.date?entry.date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';fileEntries.push(entry);
+        }
+        next=result.more;fileComplete=!next;renderFiles();
+        // Yield between bounded device pages; search, scrolling and cancellation stay responsive.
+        if(next)await new Promise(r=>setTimeout(r,20));
+      }while(next&&epoch===fileEpoch);
+    }catch(e){renderFiles();fileNotice('Список неповний: '+e.message+' · Онови папку.');}
+    finally{try{await closeDirectory();}catch{}fileBusy=false;fileJob=null;fileControls();}
+  })();
+  fileControls();await fileJob;
 }
 async function downloadFile(entry){
-  if(fileBusy)return;fileBusy=true;
+  if(!entry.path||entry.directory||!online||recordingBusy())return;
+  await stopListing();if(fileBusy)return;fileBusy=true;
   try{
     await closeDirectory();
     // Check access now so card/busy errors appear in the panel, before starting a browser download.
@@ -286,14 +343,18 @@ function animate(now){
 makeFields();
 $('files-refresh').onclick=()=>listFiles();
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
-$('record-start').onclick=async()=>{try{await closeDirectory();await command('START');}catch(e){notice(e.message,true);}};
+$('record-start').onclick=async()=>{try{await stopListing();await command('START');}catch(e){notice(e.message,true);}};
 $('record-stop').onclick=()=>command('STOP');
 $('record-files').onclick=()=>{document.querySelector('[data-tab="files"]').click();listFiles('/records');};
-$('files-more').onclick=()=>listFiles(fileDirectory,true);
+$('files-records').onclick=()=>listFiles('/records');
+$('files-cancel').onclick=async()=>{await stopListing();renderFiles();};
+$('files-search').oninput=()=>{$('files-scroll').scrollTop=0;renderFiles();};
+$('files-sort').onchange=$('files-type').onchange=()=>{$('files-scroll').scrollTop=0;renderFiles();};
+$('files-download-selected').onclick=()=>{if(selectedFile)downloadFile(selectedFile);};
 $('files-up').onclick=()=>listFiles(fileDirectory.slice(0,fileDirectory.lastIndexOf('/'))||'/');
 $('file-download').onload=()=>{try{const text=$('file-download').contentDocument.body.textContent;if(text){const r=JSON.parse(text);if(r.message)fileNotice('Не вдалося завантажити: '+r.message);}}catch{}};
 $('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',updateDraft);
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));draw();});
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
 $('release-usb').onclick=async()=>{

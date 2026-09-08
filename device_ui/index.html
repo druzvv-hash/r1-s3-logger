@@ -3,22 +3,30 @@
 <meta name="color-scheme" content="dark"><title>R1-S3 · Панель тестів</title><style>:root{font-family:system-ui,"Segoe UI",sans-serif;color:#e7eef1;background:#0c1015;font-synthesis:none;--line:#29333d;--muted:#91a0ad;--cyan:#00c8ff;--yellow:#ffd600;--pink:#ff66b0}*{box-sizing:border-box}body{margin:0}header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;background:#11171e}.brand{font-size:27px;font-weight:800;letter-spacing:2px}.brand span{color:var(--cyan)}.brand small{font-size:10px;letter-spacing:2px;margin-left:20px;color:var(--muted)}main{max-width:1480px;margin:auto;padding:28px 4vw}.badge{border:1px solid var(--line);border-radius:6px;font-size:12px;padding:7px 12px;color:#a8bac7;white-space:nowrap}.badge.online{color:#63e0b3;border-color:#2c6655}.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}h1{font-size:27px;margin:8px 0}h2{font-size:16px;margin:0 0 16px}.clock{text-align:right;font-size:14px}.clock small{display:block;color:var(--muted);margin-top:6px}#notice{font-size:13px;min-height:38px;color:#8fdfc2;padding:9px 12px;border-left:3px solid #3f8e72;background:#13231f;margin-bottom:18px}#notice.error{color:#ffc194;border-color:#eb8a4d;background:#2d211b}.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.meter{background:#121b23;border:1px solid #2b3d4b;border-top:3px solid currentColor;padding:24px 23px 20px;border-radius:8px}.current{color:var(--cyan)}.voltage{color:var(--yellow)}.power{color:var(--pink)}.meter label{font-size:11px;letter-spacing:2px}.meter div{display:flex;align-items:baseline;gap:10px;margin:12px 0}.meter strong{font-size:clamp(30px,3.7vw,55px);font-variant-numeric:tabular-nums;font-weight:650;letter-spacing:-2px}.meter div span{font-size:20px}.meter small{font-size:11px;color:var(--muted)}nav{display:flex;gap:20px;border-bottom:1px solid var(--line);margin:24px 0}button{border:1px solid #384754;color:#d4e1e9;background:#1c2832;border-radius:5px;padding:10px 14px;font:inherit;font-size:12px;cursor:pointer;transition:background .15s}button:hover:enabled{background:#2c3e4d}button:disabled{opacity:.4;cursor:not-allowed}button.primary{background:#03a4d0;border-color:#03a4d0;color:#061922;font-weight:700}.tab{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:12px 3px;color:var(--muted)}.tab.active{color:var(--cyan);border-color:var(--cyan)}.panel{background:#121920;border:1px solid var(--line);border-radius:8px;padding:22px;margin-bottom:18px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-title h2{margin-bottom:8px}.section-title p{margin:0}.legend{font-size:12px;margin-right:12px}canvas{width:100%;height:295px;display:block;background:#0b1016;margin-top:18px;border-radius:4px}.chart-note{text-align:right;color:var(--muted);font-size:10px;margin-top:9px}.overview{display:grid;grid-template-columns:1fr 1fr;gap:18px}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.standby{font-size:22px;color:#bccbd8;font-weight:600}p{font-size:13px;line-height:1.65;color:#b5c2cd}.muted{color:var(--muted);font-size:12px}dl{display:grid;grid-template-columns:1fr auto;gap:10px 20px;font-size:12px;margin:20px 0}dt{color:var(--muted)}dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}footer{display:flex;justify-content:space-between;color:#6f8494;font-size:10px;margin:8px 0 18px;gap:15px}a{color:var(--cyan)}summary{cursor:pointer;font-size:12px;color:var(--cyan);margin:12px 0}code{font-family:monospace;color:#a9d7c5}fieldset{border:0;border-top:1px solid var(--line);padding:20px 0;margin-top:25px}legend{font-size:14px;padding-right:15px;font-weight:600}.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.field{display:flex;flex-direction:column;gap:7px;font-size:12px}.field small{color:var(--muted);font-size:10px;line-height:1.5}.field input,.field select{width:100%;background:#0c1218;border:1px solid #354551;border-radius:4px;padding:9px;color:#e4f1f9;font:inherit}.field input:focus,.field select:focus{outline:1px solid var(--cyan)}.field input[type=checkbox]{width:20px;height:20px}.sticky-actions{position:sticky;bottom:0;background:#15202bf5;border-top:1px solid #324856;margin:20px -22px -22px;padding:16px 22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}#draft-note,#config-state{font-size:12px;color:var(--muted)}#changes{font-size:12px;color:#f0c786;line-height:1.8;white-space:pre-wrap}.offline .meter strong{color:#647888}@media(max-width:800px){main{padding:20px 4vw}.meter{padding:15px}.meter strong{font-size:31px}.meter small{display:none}.overview{grid-template-columns:1fr;gap:0}.field-grid{grid-template-columns:repeat(2,1fr)}.brand small{display:none}.section-title{align-items:flex-start;flex-direction:column}.topline h1{font-size:21px}.clock{font-size:11px}footer{flex-direction:column}.legend{margin-right:8px}}@media(max-width:480px){.meters{gap:7px}.meter{padding:12px 9px}.meter strong{font-size:25px;letter-spacing:-1px}.meter div{gap:3px;flex-wrap:wrap}.meter div span{font-size:14px}.meter label{font-size:9px}.field-grid{grid-template-columns:1fr}.clock b{font-size:10px}.brand{font-size:23px}.panel{padding:16px}.sticky-actions{margin-left:-16px;margin-right:-16px;margin-bottom:-16px;padding:14px 16px}header{height:64px}}
 
 .live-controls{display:flex;align-items:end;gap:16px;flex-wrap:wrap}
+#benchmark-notice{color:#ffcf8b;border:1px solid #976531;background:#302316;padding:12px;border-radius:5px}
+#files-scroll::-webkit-scrollbar{width:12px;height:12px}#files-scroll::-webkit-scrollbar-track{background:#16212b}#files-scroll::-webkit-scrollbar-thumb{background:#526b7f;border:3px solid #16212b;border-radius:8px}#files-scroll::-webkit-scrollbar-corner{background:#16212b}
 .live-controls label{display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--muted)}
 .live-controls select{background:#0c1218;border:1px solid #354551;color:#e4f1f9;border-radius:4px;padding:9px;font:inherit;min-width:110px}
 .live-controls small{flex-basis:100%;color:var(--muted);font-size:11px}
 #stream-status{font-variant-numeric:tabular-nums}
-.file-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}
-.file-row span,#files-path{overflow-wrap:anywhere}.file-row small{color:var(--muted);white-space:nowrap}
-.file-label{min-width:0}.file-label time,.file-label small{display:block;margin-top:6px;color:var(--muted);font-size:12px;white-space:normal}
+.file-navigation{align-items:center}.file-navigation button{padding:8px 10px}
+#files-path{display:flex;align-items:center;flex-wrap:wrap;gap:4px;min-width:0}#files-path button{color:var(--cyan);background:transparent;border:0;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#files-path button+button:before{content:'› ';color:var(--muted)}
+.file-toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}.file-toolbar label{display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--muted)}.file-toolbar .file-search{flex:1;min-width:180px}.file-toolbar input,.file-toolbar select{font:inherit;font-size:13px;color:#e4f1f9;background:#0c1218;border:1px solid #354551;border-radius:5px;padding:9px;min-width:0}
+#files-scroll{height:clamp(280px,52vh,600px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;border:1px solid var(--line);border-radius:5px;background:#0c1218}
+.file-columns,.file-row{display:grid;grid-template-columns:minmax(180px,1fr) 172px 85px 40px;gap:12px;align-items:center;padding:0 12px;min-width:590px}
+.file-columns{position:sticky;top:0;height:38px;background:#1b2630;color:var(--muted);font-size:11px;z-index:1;border-bottom:1px solid #384754}
+.file-row{height:45px;border-bottom:1px solid #1c2933;font-size:12px}.file-row:hover{background:#142632}.file-row.selected{background:#153747;box-shadow:inset 3px 0 var(--cyan)}
+.file-name{min-width:0;display:flex;align-items:center;gap:10px;text-align:left;padding:8px 0;background:transparent;border:0;font-size:12px}.file-name-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.file-icon{color:var(--cyan);flex:none}.file-date,.file-size{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}.file-size{text-align:right}.file-action{font-size:18px;padding:2px 8px;border:0;background:transparent;color:var(--cyan)}
+.file-selection{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;font-size:11px;color:var(--muted)}#files-selection{overflow-wrap:anywhere;min-width:0}.file-selection button{flex:none}.files-empty{padding:15px}
 .wifi-steps{padding-left:24px;line-height:1.6}.wifi-steps li{margin:12px 0}#wifi-password{overflow-wrap:anywhere}nav{flex-wrap:wrap}
-#files-path{align-self:center;font-size:13px;color:var(--cyan)}#files-more{margin-top:16px}
 #record-path{overflow-wrap:anywhere}.badge.recording{color:#ff5989;border-color:#ff5989}#record-stop{border-color:#ff5989}
-@media(max-width:480px){nav{gap:12px}.file-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.file-label{grid-column:1/-1}}
+@media(max-width:480px){nav{gap:12px}.file-toolbar{gap:8px}.file-toolbar .file-search{flex-basis:100%}.file-toolbar label{flex:1}.file-selection{align-items:stretch;flex-direction:column}.file-columns,.file-row{min-width:570px}.file-navigation{gap:5px}#files-path{flex-basis:100%}}
 </style></head>
 <body><header><div class="brand">R1<span> / </span>S3 <small>ПАНЕЛЬ ТЕСТІВ</small></div><div id="connection" class="badge">Підключення…</div></header>
 <main>
 <div class="topline"><div><span class="eyebrow">INA228 · 400 A / 60 mV</span><h1>Вимірювання наживо</h1></div><div class="clock"><b id="utc">—</b><small id="cadence">Очікування даних</small></div></div>
 <div id="notice" role="status" aria-live="polite">З’єднання з логером…</div>
+<p id="benchmark-notice" hidden>Дослідна прошивка: порівнюємо швидкість і шум. Режими ще не затверджені для роботи. Тест сам зупиняє запис і повертає попередні налаштування; запис у EEPROM вимкнений.</p>
 <section class="meters" aria-label="Поточні показники">
 <article class="meter current"><label>СТРУМ</label><div><strong id="amps">—</strong><span>A</span></div><small>Знак відповідно до полярності шунта</small></article>
 <article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
@@ -39,9 +47,11 @@
 </section>
 <section id="files" class="page" hidden>
 <div class="panel"><div class="section-title"><div><h2>Файли на microSD</h2><p>Завантажуй записи на комп’ютер або телефон, залишаючи картку в логері.</p></div><span id="file-transfer" class="badge">Очікування</span></div>
-<div class="button-row"><button id="files-refresh" class="primary">Оновити список</button><button id="files-up">На рівень вище</button><span id="files-path">/</span></div>
+<div class="button-row file-navigation"><button id="files-up" title="На рівень вище">↑ Вище</button><button id="files-records">Записи</button><button id="files-refresh">↻ Оновити</button><button id="files-cancel" hidden>Зупинити читання</button><div id="files-path" aria-label="Шлях до папки">/</div></div>
+<div class="file-toolbar"><label class="file-search">Пошук у цій папці<input id="files-search" type="search" placeholder="Назва або дата…" autocomplete="off"></label><label>Сортування<select id="files-sort"><option value="date-desc">Спочатку нові</option><option value="date-asc">Спочатку давні</option><option value="name-asc">Назва А → Я</option><option value="name-desc">Назва Я → А</option><option value="size-desc">Спочатку великі</option></select></label><label>Тип<select id="files-type"><option value="all">Усі файли</option><option value="csv">Записи CSV</option><option value="part">Незавершені</option></select></label></div>
 <p id="files-status" role="status" aria-live="polite">Натисни «Оновити список», щоб прочитати картку.</p>
-<div id="file-list"></div><button id="files-more" hidden>Ще файли</button>
+<div id="files-scroll" tabindex="0" role="region" aria-label="Список файлів зі скролом"><div class="file-columns" aria-hidden="true"><span>Назва</span><span>Початок · місцевий час</span><span>Розмір</span><span></span></div><div id="file-list"></div></div>
+<div class="file-selection"><span id="files-selection">Вибери файл, щоб побачити повну назву.</span><button id="files-download-selected" disabled>Завантажити вибраний</button></div>
 <p class="muted">Файли залишаються на картці. Для великих записів Wi-Fi швидший; через USB завантаження може тривати довго. Прогрес і скасування — у завантаженнях браузера.</p>
 <iframe id="file-download" name="file-download" title="Завантаження файлу" hidden></iframe>
 </div></section>
@@ -191,7 +201,7 @@ function updateDraft(){
   $('changes').textContent=changes.map(f=>labels[f.name][0]+': '+String(base[f.name])+' → '+String(current[f.name])).join('\n');
   $('draft-note').textContent=stale()?'Стан змінився. Прочитай з логера заново.':invalid|| (dirty?'Змін у чернетці: '+changes.length:'Чернетка відповідає логеру');
   $('apply').disabled=recordingBusy()||!online||busy||!base||stale()||!dirty||!!invalid;
-  $('save').disabled=recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
+  $('save').disabled=state?.benchmark||recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
   $('export').disabled=!base||!!invalid;
 }
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
@@ -204,7 +214,7 @@ function controls(){
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||state?.recording_state!=='RUNNING';
   $('record-files').disabled=recordingBusy()||busy||!online;
-  $('files-refresh').disabled=recordingBusy()||!online;updateDraft();}
+  $('files-refresh').disabled=recordingBusy()||!online;fileControls();updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
   // HTTP may still answer from core 0 when the hardware owner's snapshot stops.
@@ -213,6 +223,13 @@ function render(s){
   const wasOffline=!online;
   if(state&&s.boot!==state.boot){resetStream(s.boot);lastSample=null;notice('Логер перезапустився. Перевір стан і налаштування.',true);}
   const previousRate=state?.requested_hz;
+  $('benchmark-notice').hidden=!s.benchmark;
+  const rateField=REGISTRY.find(f=>f.name==='requested_rate_hz');
+  const rates=s.benchmark?[...new Set([10,50,100,125,150,200,250,300,400,500,800,1000,s.requested_hz])].sort((a,b)=>a-b):[10,50,100];
+  if(rateField.enum.join()!==rates.join()){
+    rateField.enum=rates;const select=$('f-requested_rate_hz');select.replaceChildren();
+    for(const hz of rates){const option=document.createElement('option');option.value=hz;option.textContent=hz;select.append(option);}
+  }
   state=s;if(previousRate!==s.requested_hz)$('quick-rate').value=s.requested_hz||50;online=true;document.body.classList.remove('offline');
   $('release-usb').hidden=s.transport!=='usb';
   const transport=s.transport==='usb'?'USB через ПК':s.transport==='wifi'?'Wi-Fi напряму':'Підключення до логера';
@@ -225,7 +242,8 @@ function render(s){
   if(wasOffline)notice('Логер підключений. Можна змінювати навантаження та запускати тести.');
   rows('health',[['INA228',s.ina],['microSD',s.sd==='READ'?'Читання OK':s.sd],['24C32',s.eeprom==='READ'?'Читання OK':s.eeprom],['DS3231',s.rtc],['OLED',s.oled?'Працює':'Недоступний']]);
   rows('memory',[['FIFO в PSRAM',s.buffer_ready?(s.queue_bytes/1024)+' KiB · підготовлено':'Не виділено'],['Блок SD у внутрішній SRAM',(s.sd_block_bytes/1024)+' KiB'],['Вільна PSRAM',(s.psram_free/1048576).toFixed(2)+' MiB'],['Вільна внутрішня пам’ять',(s.heap_free/1024).toFixed(1)+' KiB']]);
-  rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
+  const resetNames=['Невідомо','Живлення / апаратний скидання','Зовнішній скидання','Програмний перезапуск','Помилка програми','Сторожовий таймер переривань','Сторожовий таймер задач','Сторожовий таймер','Вихід зі сну','Просідання живлення','SDIO'];
+  rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Частота I²C',s.i2c_hz?s.i2c_hz/1000+' кГц':'—'],['Останній запуск',resetNames[s.reset_reason]||'—'],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
   rows('timing',[['Задана / виміряна частота',(s.requested_hz||'—')+' / '+number(s.measured_hz,2)+' Hz'],['Коректні / некоректні відліки',s.valid_samples+' / '+s.invalid_samples],['Пропущені періоди',s.missed_samples],['Найбільша затримка старту',(s.max_late_us/1000).toFixed(2)+' ms'],['Читання INA / фрагмент OLED',(s.max_read_us/1000).toFixed(2)+' / '+(s.oled_chunk_us/1000).toFixed(2)+' ms'],['Планові паузи на команди',s.maintenance_count+' · '+s.maintenance_ms+' ms'],['Втрати preview / кадри OLED',s.preview_drops+' / '+s.oled_frames]]);
   rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
   $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
@@ -269,12 +287,22 @@ async function command(verb,arg='',useDraft=false){
   finally{busy=false;controls();}
 }
 
-let fileDirectory='/',fileSession=0,fileBusy=false;
+let fileDirectory='/',fileSession=0,fileBusy=false,fileJob=null,fileEpoch=0;
+let fileEntries=[],fileComplete=false,fileLoaded=false,selectedFile=null;
+const fileCollator=new Intl.Collator('uk-UA',{numeric:true,sensitivity:'base'});
 function pathHex(path){return Array.from(new TextEncoder().encode(path),b=>b.toString(16).padStart(2,'0')).join('');}
 function pathText(hex){return new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(hex.match(/../g),s=>parseInt(s,16)));}
 function fileNotice(text){$('files-status').textContent=text;}
 async function filesCommand(command){const r=await api('/api/files?command='+encodeURIComponent(command));if(!r.ok)throw Error(r.message||'Помилка читання SD');return r;}
-async function closeDirectory(){const id=fileSession;fileSession=0;$('files-more').hidden=true;if(id)await filesCommand('CLOSE '+id);}
+async function closeDirectory(){const id=fileSession;fileSession=0;if(id)await filesCommand('CLOSE '+id);}
+async function stopListing(){++fileEpoch;if(fileJob)await fileJob;await closeDirectory();}
+function fileControls(){
+  const blocked=!online||recordingBusy();
+  $('files-up').disabled=blocked||fileDirectory==='/';$('files-records').disabled=blocked;
+  $('files-cancel').hidden=!fileJob;
+  $('files-download-selected').disabled=blocked||!selectedFile||selectedFile.directory||!selectedFile.path;
+  for(const button of document.querySelectorAll('.file-action,.file-name,#files-path button'))button.disabled=blocked||button.dataset.unavailable==='true';
+}
 function fileSize(size){return size<1024?size+' B':size<1048576?(size/1024).toFixed(1)+' KiB':(size/1048576).toFixed(2)+' MiB';}
 function recordingDate(name){
   // Derive only from our session names, never the FAT modification timestamp.
@@ -283,34 +311,73 @@ function recordingDate(name){
   const date=match?new Date(`${match[1]}T${match[2]}:${match[3]}:${match[4]}Z`):legacy&&Number(legacy[1])>0?new Date(Number(legacy[1])*1000):null;
   return date&&Number.isFinite(date.getTime())?date:null;
 }
-async function listFiles(directory=fileDirectory,more=false){
-  if(fileBusy)return;
-  if(!online||!state?.files_available){fileNotice('Потрібне підключення до логера з прошивкою v0.16+.');return;}
-  fileBusy=true;$('files-refresh').disabled=true;$('files-more').disabled=true;
-  try{
-    fileNotice('Читання картки…');
-    if(!more){await closeDirectory();fileDirectory=directory;$('files-path').textContent=directory;$('file-list').replaceChildren();}
-    const result=await filesCommand(more?'NEXT '+fileSession:'LIST '+pathHex(directory));
-    fileSession=result.more?result.session:0;
-    for(const entry of result.entries){
-      const row=document.createElement('div'),label=document.createElement('div'),name=document.createElement('span'),size=document.createElement('small'),button=document.createElement('button');
-      row.className='file-row';name.textContent=(entry.directory?'📁 ':'')+entry.name;
-      label.className='file-label';label.append(name);
-      const date=entry.directory?null:recordingDate(entry.name);
-      if(date){const time=document.createElement('time');time.dateTime=date.toISOString();time.textContent='Початок: '+date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZoneName:'short'});time.title='Місцевий час браузера. UTC: '+date.toISOString();label.append(time);}
-      else if(!entry.directory&&/^r1s3_(?:0_|time-unknown_)/.test(entry.name)){const note=document.createElement('small');note.textContent='Час початку невідомий';label.append(note);}
-      size.textContent=entry.directory?'Папка':fileSize(entry.size);button.textContent=entry.directory?'Відкрити':'Завантажити';
-      button.disabled=!entry.path;
-      button.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
-      row.append(label,size,button);$('file-list').append(row);
-    }
-    $('files-more').hidden=!result.more;$('files-up').disabled=directory==='/';
-    fileNotice($('file-list').children.length?'Файлів і папок: '+$('file-list').children.length+(result.more?' · є наступна сторінка':''):'Папка порожня.');
-  }catch(e){fileSession=0;$('files-more').hidden=true;fileNotice(e.message+' · Спробуй оновити список.');}
-  finally{fileBusy=false;$('files-refresh').disabled=false;$('files-more').disabled=false;}
+function fileBreadcrumbs(){
+  $('files-path').replaceChildren();
+  const parts=[['microSD','/']];let path='';
+  for(const part of fileDirectory.split('/').filter(Boolean)){path+='/'+part;parts.push([part,path]);}
+  for(const [name,path] of parts){const button=document.createElement('button');button.textContent=name;button.onclick=()=>listFiles(path);button.title=path;$('files-path').append(button);}
+}
+function selectFile(entry){
+  selectedFile=entry;
+  for(const row of document.querySelectorAll('.file-row'))row.classList.toggle('selected',row.dataset.key===entry?.key);
+  $('files-selection').textContent=entry?(entry.directory?'Папка: ':'')+entry.name+(entry.directory?'':' · '+fileSize(entry.size)):'Вибери файл, щоб побачити повну назву.';
+  fileControls();
+}
+function renderFiles(){
+  const query=$('files-search').value.trim().toLocaleLowerCase('uk-UA'),type=$('files-type').value,sort=$('files-sort').value;
+  const filtered=fileEntries.filter(e=>(!query||(e.name+' '+e.dateText).toLocaleLowerCase('uk-UA').includes(query))&&(e.directory||type==='all'||e.name.toLowerCase().endsWith('.'+type)));
+  filtered.sort((a,b)=>{
+    if(a.directory!==b.directory)return a.directory?-1:1;
+    let order=0;
+    if(!a.directory&&sort.startsWith('date'))order=a.date&&b.date?(a.date-b.date)*(sort==='date-desc'?-1:1):a.date?-1:b.date?1:0;
+    if(!a.directory&&sort==='size-desc')order=b.size-a.size;
+    return order||fileCollator.compare(a.name,b.name)*(sort==='name-desc'?-1:1);
+  });
+  const fragment=document.createDocumentFragment();
+  for(const entry of filtered){
+    const row=document.createElement('div'),label=document.createElement('button'),icon=document.createElement('span'),name=document.createElement('span'),date=document.createElement('time'),size=document.createElement('small'),action=document.createElement('button');
+    row.className='file-row';row.dataset.key=entry.key;row.classList.toggle('selected',entry.key===selectedFile?.key);
+    label.className='file-name';label.title=entry.name;icon.className='file-icon';icon.textContent=entry.directory?'▸':'▤';icon.setAttribute('aria-hidden','true');name.className='file-name-text';name.textContent=entry.name;label.append(icon,name);
+    label.onclick=()=>{selectFile(entry);if(entry.directory&&entry.path)listFiles(pathText(entry.path));};
+    label.ondblclick=()=>{if(!entry.directory)downloadFile(entry);};
+    label.onkeydown=e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const next=e.key==='ArrowDown'?row.nextElementSibling:row.previousElementSibling;next?.querySelector('.file-name')?.focus();}if(e.key==='Enter'&&!entry.directory){e.preventDefault();downloadFile(entry);}};
+    date.className='file-date';date.textContent=entry.directory?'—':entry.dateText||'—';if(entry.date){date.dateTime=entry.date.toISOString();date.title='Місцевий час браузера. UTC: '+entry.date.toISOString();}else date.title='Час початку невідомий';
+    size.className='file-size';size.textContent=entry.directory?'Папка':fileSize(entry.size);
+    action.className='file-action';action.textContent=entry.directory?'→':'↓';action.title=entry.directory?'Відкрити':'Завантажити';action.setAttribute('aria-label',action.title);action.dataset.unavailable=String(!entry.path);action.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
+    row.onclick=()=>selectFile(entry);row.append(label,date,size,action);fragment.append(row);
+  }
+  if(!filtered.length){const empty=document.createElement('p');empty.className='files-empty';empty.textContent=fileComplete?(fileEntries.length?'Нічого не знайдено.':'Папка порожня.'):'Читання папки…';fragment.append(empty);}
+  $('file-list').replaceChildren(fragment);
+  fileNotice(fileComplete?(fileEntries.length?'Показано '+filtered.length+' із '+fileEntries.length+' · усю папку прочитано.':'Папка порожня.'):'Прочитано '+fileEntries.length+' · показано '+filtered.length+' · '+(fileJob?'читаємо далі…':'список неповний. Онови папку.'));
+  fileControls();
+}
+async function listFiles(directory=fileDirectory){
+  const epoch=++fileEpoch;if(fileJob)await fileJob;if(epoch!==fileEpoch||fileBusy)return;
+  if(!online||!state?.files_available||recordingBusy()){fileNotice('Доступ до файлів — після зупинки запису та підключення логера.');return;}
+  fileBusy=true;fileLoaded=true;fileDirectory=directory;fileEntries=[];fileComplete=false;selectedFile=null;
+  $('files-search').value='';$('files-scroll').scrollTop=0;fileBreadcrumbs();selectFile(null);
+  fileJob=(async()=>{
+    try{
+      await closeDirectory();let next=false;const seen=new Set();
+      do{
+        const result=await filesCommand(next?'NEXT '+fileSession:'LIST '+pathHex(directory));
+        fileSession=result.more?result.session:0;if(epoch!==fileEpoch)break;
+        for(const entry of result.entries){
+          entry.key=entry.path||entry.name;if(seen.has(entry.key))continue;seen.add(entry.key);
+          entry.date=entry.directory?null:recordingDate(entry.name);entry.dateText=entry.date?entry.date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';fileEntries.push(entry);
+        }
+        next=result.more;fileComplete=!next;renderFiles();
+        // Yield between bounded device pages; search, scrolling and cancellation stay responsive.
+        if(next)await new Promise(r=>setTimeout(r,20));
+      }while(next&&epoch===fileEpoch);
+    }catch(e){renderFiles();fileNotice('Список неповний: '+e.message+' · Онови папку.');}
+    finally{try{await closeDirectory();}catch{}fileBusy=false;fileJob=null;fileControls();}
+  })();
+  fileControls();await fileJob;
 }
 async function downloadFile(entry){
-  if(fileBusy)return;fileBusy=true;
+  if(!entry.path||entry.directory||!online||recordingBusy())return;
+  await stopListing();if(fileBusy)return;fileBusy=true;
   try{
     await closeDirectory();
     // Check access now so card/busy errors appear in the panel, before starting a browser download.
@@ -403,14 +470,18 @@ function animate(now){
 makeFields();
 $('files-refresh').onclick=()=>listFiles();
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
-$('record-start').onclick=async()=>{try{await closeDirectory();await command('START');}catch(e){notice(e.message,true);}};
+$('record-start').onclick=async()=>{try{await stopListing();await command('START');}catch(e){notice(e.message,true);}};
 $('record-stop').onclick=()=>command('STOP');
 $('record-files').onclick=()=>{document.querySelector('[data-tab="files"]').click();listFiles('/records');};
-$('files-more').onclick=()=>listFiles(fileDirectory,true);
+$('files-records').onclick=()=>listFiles('/records');
+$('files-cancel').onclick=async()=>{await stopListing();renderFiles();};
+$('files-search').oninput=()=>{$('files-scroll').scrollTop=0;renderFiles();};
+$('files-sort').onchange=$('files-type').onchange=()=>{$('files-scroll').scrollTop=0;renderFiles();};
+$('files-download-selected').onclick=()=>{if(selectedFile)downloadFile(selectedFile);};
 $('files-up').onclick=()=>listFiles(fileDirectory.slice(0,fileDirectory.lastIndexOf('/'))||'/');
 $('file-download').onload=()=>{try{const text=$('file-download').contentDocument.body.textContent;if(text){const r=JSON.parse(text);if(r.message)fileNotice('Не вдалося завантажити: '+r.message);}}catch{}};
 $('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',updateDraft);
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));draw();});
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
 $('release-usb').onclick=async()=>{

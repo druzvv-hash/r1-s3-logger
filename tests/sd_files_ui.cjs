@@ -45,7 +45,7 @@ const data=Buffer.from([0,255,10,13,35,34,65,66,67]);
   await page.waitForFunction(()=>!fileBusy&&document.querySelectorAll('.file-row').length>0);
   assert.equal(await page.locator('#file-list img').count(),0,'Filenames must be text, never HTML');
   const button=page.locator('.file-row').filter({has:page.getByRole('button',{name:'Завантажити',exact:true})}).first();
-  const filename=await button.locator('span').textContent();
+  const filename=await button.locator('.file-name-text').textContent();
   const pending=page.waitForEvent('download');await button.getByRole('button',{name:'Завантажити',exact:true}).click();
   const download=await pending;assert.equal(await download.failure(),null);
   assert.equal(download.suggestedFilename(),filename);

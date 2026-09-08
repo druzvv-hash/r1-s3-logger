@@ -16,6 +16,9 @@ public:
     }return true;
  }
  bool write(uint16_t addr,const uint8_t* p,size_t n) override {
+#if R1_BENCHMARK
+    return false; // Experimental profiles must never reach EEPROM through any path.
+#endif
     if(!n||n>32||addr%32+n>32||size_t(addr)+n>3072)return false;
     Wire.beginTransmission(0x50);Wire.write(uint8_t(addr>>8));Wire.write(uint8_t(addr));
     if(Wire.write(p,n)!=n||Wire.endTransmission()!=0)return false;
@@ -44,7 +47,11 @@ const char* settingsStatus(){if(persisted.blocked)return "BLOCKED";if(!ready||!i
 void setSettingsRecording(bool value){recording=value;}
 // Budget for 100 kHz I2C trigger/readback and scheduler overhead, beyond ADC time.
 bool runtimeTimingFeasible(const settings::Config& c){
+#if R1_BENCHMARK
+ return settings::timingFeasible(c); // Deliberately measure the scheduling/I2C limit.
+#else
  return settings::timingFeasible(c) && settings::conversionUs(c)+4000<=1000000/c.requested_rate_hz;
+#endif
 }
 void initSettings(){
  persisted=settings::scan(eeprom);draft=persisted.index>=0?persisted.selected.config:settings::Config{};
@@ -81,6 +88,9 @@ bool handleSettingsCommand(const char* line){
     applied=draft;ready=true;Serial.println("CONFIG OK APPLY");state();return true;
  }
  if(!strcmp(line,"CONFIG SAVE")){
+#if R1_BENCHMARK
+    fail("EEPROM writes disabled in benchmark firmware");return true;
+#endif
     if(!ready||!settings::equal(applied,draft)){fail("apply valid draft first");return true;}
     if(!settings::save(eeprom,applied,persisted)){saveUncertain=true;fail("SAVE failed/blocked; persistence uncertain until reread, previous good slot untouched");return true;}
     saveUncertain=false;Serial.println("CONFIG OK SAVE");state();return true;
@@ -100,6 +110,9 @@ bool panelApplySettings(const settings::Bytes& payload,const char*& error){
  applied=candidate;draft=candidate;ready=true;return true;
 }
 bool panelSaveSettings(const char*& error){
+#if R1_BENCHMARK
+ error="EEPROM writes disabled in benchmark firmware";return false;
+#endif
  if(recording||receiving||!settingsReady()||!settings::equal(applied,draft)){error="Apply valid settings first; finish UART transfer";return false;}
  ++revision;
  if(!settings::save(eeprom,applied,persisted)){saveUncertain=true;error="EEPROM save/readback failed; persistence uncertain";return false;}

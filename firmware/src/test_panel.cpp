@@ -7,6 +7,8 @@
 #include "live_history.h"
 #include "sd_files.h"
 #include "recorder.h"
+#include "rate_benchmark.h"
+#include <Wire.h>
 #include "panel_assets.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -215,6 +217,12 @@ void panelPublish(const PanelHardware& h){
     String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
     String s;s.reserve(4800);
     s="{\"ready\":true,\"firmware\":\"" R1_FIRMWARE_VERSION "\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
+    s+=",\"reset_reason\":"+String(unsigned(esp_reset_reason()))+",\"i2c_hz\":"+String(Wire.getClock());
+#if R1_BENCHMARK
+    s+=",\"benchmark\":true,\"benchmark_active\":"+String(rateBenchmarkActive()?"true":"false");
+#else
+    s+=",\"benchmark\":false";
+#endif
     char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
     s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
     s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";

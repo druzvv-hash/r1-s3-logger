@@ -19,6 +19,7 @@
 #include "recorder.h"
 #include "build_provenance.h"
 #include "firmware_version.h"
+#include "rate_benchmark.h"
 #include <esp_timer.h>
 #include <esp_system.h>
 
@@ -258,6 +259,9 @@ void scanI2c() {
 }
 
 bool runPanelAction(const char* verb, const char* argument, const char*& message) {
+#if R1_BENCHMARK
+    if(!strcmp(verb,"BENCH"))return rateBenchmarkStart(argument,message,runPanelAction);
+#endif
     if(!strcmp(verb,"STOP")&&!*argument)return recorder::stop(message);
     if(!strcmp(verb,"START")&&!*argument){
         if(!settingsReady()){message="Valid INA settings required";return false;}
@@ -307,6 +311,7 @@ void setup() {
     Serial.begin(115200);
     delay(2000);
     Serial.println("\nR1-S3 PANEL v" R1_FIRMWARE_VERSION ": direct Wi-Fi + SD session recording");
+    Serial.printf("RESET reason=%u\n",unsigned(esp_reset_reason()));
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -366,6 +371,7 @@ void loop() {
     if(!started){vTaskPrioritySet(nullptr,3);acquisitionBegin();started=true;}
     setSettingsRecording(recorder::busy());
     acquisitionStep();
+    rateBenchmarkStep();
     if(acquisitionIdle())panelPoll();
     inaStatus=acquisitionStatus();
     // Publish before optional OLED work consumes the remaining acquisition slack.
