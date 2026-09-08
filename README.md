@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.20**, with USB/Wi-Fi Start/Stop controls, selectable 10/50/100 Hz measurements, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.21**, with USB/Wi-Fi Start/Stop controls, selectable 10/50/100 Hz measurements, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB

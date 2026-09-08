@@ -1,4 +1,4 @@
-# SD file download (PANEL v0.16)
+# SD file browser and download (PANEL v0.21)
 
 The device panel now lists directories and downloads existing files from microSD.
 File browsing/download reads the card; the [P5 recorder](P5_RECORDING.md) writes
@@ -7,9 +7,18 @@ removing the card.
 
 ## User flow
 
-Open **Файли SD**, choose **Оновити список**, then **Завантажити** beside a file.
-Folders have an **Відкрити** button; **На рівень вище** returns to the parent.
-Six entries are returned per page. **Ще файли** continues the directory session.
+Open **Файли SD** to read the current folder automatically. The compact table has
+its own scroll area, sticky headers, local start dates and sizes. Use breadcrumbs,
+the parent button or **Записи** to navigate. Select a file and choose **Завантажити**,
+use its download icon, or double-click the name. Arrow keys move between names;
+Enter opens a folder or downloads a file.
+
+Search and sorting cover every loaded entry in the current folder. Type filters
+offer CSV and unfinished PART files while keeping folders visible. The browser
+automatically requests all six-entry device pages; a partial-list notice stays
+visible until enumeration completes. **Зупинити** cancels enumeration and releases
+its directory cursor. Navigation, download and START wait for that cursor to close.
+On narrow screens the table scrolls horizontally inside its own viewport.
 The browser download manager displays progress, cancellation and the final result.
 No deletion, formatting or card uploads are exposed.
 
@@ -58,4 +67,6 @@ speed; a 1 GiB file will take a long time at 115200 baud with hex framing.
 Host tests cover binary and empty downloads, Unicode attachment names, traversal and
 command rejection, wrong session/offset/size, bad CRC, short chunks and disconnects.
 Browser acceptance covers listing, literal filenames, folders, downloading bytes and
-mobile layout. Hardware results are recorded in R1_MIGRATION.md after deployment.
+mobile layout. The 601-entry fixture additionally covers complete-directory search,
+sorting, scrolling, cancellation and literal hostile-looking filenames. Hardware
+results are recorded in R1_MIGRATION.md after deployment.
