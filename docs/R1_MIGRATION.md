@@ -261,3 +261,25 @@ AP startup is reported by the ESP; phone-to-AP operation remains for owner verif
 Diagnostic conversions are still approximately 1 Hz; production acquisition, chunked
 OLED scheduling, local menus and P5 session recording remain open. The offline viewer
 was not changed. See [test panel](P4A_TEST_PANEL.md) and [owner guide](uk/TEST_PANEL.md).
+
+### 2026-09-08 — P4b selectable cadence and 60 FPS preview
+
+PANEL v0.15 replaces the approximately 1 Hz diagnostic loop with a timed
+10/50/100 Hz triggered acquisition state machine. Core 1 remains the sole I2C owner;
+SH1106 output is chunked and automatic RTC reads are quiet. Core 0 has independent
+UART and HTTP tasks, with serialized owner commands and bounded PSRAM preview batches.
+The recording FIFO/block staging remain reserved; P5 SD sessions are not connected.
+
+Overview now offers actual measurement-frequency Apply, 30/60 FPS display and
+10/30 second windows. Browser animation is separate from acquisition; no synthetic
+samples are inserted. Configuration/schema/calibration and EEPROM defaults are unchanged.
+Explicit tests/Apply/backup pause acquisition and mark a gap; ordinary live polling does not.
+
+Bench windows at 10/50/100 Hz produced approximately 10.000/50.000/100.016 Hz from
+delivered timestamps, zero invalid samples, zero missed periods and zero preview losses.
+The real browser ran at 59.52 FPS with 100 Hz acquisition, then restored 50 Hz.
+42 host tests and Chrome fixture/live responsive acceptance passed.
+Before/after complete EEPROM images match generation 3 / CRC32 EBDAE9A1.
+Normal firmware is deployed; service build only compiled. Mid-write UART disconnects
+required upload retries; long-term transport reliability remains open.
+See [implementation and measured limits](P4B_LIVE_ACQUISITION.md).

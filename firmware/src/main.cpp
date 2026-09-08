@@ -14,6 +14,8 @@
 #include "local_input.h"
 #include "recording_memory.h"
 #include "test_panel.h"
+#include "live_history.h"
+#include <esp_timer.h>
 
 #ifndef R1_SERVICE_TESTS
 #define R1_SERVICE_TESTS 0
@@ -30,9 +32,14 @@ unsigned i2cCount = 0;
 unsigned i2cErrors = 0;
 Adafruit_SH1106G oled(128, 64, &Wire, -1, 100000, 100000);
 
+uint8_t oledFrame[1024];
+unsigned oledOffset=1024;
+uint32_t oledFrames=0, oledChunkUs=0;
+int lastContrast=-1;
+
 void updateOled() {
     if (!oledReady) return;
-    oled.setContrast(appliedSettings().oled_contrast);
+
     oled.clearDisplay();
     oled.setTextColor(SH110X_WHITE);
     oled.setTextWrap(false);
@@ -78,7 +85,32 @@ void updateOled() {
     else
         oled.printf("RTC:%s E:%u", rtcStatus, i2cErrors);
     oled.drawRect(0, 0, 128, 64, SH110X_WHITE);
-    oled.display();
+    memcpy(oledFrame,oled.getBuffer(),sizeof(oledFrame));
+    oledOffset=0;
+}
+
+// A frozen frame is sent in small, individually addressed pieces by the I2C owner.
+// No complete-frame Wire transfer can block the next acquisition deadline.
+void oledStep() {
+    if(!oledReady)return;
+    const uint64_t began=esp_timer_get_time();
+    if(lastContrast!=appliedSettings().oled_contrast){
+        Wire.beginTransmission(0x3C);Wire.write(0);Wire.write(0x81);Wire.write(appliedSettings().oled_contrast);
+        if(Wire.endTransmission()==0)lastContrast=appliedSettings().oled_contrast;else ++i2cErrors;
+    }else if(oledOffset<sizeof(oledFrame)){
+        const uint8_t col=(oledOffset%128)+2;
+        Wire.beginTransmission(0x3C);Wire.write(0);Wire.write(0xB0+oledOffset/128);
+        Wire.write(col&15);Wire.write(0x10|(col>>4));
+        bool ok=Wire.endTransmission()==0;
+        if(ok){
+            Wire.beginTransmission(0x3C);Wire.write(0x40);Wire.write(oledFrame+oledOffset,8);
+            ok=Wire.endTransmission()==0;
+        }
+        if(ok){oledOffset+=8;if(oledOffset==sizeof(oledFrame))++oledFrames;}
+        else{++i2cErrors;oledOffset=sizeof(oledFrame);}
+    }
+    const uint32_t elapsed=esp_timer_get_time()-began;
+    if(elapsed>oledChunkUs)oledChunkUs=elapsed;
 }
 
 void initOled() {
@@ -255,7 +287,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.14: USB/Wi-Fi test panel + settings");
+    Serial.println("\nR1-S3 PANEL v0.15: USB/Wi-Fi test panel + settings");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -302,36 +334,29 @@ void setup() {
                   static_cast<unsigned>(sizeof(recording::Sample)),
                   static_cast<unsigned long>(buffersReady ? recording::SD_BLOCK_BYTES : 0));
     Serial.println("BUFFER: reserved only; production acquisition/recorder not connected yet.");
+    Serial.printf("LIVE history in PSRAM: %s\n",liveHistoryBegin()?"READY":"FAIL");
     panelBegin(runPanelAction);
-    panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors});
+    panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
     updateOled();
 }
 
 void loop() {
-    static uint32_t lastScan = millis();
-    static uint32_t lastMeasurement = millis();
-    static uint32_t lastDisplay = 0;
-    static uint32_t lastPublish = 0;
-    static uint32_t publishedRevision = 0;
-    panelPoll();
-    if (i2cReady && handleRtcSerial()) {
-        rtcStatus = pollRtc();
-        updateOled();
-        lastScan = millis();
+    static bool started=false;
+    static uint32_t lastRtc=0,lastDisplay=0,lastPublish=0,publishedRevision=0;
+    if(!started){vTaskPrioritySet(nullptr,3);acquisitionBegin();started=true;}
+    acquisitionStep();
+    if(acquisitionIdle())panelPoll();
+    inaStatus=acquisitionStatus();
+    if(i2cReady && millis()-lastRtc>=10000 && acquisitionSlackUs()>4500){
+        rtcStatus=pollRtc(false);lastRtc=millis();
     }
-    const uint32_t now = millis();
-    if (i2cReady && now - lastScan >= 10000) {
-        lastScan = now;
-        rtcStatus = pollRtc();
+    if(oledOffset==sizeof(oledFrame) && millis()-lastDisplay>=1000/appliedSettings().display_hz && acquisitionSlackUs()>1500){
+        updateOled();lastDisplay=millis();
     }
-    if (i2cReady && millis() - lastMeasurement >= 1000) {
-        inaStatus = testIna228();
-        lastMeasurement = millis();
-    }
-    if (millis()-lastDisplay >= 1000/appliedSettings().display_hz) { lastDisplay=millis(); updateOled(); }
-    if (millis()-lastPublish>=250 || publishedRevision!=settingsRevision()) {
-        panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors});
+    if(acquisitionSlackUs()>2600)oledStep();
+    if((millis()-lastPublish>=500 || publishedRevision!=settingsRevision()) && acquisitionSlackUs()>1800){
+        panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
         lastPublish=millis();publishedRevision=settingsRevision();
     }
-    delay(10);
+    delay(1);
 }

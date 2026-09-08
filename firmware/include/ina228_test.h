@@ -19,3 +19,16 @@ struct Ina228Reading {
     uint32_t sampledAt = 0;
 };
 const Ina228Reading& latestIna228Reading();
+void acquisitionBegin();
+void acquisitionStep();
+bool acquisitionIdle();
+uint32_t acquisitionSlackUs();
+void acquisitionPause();
+void acquisitionResume();
+const char* acquisitionStatus();
+struct AcquisitionStats {
+    uint32_t requestedHz=0, valid=0, invalid=0, missed=0, maxLateUs=0;
+    uint32_t maintenance=0, maintenanceMs=0, maxReadUs=0;
+    double measuredHz=0;
+};
+const AcquisitionStats& acquisitionStats();

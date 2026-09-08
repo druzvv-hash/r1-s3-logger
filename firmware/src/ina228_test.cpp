@@ -3,6 +3,9 @@
 #include "pins.h"
 #include "ina228_test.h"
 #include "settings.h"
+#include "sample_clock.h"
+#include "live_history.h"
+#include <esp_timer.h>
 
 namespace {
 Ina228Reading latest;
@@ -138,3 +141,74 @@ bool applyInaSettings(const settings::Config& c) {
 }
 
 bool inaSettingsHealthy() { return !restoreFailed; }
+
+namespace {
+SampleClock sampleClock;
+AcquisitionStats stats;
+bool started=false,pending=false,gapNext=false,paused=false;
+uint64_t began=0,pollAt=0,sequence=0,windowAt=0,pauseAt=0;
+uint32_t windowSamples=0;
+const char* sampleStatus="WAIT";
+uint8_t sampleQuality=0;
+void completed(const char* status,bool valid,uint8_t quality=0){
+    const uint64_t now=esp_timer_get_time();
+    latest.valid=valid;latest.sampledAt=now/1000;latest.sampleId=++sequence;
+    pending=false;sampleStatus=status;
+    if(valid)++stats.valid;else ++stats.invalid;
+    ++windowSamples;
+    if(now-windowAt>=2000000){stats.measuredHz=windowSamples*1000000.0/(now-windowAt);windowAt=now;windowSamples=0;}
+    liveHistoryPush({sequence,now,valid?latest.busVolts:0,valid?latest.currentAmps:0,settingsRevision(),uint8_t(quality|sampleQuality|(valid?0:1))});
+}
+}
+void acquisitionBegin(){
+    stats={};stats.requestedHz=appliedSettings().requested_rate_hz;
+    const uint64_t now=esp_timer_get_time();sampleClock.reset(now,stats.requestedHz);
+    windowAt=now;windowSamples=0;started=true;paused=false;pending=false;
+}
+bool acquisitionIdle(){return !pending;}
+uint32_t acquisitionSlackUs(){return pending?0:sampleClock.slack(esp_timer_get_time());}
+const AcquisitionStats& acquisitionStats(){return stats;}
+const char* acquisitionStatus(){return sampleStatus;}
+void acquisitionPause(){
+    if(!started||paused)return;
+    paused=true;pauseAt=esp_timer_get_time();++stats.maintenance;
+}
+void acquisitionResume(){
+    if(!started||!paused)return;
+    const uint64_t now=esp_timer_get_time();stats.maintenanceMs+=(now-pauseAt)/1000;
+    stats.requestedHz=appliedSettings().requested_rate_hz;sampleClock.reset(now,stats.requestedHz);
+    // Exclude explicit maintenance from the cadence window; record it separately.
+    windowAt=now;windowSamples=0;stats.measuredHz=0;gapNext=true;pending=false;paused=false;
+}
+void acquisitionStep(){
+    if(!started||paused)return;
+    const auto& c=appliedSettings();uint64_t now=esp_timer_get_time();
+    if(!pending){
+        if(!sampleClock.due(now))return;
+        uint32_t late=0,skipped=sampleClock.take(now,late);
+        stats.missed+=skipped;sequence+=skipped;if(late>stats.maxLateUs)stats.maxLateUs=late;
+        sampleQuality=(gapNext||skipped)?2:0;gapNext=false;
+        if(!settingsReady()){completed("CONFIG FAIL",false);return;}
+        if(!writeRegister(1,0x7000|settings::adcBits(c))){completed("TRIGGER FAIL",false);return;}
+        began=esp_timer_get_time();pollAt=began+settings::conversionUs(c);pending=true;return;
+    }
+    if(now<pollAt)return;
+    uint32_t diag=0;
+    if(!readRegister(0x0B,2,diag)){completed("I2C FAIL",false);return;}
+    if(!(diag&2)){
+        if(uint64_t(esp_timer_get_time())-began>=c.ready_timeout_us){completed("TIMEOUT",false);return;}
+        pollAt=esp_timer_get_time()+300;return;
+    }
+    uint32_t shunt=0,bus=0,temp=0;const uint64_t readAt=esp_timer_get_time();
+    if(!readRegister(4,3,shunt)||!readRegister(5,3,bus)||!readRegister(6,2,temp)){completed("I2C FAIL",false);return;}
+    const uint32_t elapsed=esp_timer_get_time()-readAt;if(elapsed>stats.maxReadUs)stats.maxReadUs=elapsed;
+    if((shunt&15)||(bus&0x80000F)){completed("DATA FAIL",false);return;}
+    const int32_t raw=signed20(shunt);
+    if(raw==-524288||raw==524287){completed("SHUNT LIMIT",false,4);return;}
+    latest.shuntRaw=raw;latest.busRaw=bus>>4;latest.tempRaw=signed16(temp);
+    latest.shuntMicrovolts=raw*(c.adc_range?0.078125:0.3125);
+    latest.busVolts=(latest.busRaw*0.0001953125-c.u_zero_V)*c.u_gain;
+    latest.currentAmps=c.polarity*(latest.shuntMicrovolts-c.i_zero_uV)/c.shunt_uohm*c.i_gain;
+    latest.temperatureC=latest.tempRaw*0.0078125;
+    completed("ADC OK",true);
+}

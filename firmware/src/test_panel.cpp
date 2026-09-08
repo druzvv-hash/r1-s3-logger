@@ -3,6 +3,7 @@
 #include "ina228_test.h"
 #include "rtc_test.h"
 #include "recording_memory.h"
+#include "live_history.h"
 #include "panel_assets.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -18,9 +19,10 @@ portMUX_TYPE snapshotLock=portMUX_INITIALIZER_UNLOCKED;
 char bootId[9], ssid[24], password[17];
 std::atomic<bool> networkReady{false};
 PanelAction ownerAction=nullptr;
-struct Command { uint32_t id, expires; char text[COMMAND_BYTES]; };
+struct Command { uint32_t id, expires; bool legacy; char text[COMMAND_BYTES]; };
 struct Reply { uint32_t id; char json[256]; };
 QueueHandle_t commands=nullptr, replies=nullptr;
+SemaphoreHandle_t commandGate=nullptr;
 
 String snapshot(){
     char copy[STATE_BYTES];
@@ -53,6 +55,52 @@ String execute(const char* text){
     else message="Hardware owner unavailable";
     return result(ok,message);
 }
+
+// Both transports share one gate and one owner queue; only the owner touches I2C.
+String submit(const char* body,bool legacy=false){
+    if(!commandGate||strlen(body)>=COMMAND_BYTES||xSemaphoreTake(commandGate,pdMS_TO_TICKS(100))!=pdTRUE)
+        return "{\"ok\":false,\"message\":\"Device busy\"}";
+    static uint32_t nextId=0;
+    Command cmd{};cmd.id=++nextId;cmd.expires=millis()+7000;cmd.legacy=legacy;
+    strlcpy(cmd.text,body,sizeof(cmd.text));
+    Reply reply{};bool received=false;
+    if(xQueueSend(commands,&cmd,0)==pdTRUE){
+        const uint32_t began=millis();
+        while(millis()-began<8000){
+            if(xQueueReceive(replies,&reply,pdMS_TO_TICKS(100))==pdTRUE && reply.id==cmd.id){received=true;break;}
+        }
+    }
+    xSemaphoreGive(commandGate);
+    return received?String(reply.json):String("{\"ok\":false,\"message\":\"Timeout; refresh state before retrying\"}");
+}
+bool cursorValue(const char* arg,uint64_t& cursor){
+    if(!*arg||strlen(arg)>16)return false;cursor=0;
+    for(;*arg;++arg){if(*arg<'0'||*arg>'9')return false;cursor=cursor*10+*arg-'0';}
+    return cursor<=9007199254740991ULL; // Exact browser integer range.
+}
+String live(const char* arg){
+    uint64_t cursor=0;
+    if(!cursorValue(arg,cursor))return "{\"ok\":false,\"message\":\"Invalid live cursor\"}";
+    String s=liveHistoryJson(cursor);s.remove(s.length()-1);
+    return s+",\"boot\":"+quoted(bootId)+"}";
+}
+void serialTask(void*){
+    char line[3200];size_t used=0;bool overflow=false;
+    for(;;){
+        while(Serial.available()){
+            const char c=Serial.read();
+            if(c=='\r')continue;
+            if(c!='\n'){if(used<sizeof(line)-1)line[used++]=c;else overflow=true;continue;}
+            line[used]=0;
+            if(!overflow&&used){
+                if(!panelHandleSerial(line))submit(line,true);
+            }
+            used=0;overflow=false;
+        }
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
+}
+
 void webTask(void*){
     WiFi.mode(WIFI_AP);
     networkReady.store(WiFi.softAP(ssid,password,1,0,2));
@@ -60,15 +108,12 @@ void webTask(void*){
     const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
     server.on("/",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");server.send_P(200,"text/html; charset=utf-8",reinterpret_cast<const char*>(PANEL_HTML),sizeof(PANEL_HTML));});
     server.on("/api/state",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",snapshot());});
+    server.on("/api/live",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",live(server.hasArg("after")?server.arg("after").c_str():"0"));});
     server.on("/api/command",HTTP_POST,[&]{
         if(server.header("X-R1-Panel")!="1" || (server.hasHeader("Origin")&&server.header("Origin")!=String("http://")+server.hostHeader())){server.send(403,"application/json","{\"ok\":false,\"message\":\"Origin/header rejected\"}");return;}
         const String body=server.arg("plain");
         if(body.length()==0||body.length()>=COMMAND_BYTES){server.send(413,"application/json","{\"ok\":false,\"message\":\"Command too large\"}");return;}
-        static uint32_t id=0;Command command{};command.id=++id;command.expires=millis()+7000;body.toCharArray(command.text,sizeof(command.text));
-        if(xQueueSend(commands,&command,0)!=pdTRUE){server.send(409,"application/json","{\"ok\":false,\"message\":\"Device busy\"}");return;}
-        Reply reply{};const uint32_t began=millis();bool received=false;
-        while(millis()-began<8000){if(xQueueReceive(replies,&reply,pdMS_TO_TICKS(100))==pdTRUE&&reply.id==id){received=true;break;}}
-        server.send(received?200:504,"application/json",received?reply.json:"{\"ok\":false,\"message\":\"Timeout; refresh device state, do not repeat blindly\"}");
+        server.send(200,"application/json",submit(body.c_str()));
     });
     server.onNotFound([&]{server.send(404,"text/plain","Not found");});
     server.begin();
@@ -85,19 +130,28 @@ void panelBegin(PanelAction action){
     if(saved.length()!=16){char generated[17];snprintf(generated,sizeof(generated),"%08lx%08lx",static_cast<unsigned long>(esp_random()),static_cast<unsigned long>(esp_random()));saved=generated;if(opened)prefs.putString("ap-pass",saved);}
     saved.toCharArray(password,sizeof(password));if(opened)prefs.end();
     commands=xQueueCreate(1,sizeof(Command));replies=xQueueCreate(1,sizeof(Reply));
-    if(commands&&replies)xTaskCreatePinnedToCore(webTask,"test-web",24576,nullptr,1,nullptr,0);
+    commandGate=xSemaphoreCreateMutex();
+    if(commands&&replies&&commandGate){
+        xTaskCreatePinnedToCore(webTask,"test-web",24576,nullptr,1,nullptr,0);
+        xTaskCreatePinnedToCore(serialTask,"panel-uart",24576,nullptr,1,nullptr,0);
+    }
     Serial.printf("PANEL AP: %s password=%s URL=http://192.168.4.1/; USB PANEL protocol ready.\n",ssid,password);
 }
 void panelPoll(){
     Command command{};if(!commands||xQueueReceive(commands,&command,0)!=pdTRUE)return;
-    const String response=int32_t(millis()-command.expires)>0?result(false,"Expired command; no action taken"):execute(command.text);
+    acquisitionPause();
+    String response;
+    if(int32_t(millis()-command.expires)>0)response=result(false,"Expired command; no action taken");
+    else if(command.legacy){handleLegacyLine(command.text);response=result(true,"Legacy command completed");}
+    else response=execute(command.text);
+    acquisitionResume();
     Reply reply{};reply.id=command.id;response.toCharArray(reply.json,sizeof(reply.json));xQueueOverwrite(replies,&reply);
 }
 void panelPublish(const PanelHardware& h){
     const auto& r=latestIna228Reading();const auto payload=settings::encode(appliedSettings());
     String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
     String s;s.reserve(4800);
-    s="{\"ready\":true,\"firmware\":\"0.14\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
+    s="{\"ready\":true,\"firmware\":\"0.15\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
     char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
     s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
     s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";
@@ -109,7 +163,14 @@ void panelPublish(const PanelHardware& h){
     char utc[24];snprintf(utc,sizeof(utc),"%llu",rtcUtcNow());
     s+=",\"i2c_count\":"+String(h.i2cCount)+",\"i2c_errors\":"+String(h.i2cErrors)+",\"utc\":"+String(utc);
     s+=",\"psram_free\":"+String(ESP.getFreePsram())+",\"heap_free\":"+String(ESP.getFreeHeap())+",\"queue_bytes\":"+String(recording::allocatedQueueBytes());
-    s+=",\"buffer_ready\":"+(recording::memoryReady()?String("true"):String("false"))+",\"sd_block_bytes\":"+String(recording::SD_BLOCK_BYTES)+",\"recording_available\":false,\"diagnostic_interval_ms\":1000";
+    s+=",\"buffer_ready\":"+(recording::memoryReady()?String("true"):String("false"))+",\"sd_block_bytes\":"+String(recording::SD_BLOCK_BYTES)+",\"recording_available\":false,\"live_available\":true";
+
+    const auto& a=acquisitionStats();
+    s+=",\"requested_hz\":"+String(a.requestedHz)+",\"measured_hz\":"+String(a.measuredHz,3);
+    s+=",\"valid_samples\":"+String(a.valid)+",\"invalid_samples\":"+String(a.invalid)+",\"missed_samples\":"+String(a.missed);
+    s+=",\"max_late_us\":"+String(a.maxLateUs)+",\"max_read_us\":"+String(a.maxReadUs);
+    s+=",\"maintenance_count\":"+String(a.maintenance)+",\"maintenance_ms\":"+String(a.maintenanceMs);
+    s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
     s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);
@@ -120,7 +181,8 @@ bool panelHandleSerial(const char* line){
     if(sscanf(line,"PANEL %u %n",&id,&n)!=1||n==0)return true;
     String response;
     if(!strcmp(line+n,"STATE"))response=snapshot();
-    else if(!strncmp(line+n,"DO ",3))response=execute(line+n+3);
-    else response=result(false,"Unknown panel request");
+    else if(!strncmp(line+n,"DO ",3))response=submit(line+n+3);
+    else if(!strncmp(line+n,"LIVE ",5))response=live(line+n+5);
+    else response="{\"ok\":false,\"message\":\"Unknown panel request\"}";
     Serial.printf("PANEL %u %s\n",id,response.c_str());return true;
 }

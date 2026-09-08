@@ -17,7 +17,7 @@ uint32_t previousMillis = 0;
 bool trustedUtc = false;
 }
 
-const char* pollRtc() {
+const char* pollRtc(bool verbose) {
     trustedUtc = false;
     uint8_t r[19];
     Wire.beginTransmission(0x68);
@@ -25,7 +25,7 @@ const char* pollRtc() {
     if (Wire.endTransmission(false) != 0 ||
         Wire.requestFrom(static_cast<uint8_t>(0x68), sizeof(r)) != sizeof(r)) {
         previousValid = false;
-        Serial.println("RTC FAIL: DS3231 read failed.");
+        if(verbose) Serial.println("RTC FAIL: DS3231 read failed.");
         return "READ FAIL";
     }
     for (auto& byte : r) byte = Wire.read();
@@ -51,14 +51,14 @@ const char* pollRtc() {
         r[3] >= 1 && r[3] <= 7 && !(r[2] & 0x80) && !(r[5] & 0x60);
     const bool osf = r[15] & 0x80;
     const float temperature = static_cast<int8_t>(r[17]) + (r[18] >> 6) * 0.25f;
-    Serial.printf("RTC DS3231: OSF=%u EOSC=%u temperature=%.2f C\n",
+    if(verbose) Serial.printf("RTC DS3231: OSF=%u EOSC=%u temperature=%.2f C\n",
                   osf, (r[14] >> 7) & 1, temperature);
     if (!calendarValid) {
         previousValid = false;
-        Serial.println("RTC FAIL: invalid calendar/BCD; time left unchanged.");
+        if(verbose) Serial.println("RTC FAIL: invalid calendar/BCD; time left unchanged.");
         return "BAD DATE";
     }
-    Serial.printf("RTC: %04d-%02d-%02d %02d:%02d:%02d DOW=%u (UTC after browser synchronization)\n",
+    if(verbose) Serial.printf("RTC: %04d-%02d-%02d %02d:%02d:%02d DOW=%u (UTC after browser synchronization)\n",
                   year, month, day, hour, minute, second, r[3]);
     uint64_t days = 0;
     for (int y = 2000; y < year; ++y) days += leap(y) ? 366 : 365;
@@ -71,12 +71,12 @@ const char* pollRtc() {
         const int64_t advance = static_cast<int64_t>(seconds) - previousSeconds;
         const int64_t errorMs = advance * 1000 - elapsed;
         const bool ticking = advance > 0 && errorMs >= -1500 && errorMs <= 1500;
-        Serial.printf("RTC tick %s: RTC advanced %lld s over %lu ms\n",
+        if(verbose) Serial.printf("RTC tick %s: RTC advanced %lld s over %lu ms\n",
                       ticking ? "PASS" : "FAIL", advance, static_cast<unsigned long>(elapsed));
         result = ticking ? (osf ? "SET TIME" : "TICK OK") : "TICK FAIL";
     }
-    if (osf) Serial.println("RTC time untrusted: OSF set; no time set or flags cleared.");
-    Serial.println("RTC: wall-clock accuracy and battery retention not verified.");
+    if (osf && verbose) Serial.println("RTC time untrusted: OSF set; no time set or flags cleared.");
+    if(verbose) Serial.println("RTC: wall-clock accuracy and battery retention not verified.");
     previousSeconds = seconds;
     previousMillis = sampledAt;
     previousValid = true;
@@ -153,46 +153,21 @@ bool setRtcUtc(uint64_t epoch) {
 uint64_t rtcUtcNow(){return trustedUtc ? previousSeconds+946684800ULL+(uint32_t(millis()-previousMillis)/1000) : 0;}
 bool panelSetRtcUtc(uint64_t epoch){return epoch>=946684800ULL&&epoch<4102444799ULL&&setRtcUtc(epoch);}
 
-bool handleRtcSerial() {
-    static char line[3200];
-    static size_t length = 0;
-    static bool overflow = false;
-    while (Serial.available()) {
-        const char ch = Serial.read();
-        if (ch == '\r') continue;
-        if (ch != '\n') {
-            if (length < sizeof(line) - 1) line[length++] = ch;
-            else overflow = true;
-            continue;
-        }
-        line[length] = 0;
-        if (!overflow && panelHandleSerial(line)) { length=0; return false; }
-        if (!overflow && strcmp(line, "EEPROM DUMP") == 0) {
-            length = 0;
-            dumpEepromReadOnly();
-            return false;
-        }
-        if (!overflow && handleSettingsCommand(line)) { length=0; return false; }
-        uint64_t epoch = 0;
-        bool valid = !overflow && length > 9 && strncmp(line, "TIME UTC ", 9) == 0 && length <= 19;
-        for (size_t i = 9; valid && i < length; ++i) {
-            valid = line[i] >= '0' && line[i] <= '9';
-            if (valid) epoch = epoch * 10 + line[i] - '0';
-        }
-        // Restrict this bring-up protocol to 2000–2099; allow a one-second readback rollover.
-        valid = valid && epoch >= 946684800ULL && epoch < 4102444799ULL;
-        length = 0;
-        overflow = false;
-        if (!valid) {
-            Serial.println("RTC SET ERROR: expected TIME UTC <Unix seconds, 2000-2099>");
-            continue;
-        }
-        if (!setRtcUtc(epoch)) {
-            Serial.println("RTC SET ERROR: I2C/write/readback/status verification failed; inspect RTC");
-            return true;
-        }
-        Serial.printf("RTC SET OK UTC %llu: readback verified, OSF=0 EOSC=0\n", epoch);
-        return true;
+
+bool handleLegacyLine(const char* line) {
+    if (!strcmp(line,"EEPROM DUMP")) { dumpEepromReadOnly(); return false; }
+    if (handleSettingsCommand(line)) return false;
+    const size_t length=strlen(line);
+    uint64_t epoch=0;
+    bool valid=length>9 && length<=19 && !strncmp(line,"TIME UTC ",9);
+    for(size_t i=9;valid&&i<length;++i){
+        valid=line[i]>='0'&&line[i]<='9';
+        if(valid)epoch=epoch*10+line[i]-'0';
     }
-    return false;
+    if(!valid || !panelSetRtcUtc(epoch)){
+        Serial.println("RTC SET ERROR: expected TIME UTC <Unix seconds>; write/readback may have failed");
+        return false;
+    }
+    Serial.printf("RTC SET OK UTC %llu: readback verified, OSF=0 EOSC=0\n",epoch);
+    pollRtc(); return true;
 }

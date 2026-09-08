@@ -1,8 +1,8 @@
-# Device test panel v0.14
+# Device test panel v0.15
 
 This is the device control interface, separate from the deferred offline recording viewer.
 It reuses the recovered R1 instrument colors: cyan current, yellow voltage, pink power,
-a dark graph and compact tabs. It reports actual diagnostic samples, not simulated data.
+a dark graph and compact tabs. It reports actual timed samples, not simulated data.
 
 ## Opening the panel
 
@@ -30,7 +30,8 @@ STA/home-Wi-Fi provisioning is not implemented in this test panel.
 | Control | Owner behavior |
 |---|---|
 | Live U/I/P, temperature, raw counts/shunt µV | Applied calibration coefficients; invalid/stale values shown as unavailable |
-| U/I graph | Last 120 received diagnostic samples; independent axes; gaps are not connected |
+| U/I graph | 10/30 second viewport; 30/60 FPS rendering; real timestamped samples and visible gaps |
+| Measurement frequency | Apply 10/50/100 Hz immediately; Save remains explicit |
 | Pause/clear graph | Browser display only; does not stop device conversions |
 | Measure now | Fresh triggered INA228 conversion with ADC register restoration |
 | I²C scan | Address acknowledgements/errors, only on explicit request after startup |
@@ -52,17 +53,17 @@ range cannot cover its full rating. Applying nominal values does not validate ca
 
 ## Task and memory boundaries
 
-- Core 0: Wi-Fi AP and HTTP service in an explicitly pinned low-priority task.
+- Core 0: UART protocol service plus Wi-Fi AP and HTTP service in an explicitly pinned low-priority task.
 - Core 1: existing Arduino hardware owner; INA, RTC, EEPROM, SD diagnostics and OLED.
 - HTTP consumes a copied JSON snapshot and submits a bounded command queue. It never
   accesses Wire, SD, the mutable configuration or the recording buffers.
 - UART executes the same owner-side command dispatcher and uses request identifiers
   so old responses cannot be mistaken for a new request.
-- Web and owner stacks are internal RAM, 24 KiB each. Queue/control storage is internal;
+- Web, UART and owner stacks are internal RAM, 24 KiB each. Queue/control storage is internal;
   the existing sample pool remains explicitly allocated in PSRAM and SD staging is
   8 KiB internal DMA-capable RAM.
-- Firmware snapshots publish about every 250 ms; the browser/USB bridge polls about
-  once per second. Heartbeat freshness is checked independently from HTTP success:
+- Firmware snapshots publish up to twice per second; the browser/USB bridge polls about
+  once per second, with separate live batches at the configured delivery target. Heartbeat freshness is checked independently from HTTP success:
   a responding web task cannot make a frozen owner snapshot look live.
 
 The embedded HTML is generated from device_ui/index.template.html, style.css,
@@ -72,23 +73,21 @@ No browser libraries or assets are fetched from the Internet.
 
 ## Scope and limits
 
-This is the usable test portion of P4a, not completion of P4b/P5. The present
-conversion/restore loop runs approximately once per second. Selecting 10/50/100 Hz
-sets the future acquisition profile and validates conversion timing; it does not
-turn this diagnostic loop into a production sampler.
+The timed acquisition/live portion of P4b is now active. See
+[v0.15 scheduling, quality and transport](P4B_LIVE_ACQUISITION.md).
+OLED data is sent in short chunks by the single I2C owner. The browser independently
+animates up to 60 FPS. Maintenance commands pause acquisition and mark a gap.
 
-OLED frame rendering and full I²C transfers still run in the hardware owner.
-Moving those transfers blindly to core 0 would not solve shared-bus contention.
-Chunked OLED scheduling, the acquisition/recorder task split and real timing/overflow
-acceptance remain planned in DEVICE_UI_AND_TASKS.md. There is no START button that
-pretends a recording exists, no energy/session totals, and no files produced here.
-Recorder fields are explicitly marked as future settings. FIFO budget changes
-require saving then rebooting; the allocated pool is not resized by Apply.
+Production SD sessions, totals and file download remain pending. Recorder fields are
+marked as future settings. FIFO budget changes require saving then rebooting; Apply
+does not resize the recording pool.
 
 The encoder remains a no-GPIO stub. Local menus, confirmed input GPIO, AP lifecycle
 during production recording and log list/download are still pending.
 
-## Validation
+## v0.14 baseline validation
+
+For current cadence acceptance, see [v0.15 results](P4B_LIVE_ACQUISITION.md).
 
 - 40 host tests include the existing EEPROM fault injection and FIFO tests, plus JS/Python
   TLV agreement, invalid inputs and loopback API token/origin/size boundaries.

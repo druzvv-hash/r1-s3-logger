@@ -88,4 +88,10 @@ class BridgeTests(unittest.TestCase):
         self.assertEqual(code,200)
         self.assertTrue(json.loads(body)['ok'])
         self.assertTrue(self.device.stopped)
+    def test_live_cursor_bounds(self):
+        self.assertEqual(self.call('/api/live?token=test-token&after=4294967297')[0],200)
+        self.assertEqual(self.device.commands,['LIVE 4294967297'])
+        for value in ('-1','1%0aEEPROM%20DUMP','9007199254740992','1.5'):
+            self.assertEqual(self.call('/api/live?token=test-token&after='+value)[0],400)
+        self.assertEqual(len(self.device.commands),1)
 if __name__=='__main__':unittest.main()

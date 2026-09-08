@@ -94,6 +94,12 @@ class Handler(BaseHTTPRequestHandler):
         path=urllib.parse.urlsplit(self.path).path
         if path=='/':
             self.respond(200,(ROOT/'device_ui/index.html').read_bytes(),'text/html; charset=utf-8')
+        elif path=='/api/live':
+            after=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get('after',['0'])[0]
+            if not after.isascii() or not after.isdecimal() or len(after)>16 or int(after)>9007199254740991:
+                self.send_json(400,dict(message='Invalid live cursor'));return
+            try:self.send_json(200,self.server.device.request('LIVE '+after))
+            except Exception as e:self.send_json(503,dict(message=str(e)))
         elif path=='/api/state':
             try:
                 state=self.server.device.request('STATE')
