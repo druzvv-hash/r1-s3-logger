@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.21**, with USB/Wi-Fi Start/Stop controls, selectable 10/50/100 Hz measurements, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.22**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
@@ -12,7 +12,7 @@ panel's Diagnostics tab. [Test-panel guide](docs/P4A_TEST_PANEL.md).
 USB or Wi-Fi, without removing the card. [File transfer guide](docs/SD_DOWNLOADS.md).
 The scrolling explorer includes search, sorting and automatic full-folder loading.
 [Measured rate/noise limits](docs/RATE_BENCHMARK.md) distinguish usable control from
-the experimental recording ceiling; released presets remain 10/50/100 Hz.
+the experimental recording ceiling; v0.22 adds explicit [1–300 Hz profiles](docs/MEASUREMENT_RATES.md) with visible speed/noise tradeoffs.
 
 ## Hardware
 
@@ -59,7 +59,7 @@ pio device monitor -e esp32-s3
 
 ## Current behavior and migration
 
-Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 uses timed 10/50/100 Hz acquisition. Explicit START creates a session; STOP drains, verifies and closes it before publishing the CSV.
+Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 uses timed 1–300 Hz acquisition. Explicit START creates a session; STOP drains, verifies and closes it before publishing the CSV.
 
 [3 A / 3 V load acceptance](docs/LOAD_TEST_2026-09-08.md): all three rates passed without missed samples or I2C errors; 40 verified USB downloads passed alongside 100 Hz acquisition. v0.17 fixes delayed panel-state publication found during these tests.
 

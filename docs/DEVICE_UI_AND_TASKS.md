@@ -1,10 +1,6 @@
 # Device control UI and task ownership
 
-Implementation update, 2026-09-08: [PANEL v0.15](P4B_LIVE_ACQUISITION.md) provides
-the USB/AP test interface, real 10/50/100 Hz acquisition and batched live preview.
-UART/HTTP run on core 0; core 1 owns INA and chunked OLED I2C transfers.
-The map below remains the production target: local menu rendering and the separate
-SD recorder are not yet implemented.
+Implementation update, 2026-09-08: PANEL v0.22 provides USB/AP control, integer 1–300 Hz acquisition and batched live preview. See [rate profiles](MEASUREMENT_RATES.md). Core 0 handles UART/HTTP and snapshot JSON; core 1 owns INA/OLED/RTC I2C and the separate SD recorder task. Local encoder menus remain pending hardware.
 
 Owner requirement, 2026-09-08: operate the logger through an actual UI, preserve the late R1 Fnirsi-style instrument workflow, and separate UI from acquisition/storage across the ESP32-S3 cores. This concerns the **device control panel**, not further offline-viewer feature work. The P3 UART/JSON utility is a service tool, not the final user interface.
 

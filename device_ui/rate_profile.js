@@ -16,4 +16,9 @@ function rateDescription(hz){
   return `${p.label}: ADC ${p.us} мкс на канал, без усереднення; I²C ${p.bus/1000} кГц.`+
     (hz>100?' Коротша конверсія збільшує шум показників.':'');
 }
-if(typeof module!=='undefined')module.exports={RATE_PRESETS,rateProfile,configForRate};
+function previewDelivery(packet,transport,requestedHz){
+  const behind=Math.max(0,(packet.newest||0)-(packet.cursor||0));
+  return {catchUp:transport==='wifi'&&behind>0,
+    resync:transport==='usb'&&behind>Math.max(48,Math.ceil((requestedHz||50)*.75))};
+}
+if(typeof module!=='undefined')module.exports={RATE_PRESETS,rateProfile,configForRate,previewDelivery};

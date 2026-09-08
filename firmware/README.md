@@ -4,7 +4,7 @@ PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root
 
 The [device test panel](../docs/P4A_TEST_PANEL.md) now provides USB/Wi-Fi controls.
 The hardware owner remains core 1; the web task on core 0 uses snapshots and commands.
-I²C scanning after startup is explicit, not periodic. Timed 10/50/100 Hz sampling,
+I²C scanning after startup is explicit, not periodic. Timed integer 1–300 Hz sampling,
 chunked OLED and PSRAM live preview are implemented. [Session recording](../docs/P5_RECORDING.md) uses the PSRAM FIFO and checked SD block writes.
 See [cadence and transport](../docs/P4B_LIVE_ACQUISITION.md).
 Existing SD files can now be downloaded through the panel; the dedicated storage

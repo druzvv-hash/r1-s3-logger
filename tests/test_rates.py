@@ -7,12 +7,16 @@ ROOT=Path(__file__).resolve().parents[1]
 class RateTests(unittest.TestCase):
     def test_all_integer_profiles_and_legacy_encoding(self):
         script="""
-const {configForRate,RATE_PRESETS}=require('./device_ui/rate_profile.js');
+const {configForRate,RATE_PRESETS,previewDelivery}=require('./device_ui/rate_profile.js');
 const {encodeConfig,exportProfile,importProfile}=require('./device_ui/codec.js');
 const fields=require('./schemas/config-v1.json').fields;
 const baseline=Object.fromEntries(fields.map(f=>[f.name,f.default]));
 const assert=require('node:assert/strict');
 assert.deepEqual(RATE_PRESETS,[1,5,10,25,50,100,150,200,250,300]);
+assert.deepEqual(previewDelivery({newest:360,cursor:300},'wifi',300),{catchUp:true,resync:false});
+assert.deepEqual(previewDelivery({newest:360,cursor:360},'wifi',300),{catchUp:false,resync:false});
+assert.deepEqual(previewDelivery({newest:1000,cursor:200},'usb',300),{catchUp:false,resync:true});
+assert.deepEqual(previewDelivery({newest:360,cursor:300},'usb',300),{catchUp:false,resync:false});
 for(const invalid of [0,301,1.5,NaN,Infinity])assert.throws(()=>configForRate(baseline,invalid));
 const result=[];
 for(let hz=1;hz<=300;hz++){

@@ -21,7 +21,7 @@ rotation_bytes:['Розмір частини, байти','Після досяг
 reserve_bytes:['Резерв на SD, байти','Вільне місце, яке логер залишає на картці'],
 allow_unknown_utc:['Дозволити невідомий UTC','Запис із відносним часом, якщо RTC не налаштований'],
 display_hz:['Оновлення OLED, Hz','Оновлення екрана, не частота вимірів'],
-live_hz:['Пакети Live, Hz','В одному пакеті кілька вимірів; USB може обмежувати частоту доставки'],
+live_hz:['Пакети Live, Hz','Базова частота пакетів; Wi-Fi забирає додаткові при відставанні. USB показує свіжі ділянки з позначеними розривами.'],
 display_filter_tau_ms:['Фільтр OLED, ms','0 = без фільтра; графік панелі показує нефільтровані дані'],
 display_utc_offset_min:['Зсув від UTC, хвилини','Для майбутнього UI; панель показує UTC'],
 calibration_id:['Ідентифікатор калібрування','Назва процедури або еталона'],
@@ -289,13 +289,20 @@ function acceptLive(batch){
 }
 async function pollLive(){
   const began=performance.now();
+  let catchUp=false;
   if(!busy&&!stopped&&online&&!document.hidden){
-    try{acceptLive(await api('/api/live?after='+liveCursor));}
+    try{
+      const packet=await api('/api/live?after='+liveCursor);acceptLive(packet);
+      const delivery=previewDelivery(packet,state?.transport,state?.requested_hz);
+      catchUp=delivery.catchUp;
+      if(delivery.resync){liveCursor=0;nextBreak=true;++streamGaps;}
+    }
     catch(e){if(!busy){meters(null,null);$('stream-status').textContent='Потік: '+e.message;}}
   }
   // Frequency is a delivery target, not an extra set of ADC conversions.
   let hz=base?.live_hz||5;
   if(state?.config_hex){try{hz=decodeConfig(state.config_hex,REGISTRY).live_hz;}catch{}}
+  if(catchUp)hz=Math.max(hz,10);
   setTimeout(pollLive,Math.max(15,1000/hz-(performance.now()-began)));
 }
 function draw(now=performance.now()){

@@ -1,5 +1,7 @@
 # Rate and noise experiments
 
+> Historical v0.21 sweep. The subsequent user-approved 1–300 Hz implementation is documented in [Measurement rates](MEASUREMENT_RATES.md). Results below describe the earlier scheduler.
+
 The normal profile still offers 10/50/100 Hz. Experimental results do not promote
 a higher rate or a different ADC preset automatically. The owner requested a
 measured speed/noise comparison before choosing supported compromises.

@@ -31,7 +31,7 @@ STA/home-Wi-Fi provisioning is not implemented in this test panel.
 |---|---|
 | Live U/I/P, temperature, raw counts/shunt µV | Applied calibration coefficients; invalid/stale values shown as unavailable |
 | U/I graph | 10/30 second viewport; 30/60 FPS rendering; real timestamped samples and visible gaps |
-| Measurement frequency | Apply 10/50/100 Hz immediately; Save remains explicit |
+| Measurement frequency | Apply integer 1–300 Hz with visible ADC profile; Save remains explicit |
 | Pause/clear graph | Browser display only; does not stop device conversions |
 | Measure now | Fresh triggered INA228 conversion with ADC register restoration |
 | I²C scan | Address acknowledgements/errors, only on explicit request after startup |
