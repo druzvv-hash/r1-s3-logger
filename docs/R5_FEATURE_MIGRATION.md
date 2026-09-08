@@ -4,7 +4,11 @@ The P2 release implemented a new file-reading/analysis foundation but omitted mu
 
 Primary feature donor: `Logger_Analysis/Viewer/Plugins/viewer_ultimate_Plugins_R5.html` (58,266 bytes, SHA256 recorded in tests/fixtures/sources.json), plus `plugins/battery_en.js` and `plugins/starter_cycles_advanced.js`. Read-only source review reconfirmed the features below. The Chart.js R5 Live branch is a separate donor, not an interchangeable revision. Source presence is not new end-to-end feature validation.
 
-## Feature matrix and order
+## Current order — owner decision, 2026-09-08
+
+P2.1a graph interactions are implemented. Pause further viewer work until the logger produces real files. Proceed with P3 settings, P4 acquisition, P5 recording; resume P2.1b/c afterward. This supersedes the earlier gate below; the feature inventory remains the preservation backlog.
+
+## Feature matrix and original order
 
 | R5 capability / source evidence | Current P2 state | Preservation work and acceptance |
 |---|---|---|

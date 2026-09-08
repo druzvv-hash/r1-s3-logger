@@ -3,12 +3,14 @@
 #include <SPI.h>
 #include <SD.h>
 #include <cstring>
+#include <cmath>
 #include <Adafruit_SH110X.h>
 #include "pins.h"
 #include "eeprom_test.h"
 #include "rtc_test.h"
 #include "ina228_test.h"
 #include "storage_check.h"
+#include "settings.h"
 
 #ifndef R1_SERVICE_TESTS
 #define R1_SERVICE_TESTS 0
@@ -27,6 +29,7 @@ Adafruit_SH1106G oled(128, 64, &Wire, -1, 100000, 100000);
 
 void updateOled() {
     if (!oledReady) return;
+    oled.setContrast(appliedSettings().oled_contrast);
     oled.clearDisplay();
     oled.setTextColor(SH110X_WHITE);
     oled.setTextWrap(false);
@@ -34,17 +37,30 @@ void updateOled() {
     oled.setCursor(4, 3);
     oled.print("R1-S3");
     const auto& reading = latestIna228Reading();
+    static double shownVolts=0, shownAmps=0;
+    static uint32_t lastDisplay=0;
+    static bool filterValid=false;
+    const auto& config=appliedSettings();
+    const uint32_t tick=millis();
+    if (reading.valid) {
+        const double alpha=filterValid && config.display_filter_tau_ms
+            ? -std::expm1(-double(uint32_t(tick-lastDisplay))/config.display_filter_tau_ms) : 1.0;
+        shownVolts+=alpha*(reading.busVolts-shownVolts);
+        shownAmps+=alpha*(reading.currentAmps-shownAmps);
+        filterValid=true;
+    } else filterValid=false;
+    lastDisplay=tick;
     if (reading.valid) {
         oled.setCursor(58, 3);
         oled.printf("T:%5.1f C", reading.temperatureC);
         oled.setTextSize(2);
         oled.setCursor(4, 15);
-        oled.printf("%7.3f V", reading.busVolts);
+        oled.printf("%7.3f V", shownVolts);
         oled.setCursor(4, 33);
-        if (reading.currentAmps >= 1000 || reading.currentAmps <= -1000)
-            oled.printf("%+8.2f A", reading.currentAmps);
+        if (shownAmps >= 1000 || shownAmps <= -1000)
+            oled.printf("%+8.2f A", shownAmps);
         else
-            oled.printf("%+8.3f A", reading.currentAmps);
+            oled.printf("%+8.3f A", shownAmps);
     } else {
         oled.setCursor(4, 18);
         oled.printf("INA: %s", inaStatus);
@@ -55,7 +71,7 @@ void updateOled() {
     oled.setCursor(4, 53);
     // Alternate diagnostics without crowding the two measurement lines.
     if ((millis() / 3000) % 2 == 0)
-        oled.printf("SD:%s EEP:%s", sdStatus, eepromStatus);
+        oled.printf("SD:%s %s", sdStatus, settingsStatus());
     else
         oled.printf("RTC:%s E:%u", rtcStatus, i2cErrors);
     oled.drawRect(0, 0, 128, 64, SH110X_WHITE);
@@ -201,7 +217,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 BASE v0.11: OLED measurements, storage read checks");
+    Serial.println("\nR1-S3 CONFIG v0.12: draft/apply/save EEPROM settings");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -237,13 +253,14 @@ void setup() {
     if (i2cReady) eepromStatus = checkEepromReadOnly();
 #endif
     if (i2cReady) rtcStatus = pollRtc();
-    if (i2cReady) inaStatus = testIna228();
+    if (i2cReady) { initSettings(); inaStatus = testIna228(); }
     updateOled();
 }
 
 void loop() {
     static uint32_t lastScan = millis();
     static uint32_t lastMeasurement = millis();
+    static uint32_t lastDisplay = 0;
     if (i2cReady && handleRtcSerial()) {
         rtcStatus = pollRtc();
         updateOled();
@@ -261,5 +278,6 @@ void loop() {
         lastMeasurement = millis();
         updateOled();
     }
+    if (millis()-lastDisplay >= 1000/appliedSettings().display_hz) { lastDisplay=millis(); updateOled(); }
     delay(10);
 }

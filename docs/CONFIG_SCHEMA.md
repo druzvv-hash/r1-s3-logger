@@ -1,6 +1,6 @@
 # Configuration contract v1.0
 
-Status: P1 host contract, **not deployed EEPROM settings support**. Normative field registry: [config-v1.json](../schemas/config-v1.json). Reference codec: [contracts.py](../tools/contracts.py). No EEPROM migration/write is performed by these tools.
+Status: P1 byte contract, now implemented in CONFIG v0.12 firmware; see [P3 results](P3_SETTINGS.md). Normative field registry: [config-v1.json](../schemas/config-v1.json). Reference codec: [contracts.py](../tools/contracts.py). No EEPROM migration/write is performed by these tools.
 
 ## Values and lifecycle
 

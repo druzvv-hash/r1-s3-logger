@@ -2,10 +2,11 @@
 #include <Wire.h>
 #include "pins.h"
 #include "ina228_test.h"
-#include "shunt_config.h"
+#include "settings.h"
 
 namespace {
 Ina228Reading latest;
+bool restoreFailed = false;
 constexpr uint8_t address = 0x40;
 constexpr int32_t signed20(uint32_t word) {
     return (word >> 4) & 0x80000 ? int32_t(word >> 4) - 0x100000 : int32_t(word >> 4);
@@ -42,8 +43,9 @@ bool writeRegister(uint8_t reg, uint16_t value) {
 
 const char* testIna228() {
     latest.valid = false;
-    static bool restoreFailed = false;
+    const auto& active = appliedSettings();
     if (restoreFailed) return "RESTORE FAIL";
+    if (!settingsReady()) return "CONFIG FAIL";
     uint32_t manufacturer, device, config, adc;
     Serial.println("\nINA228: identity and fresh triggered ADC test at 0x40");
     if (!readRegister(0x3E, 2, manufacturer) || !readRegister(0x3F, 2, device) ||
@@ -58,14 +60,14 @@ const char* testIna228() {
         Serial.println("INA228 FAIL: unexpected identity; no registers changed.");
         return "ID FAIL";
     }
-    // All three channels, 1052 us each, one sample. Writing clears stale CNVRF.
+    // Use applied conversion times/averaging. Writing clears stale CNVRF.
     // CONFIG (including conversion delay/range) and calibration remain unchanged.
     const char* result = "I2C FAIL";
     uint32_t diag = 0, shunt = 0, bus = 0, temperature = 0;
-    if (writeRegister(0x01, 0x7B68)) {
-        const uint32_t start = millis();
+    if (writeRegister(0x01, 0x7000 | settings::adcBits(active))) {
+        const uint32_t start = micros();
         result = "TIMEOUT";
-        while (millis() - start < 1000) {
+        while (micros() - start < active.ready_timeout_us) {
             // Reading DIAG_ALRT clears conversion-ready / latched diagnostic flags.
             if (!readRegister(0x0B, 2, diag)) { result = "I2C FAIL"; break; }
             if (diag & 0x02) {
@@ -101,18 +103,31 @@ const char* testIna228() {
             result = "SHUNT LIMIT";
             Serial.println("INA228: shunt ADC at rail; current withheld.");
         } else {
-            latest.busVolts = (bus >> 4) * 0.0001953125;
-            latest.currentAmps = shunt::ampsFromMicrovolts(shuntMicrovolts);
+            latest.busVolts = ((bus >> 4) * 0.0001953125 - active.u_zero_V) * active.u_gain;
+            latest.currentAmps = active.polarity * (shuntMicrovolts-active.i_zero_uV) / active.shunt_uohm * active.i_gain;
             latest.temperatureC = signed16(temperature) * 0.0078125;
             latest.valid = true;
-            Serial.printf("INA228 I_nominal=%+.4f A (60 mV / 400 A, %.1f uOhm; no offset/gain correction)\n",
-                          shunt::ampsFromMicrovolts(shuntMicrovolts), shunt::microOhms);
+            Serial.printf("INA228 I_applied=%+.4f A U_applied=%.6f V; shunt=%.3f uOhm calibrated=%u\n",
+                          latest.currentAmps, latest.busVolts, active.shunt_uohm, active.calibration_valid);
         }
         if (narrow) Serial.println("INA228: narrow range cannot cover this shunt's full 400 A rating.");
-        Serial.println("No current calibration, external voltage comparison or active ALERT test performed.");
+        Serial.println("Applied coefficients only; this sample does not validate calibration or active ALERT.");
     }
     Serial.printf("INA228 result: %s\n", result);
     return result;
 }
 
 const Ina228Reading& latestIna228Reading() { return latest; }
+
+
+bool applyInaSettings(const settings::Config& c) {
+    class InaRegisters : public settings::Registers {
+        bool read(uint8_t reg,uint32_t& value) override { return readRegister(reg,2,value); }
+        bool write(uint8_t reg,uint16_t value) override { return writeRegister(reg,value); }
+    } io;
+    const bool ok=settings::applyRegisters(io,c,restoreFailed);
+    if (ok || restoreFailed) latest.valid=false;
+    return ok;
+}
+
+bool inaSettingsHealthy() { return !restoreFailed; }

@@ -1,6 +1,9 @@
 #pragma once
 
-// Temporary triggered conversion; restores ADC_CONFIG. Current uses nominal shunt resistance.
+#include "settings_core.h"
+// Diagnostic-rate triggered conversion with applied coefficients; restores ADC_CONFIG.
+bool applyInaSettings(const settings::Config& config);
+bool inaSettingsHealthy();
 const char* testIna228();
 
 struct Ina228Reading {

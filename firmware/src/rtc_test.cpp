@@ -144,9 +144,10 @@ bool setRtcUtc(uint64_t epoch) {
 }
 
 #include "storage_check.h"
+#include "settings.h"
 
 bool handleRtcSerial() {
-    static char line[48];
+    static char line[160];
     static size_t length = 0;
     static bool overflow = false;
     while (Serial.available()) {
@@ -163,6 +164,7 @@ bool handleRtcSerial() {
             dumpEepromReadOnly();
             return false;
         }
+        if (!overflow && handleSettingsCommand(line)) { length=0; return false; }
         uint64_t epoch = 0;
         bool valid = !overflow && length > 9 && strncmp(line, "TIME UTC ", 9) == 0 && length <= 19;
         for (size_t i = 9; valid && i < length; ++i) {

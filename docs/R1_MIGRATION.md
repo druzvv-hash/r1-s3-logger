@@ -215,3 +215,9 @@ Screenshot also showed direct file:// opening of viewer/index.html, which cannot
 ### 2026-09-08 — P2.1a: restore R5 graph interactions
 
 Viewer 0.2 restores selectable simultaneous channels on synchronized axes, persistent A/B and C/D markers, signed differences, independent full-resolution A/B statistics, wheel/drag zoom, pan and original-row tooltips. Added an indexed sample endpoint preserving source timestamps, line/quality and invalid samples. Existing importer/checksum behavior remains covered by tests. Thirty host tests and Chrome smoke plus dedicated pointer-gesture acceptance pass; desktop/mobile screenshots reviewed. Source ZIP updated to 0.2. Starter/battery analysis and plugins remain P2.1b/c, before P3.
+
+### 2026-09-08 — owner redirects work to logger; P3 configuration deployed
+
+Owner deferred remaining viewer features until real logger recordings exist. Plan 1.4 now proceeds P3 -> P4 -> P5, then resumes R5 analysis/plugins. CONFIG v0.12 adds generated 28-field C++ settings, exact P1 TLV/CRC storage, explicit draft/apply/save, INA register readback/rollback, applied engineering coefficients and display preferences. Added JSON import/export service tool and private backup-before-save helper. Boot never saves settings.
+
+33 host tests pass, including executing firmware C++ with write-byte cuts/read failures, slot protection, ambiguity/future schemas and INA rollback faults. Normal and service builds pass; only normal uploaded on COM5. Physical A generation 1 -> B generation 2 (contrast only) -> A generation 3 (defaults restored) passed with preserved previous slot/reserve. Reboot restored generation 3 without changing EEPROM (CRC32 EBDAE9A1). Fresh pre-deployment backup matches P0 CRC32 8C31ED44. No physical mid-write power-cut or reference calibration performed. See P3_SETTINGS.md for commands, evidence and limitations. Production cadence/recording remain P4/P5.

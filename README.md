@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **BASE v0.11**, with live measurements and non-writing storage checks. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **CONFIG v0.12**, with live diagnostic measurements and explicit draft/apply/save settings. The original R1 application has not been ported yet.
 
 ## Hardware
 
@@ -47,9 +47,9 @@ pio device monitor -e esp32-s3
 
 ## Current behavior and migration
 
-Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / EEP READ` indicate read checks. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 still uses the diagnostic conversion/restore path; production recording is pending.
+Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 still uses the diagnostic conversion/restore path; production recording is pending.
 
-[P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; standard library). P2 viewer is implemented: launch `viewer/start.cmd` or `python viewer/server.py`. [Viewer guide](viewer/README.md) · [P2 results](docs/P2_VIEWER.md). Next: [recover the useful R5 workflows](docs/R5_FEATURE_MIGRATION.md) before P3 settings/EEPROM. The current viewer is a data-reading foundation, not a feature-complete R5 replacement.
+[P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; firmware-core tests also need a native C++ compiler). P2 viewer is implemented: launch `viewer/start.cmd` or `python viewer/server.py`. [Viewer guide](viewer/README.md) · [P2 results](docs/P2_VIEWER.md). P3 settings/EEPROM are implemented: [commands and evidence](docs/P3_SETTINGS.md). Next: P4 acquisition, then P5 recording. The owner deferred remaining R5 analysis/plugins until real logger files exist. The current viewer is a data-reading foundation, not a feature-complete R5 replacement.
 
 ## Repository guide
 
