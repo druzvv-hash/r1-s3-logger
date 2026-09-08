@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>R1-S3 · Панель тестів</title><style>/*STYLE*/</style></head>
+<body><header><div class="brand">R1<span> / </span>S3 <small>ПАНЕЛЬ ТЕСТІВ</small></div><div id="connection" class="badge">Підключення…</div></header>
+<main>
+<div class="topline"><div><span class="eyebrow">INA228 · 400 A / 60 mV</span><h1>Вимірювання наживо</h1></div><div class="clock"><b id="utc">—</b><small id="cadence">Очікування даних</small></div></div>
+<div id="notice" role="status" aria-live="polite">З’єднання з логером…</div>
+<section class="meters" aria-label="Поточні показники">
+<article class="meter current"><label>СТРУМ</label><div><strong id="amps">—</strong><span>A</span></div><small>Знак відповідно до полярності шунта</small></article>
+<article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
+<article class="meter power"><label>ПОТУЖНІСТЬ</label><div><strong id="watts">—</strong><span>W</span></div><small id="temperature">Температура INA228: —</small></article>
+</section>
+<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<section id="live" class="page">
+<div class="panel chart-panel"><div class="section-title"><h2>Струм і напруга</h2><div><span class="legend current">● I, A</span><span class="legend voltage">● U, V</span><button id="pause">Пауза графіка</button><button id="clear-chart">Очистити</button></div></div><canvas id="chart" aria-label="Графік струму і напруги за останні 120 вимірів"></canvas><div class="chart-note">Незалежні шкали U та I · останні 120 вимірів · розриви даних не з’єднуються</div></div>
+<div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button><button id="sync-time">Час із цього пристрою → RTC</button></div></div>
+<div class="panel"><h2>Запис і пам’ять</h2><p class="standby">Режим тестування</p><p>Запис сесій на microSD буде наступним етапом. Зараз можна перевіряти показники, вузли та налаштування.</p><dl id="memory"></dl><p class="muted">FIFO підготовлений у PSRAM; виміри ще не передаються до записувача. Енкодер очікує встановлення.</p></div></div>
+</section>
+<section id="settings" class="page" hidden>
+<div class="panel"><div class="section-title"><div><h2>Параметри логера</h2><p id="config-state">Очікування конфігурації</p></div><span id="generation" class="badge">EEPROM —</span></div>
+<p class="muted">Застосувати — змінити роботу зараз. Зберегти — записати застосовані значення в EEPROM для наступного запуску.</p>
+<div class="button-row"><button id="reload-config">Прочитати з логера</button><button id="defaults">Типові значення в чернетку</button><button id="export">Експорт чернетки JSON</button><button id="import">Імпорт JSON</button><input id="profile-file" type="file" accept=".json" hidden></div>
+<form id="config-form"></form><div id="changes"></div>
+<div class="sticky-actions"><button id="apply" class="primary" disabled>Застосувати</button><button id="save" disabled>Зберегти в EEPROM</button><span id="draft-note">Змін немає</span></div></div>
+</section>
+<section id="diagnostics" class="page" hidden>
+<div class="overview"><div class="panel"><h2>Перевірка вузлів</h2><p>Тести запускаються по черзі й можуть на короткий час затримати наступний вимір.</p><div class="button-row"><button data-command="I2C">Сканувати I²C</button><button data-command="SD">SD: монтування і читання</button><button data-command="EEPROM">EEPROM: два читання</button><button data-command="MEASURE">INA228: вимір</button></div><dl id="raw"></dl><p class="muted">Ці тести SD та EEPROM нічого не записують. ACK на I²C підтверджує відповідь адреси.</p></div>
+<div class="panel"><h2>Телефон через Wi-Fi</h2><p>Підключись до мережі логера й відкрий <a href="http://192.168.4.1/">192.168.4.1</a>. У цій мережі немає інтернету.</p><dl id="network"></dl><details><summary>Показати пароль Wi-Fi</summary><code id="wifi-password">—</code></details><p class="muted">На ПК можна залишатися у своїй мережі та працювати через USB. Перед прошиванням закрий USB-сервер панелі, щоб звільнити COM-порт.</p><button id="release-usb" hidden>Звільнити USB для прошивання</button></div></div>
+</section>
+<footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
+</main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*APP*/</script></body></html>

@@ -1,0 +1,73 @@
+/* Browser acceptance. Default uses explicit synthetic fixtures; --hardware uses COM5 bridge. */
+const {chromium}=require('playwright');
+const fs=require('fs'),path=require('path'),assert=require('node:assert/strict');
+const {encodeConfig}=require('../device_ui/codec.js');
+const fields=require('../schemas/config-v1.json').fields;
+const root=path.resolve(__dirname,'..'),hardware=process.argv.includes('--hardware');
+(async()=>{
+ const browser=await chromium.launch({channel:'chrome',headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1440,height:1100}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const config=Object.fromEntries(fields.map(f=>[f.name,f.default]));
+  let offline=false, frozen=false, sample=0;
+  const fake={ready:true,firmware:'fixture',boot:'12345678',revision:1,generation:'3',settings_status:'SAVED',config_hex:encodeConfig(config,fields),uptime_ms:1000,sample_at_ms:1000,valid:true,volts:4.906,amps:3.995,watts:19.59947,temp_c:27.25,shunt_uv:599.25,shunt_raw:1918,bus_raw:25119,temp_raw:3488,sd:'READ',eeprom:'READ',rtc:'TICK OK',oled:true,i2c_count:4,i2c_errors:0,utc:1788840000,owner_core:1,ui_core:0,psram_free:16000000,heap_free:130000,queue_bytes:65536,buffer_ready:true,sd_block_bytes:8192,ap_ready:true,ssid:'R1-S3-TEST',ap_password:'synthetic-fixture'};
+  let url;
+  if(hardware)url=JSON.parse(fs.readFileSync(path.join(root,'data/device-panel/session.json'),'utf8')).url;
+  else{
+   url='http://127.0.0.1:9876/';
+   await page.route('**/*',async route=>{
+    const req=route.request(),p=new URL(req.url()).pathname;
+    if(p==='/')return route.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,'device_ui/index.html'),'utf8')});
+    if(p==='/api/state'){
+     if(offline)return route.fulfill({status:503,json:{message:'Fixture disconnected'}});
+     if(!frozen)sample++;return route.fulfill({json:{...fake,ina:'ADC OK',sample_id:sample,uptime_ms:sample*1000,sample_at_ms:sample*1000}});
+    }
+    return route.fulfill({json:{ok:true,message:'Fixture OK'}});
+   });
+  }
+  await page.goto(url);
+  await page.waitForFunction(()=>document.getElementById('connection').textContent.includes('підключений'),{timeout:20000});
+  await page.waitForTimeout(2200);
+  assert.notEqual(await page.locator('#amps').textContent(),'—');
+  await page.getByRole('button',{name:'Налаштування',exact:true}).click();
+  const contrast=await page.locator('#f-oled_contrast').inputValue();
+  await page.locator('#f-oled_contrast').fill(contrast==='100'?'101':'100');
+  assert.equal(await page.locator('#apply').isEnabled(),true);
+  assert.equal(await page.locator('#save').isEnabled(),false);
+  await page.locator('#f-i_gain').fill('0');
+  assert.equal(await page.locator('#apply').isEnabled(),false);
+  await page.getByRole('button',{name:'Прочитати з логера',exact:true}).click();
+  await page.waitForFunction(()=>document.getElementById('draft-note').textContent==='Чернетка відповідає логеру');
+  if(!hardware){
+   await page.locator('#f-oled_contrast').fill('100');fake.revision++;
+   await page.waitForFunction(()=>document.getElementById('draft-note').textContent.includes('Стан змінився'));
+   assert.equal(await page.locator('#apply').isEnabled(),false);
+   await page.getByRole('button',{name:'Прочитати з логера',exact:true}).click();
+  }else{
+   // A reversible display-only change proves the real browser-to-INA/settings owner path.
+   await page.locator('#f-oled_contrast').fill(contrast==='100'?'101':'100');
+   await page.locator('#apply').click();
+   await page.waitForFunction(()=>document.getElementById('notice').textContent.startsWith('Налаштування застосовано'),{timeout:20000});
+   await page.locator('#f-oled_contrast').fill(contrast);
+   await page.locator('#apply').click();
+   await page.waitForFunction(()=>document.getElementById('notice').textContent.startsWith('Налаштування застосовано')&&document.getElementById('draft-note').textContent==='Чернетка відповідає логеру',{timeout:20000});
+   assert.match(await page.locator('#config-state').textContent(),/збережено/);
+  }
+  await page.getByRole('button',{name:'Огляд',exact:true}).click();
+  if(hardware)await page.waitForFunction(()=>document.getElementById('amps').textContent!=='—',{timeout:10000});
+  fs.mkdirSync(path.join(root,'data/device-panel'),{recursive:true});
+  await page.screenshot({path:path.join(root,'data/device-panel',hardware?'panel-live.png':'panel-fixture.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForTimeout(200);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'Mobile overflow');
+  await page.screenshot({path:path.join(root,'data/device-panel',hardware?'panel-mobile-live.png':'panel-mobile-fixture.png'),fullPage:true});
+  if(!hardware){
+   frozen=true;await page.waitForFunction(()=>document.getElementById('amps').textContent==='—',{timeout:10000});
+   frozen=false;await page.waitForFunction(()=>document.getElementById('amps').textContent!=='—');
+   offline=true;await page.waitForFunction(()=>document.getElementById('amps').textContent==='—');
+  }
+  assert.deepEqual(errors,[]);
+  console.log(hardware?'Live panel: readings, contrast apply/restore, EEPROM state and mobile layout PASS':'Fixture panel: draft validation, stale revision, disconnect and mobile layout PASS');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1);});

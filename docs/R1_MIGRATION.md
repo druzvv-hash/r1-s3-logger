@@ -233,3 +233,31 @@ Owner has no encoder yet and requested a no-hardware code stub, explicit use of 
 CONFIG v0.13 source adds semantic input actions with a no-GPIO stub, a 32-byte sample SPSC ring with atomic publication/overflow diagnostics, checked block-output staging and explicit PSRAM/internal-DMA allocations. Ordinary startup reserves the applied FIFO budget and an 8 KiB staging buffer. The diagnostic acquisition loop is unchanged; production tasks, UI and CSV/SD sink remain pending. No schema or EEPROM defaults changed.
 
 35 host tests pass, including 400,000 concurrent FIFO transfers, counter wrap, backpressure, all 512 short-write boundaries and pool-allocation failures. Normal and service builds pass; normal static RAM 29,380 bytes, flash 423,837 bytes (heap buffers are additional). COM5 is enumerated but read-only status failed to open with Windows error 31, device not functioning. No upload was attempted after that failure; deployed v0.12 remains the last confirmed firmware. No new EEPROM writes, SD files, physical PSRAM stress or timing claims in this stage.
+
+### 2026-09-08 — P4a test panel deployed
+
+Owner rebooted the ESP and reported the previous upload succeeded, then requested
+a usable UI for bench tests. COM5 responded with saved generation 3. PANEL v0.14 adds
+the Fnirsi-style device panel: real U/I/P/temperature, bounded U/I graph, diagnostics,
+UTC command and the complete P3 configuration lifecycle with JSON profiles.
+
+Core 0 serves a bundled offline Wi-Fi AP interface; core 1 owns the diagnostic
+hardware and executes queued commands. A loopback USB bridge provides the same UI
+without changing the PC's network. Boot/revision checks reject stale commands.
+Snapshot heartbeat/invalid samples prevent frozen or missing data from looking live.
+The AP gets a newly generated NVS credential at first startup; no measurement profile
+or EEPROM default changed. Encoder remains a no-GPIO stub.
+
+Normal firmware uploaded and verified twice during development; only the final normal
+build is left on the board. Normal static RAM 64,488 bytes, flash 917,573 bytes;
+service compilation also passes, but is not deployed. Forty host tests and Chrome
+fixture/live desktop/mobile acceptance pass. USB browser Apply changed only contrast
+and restored it without Save. Physical INA/I2C/SD/EEPROM/RTC command tests passed;
+wrong-boot Save was rejected. Before/after complete EEPROM reads are identical,
+generation 3 / CRC32 EBDAE9A1. A representative live point was 3.608398 V / 0.454167 A;
+this is transport evidence, not a new accuracy or calibration claim.
+
+AP startup is reported by the ESP; phone-to-AP operation remains for owner verification.
+Diagnostic conversions are still approximately 1 Hz; production acquisition, chunked
+OLED scheduling, local menus and P5 session recording remain open. The offline viewer
+was not changed. See [test panel](P4A_TEST_PANEL.md) and [owner guide](uk/TEST_PANEL.md).

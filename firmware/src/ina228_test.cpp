@@ -42,6 +42,8 @@ bool writeRegister(uint8_t reg, uint16_t value) {
 }
 
 const char* testIna228() {
+    ++latest.sampleId;
+    latest.sampledAt = millis();
     latest.valid = false;
     const auto& active = appliedSettings();
     if (restoreFailed) return "RESTORE FAIL";
@@ -106,6 +108,11 @@ const char* testIna228() {
             latest.busVolts = ((bus >> 4) * 0.0001953125 - active.u_zero_V) * active.u_gain;
             latest.currentAmps = active.polarity * (shuntMicrovolts-active.i_zero_uV) / active.shunt_uohm * active.i_gain;
             latest.temperatureC = signed16(temperature) * 0.0078125;
+            latest.shuntRaw = signed20(shunt);
+            latest.busRaw = bus >> 4;
+            latest.tempRaw = signed16(temperature);
+            latest.shuntMicrovolts = shuntMicrovolts;
+            latest.sampledAt = millis();
             latest.valid = true;
             Serial.printf("INA228 I_applied=%+.4f A U_applied=%.6f V; shunt=%.3f uOhm calibrated=%u\n",
                           latest.currentAmps, latest.busVolts, active.shunt_uohm, active.calibration_valid);

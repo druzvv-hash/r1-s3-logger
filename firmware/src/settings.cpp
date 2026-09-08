@@ -27,6 +27,7 @@ settings::Selection persisted;
 bool ready=false,recording=false,receiving=false,saveUncertain=false;
 size_t expected=0;
 settings::Bytes incoming;
+uint32_t revision=1;
 void fail(const char* why){Serial.printf("CONFIG ERROR %s\n",why);}
 void state(){Serial.printf("CONFIG STATUS %s generation=%llu draft_changed=%u recording=%u\n",settingsStatus(),persisted.selected.generation,!settings::equal(applied,draft),recording);}
 int hex(char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;if(c>='A'&&c<='F')return c-'A'+10;return -1;}
@@ -53,6 +54,7 @@ bool handleSettingsCommand(const char* line){
  if(!strcmp(line,"CONFIG DRAFT")){output(draft);return true;}
  if(!strcmp(line,"CONFIG PERSISTED")){if(persisted.index<0)fail("no saved config");else output(persisted.selected.config);return true;}
  if(recording){fail("STOP required");return true;}
+ ++revision; // Invalidate stale panel drafts, including an in-progress UART transfer.
  if(!strcmp(line,"CONFIG DEFAULTS")){draft=settings::Config{};receiving=false;Serial.println("CONFIG OK DEFAULTS draft only");return true;}
  unsigned n=0;int consumed=0;
  if(sscanf(line,"CONFIG BEGIN %u%n",&n,&consumed)==1&&line[consumed]==0){
@@ -80,4 +82,22 @@ bool handleSettingsCommand(const char* line){
     saveUncertain=false;Serial.println("CONFIG OK SAVE");state();return true;
  }
  fail("unknown command");return true;
+}
+
+uint32_t settingsRevision(){return revision;}
+uint64_t settingsGeneration(){return persisted.index>=0?persisted.selected.generation:0;}
+bool panelApplySettings(const settings::Bytes& payload,const char*& error){
+ if(recording||receiving){error="STOP required or UART draft transfer active";return false;}
+ if(persisted.blocked){error="Unsupported/ambiguous EEPROM configuration";return false;}
+ settings::Config candidate;
+ if(!settings::decode(payload,candidate)||!settings::timingFeasible(candidate)){error="Invalid configuration or ADC timing";return false;}
+ ++revision;
+ if(!applyInaSettings(candidate)){error="INA apply/readback failed; inspect device state";return false;}
+ applied=candidate;draft=candidate;ready=true;return true;
+}
+bool panelSaveSettings(const char*& error){
+ if(recording||receiving||!settingsReady()||!settings::equal(applied,draft)){error="Apply valid settings first; finish UART transfer";return false;}
+ ++revision;
+ if(!settings::save(eeprom,applied,persisted)){saveUncertain=true;error="EEPROM save/readback failed; persistence uncertain";return false;}
+ saveUncertain=false;return true;
 }

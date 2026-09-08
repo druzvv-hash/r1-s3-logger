@@ -14,9 +14,11 @@ bool leap(int year) {
 bool previousValid = false;
 uint64_t previousSeconds = 0;
 uint32_t previousMillis = 0;
+bool trustedUtc = false;
 }
 
 const char* pollRtc() {
+    trustedUtc = false;
     uint8_t r[19];
     Wire.beginTransmission(0x68);
     Wire.write(0x00); // Register pointer only; no register contents written.
@@ -64,7 +66,7 @@ const char* pollRtc() {
     days += day - 1;
     const uint64_t seconds = days * 86400 + hour * 3600 + minute * 60 + second;
     const char* result = "WAIT";
-    if (previousValid) {
+    if (previousValid && sampledAt - previousMillis >= 1500) {
         const uint32_t elapsed = sampledAt - previousMillis;
         const int64_t advance = static_cast<int64_t>(seconds) - previousSeconds;
         const int64_t errorMs = advance * 1000 - elapsed;
@@ -78,6 +80,7 @@ const char* pollRtc() {
     previousSeconds = seconds;
     previousMillis = sampledAt;
     previousValid = true;
+    trustedUtc = !osf;
     return result;
 }
 
@@ -145,9 +148,13 @@ bool setRtcUtc(uint64_t epoch) {
 
 #include "storage_check.h"
 #include "settings.h"
+#include "test_panel.h"
+
+uint64_t rtcUtcNow(){return trustedUtc ? previousSeconds+946684800ULL+(uint32_t(millis()-previousMillis)/1000) : 0;}
+bool panelSetRtcUtc(uint64_t epoch){return epoch>=946684800ULL&&epoch<4102444799ULL&&setRtcUtc(epoch);}
 
 bool handleRtcSerial() {
-    static char line[160];
+    static char line[3200];
     static size_t length = 0;
     static bool overflow = false;
     while (Serial.available()) {
@@ -159,6 +166,7 @@ bool handleRtcSerial() {
             continue;
         }
         line[length] = 0;
+        if (!overflow && panelHandleSerial(line)) { length=0; return false; }
         if (!overflow && strcmp(line, "EEPROM DUMP") == 0) {
             length = 0;
             dumpEepromReadOnly();

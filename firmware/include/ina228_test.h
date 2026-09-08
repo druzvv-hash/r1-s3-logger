@@ -11,5 +11,11 @@ struct Ina228Reading {
     double busVolts = 0;
     double currentAmps = 0;
     double temperatureC = 0;
+    int32_t shuntRaw = 0;
+    uint32_t busRaw = 0;
+    int32_t tempRaw = 0;
+    double shuntMicrovolts = 0;
+    uint32_t sampleId = 0;
+    uint32_t sampledAt = 0;
 };
 const Ina228Reading& latestIna228Reading();

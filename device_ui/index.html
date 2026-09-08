@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>R1-S3 · Панель тестів</title><style>:root{font-family:system-ui,"Segoe UI",sans-serif;color:#e7eef1;background:#0c1015;font-synthesis:none;--line:#29333d;--muted:#91a0ad;--cyan:#00c8ff;--yellow:#ffd600;--pink:#ff66b0}*{box-sizing:border-box}body{margin:0}header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;background:#11171e}.brand{font-size:27px;font-weight:800;letter-spacing:2px}.brand span{color:var(--cyan)}.brand small{font-size:10px;letter-spacing:2px;margin-left:20px;color:var(--muted)}main{max-width:1480px;margin:auto;padding:28px 4vw}.badge{border:1px solid var(--line);border-radius:6px;font-size:12px;padding:7px 12px;color:#a8bac7;white-space:nowrap}.badge.online{color:#63e0b3;border-color:#2c6655}.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}h1{font-size:27px;margin:8px 0}h2{font-size:16px;margin:0 0 16px}.clock{text-align:right;font-size:14px}.clock small{display:block;color:var(--muted);margin-top:6px}#notice{font-size:13px;min-height:38px;color:#8fdfc2;padding:9px 12px;border-left:3px solid #3f8e72;background:#13231f;margin-bottom:18px}#notice.error{color:#ffc194;border-color:#eb8a4d;background:#2d211b}.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.meter{background:#121b23;border:1px solid #2b3d4b;border-top:3px solid currentColor;padding:24px 23px 20px;border-radius:8px}.current{color:var(--cyan)}.voltage{color:var(--yellow)}.power{color:var(--pink)}.meter label{font-size:11px;letter-spacing:2px}.meter div{display:flex;align-items:baseline;gap:10px;margin:12px 0}.meter strong{font-size:clamp(30px,3.7vw,55px);font-variant-numeric:tabular-nums;font-weight:650;letter-spacing:-2px}.meter div span{font-size:20px}.meter small{font-size:11px;color:var(--muted)}nav{display:flex;gap:20px;border-bottom:1px solid var(--line);margin:24px 0}button{border:1px solid #384754;color:#d4e1e9;background:#1c2832;border-radius:5px;padding:10px 14px;font:inherit;font-size:12px;cursor:pointer;transition:background .15s}button:hover:enabled{background:#2c3e4d}button:disabled{opacity:.4;cursor:not-allowed}button.primary{background:#03a4d0;border-color:#03a4d0;color:#061922;font-weight:700}.tab{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:12px 3px;color:var(--muted)}.tab.active{color:var(--cyan);border-color:var(--cyan)}.panel{background:#121920;border:1px solid var(--line);border-radius:8px;padding:22px;margin-bottom:18px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-title h2{margin-bottom:8px}.section-title p{margin:0}.legend{font-size:12px;margin-right:12px}canvas{width:100%;height:295px;display:block;background:#0b1016;margin-top:18px;border-radius:4px}.chart-note{text-align:right;color:var(--muted);font-size:10px;margin-top:9px}.overview{display:grid;grid-template-columns:1fr 1fr;gap:18px}.button-row{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.standby{font-size:22px;color:#bccbd8;font-weight:600}p{font-size:13px;line-height:1.65;color:#b5c2cd}.muted{color:var(--muted);font-size:12px}dl{display:grid;grid-template-columns:1fr auto;gap:10px 20px;font-size:12px;margin:20px 0}dt{color:var(--muted)}dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}footer{display:flex;justify-content:space-between;color:#6f8494;font-size:10px;margin:8px 0 18px;gap:15px}a{color:var(--cyan)}summary{cursor:pointer;font-size:12px;color:var(--cyan);margin:12px 0}code{font-family:monospace;color:#a9d7c5}fieldset{border:0;border-top:1px solid var(--line);padding:20px 0;margin-top:25px}legend{font-size:14px;padding-right:15px;font-weight:600}.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.field{display:flex;flex-direction:column;gap:7px;font-size:12px}.field small{color:var(--muted);font-size:10px;line-height:1.5}.field input,.field select{width:100%;background:#0c1218;border:1px solid #354551;border-radius:4px;padding:9px;color:#e4f1f9;font:inherit}.field input:focus,.field select:focus{outline:1px solid var(--cyan)}.field input[type=checkbox]{width:20px;height:20px}.sticky-actions{position:sticky;bottom:0;background:#15202bf5;border-top:1px solid #324856;margin:20px -22px -22px;padding:16px 22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}#draft-note,#config-state{font-size:12px;color:var(--muted)}#changes{font-size:12px;color:#f0c786;line-height:1.8;white-space:pre-wrap}.offline .meter strong{color:#647888}@media(max-width:800px){main{padding:20px 4vw}.meter{padding:15px}.meter strong{font-size:31px}.meter small{display:none}.overview{grid-template-columns:1fr;gap:0}.field-grid{grid-template-columns:repeat(2,1fr)}.brand small{display:none}.section-title{align-items:flex-start;flex-direction:column}.topline h1{font-size:21px}.clock{font-size:11px}footer{flex-direction:column}.legend{margin-right:8px}}@media(max-width:480px){.meters{gap:7px}.meter{padding:12px 9px}.meter strong{font-size:25px;letter-spacing:-1px}.meter div{gap:3px;flex-wrap:wrap}.meter div span{font-size:14px}.meter label{font-size:9px}.field-grid{grid-template-columns:1fr}.clock b{font-size:10px}.brand{font-size:23px}.panel{padding:16px}.sticky-actions{margin-left:-16px;margin-right:-16px;margin-bottom:-16px;padding:14px 16px}header{height:64px}}
+</style></head>
+<body><header><div class="brand">R1<span> / </span>S3 <small>ПАНЕЛЬ ТЕСТІВ</small></div><div id="connection" class="badge">Підключення…</div></header>
+<main>
+<div class="topline"><div><span class="eyebrow">INA228 · 400 A / 60 mV</span><h1>Вимірювання наживо</h1></div><div class="clock"><b id="utc">—</b><small id="cadence">Очікування даних</small></div></div>
+<div id="notice" role="status" aria-live="polite">З’єднання з логером…</div>
+<section class="meters" aria-label="Поточні показники">
+<article class="meter current"><label>СТРУМ</label><div><strong id="amps">—</strong><span>A</span></div><small>Знак відповідно до полярності шунта</small></article>
+<article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
+<article class="meter power"><label>ПОТУЖНІСТЬ</label><div><strong id="watts">—</strong><span>W</span></div><small id="temperature">Температура INA228: —</small></article>
+</section>
+<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<section id="live" class="page">
+<div class="panel chart-panel"><div class="section-title"><h2>Струм і напруга</h2><div><span class="legend current">● I, A</span><span class="legend voltage">● U, V</span><button id="pause">Пауза графіка</button><button id="clear-chart">Очистити</button></div></div><canvas id="chart" aria-label="Графік струму і напруги за останні 120 вимірів"></canvas><div class="chart-note">Незалежні шкали U та I · останні 120 вимірів · розриви даних не з’єднуються</div></div>
+<div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button><button id="sync-time">Час із цього пристрою → RTC</button></div></div>
+<div class="panel"><h2>Запис і пам’ять</h2><p class="standby">Режим тестування</p><p>Запис сесій на microSD буде наступним етапом. Зараз можна перевіряти показники, вузли та налаштування.</p><dl id="memory"></dl><p class="muted">FIFO підготовлений у PSRAM; виміри ще не передаються до записувача. Енкодер очікує встановлення.</p></div></div>
+</section>
+<section id="settings" class="page" hidden>
+<div class="panel"><div class="section-title"><div><h2>Параметри логера</h2><p id="config-state">Очікування конфігурації</p></div><span id="generation" class="badge">EEPROM —</span></div>
+<p class="muted">Застосувати — змінити роботу зараз. Зберегти — записати застосовані значення в EEPROM для наступного запуску.</p>
+<div class="button-row"><button id="reload-config">Прочитати з логера</button><button id="defaults">Типові значення в чернетку</button><button id="export">Експорт чернетки JSON</button><button id="import">Імпорт JSON</button><input id="profile-file" type="file" accept=".json" hidden></div>
+<form id="config-form"></form><div id="changes"></div>
+<div class="sticky-actions"><button id="apply" class="primary" disabled>Застосувати</button><button id="save" disabled>Зберегти в EEPROM</button><span id="draft-note">Змін немає</span></div></div>
+</section>
+<section id="diagnostics" class="page" hidden>
+<div class="overview"><div class="panel"><h2>Перевірка вузлів</h2><p>Тести запускаються по черзі й можуть на короткий час затримати наступний вимір.</p><div class="button-row"><button data-command="I2C">Сканувати I²C</button><button data-command="SD">SD: монтування і читання</button><button data-command="EEPROM">EEPROM: два читання</button><button data-command="MEASURE">INA228: вимір</button></div><dl id="raw"></dl><p class="muted">Ці тести SD та EEPROM нічого не записують. ACK на I²C підтверджує відповідь адреси.</p></div>
+<div class="panel"><h2>Телефон через Wi-Fi</h2><p>Підключись до мережі логера й відкрий <a href="http://192.168.4.1/">192.168.4.1</a>. У цій мережі немає інтернету.</p><dl id="network"></dl><details><summary>Показати пароль Wi-Fi</summary><code id="wifi-password">—</code></details><p class="muted">На ПК можна залишатися у своїй мережі та працювати через USB. Перед прошиванням закрий USB-сервер панелі, щоб звільнити COM-порт.</p><button id="release-usb" hidden>Звільнити USB для прошивання</button></div></div>
+</section>
+<footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
+</main><script>const REGISTRY=[{"id":1,"name":"shunt_uohm","type":"f64","unit":"uohm","default":150,"min":1,"max":1000000},{"id":2,"name":"polarity","type":"i32","default":1,"enum":[-1,1]},{"id":3,"name":"i_zero_uV","type":"f64","unit":"uV","default":0,"min":-1000,"max":1000},{"id":4,"name":"i_gain","type":"f64","default":1,"min":0.5,"max":2},{"id":5,"name":"u_zero_V","type":"f64","unit":"V","default":0,"min":-10,"max":10},{"id":6,"name":"u_gain","type":"f64","default":1,"min":0.5,"max":2},{"id":7,"name":"requested_rate_hz","type":"u32","unit":"Hz","default":50,"enum":[10,50,100]},{"id":8,"name":"adc_range","type":"u32","default":0,"enum":[0,1]},{"id":9,"name":"vshunt_ct_code","type":"u32","default":5,"min":0,"max":7},{"id":10,"name":"vbus_ct_code","type":"u32","default":5,"min":0,"max":7},{"id":11,"name":"temp_ct_code","type":"u32","default":5,"min":0,"max":7},{"id":12,"name":"average_code","type":"u32","default":0,"min":0,"max":7},{"id":13,"name":"ready_timeout_us","type":"u32","unit":"us","default":15000,"min":1000,"max":1000000},{"id":14,"name":"max_gap_us","type":"u32","unit":"us","default":40000,"min":1000,"max":1000000},{"id":15,"name":"flush_interval_ms","type":"u32","unit":"ms","default":1000,"min":100,"max":10000},{"id":16,"name":"queue_bytes","type":"u32","unit":"bytes","default":65536,"min":4096,"max":1048576},{"id":17,"name":"rotation_bytes","type":"u32","unit":"bytes","default":1073741824,"min":1048576,"max":1073741824},{"id":18,"name":"reserve_bytes","type":"u32","unit":"bytes","default":67108864,"min":1048576,"max":1073741824},{"id":19,"name":"allow_unknown_utc","type":"bool","default":false},{"id":20,"name":"display_hz","type":"u32","unit":"Hz","default":5,"min":1,"max":10},{"id":21,"name":"live_hz","type":"u32","unit":"Hz","default":5,"min":1,"max":10},{"id":22,"name":"display_filter_tau_ms","type":"u32","unit":"ms","default":0,"min":0,"max":10000},{"id":23,"name":"display_utc_offset_min","type":"i32","unit":"min","default":0,"min":-720,"max":840},{"id":24,"name":"calibration_id","type":"utf8","default":"nominal-uncalibrated","max_bytes":64},{"id":25,"name":"calibration_note","type":"utf8","default":"","max_bytes":256},{"id":26,"name":"calibration_utc","type":"utf8","default":"","max_bytes":20},{"id":27,"name":"calibration_valid","type":"bool","default":false},{"id":28,"name":"oled_contrast","type":"u32","default":127,"min":0,"max":255}];</script><script>/* Config v1 TLV, shared by the offline USB and embedded panels. */
+function validateConfig(values, registry) {
+  if (!values || typeof values !== 'object' || Object.keys(values).length !== registry.length ||
+      registry.some(f => !Object.prototype.hasOwnProperty.call(values, f.name))) throw Error('Неповний або невідомий набір параметрів');
+  for (const f of registry) {
+    const v=values[f.name];
+    let ok;
+    if(f.type==='utf8') ok=typeof v==='string'&&!v.includes('\0')&&new TextEncoder().encode(v).length<=f.max_bytes;
+    else if(f.type==='bool') ok=typeof v==='boolean';
+    else ok=typeof v==='number'&&Number.isFinite(v)&&(f.type==='f64'||Number.isInteger(v))&&v>=(f.min??-Infinity)&&v<=(f.max??Infinity)&&(!f.enum||f.enum.includes(v));
+    if(!ok) throw Error('Перевір значення: '+f.name);
+  }
+  const date=values.calibration_utc;
+  if(date && (!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(date)||!Number.isFinite(Date.parse(date))||new Date(date).toISOString().replace('.000','')!==date)) throw Error('Дата калібрування: YYYY-MM-DDTHH:MM:SSZ');
+  if(values.calibration_valid&&(!values.calibration_id||!values.calibration_note||!date))throw Error('Заповни походження калібрування, опис і UTC');
+}
+function encodeConfig(values, registry) {
+  validateConfig(values,registry);
+  const codes={u32:1,i32:2,f64:3,bool:4,utf8:5}, out=[];
+  for(const f of registry){
+    const raw=f.type==='utf8'?new TextEncoder().encode(values[f.name]):new Uint8Array(f.type==='f64'?8:f.type==='bool'?1:4);
+    const v=new DataView(raw.buffer,raw.byteOffset,raw.byteLength);
+    if(f.type==='u32')v.setUint32(0,values[f.name],true);
+    if(f.type==='i32')v.setInt32(0,values[f.name],true);
+    if(f.type==='f64')v.setFloat64(0,values[f.name],true);
+    if(f.type==='bool')raw[0]=values[f.name]?1:0;
+    out.push(f.id&255,f.id>>8,codes[f.type],0,raw.length&255,raw.length>>8,0,0,...raw);
+  }
+  if(out.length>1472)throw Error('Конфігурація завелика');
+  return out.map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+function decodeConfig(hex,registry){
+  if(typeof hex!=='string'||!/^([0-9a-fA-F]{2})+$/.test(hex)||hex.length>2944)throw Error('Некоректний пакет конфігурації');
+  const bytes=Uint8Array.from(hex.match(/../g),x=>parseInt(x,16)),v=new DataView(bytes.buffer),out={};let p=0;
+  const codes={u32:1,i32:2,f64:3,bool:4,utf8:5};
+  for(const f of registry){
+    if(p+8>bytes.length||v.getUint16(p,true)!==f.id||bytes[p+2]!==codes[f.type]||bytes[p+3]||v.getUint16(p+6,true))throw Error('Невідомий формат TLV');
+    const n=v.getUint16(p+4,true);p+=8;
+    if(p+n>bytes.length || (f.type!=='utf8'&&n!==(f.type==='f64'?8:f.type==='bool'?1:4)))throw Error('Обрізаний пакет TLV');
+    if(f.type==='utf8')out[f.name]=new TextDecoder('utf8',{fatal:true}).decode(bytes.subarray(p,p+n));
+    if(f.type==='u32')out[f.name]=v.getUint32(p,true);
+    if(f.type==='i32')out[f.name]=v.getInt32(p,true);
+    if(f.type==='f64')out[f.name]=v.getFloat64(p,true);
+    if(f.type==='bool'){if(bytes[p]>1)throw Error('Некоректне bool');out[f.name]=!!bytes[p];}
+    p+=n;
+  }
+  if(p!==bytes.length)throw Error('Зайві поля TLV');
+  validateConfig(out,registry);return out;
+}
+if(typeof module!=='undefined')module.exports={encodeConfig,decodeConfig,validateConfig};
+</script><script>/* The hardware owns all mutations. A browser draft is never saved implicitly. */
+const $=id=>document.getElementById(id);
+const labels={
+shunt_uohm:['Опір шунта, µΩ','400 A / 60 mV = 150 µΩ'],
+polarity:['Полярність струму','+1 — звичайна; −1 — інвертувати'],
+i_zero_uV:['Нуль струму, µV','Зсув вхідної напруги шунта'],
+i_gain:['Коефіцієнт струму','1 = без корекції масштабу'],
+u_zero_V:['Нуль напруги, V','Віднімається перед коефіцієнтом'],
+u_gain:['Коефіцієнт напруги','1 = без корекції масштабу'],
+requested_rate_hz:['Частота майбутнього запису, Hz','Поки діагностичний цикл ≈1 Hz'],
+adc_range:['Діапазон шунта','0: ±163.84 mV · 1: ±40.96 mV; вузький не охоплює 400 A'],
+vshunt_ct_code:['Час конверсії шунта','Код 0–7: 50, 84, 150, 280, 540, 1052, 2074, 4120 µs'],
+vbus_ct_code:['Час конверсії VBUS','Код 0–7: 50 … 4120 µs'],
+temp_ct_code:['Час конверсії температури','Код 0–7: 50 … 4120 µs'],
+average_code:['Усереднення ADC','Код 0–7: 1, 4, 16, 64, 128, 256, 512, 1024'],
+ready_timeout_us:['Очікування ADC, µs','Має вміщувати конверсії з усередненням'],
+max_gap_us:['Межа розриву, µs','Для майбутнього записувача'],
+flush_interval_ms:['Інтервал flush, ms','Для майбутнього записувача'],
+queue_bytes:['Бюджет FIFO, байти','Виділяється при запуску; зміна потребує перезапуску'],
+rotation_bytes:['Розмір частини, байти','Для майбутнього записувача'],
+reserve_bytes:['Резерв на SD, байти','Для майбутнього записувача'],
+allow_unknown_utc:['Дозволити невідомий UTC','Для майбутнього записувача'],
+display_hz:['Оновлення OLED, Hz','Оновлення екрана, не частота вимірів'],
+live_hz:['Майбутній Live, Hz','Ця тестова панель опитує раз на секунду'],
+display_filter_tau_ms:['Фільтр OLED, ms','0 = без фільтра; графік панелі показує нефільтровані дані'],
+display_utc_offset_min:['Зсув від UTC, хвилини','Для майбутнього UI; панель показує UTC'],
+calibration_id:['Ідентифікатор калібрування','Назва процедури або еталона'],
+calibration_note:['Примітка калібрування','Умови та прилади'],
+calibration_utc:['UTC калібрування','YYYY-MM-DDTHH:MM:SSZ або порожньо'],
+calibration_valid:['Калібрування підтверджено','Вмикати лише після перевірки еталоном'],
+oled_contrast:['Контраст OLED','0–255']
+};
+const groups=[
+['Вимірювання та коефіцієнти',REGISTRY.slice(0,6)],
+['Аналого-цифрове перетворення',REGISTRY.slice(6,13)],
+['Буфер і майбутній запис',REGISTRY.slice(13,19)],
+['Екран і Live',REGISTRY.slice(19,23).concat(REGISTRY.slice(27))],
+['Походження калібрування',REGISTRY.slice(23,27)]
+];
+let state=null,base=null,baseBoot='',baseRevision=0,dirty=false,busy=false,online=false,paused=false,points=[],lastSample=null;
+let lastReceived=0,polling=false,stopped=false;
+function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
+function makeFields(){
+  for(const [title,fields] of groups){
+    const fieldset=document.createElement('fieldset'),legend=document.createElement('legend'),grid=document.createElement('div');
+    legend.textContent=title;grid.className='field-grid';fieldset.append(legend,grid);
+    for(const f of fields){
+      const label=document.createElement('label'),name=document.createElement('span'),help=document.createElement('small');
+      label.className='field';name.textContent=labels[f.name][0];help.textContent=labels[f.name][1];
+      let input=document.createElement(f.enum?'select':'input');input.id='f-'+f.name;input.name=f.name;
+      if(f.enum)for(const value of f.enum){const option=document.createElement('option');option.value=value;option.textContent=value;input.append(option);}
+      else if(f.type==='bool')input.type='checkbox';
+      else if(f.type==='utf8'){input.type='text';input.maxLength=f.max_bytes;}
+      else{input.type='number';input.step=f.type==='f64'?'any':'1';if(f.min!=null)input.min=f.min;if(f.max!=null)input.max=f.max;}
+      label.append(name,input,help);grid.append(label);
+    }
+    $('config-form').append(fieldset);
+  }
+}
+function values(){const out={};for(const f of REGISTRY){const el=$('f-'+f.name);out[f.name]=f.type==='bool'?el.checked:f.type==='utf8'?el.value:el.value.trim()===''?NaN:Number(el.value);}return out;}
+function fill(config){for(const f of REGISTRY){const el=$('f-'+f.name);if(f.type==='bool')el.checked=config[f.name];else el.value=config[f.name];}updateDraft();}
+function reload(){if(!state)return;base=decodeConfig(state.config_hex,REGISTRY);baseBoot=state.boot;baseRevision=state.revision;fill(base);}
+function stale(){return !!state&&(baseBoot!==state.boot||baseRevision!==state.revision);}
+function updateDraft(){
+  const current=values(),changes=base?REGISTRY.filter(f=>current[f.name]!==base[f.name]):[];
+  dirty=changes.length>0;let invalid='';
+  try{validateConfig(current,REGISTRY);}catch(e){invalid=e.message;}
+  $('changes').textContent=changes.map(f=>labels[f.name][0]+': '+String(base[f.name])+' → '+String(current[f.name])).join('\n');
+  $('draft-note').textContent=stale()?'Стан змінився. Прочитай з логера заново.':invalid|| (dirty?'Змін у чернетці: '+changes.length:'Чернетка відповідає логеру');
+  $('apply').disabled=!online||busy||!base||stale()||!dirty||!!invalid;
+  $('save').disabled=!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
+  $('export').disabled=!base||!!invalid;
+}
+function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
+function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
+function setOffline(error){online=false;document.body.classList.add('offline');$('connection').textContent='Немає зв’язку';$('connection').classList.remove('online');for(const id of ['amps','volts','watts'])$(id).textContent='—';$('temperature').textContent='Температура INA228: —';notice(error,true);controls();}
+function controls(){for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=busy||!online;updateDraft();}
+function render(s){
+  if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
+  // HTTP may still answer from core 0 when the hardware owner's snapshot stops.
+  if(!state||s.boot!==state.boot||s.uptime_ms!==state.uptime_ms)lastReceived=Date.now();
+  if(Date.now()-lastReceived>5000)throw Error('Знімок стану логера застарів');
+  const wasOffline=!online;
+  if(state&&s.boot!==state.boot){points=[];lastSample=null;notice('Логер перезапустився. Перевір стан і налаштування.',true);}
+  state=s;online=true;document.body.classList.remove('offline');
+  $('release-usb').hidden=s.transport!=='usb';
+  $('connection').textContent='● Логер підключений';$('connection').classList.add('online');
+  const valid=s.valid&&((s.uptime_ms-s.sample_at_ms)>>>0)<3500;
+  for(const key of ['amps','volts','watts'])$(key).textContent=valid?number(s[key],key==='watts'?3:4):'—';
+  $('temperature').textContent='Температура INA228: '+(valid?number(s.temp_c,2)+' °C':'—');
+  $('utc').textContent=s.utc?new Date(s.utc*1000).toISOString().replace('T',' ').replace('.000Z',' UTC'):'RTC: потрібно встановити час';
+  $('cadence').textContent='Діагностичний цикл ≈1 Hz · відлік '+s.sample_id;
+  if(wasOffline)notice('Логер підключений. Можна змінювати навантаження та запускати тести.');
+  rows('health',[['INA228',s.ina],['microSD',s.sd==='READ'?'Читання OK':s.sd],['24C32',s.eeprom==='READ'?'Читання OK':s.eeprom],['DS3231',s.rtc],['OLED',s.oled?'Працює':'Недоступний']]);
+  rows('memory',[['FIFO в PSRAM',s.buffer_ready?(s.queue_bytes/1024)+' KiB · підготовлено':'Не виділено'],['Блок SD у внутрішній SRAM',(s.sd_block_bytes/1024)+' KiB'],['Вільна PSRAM',(s.psram_free/1048576).toFixed(2)+' MiB'],['Вільна внутрішня пам’ять',(s.heap_free/1024).toFixed(1)+' KiB']]);
+  rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
+  rows('network',[['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid]]);
+  $('wifi-password').textContent=s.ap_password;
+  $('generation').textContent='EEPROM · покоління '+s.generation;
+  $('config-state').textContent=({'SAVED':'Застосовано та збережено','UNSAVED':'Застосовано, ще не збережено','BLOCKED':'EEPROM заблоковано: перевір формат','APPLY FAIL':'Помилка застосування'})[s.settings_status]||s.settings_status;
+  $('footer-device').textContent='R1-S3 · прошивка '+s.firmware+' · '+(s.boot||'');
+  if(!base)reload();
+  // Preserve a dirty draft when another client changes the configuration.
+  else if(!dirty&&stale())reload();
+  if(lastSample!==s.boot+':'+s.sample_id){
+    if(!paused)points.push({t:s.sample_at_ms,i:valid?s.amps:null,u:valid?s.volts:null});
+    if(points.length>120)points.shift();lastSample=s.boot+':'+s.sample_id;draw();
+  }
+  controls();
+}
+async function api(path,body){
+  const options={cache:'no-store',signal:AbortSignal.timeout(14000)};
+  if(body!=null){options.method='POST';options.headers={'Content-Type':'text/plain','X-R1-Panel':'1'};options.body=body;}
+  const token=new URLSearchParams(location.search).get('token');
+  const response=await fetch(path+(token?'?token='+encodeURIComponent(token):''),options),data=await response.json();
+  if(!response.ok)throw Error(data.message||'HTTP '+response.status);return data;
+}
+async function refresh(){render(await api('/api/state'));}
+async function command(verb,arg='',useDraft=false){
+  if(!online||busy||!state)return;busy=true;controls();notice('Виконується команда…');
+  try{
+    const boot=useDraft?baseBoot:state.boot,revision=useDraft?baseRevision:state.revision;
+    const response=await api('/api/command',boot+' '+revision+' '+verb+(arg?' '+arg:''));
+    if(!response.ok)throw Error(response.message);
+    // Owner publishes a new snapshot at most 250 ms after the acknowledged command.
+    await new Promise(r=>setTimeout(r,350));await refresh();
+    if(verb==='APPLY'||verb==='SAVE')reload();
+    notice((verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
+  }catch(e){notice('Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
+  finally{busy=false;controls();}
+}
+function draw(){
+  const canvas=$('chart'),rect=canvas.getBoundingClientRect();if(!rect.width)return;
+  const dpr=window.devicePixelRatio||1;canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);
+  const c=canvas.getContext('2d');c.scale(dpr,dpr);const w=rect.width,h=rect.height,left=65,right=w-15;
+  c.fillStyle='#0b1016';c.fillRect(0,0,w,h);c.font='11px system-ui';
+  if(!points.length){c.fillStyle='#8095a5';c.fillText('Очікування вимірів…',left,50);return;}
+  const t0=points[0].t,t1=points[points.length-1].t,span=Math.max(1000,(t1-t0)>>>0);
+  for(const [index,key,color,unit] of [[0,'i','#00c8ff','A'],[1,'u','#ffd600','V']]){
+    const top=18+index*(h/2),height=h/2-43,vals=points.map(p=>p[key]).filter(Number.isFinite);
+    let min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1,pad=Math.max((max-min)*.15,.005);
+    min-=pad;max+=pad;
+    for(let j=0;j<3;j++){const y=top+j*height/2;c.strokeStyle='#22303a';c.beginPath();c.moveTo(left,y);c.lineTo(right,y);c.stroke();c.fillStyle='#8294a2';c.fillText((max-j*(max-min)/2).toFixed(3),4,y+4);}
+    c.fillStyle=color;c.fillText(unit,4,top+height+17);
+    c.strokeStyle=color;c.lineWidth=1.7;c.beginPath();let last=null;
+    for(const p of points){if(!Number.isFinite(p[key])){last=null;continue;}const x=left+((p.t-t0)>>>0)/span*(right-left),y=top+(max-p[key])/(max-min)*height;
+      if(last&&((p.t-last.t)>>>0)<=2500)c.lineTo(x,y);else c.moveTo(x,y);last=p;
+    }c.stroke();
+    const tail=points[points.length-1];if(Number.isFinite(tail[key])){c.fillStyle=color;c.beginPath();c.arc(left+((tail.t-t0)>>>0)/span*(right-left),top+(max-tail[key])/(max-min)*height,3,0,Math.PI*2);c.fill();}
+  }
+  c.fillStyle='#8294a2';c.fillText('-'+(span/1000).toFixed(0)+' s',left,h-4);c.fillText('останній',Math.max(left,right-54),h-4);
+}
+makeFields();
+$('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',updateDraft);
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));draw();});
+document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
+$('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
+$('release-usb').onclick=async()=>{
+  if(busy)return;stopped=true;
+  try{await api('/api/shutdown','');setOffline('USB-сервер зупинено. Можна прошивати. Для повернення до панелі запусти device_ui/start.cmd.');}
+  catch(e){stopped=false;notice(e.message,true);}
+};
+$('apply').onclick=()=>{try{command('APPLY',encodeConfig(values(),REGISTRY),true);}catch(e){notice(e.message,true);}};
+$('save').onclick=()=>command('SAVE','',true);
+$('reload-config').onclick=async()=>{try{await refresh();reload();notice('Конфігурацію прочитано з логера.');}catch(e){notice(e.message,true);}};
+$('defaults').onclick=()=>{fill(Object.fromEntries(REGISTRY.map(f=>[f.name,f.default])));notice('Типові значення лише в чернетці.');};
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';};
+$('clear-chart').onclick=()=>{points=[];draw();};
+$('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify({schema:'r1s3-config',major:1,minor:0,values:v},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};
+$('import').onclick=()=>$('profile-file').click();
+$('profile-file').onchange=async()=>{
+  try{const file=$('profile-file').files[0];if(!file)return;if(file.size>16000)throw Error('JSON завеликий');const obj=JSON.parse(await file.text());if(!obj||Object.keys(obj).sort().join(',')!=='major,minor,schema,values'||obj.schema!=='r1s3-config'||obj.major!==1||obj.minor!==0)throw Error('Непідтримуваний профіль');validateConfig(obj.values,REGISTRY);fill(obj.values);notice('Профіль імпортовано в чернетку. Перевір різницю перед застосуванням.');}catch(e){notice(e.message,true);}finally{$('profile-file').value='';}
+};
+window.addEventListener('resize',draw);
+setInterval(()=>{if(online&&Date.now()-lastReceived>5000)setOffline('Дані застаріли. Перевір підключення логера.');},1000);
+async function poll(){if(!busy&&!polling&&!stopped){polling=true;try{await refresh();}catch(e){setOffline('Немає відповіді: '+e.message);}finally{polling=false;}}setTimeout(poll,1000);}
+controls();draw();
+if(location.protocol==='file:')setOffline('Це панель пристрою. Запусти device_ui/start.cmd на ПК або відкрий http://192.168.4.1 у мережі логера.');
+else poll();
+</script></body></html>

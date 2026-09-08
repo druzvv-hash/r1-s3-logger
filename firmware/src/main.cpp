@@ -13,6 +13,7 @@
 #include "settings.h"
 #include "local_input.h"
 #include "recording_memory.h"
+#include "test_panel.h"
 
 #ifndef R1_SERVICE_TESTS
 #define R1_SERVICE_TESTS 0
@@ -172,6 +173,7 @@ void testSd() {
 }
 #else
 void checkSdReadOnly() {
+    sdPassed = false; // A failed re-test must replace the previous successful result.
     pinMode(pins::SD_CS, OUTPUT);
     digitalWrite(pins::SD_CS, HIGH);
     SPI.begin(pins::SD_SCK, pins::SD_MISO, pins::SD_MOSI, pins::SD_CS);
@@ -216,10 +218,44 @@ void scanI2c() {
     Serial.println("ACK confirms an address response, not device identity.");
 }
 
+bool runPanelAction(const char* verb, const char* argument, const char*& message) {
+    if (!i2cReady) { message="I2C unavailable"; return false; }
+    if (!strcmp(verb,"MEASURE") && !*argument) {
+        inaStatus=testIna228();message=inaStatus;return latestIna228Reading().valid;
+    }
+    if (!strcmp(verb,"I2C") && !*argument) {
+        scanI2c();message="I2C scan completed; inspect device count and errors";return i2cErrors==0;
+    }
+    if (!strcmp(verb,"SD") && !*argument) {
+#if R1_SERVICE_TESTS
+        message="SD command disabled in service build";return false;
+#else
+        checkSdReadOnly();message=sdPassed?"SD mount/root read passed":"SD mount/root read failed";return sdPassed;
+#endif
+    }
+    if (!strcmp(verb,"EEPROM") && !*argument) {
+        eepromStatus=checkEepromReadOnly();message=eepromStatus;return !strcmp(eepromStatus,"READ");
+    }
+    if (!strcmp(verb,"RTC") && !*argument) {
+        rtcStatus=pollRtc();message=rtcStatus;return rtcUtcNow()!=0;
+    }
+    if (!strcmp(verb,"TIME")) {
+        uint64_t epoch=0;const size_t n=strlen(argument);
+        if(n!=10){message="Expected Unix seconds";return false;}
+        for(size_t i=0;i<n;++i){if(argument[i]<'0'||argument[i]>'9'){message="Invalid UTC";return false;}epoch=epoch*10+argument[i]-'0';}
+        const bool ok=panelSetRtcUtc(epoch);rtcStatus=pollRtc();
+        message=ok?"RTC UTC written and verified":"RTC write/readback failed";return ok;
+    }
+    message="Unknown or unavailable test";return false;
+}
+
 void setup() {
+#if !ARDUINO_USB_CDC_ON_BOOT
+    Serial.setRxBufferSize(8192);
+#endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 CONFIG v0.13: settings + PSRAM buffer foundation");
+    Serial.println("\nR1-S3 PANEL v0.14: USB/Wi-Fi test panel + settings");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -266,6 +302,8 @@ void setup() {
                   static_cast<unsigned>(sizeof(recording::Sample)),
                   static_cast<unsigned long>(buffersReady ? recording::SD_BLOCK_BYTES : 0));
     Serial.println("BUFFER: reserved only; production acquisition/recorder not connected yet.");
+    panelBegin(runPanelAction);
+    panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors});
     updateOled();
 }
 
@@ -273,6 +311,9 @@ void loop() {
     static uint32_t lastScan = millis();
     static uint32_t lastMeasurement = millis();
     static uint32_t lastDisplay = 0;
+    static uint32_t lastPublish = 0;
+    static uint32_t publishedRevision = 0;
+    panelPoll();
     if (i2cReady && handleRtcSerial()) {
         rtcStatus = pollRtc();
         updateOled();
@@ -281,15 +322,16 @@ void loop() {
     const uint32_t now = millis();
     if (i2cReady && now - lastScan >= 10000) {
         lastScan = now;
-        scanI2c();
         rtcStatus = pollRtc();
-        updateOled();
     }
     if (i2cReady && millis() - lastMeasurement >= 1000) {
         inaStatus = testIna228();
         lastMeasurement = millis();
-        updateOled();
     }
     if (millis()-lastDisplay >= 1000/appliedSettings().display_hz) { lastDisplay=millis(); updateOled(); }
+    if (millis()-lastPublish>=250 || publishedRevision!=settingsRevision()) {
+        panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors});
+        lastPublish=millis();publishedRevision=settingsRevision();
+    }
     delay(10);
 }

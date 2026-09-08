@@ -1,5 +1,10 @@
 # Device control UI and task ownership
 
+Implementation update, 2026-09-08: [PANEL v0.14](P4A_TEST_PANEL.md) provides the USB/AP
+test interface, settings and owner command queue. The map below remains the production
+target: OLED rendering/transfers still belong to the diagnostic core 1 loop, with
+chunking/local menus and production acquisition/storage tasks not yet implemented.
+
 Owner requirement, 2026-09-08: operate the logger through an actual UI, preserve the late R1 Fnirsi-style instrument workflow, and separate UI from acquisition/storage across the ESP32-S3 cores. This concerns the **device control panel**, not further offline-viewer feature work. The P3 UART/JSON utility is a service tool, not the final user interface.
 
 ## Recovered UI evidence
