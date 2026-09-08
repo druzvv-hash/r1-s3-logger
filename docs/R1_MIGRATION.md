@@ -489,3 +489,48 @@ confirmed DOWNLOAD entry after automatic connection failures. No permanent USB
 repair or long-duration stability claim is made. See the
 [complete results and next preset decision](RATE_BENCHMARK.md) and
 [owner notes](uk/RATE_TESTS_2026-09-08.md). P7 endurance/fault work remains open.
+
+### 2026-09-08 — integer 1–300 Hz range and responsive high-rate UI
+
+Owner selected 1–300 Hz with presets 1/5/10/25/50/100/150/200/250/300 and arbitrary
+integer entry. PANEL v0.22 implements the shared field bounds in firmware,
+EEPROM/JSON tools, device panel and the existing native CSV reader. ADC profiles
+are visible before Apply: 1052 µs/channel through 100 Hz, 150 µs through 200 Hz,
+50 µs above 200 Hz; averaging off, I2C 400 kHz above 100 Hz. Shunt, gains, offsets,
+polarity and range are preserved. Apply never saves automatically.
+
+Config v1.1 uses the same 28 TLVs; old-compatible values keep byte-identical v1.0
+encoding, extended values advertise minor 1 for rollback write protection. The
+gap limit can reach two seconds for 1 Hz integration. Existing custom integration
+limits remain readable; quick profiles raise the limit to at least two periods.
+
+Core 0 now formats state JSON from a bounded owner snapshot. Core 1 uses safe
+conversion-wait intervals for chunked OLED/RTC work and avoids a mandatory tick
+between every acquisition phase. PSRAM FIFO/block SD recording are unchanged.
+High-rate Wi-Fi preview catches up with additional batches. USB resynchronizes
+to recent preview windows when bandwidth is insufficient and marks those gaps;
+it never discards the recorded raw samples.
+
+Host suite: 54 tests pass, including all 300 integer profiles, C++/Python/JS
+encoding, persistence failure injection, legacy fixtures and extended JSON
+versions. Browser fixtures pass preset/manual input, 137/1/300 Hz application,
+validation, polling draft preservation, recording lock and mobile layout. Normal
+and benchmark builds pass; only normal firmware was installed for acceptance.
+
+Hardware: 15 CSV files / 60,759 rows / 12,674,362 bytes pass both independent
+reader paths, including integrity, raw values and integration. Every requested
+preset plus 37/137/299 Hz produced no lost/invalid rows. A 121-second 300 Hz file
+has 36,405 rows, 300.029897 Hz, no FIFO overflow, maximum queue 42, 424 OLED frames
+and fresh owner state in all 109 observations. During the long run, the revised
+USB preview was fresh in all 76 RUNNING observations, about 59.83 FPS.
+
+The first native Wi-Fi 300 Hz browser run exposed preview lag despite a clean
+8,232-row file; delivery was adjusted afterward. Acquisition firmware `d52defe`
+was flashed with hash verification. The final embedded panel build `ab1e7d0`
+awaits physical UART reconnection: COM5 remained present but two ROM-entry
+attempts received no bytes and made no Flash writes. Completed tests restored
+the exact initial volatile 100 Hz profile and left EEPROM generation 3 unchanged;
+state after the later reset attempts needs re-verification. See
+[measurement-rate implementation and results](MEASUREMENT_RATES.md) and
+[owner instructions](uk/MEASUREMENT_RATES.md). Prior USB instability and P7
+endurance work remain open.
