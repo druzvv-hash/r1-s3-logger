@@ -541,3 +541,15 @@ after cable replacement does not establish the cause of every earlier failure. S
 [measurement-rate implementation and results](MEASUREMENT_RATES.md) and
 [owner instructions](uk/MEASUREMENT_RATES.md). Prior USB instability and P7
 endurance work remain open.
+
+### 2026-09-08 — UART failure reproduced with the new USB cable
+
+Ten port reopen/state checks passed, but the first standard esptool ROM-only
+auto-entry check failed with invalid chip identification followed by no response.
+No firmware write was attempted. Subsequent resets produced incomplete UART
+startup text; state requests continued to time out. Independent Wi-Fi checks
+showed 12/12 fresh states and advancing acquisition, so this was not a complete
+ESP32 application hang. The original volatile 100 Hz configuration was restored
+over Wi-Fi, with EEPROM generation 3 unchanged. UART endurance testing remains
+pending physical USB reconnection; software device restart was denied by Windows.
+See [UART diagnostic evidence and next checks](UART_DIAGNOSTICS.md).

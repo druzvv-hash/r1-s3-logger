@@ -125,3 +125,8 @@ The final record `r1s3_2026-09-08_15-27-02Z_3047473d_f5b0eb2c_0000.csv` contains
 Final runtime checks confirm READY at **100 Hz**, I2C 100 kHz, the exact original volatile config payload and unchanged EEPROM generation **3**. No EEPROM SAVE was performed; the panel's UNSAVED indication remains expected because the original runtime profile differs from the persisted profile. The USB panel reconnects, sample/uptime values advance and its graph renders at about 59.71 FPS without browser errors.
 
 These bounded tests support this implementation on the present bench setup. They do not close the earlier unexplained reset, intermittent USB-UART issue, long-duration endurance or full-range metrology work.
+
+A later ROM-entry test reproduced UART failure with the new USB cable while
+Wi-Fi acquisition remained responsive. See the separate
+[UART diagnostic report](UART_DIAGNOSTICS.md); the successful rate tests above
+must not be treated as proof of permanent USB-UART reliability.
