@@ -50,8 +50,10 @@ class Link:
 
 def read_profile(path):
  obj=c.strict_json(path.read_bytes())
- if type(obj)!=dict or set(obj)!={'schema','major','minor','values'} or obj['schema']!='r1s3-config' or type(obj['major']) is not int or type(obj['minor']) is not int or (obj['major'],obj['minor'])!=(1,0):raise ValueError('Unsupported configuration envelope')
- c.validate_config(obj['values']);return obj['values']
+ if type(obj)!=dict or set(obj)!={'schema','major','minor','values'} or obj['schema']!='r1s3-config' or type(obj['major']) is not int or type(obj['minor']) is not int or obj['major']!=1 or obj['minor'] not in (0,1):raise ValueError('Unsupported configuration envelope')
+ c.validate_config(obj['values'])
+ if obj['minor']<c.config_minor(obj['values']):raise ValueError('Extended values require profile 1.1')
+ return obj['values']
 def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',default='COM5');subs=parser.add_subparsers(dest='cmd',required=True)
  export=subs.add_parser('export');export.add_argument('path',type=Path);export.add_argument('--source',choices=['applied','draft','persisted'],default='applied')
@@ -62,7 +64,7 @@ def main():
  link=Link(args.port)
  try:
   if args.cmd=='export':
-   values=link.fetch(args.source);obj=dict(schema='r1s3-config',major=1,minor=0,values=values)
+   values=link.fetch(args.source);obj=dict(schema='r1s3-config',major=1,minor=c.config_minor(values),values=values)
    with args.path.open('x',encoding='utf8') as stream:json.dump(obj,stream,indent=2,ensure_ascii=False)
    print(f'Exported {args.source}: {args.path}')
   elif args.cmd=='import':

@@ -47,4 +47,12 @@ function decodeConfig(hex,registry){
   if(p!==bytes.length)throw Error('Зайві поля TLV');
   validateConfig(out,registry);return out;
 }
-if(typeof module!=='undefined')module.exports={encodeConfig,decodeConfig,validateConfig};
+function configMinor(v){return [10,50,100].includes(v.requested_rate_hz)&&v.max_gap_us<=1000000?0:1;}
+function exportProfile(values,registry){validateConfig(values,registry);return {schema:'r1s3-config',major:1,minor:configMinor(values),values};}
+function importProfile(obj,registry){
+  if(!obj||Object.keys(obj).sort().join(',')!=='major,minor,schema,values'||obj.schema!=='r1s3-config'||obj.major!==1||![0,1].includes(obj.minor))throw Error('Непідтримуваний профіль');
+  validateConfig(obj.values,registry);
+  if(obj.minor<configMinor(obj.values))throw Error('Розширені значення потребують профілю 1.1');
+  return obj.values;
+}
+if(typeof module!=='undefined')module.exports={encodeConfig,decodeConfig,validateConfig,exportProfile,importProfile};

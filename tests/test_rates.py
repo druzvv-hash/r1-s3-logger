@@ -8,7 +8,7 @@ class RateTests(unittest.TestCase):
     def test_all_integer_profiles_and_legacy_encoding(self):
         script="""
 const {configForRate,RATE_PRESETS}=require('./device_ui/rate_profile.js');
-const {encodeConfig}=require('./device_ui/codec.js');
+const {encodeConfig,exportProfile,importProfile}=require('./device_ui/codec.js');
 const fields=require('./schemas/config-v1.json').fields;
 const baseline=Object.fromEntries(fields.map(f=>[f.name,f.default]));
 const assert=require('node:assert/strict');
@@ -16,7 +16,7 @@ assert.deepEqual(RATE_PRESETS,[1,5,10,25,50,100,150,200,250,300]);
 for(const invalid of [0,301,1.5,NaN,Infinity])assert.throws(()=>configForRate(baseline,invalid));
 const result=[];
 for(let hz=1;hz<=300;hz++){
- const config=configForRate(baseline,hz);result.push({config,hex:encodeConfig(config,fields)});
+ const config=configForRate(baseline,hz);const profile=exportProfile(config,fields);assert.deepEqual(importProfile(profile,fields),config);assert.throws(()=>importProfile({...profile,minor:2},fields));if(profile.minor)assert.throws(()=>importProfile({...profile,minor:0},fields));result.push({config,hex:encodeConfig(config,fields)});
 }
 process.stdout.write(JSON.stringify(result));
 """

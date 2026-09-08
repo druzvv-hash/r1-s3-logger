@@ -377,10 +377,10 @@ $('apply-rate').onclick=()=>{if(!state||dirty||stale())return;
   catch(e){notice(e.message,true);}};
 $('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';};
 $('clear-chart').onclick=()=>{points=[];draw();};
-$('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify({schema:'r1s3-config',major:1,minor:0,values:v},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};
+$('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify(exportProfile(v,REGISTRY),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};
 $('import').onclick=()=>$('profile-file').click();
 $('profile-file').onchange=async()=>{
-  try{const file=$('profile-file').files[0];if(!file)return;if(file.size>16000)throw Error('JSON завеликий');const obj=JSON.parse(await file.text());if(!obj||Object.keys(obj).sort().join(',')!=='major,minor,schema,values'||obj.schema!=='r1s3-config'||obj.major!==1||obj.minor!==0)throw Error('Непідтримуваний профіль');validateConfig(obj.values,REGISTRY);fill(obj.values);notice('Профіль імпортовано в чернетку. Перевір різницю перед застосуванням.');}catch(e){notice(e.message,true);}finally{$('profile-file').value='';}
+  try{const file=$('profile-file').files[0];if(!file)return;if(file.size>16000)throw Error('JSON завеликий');const obj=JSON.parse(await file.text());fill(importProfile(obj,REGISTRY));notice('Профіль імпортовано в чернетку. Перевір різницю перед застосуванням.');}catch(e){notice(e.message,true);}finally{$('profile-file').value='';}
 };
 window.addEventListener('resize',()=>draw());
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){liveCursor=0;nextBreak=true;clockAt=0;}});

@@ -96,8 +96,7 @@ bool runtimeTimingFeasible(const Config& c){
     // Reserve trigger/readback, scheduler and display service time. Actual cadence
     // remains observable; this check is not a claim of measured performance.
     const uint32_t overhead=busHz(c)==400000?2500:4000;
-    return conversionUs(c)+overhead<=1000000/c.requested_rate_hz
-        && c.max_gap_us>=uint32_t((2000000ull+c.requested_rate_hz-1)/c.requested_rate_hz);
+    return conversionUs(c)+overhead<=1000000/c.requested_rate_hz;
 }
 bool applyRegisters(Registers& io,const Config& c,bool& latchedFailure) {
     if (latchedFailure || !timingFeasible(c)) return false;
