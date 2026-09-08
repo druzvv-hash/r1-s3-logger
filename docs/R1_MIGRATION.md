@@ -586,3 +586,21 @@ These are startup results, not overnight acceptance. Firmware remains v0.22
 from `ab1e7d0`. A local worker records progress and a thread heartbeat supervises
 it every 30 minutes. Planned cleanup restores the initial 50 Hz configuration
 without EEPROM SAVE; final results and actual restoration remain pending.
+
+The overnight run subsequently stopped at 22:33 local time after 7,579.4 s,
+not the planned ten hours. The 50 Hz recording passed both readers: 60,098 rows
+and 15,517,430 bytes, 50.000000083 Hz, no missing/invalid/gap rows. The 100 Hz
+recording finalized on SD with 120,122 rows / 30,981,634 bytes, but UART download
+failed after 1,153,024 bytes; its whole-file integrity remains unverified.
+The 300 Hz stage was not reached. Windows recorded two `CE_FRAME` notifications
+with a malformed FILES reply. The 1,356 health snapshots retained one boot and
+zero missed/invalid samples, I2C errors and FIFO overflows; maximum FIFO usage
+was 14/2048. Free heap remained at least 93,000 bytes and PSRAM 16,555,807 bytes.
+
+Initial runner cleanup failed to acquire the UART lock while panel polling was
+active. Supervisor checks later confirmed READY with the transfer closed and
+restored the exact initial 50 Hz configuration, SAVED/generation 3, via the
+existing panel owner by 22:37 local time. No reset, firmware/EEPROM/RTC write or
+second endurance run occurred. The repeated fault with the bench supply OFF
+shows that powered load is not required, but does not identify its component
+cause. See the [final overnight evidence and cleanup limits](OVERNIGHT_TEST.md).
