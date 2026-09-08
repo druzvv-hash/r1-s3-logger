@@ -573,3 +573,16 @@ All ten returned to application READY. The exact initial 50 Hz configuration
 was restored, EEPROM generation 3 unchanged. Firmware was not written. A
 powered-load repeat is needed to separate cleaning effects from the changed
 test conditions. Full results are in the UART diagnostic report linked above.
+
+### 2026-09-08/09 — unattended overnight endurance started
+
+The owner left the logger powered with the bench supply OFF and authorized a
+ten-hour test. The [bounded overnight plan](OVERNIGHT_TEST.md) covers UART
+traffic, 20-minute recordings at 50/100/300 Hz, complete checked downloads,
+streaming native-file validation and a final 300 Hz acquisition soak. A short
+canary passed: 322 rows / 84,417 bytes, 49.999572 Hz, both readers verified clean,
+zero missing/invalid/gap rows. The first 20-minute recording is running.
+These are startup results, not overnight acceptance. Firmware remains v0.22
+from `ab1e7d0`. A local worker records progress and a thread heartbeat supervises
+it every 30 minutes. Planned cleanup restores the initial 50 Hz configuration
+without EEPROM SAVE; final results and actual restoration remain pending.
