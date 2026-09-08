@@ -1,6 +1,6 @@
 # R1-S3 engineering and compatibility plan
 
-Plan version 1.5, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Next: P4a local/web device control and task boundaries, P4b acquisition, then P5 microSD recording. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
+Plan version 1.6, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested; P4a/P4b/P5 remain open. Next: local/web device control and task boundaries, production acquisition, then microSD recording. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
 ## 1. Product and scope
 
@@ -42,6 +42,8 @@ Proposed modules, introduced incrementally:
 | `diagnostics` | Health, counters, last error and exportable troubleshooting snapshot |
 
 Use one owner for I2C transactions and one owner for the SD filesystem. A bounded producer/consumer queue separates acquisition from potentially slow SD writes. OLED, network and RTC requests have lower priority than measurement. Owner-approved direction: pin UI/web/rendering to core 0; pin acquisition and a separate lower-priority recorder task to core 1. Validate shared bus/storage latency under load; see [device UI and task contract](DEVICE_UI_AND_TASKS.md). An OLED transfer must not silently consume the acquisition budget.
+
+Selected reusable foundation: 32-byte numeric SPSC slots in PSRAM, explicit acquire/release publication, no overwrite on full, and 8 KiB checked internal output staging. Keep the applied `queue_bytes` budget (64 KiB default, up to 1 MiB); no automatic EEPROM change. [Donor evidence, memory placement, implementation and limits](BUFFERING_AND_REUSE.md). The owner's encoder is not installed; use the no-GPIO stub for [PEC11R-4220F-S0024](../hardware/encoder.md) until wiring is confirmed.
 
 Separate raw recording samples, calibrated values, filtered display/live values and plot preview envelopes. Never replace stored raw samples with a smoothed trace. Baseline target: 50 fresh measurement cycles/s, screen/live 5 updates/s, with validated 10/50/100 Hz profiles as candidates. These are targets, not advertised supported rates. Validate conversion times, averaging, sequential channel timing, I2C traffic and SD latency before enabling each profile. No “500 Hz” merely because the loop reads 500 times/s.
 

@@ -11,6 +11,8 @@
 #include "ina228_test.h"
 #include "storage_check.h"
 #include "settings.h"
+#include "local_input.h"
+#include "recording_memory.h"
 
 #ifndef R1_SERVICE_TESTS
 #define R1_SERVICE_TESTS 0
@@ -217,7 +219,7 @@ void scanI2c() {
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 CONFIG v0.12: draft/apply/save EEPROM settings");
+    Serial.println("\nR1-S3 CONFIG v0.13: settings + PSRAM buffer foundation");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
@@ -254,6 +256,16 @@ void setup() {
 #endif
     if (i2cReady) rtcStatus = pollRtc();
     if (i2cReady) { initSettings(); inaStatus = testIna228(); }
+    local_input::begin();
+    Serial.println("INPUT: encoder stub; no GPIO assigned or accessed.");
+    const bool buffersReady = recording::prepareMemory(appliedSettings().queue_bytes);
+    Serial.printf("BUFFER %s: PSRAM=%lu bytes, slots=%lu, sample=%u bytes, internal SD block=%lu bytes.\n",
+                  buffersReady ? "PREPARED" : "FAIL",
+                  static_cast<unsigned long>(recording::allocatedQueueBytes()),
+                  static_cast<unsigned long>(recording::sampleQueue().capacity()),
+                  static_cast<unsigned>(sizeof(recording::Sample)),
+                  static_cast<unsigned long>(buffersReady ? recording::SD_BLOCK_BYTES : 0));
+    Serial.println("BUFFER: reserved only; production acquisition/recorder not connected yet.");
     updateOled();
 }
 

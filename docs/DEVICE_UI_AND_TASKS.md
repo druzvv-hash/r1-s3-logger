@@ -10,7 +10,7 @@ Read-only review of `Logger_Analysis/Projects/bekup/main21_12_3STAB.cpp` (HTML s
 
 ## Device interface scope
 
-Owner confirmed browser control plus standalone physical buttons/encoder, and recording to the existing microSD. The OLED must provide local menus and session controls, not just status. The exact input hardware and GPIO are pending; add only after hardware is specified. No old AP/password is copied from archived code.
+Owner confirmed browser control plus standalone physical buttons/encoder, and recording to the existing microSD. The OLED must provide local menus and session controls, not just status. Selected encoder: [Bourns PEC11R-4220F-S0024](../hardware/encoder.md); owner has not installed it yet. A no-GPIO input stub is implemented; GPIO remain pending. No old AP/password is copied from archived code.
 
 - **Live instrument:** large U/I/P readings and units, signed current, recording state, elapsed session time, Ah+/Ah-/Wh+/Wh-, RTC status, SD free capacity, requested versus measured cadence, dropped/invalid samples. Compact scrolling U/I chart; pausing the browser trace never pauses acquisition/recording. Live display filtering does not replace raw recording data.
 - **Session controls:** START, STOP, new-session/reset-totals while stopped, filename/session identifier and finalization status. START is enabled only after the P5 recorder exists and passes readiness gates; no fake successful recording controls in a UI-only build.
@@ -68,4 +68,4 @@ The confirmed recording target is microSD; internal Flash is not the session sto
 
 Acceptance must record core IDs, stack high-water marks, sample jitter/late counts, queue high-water, OLED transaction maximum, I2C wait time, SD write/flush maximum, and deliberate slow-client/SD-stall behavior. Reload/disconnect the UI during a run; acquisition/session state must survive. Run a complete local start/stop and settings apply/save cycle with Wi-Fi off. Verify input bounce generates no duplicate session actions, STOP remains reachable under event load, and concurrent stale local/web commands cannot overwrite a newer applied config. UI screenshots alone do not establish timing or persistence.
 
-Current deployed CONFIG v0.12 still uses the diagnostic Arduino loop and has no device web server or production recorder. This document is the revised design/acceptance contract, not a claim that the tasks/UI are already implemented.
+Current CONFIG v0.13 source still uses the diagnostic Arduino loop and has no device web server or production recorder. It adds an encoder stub and [PSRAM FIFO / block-buffer foundation](BUFFERING_AND_REUSE.md), with boot-time memory reservation. This document is the design/acceptance contract, not a claim that the tasks/UI are already implemented.

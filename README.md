@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **CONFIG v0.12**, with live diagnostic measurements and explicit draft/apply/save settings. The original R1 application has not been ported yet.
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware source: **CONFIG v0.13**, with live diagnostic measurements, explicit draft/apply/save settings, an encoder stub and prepared PSRAM/block buffers. Production acquisition and session recording are still pending.
 
 ## Hardware
 
@@ -13,6 +13,8 @@ Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **CONFIG v0
 - OLED rotation: 180°. The current bench uses a CP210x USB–UART bridge.
 
 See the [pin map](hardware/pinmap.md). Board revision and SD module circuitry remain to be recorded.
+
+Selected local control: [Bourns PEC11R-4220F-S0024](hardware/encoder.md), not yet installed. Physical and web controls will share one device state.
 
 ## Verified status
 
@@ -48,6 +50,8 @@ pio device monitor -e esp32-s3
 ## Current behavior and migration
 
 Normal boot reads the SD root and checks two complete EEPROM reads, then displays live voltage/current. It creates no SD test files and writes no EEPROM patterns. `SD READ / SAVED` indicates readable SD and matching persisted settings; UNSAVED means explicit saving is needed. The explicit [RTC sync](docs/rtc-sync.md) command remains available. INA228 still uses the diagnostic conversion/restore path; production recording is pending.
+
+The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is implemented and host-tested. Boot reserves the configured sample budget in PSRAM plus 8 KiB internal SD staging; these buffers are not yet a running recorder. Next: P4a local/web UI and task ownership, P4b acquisition, then P5 files.
 
 [P0 baseline and backup evidence](docs/P0_BASELINE.md). P1 contracts: [settings/EEPROM](docs/CONFIG_SCHEMA.md), [self-contained CSV](docs/FILE_FORMAT.md), [viewer compatibility](docs/VIEWER_COMPATIBILITY.md). Run host checks with `python -m unittest discover -s tests -v` (Python 3.10+; firmware-core tests also need a native C++ compiler). P2 viewer is implemented: launch `viewer/start.cmd` or `python viewer/server.py`. [Viewer guide](viewer/README.md) · [P2 results](docs/P2_VIEWER.md). P3 settings/EEPROM are implemented: [commands and evidence](docs/P3_SETTINGS.md). Next: P4 acquisition, then P5 recording. The owner deferred remaining R5 analysis/plugins until real logger files exist. The current viewer is a data-reading foundation, not a feature-complete R5 replacement.
 

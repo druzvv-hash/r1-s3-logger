@@ -26,3 +26,5 @@ All four I²C devices share the bus. Verify common ground and SDA/SCL pull-ups t
 Repeated scans found all four addresses without bus errors. Address ACK alone does not establish device identity or full functionality. EEPROM address depends on A0–A2; INA228 address depends on its address configuration.
 
 Keep this map and [firmware/include/pins.h](../firmware/include/pins.h) synchronized when wiring changes.
+
+Local encoder A/B/SW: **not assigned, hardware not installed**. The current input adapter is a no-GPIO stub. See [selected encoder](encoder.md) before assigning three new input pins.

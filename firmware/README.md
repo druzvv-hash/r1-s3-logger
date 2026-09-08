@@ -1,4 +1,4 @@
-# CONFIG v0.12 firmware
+# CONFIG v0.13 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 
@@ -17,5 +17,7 @@ The default environment is `esp32-s3`; manual UART remains a fallback. Automatic
 - `settings_core.cpp`: portable TLV/CRC/A-B store, INA apply/readback/rollback.
 - `settings.cpp`: 24C32 adapter and STOP-only draft/apply/save UART workflow.
 - `config_fields.h` and `config_codec_generated.inc`: generated from schemas/config-v1.json. Regenerate with tools/generate_config.py; do not hand-edit.
+- `local_input.cpp`: no-hardware encoder stub; no GPIO accessed. [Selected encoder](../hardware/encoder.md).
+- `recording_buffer.cpp`: SPSC numeric FIFO and checked block-output primitives; `recording_memory.cpp` reserves PSRAM payload plus an 8 KiB internal DMA-capable staging buffer at boot. Acquisition/SD owners are not yet connected to them. [Reuse evidence and limits](../docs/BUFFERING_AND_REUSE.md).
 
 - `src/storage_check.cpp`: read-only SD-independent EEPROM checks and `EEPROM DUMP` backup transport. See [P0](../docs/P0_BASELINE.md).
