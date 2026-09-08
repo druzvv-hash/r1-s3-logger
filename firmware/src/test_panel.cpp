@@ -1,4 +1,5 @@
 #include "test_panel.h"
+#include "firmware_version.h"
 #include "settings.h"
 #include "ina228_test.h"
 #include "rtc_test.h"
@@ -205,7 +206,7 @@ void panelPublish(const PanelHardware& h){
     const auto& r=latestIna228Reading();const auto payload=settings::encode(appliedSettings());
     String hex;hex.reserve(payload.size()*2);const char* digits="0123456789abcdef";for(auto b:payload){hex+=digits[b>>4];hex+=digits[b&15];}
     String s;s.reserve(4800);
-    s="{\"ready\":true,\"firmware\":\"0.18\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
+    s="{\"ready\":true,\"firmware\":\"" R1_FIRMWARE_VERSION "\",\"boot\":"+quoted(bootId)+",\"revision\":"+String(settingsRevision());
     char generation[24];snprintf(generation,sizeof(generation),"%llu",settingsGeneration());
     s+=",\"generation\":"+quoted(generation)+",\"settings_status\":"+quoted(settingsStatus());
     s+=",\"config_hex\":\""+hex+"\",\"uptime_ms\":"+String(millis())+",\"owner_core\":"+String(xPortGetCoreID())+",\"ui_core\":0";

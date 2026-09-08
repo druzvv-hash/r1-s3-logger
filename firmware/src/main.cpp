@@ -18,6 +18,7 @@
 #include "sd_files.h"
 #include "recorder.h"
 #include "build_provenance.h"
+#include "firmware_version.h"
 #include <esp_timer.h>
 #include <esp_system.h>
 
@@ -263,7 +264,7 @@ bool runPanelAction(const char* verb, const char* argument, const char*& message
         recording::SessionInfo info;info.config=appliedSettings();info.generation=settingsGeneration();info.revision=settingsRevision();
         if(!captureInaIdentity(info.manufacturer,info.device,info.adc)){message="INA identity/config readback failed";return false;}
         rtcStatus=pollRtc(false);info.utcUs=rtcUtcNow()*1000000;info.originUs=esp_timer_get_time();
-        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version="0.19";
+        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version=R1_FIRMWARE_VERSION;
         info.id=recording::sessionId(info.utcUs,esp_random(),esp_random());
         return recorder::start(info,message);
     }
@@ -305,7 +306,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.19: dated SD session files");
+    Serial.println("\nR1-S3 PANEL v" R1_FIRMWARE_VERSION ": dated SD session files");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),
