@@ -1,4 +1,4 @@
-# PANEL v0.19 firmware
+# PANEL v0.20 firmware
 
 PlatformIO + Arduino for ESP32-S3 N32R16V. Run commands from the repository root. See the [main README](../README.md) for build and upload environments.
 

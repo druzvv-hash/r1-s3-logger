@@ -1,8 +1,9 @@
 # SD file download (PANEL v0.16)
 
 The device panel now lists directories and downloads existing files from microSD.
-The normal firmware only reads the card. Session recording remains P5; this feature
-also retrieves the existing hardware-test files without removing the card.
+File browsing/download reads the card; the [P5 recorder](P5_RECORDING.md) writes
+sessions separately. Existing hardware-test files can also be retrieved without
+removing the card.
 
 ## User flow
 

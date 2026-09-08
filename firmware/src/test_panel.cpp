@@ -21,16 +21,19 @@ char cached[STATE_BYTES]="{\"ready\":false}";
 portMUX_TYPE snapshotLock=portMUX_INITIALIZER_UNLOCKED;
 char bootId[9], ssid[24], password[17];
 std::atomic<bool> networkReady{false};
+std::atomic<unsigned> networkClients{0};
 PanelAction ownerAction=nullptr;
 struct Command { uint32_t id, expires; bool legacy; char text[COMMAND_BYTES]; };
 struct Reply { uint32_t id; char json[256]; };
 QueueHandle_t commands=nullptr, replies=nullptr;
 SemaphoreHandle_t commandGate=nullptr;
 
-String snapshot(){
+String snapshot(const char* transport=nullptr){
     char copy[STATE_BYTES];
     portENTER_CRITICAL(&snapshotLock);memcpy(copy,cached,sizeof(copy));portEXIT_CRITICAL(&snapshotLock);
-    return String(copy);
+    String s(copy);
+    if(transport){s.remove(s.length()-1);s+=",\"transport\":\"";s+=transport;s+="\"}";}
+    return s;
 }
 String quoted(const char* p){
     String s="\"";
@@ -144,7 +147,7 @@ void webTask(void*){
     WebServer server(80);
     const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
     server.on("/",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");server.send_P(200,"text/html; charset=utf-8",reinterpret_cast<const char*>(PANEL_HTML),sizeof(PANEL_HTML));});
-    server.on("/api/state",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",snapshot());});
+    server.on("/api/state",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",snapshot("wifi"));});
     server.on("/api/live",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",live(server.hasArg("after")?server.arg("after").c_str():"0"));});
     server.on("/api/files",HTTP_GET,[&]{
         server.sendHeader("Cache-Control","no-store");
@@ -165,7 +168,12 @@ void webTask(void*){
     });
     server.onNotFound([&]{server.send(404,"text/plain","Not found");});
     server.begin();
-    for(;;){server.handleClient();vTaskDelay(pdMS_TO_TICKS(5));}
+    uint32_t lastClients=0;
+    for(;;){
+        server.handleClient();
+        if(millis()-lastClients>=500){networkClients.store(WiFi.softAPgetStationNum());lastClients=millis();}
+        vTaskDelay(pdMS_TO_TICKS(5));
+    }
 }
 }
 
@@ -230,7 +238,7 @@ void panelPublish(const PanelHardware& h){
     s+=",\"maintenance_count\":"+String(a.maintenance)+",\"maintenance_ms\":"+String(a.maintenanceMs);
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
     s+=",\"files_available\":"+String(recorder::busy()?"false":"true")+",\"file_transfer\":"+String(sd_files::active()?"true":"false");
-    s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
+    s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ap_clients\":"+String(networkClients.load())+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);
 }

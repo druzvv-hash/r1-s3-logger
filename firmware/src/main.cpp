@@ -306,7 +306,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v" R1_FIRMWARE_VERSION ": dated SD session files");
+    Serial.println("\nR1-S3 PANEL v" R1_FIRMWARE_VERSION ": direct Wi-Fi + SD session recording");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),

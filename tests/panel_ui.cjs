@@ -37,6 +37,25 @@ const root=path.resolve(__dirname,'..'),hardware=process.argv.includes('--hardwa
   await page.waitForTimeout(2200);
   assert.notEqual(await page.locator('#amps').textContent(),'—');
   const animation=await page.evaluate(()=>({fps,count:points.length}));
+  if(!hardware){
+   fake.transport='usb';fake.ap_clients=0;
+   await page.getByRole('button',{name:'Wi-Fi',exact:true}).click();
+   await page.waitForFunction(()=>document.getElementById('network').textContent.includes('USB через ПК'));
+   assert.match(await page.locator('#wifi-connection-note').textContent(),/через ПК/);
+   assert.equal(await page.locator('#wifi-password').isVisible(),false);
+   fake.transport='wifi';fake.ap_clients=1;
+   await page.waitForFunction(()=>document.getElementById('connection').textContent.includes('Wi-Fi'));
+   assert.match(await page.locator('#network').textContent(),/Wi-Fi напряму/);
+   assert.match(await page.locator('#network').textContent(),/Пристроїв у Wi-Fi1/);
+   assert.match(await page.locator('#wifi-connection-note').textContent(),/напряму/);
+   assert.equal(await page.locator('#release-usb').isVisible(),false);
+   await page.setViewportSize({width:390,height:844});
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Wi-Fi mobile overflow');
+   fs.mkdirSync(path.join(root,'data/wifi-tests'),{recursive:true});
+   await page.locator('#wifi').screenshot({path:path.join(root,'data/wifi-tests/panel-mobile-fixture.png')});
+   await page.setViewportSize({width:1440,height:1100});
+   await page.getByRole('button',{name:'Огляд',exact:true}).click();
+  }
   assert(animation.count>20,'Real samples must enter the graph');
   assert(animation.fps>=45&&animation.fps<=65,'60 FPS requestAnimationFrame rendering');
   if(!hardware){

@@ -14,12 +14,12 @@ vbus_ct_code:['Час конверсії VBUS','Код 0–7: 50 … 4120 µs'],
 temp_ct_code:['Час конверсії температури','Код 0–7: 50 … 4120 µs'],
 average_code:['Усереднення ADC','Код 0–7: 1, 4, 16, 64, 128, 256, 512, 1024'],
 ready_timeout_us:['Очікування ADC, µs','Має вміщувати конверсії з усередненням'],
-max_gap_us:['Межа розриву, µs','Для майбутнього записувача'],
-flush_interval_ms:['Інтервал flush, ms','Для майбутнього записувача'],
-queue_bytes:['Бюджет FIFO, байти','Виділяється при запуску; зміна потребує перезапуску'],
-rotation_bytes:['Розмір частини, байти','Для майбутнього записувача'],
-reserve_bytes:['Резерв на SD, байти','Для майбутнього записувача'],
-allow_unknown_utc:['Дозволити невідомий UTC','Для майбутнього записувача'],
+max_gap_us:['Межа розриву, µs','Через довші паузи енергія не інтегрується; більше за період відліку'],
+flush_interval_ms:['Інтервал збереження, ms','Періодична синхронізація запису з microSD'],
+queue_bytes:['Бюфер PSRAM, байти','Нова місткість застосовується перед наступним записом'],
+rotation_bytes:['Розмір частини, байти','Після досягнення межі запис переходить у наступний файл'],
+reserve_bytes:['Резерв на SD, байти','Вільне місце, яке логер залишає на картці'],
+allow_unknown_utc:['Дозволити невідомий UTC','Запис із відносним часом, якщо RTC не налаштований'],
 display_hz:['Оновлення OLED, Hz','Оновлення екрана, не частота вимірів'],
 live_hz:['Пакети Live, Hz','В одному пакеті кілька вимірів; USB може обмежувати частоту доставки'],
 display_filter_tau_ms:['Фільтр OLED, ms','0 = без фільтра; графік панелі показує нефільтровані дані'],
@@ -33,7 +33,7 @@ oled_contrast:['Контраст OLED','0–255']
 const groups=[
 ['Вимірювання та коефіцієнти',REGISTRY.slice(0,6)],
 ['Аналого-цифрове перетворення',REGISTRY.slice(6,13)],
-['Буфер і майбутній запис',REGISTRY.slice(13,19)],
+['Буфер і запис на microSD',REGISTRY.slice(13,19)],
 ['Екран і Live',REGISTRY.slice(19,23).concat(REGISTRY.slice(27))],
 ['Походження калібрування',REGISTRY.slice(23,27)]
 ];
@@ -98,7 +98,8 @@ function render(s){
   const previousRate=state?.requested_hz;
   state=s;if(previousRate!==s.requested_hz)$('quick-rate').value=s.requested_hz||50;online=true;document.body.classList.remove('offline');
   $('release-usb').hidden=s.transport!=='usb';
-  $('connection').textContent='● Логер підключений';$('connection').classList.add('online');
+  const transport=s.transport==='usb'?'USB через ПК':s.transport==='wifi'?'Wi-Fi напряму':'Підключення до логера';
+  $('connection').textContent='● Логер підключений'+(s.transport==='usb'?' · USB':s.transport==='wifi'?' · Wi-Fi':'');$('connection').classList.add('online');
   const valid=s.valid&&((s.uptime_ms-s.sample_at_ms)>>>0)<3500;
   if(!s.live_available)meters(valid?s.volts:null,valid?s.amps:null);
   $('temperature').textContent='Температура INA228: '+(valid?number(s.temp_c,2)+' °C':'—');
@@ -109,7 +110,8 @@ function render(s){
   rows('memory',[['FIFO в PSRAM',s.buffer_ready?(s.queue_bytes/1024)+' KiB · підготовлено':'Не виділено'],['Блок SD у внутрішній SRAM',(s.sd_block_bytes/1024)+' KiB'],['Вільна PSRAM',(s.psram_free/1048576).toFixed(2)+' MiB'],['Вільна внутрішня пам’ять',(s.heap_free/1024).toFixed(1)+' KiB']]);
   rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
   rows('timing',[['Задана / виміряна частота',(s.requested_hz||'—')+' / '+number(s.measured_hz,2)+' Hz'],['Коректні / некоректні відліки',s.valid_samples+' / '+s.invalid_samples],['Пропущені періоди',s.missed_samples],['Найбільша затримка старту',(s.max_late_us/1000).toFixed(2)+' ms'],['Читання INA / фрагмент OLED',(s.max_read_us/1000).toFixed(2)+' / '+(s.oled_chunk_us/1000).toFixed(2)+' ms'],['Планові паузи на команди',s.maintenance_count+' · '+s.maintenance_ms+' ms'],['Втрати preview / кадри OLED',s.preview_drops+' / '+s.oled_frames]]);
-  rows('network',[['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid]]);
+  rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
+  $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
   $('wifi-password').textContent=s.ap_password;
   $('generation').textContent='EEPROM · покоління '+s.generation;
   $('config-state').textContent=({'SAVED':'Застосовано та збережено','UNSAVED':'Застосовано, ще не збережено','BLOCKED':'EEPROM заблоковано: перевір формат','APPLY FAIL':'Помилка застосування'})[s.settings_status]||s.settings_status;
@@ -283,6 +285,7 @@ function animate(now){
 }
 makeFields();
 $('files-refresh').onclick=()=>listFiles();
+$('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
 $('record-start').onclick=async()=>{try{await closeDirectory();await command('START');}catch(e){notice(e.message,true);}};
 $('record-stop').onclick=()=>command('STOP');
 $('record-files').onclick=()=>{document.querySelector('[data-tab="files"]').click();listFiles('/records');};

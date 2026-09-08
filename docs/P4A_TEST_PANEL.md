@@ -1,4 +1,4 @@
-# Device test panel v0.15
+# Device test panel v0.20
 
 This is the device control interface, separate from the deferred offline recording viewer.
 It reuses the recovered R1 instrument colors: cyan current, yellow voltage, pink power,
@@ -11,7 +11,7 @@ a dark graph and compact tabs. It reports actual timed samples, not simulated da
   per-run URL token. PlatformIO's Python with pyserial is used; another installation
   can run python device_ui/bridge.py --port COM5 --open.
 - **Phone, standalone:** the normal firmware starts a password-protected AP named
-  R1-S3-xxxx. Its generated password is visible in the USB panel's Diagnostics tab
+  R1-S3-xxxx. Its generated password is visible in the USB panel's Wi-Fi tab
   and in the UART boot message. Join this network, keep the connection without Internet,
   and open http://192.168.4.1/. No PC bridge is needed for this route.
 - Before flashing, use **Release USB for flashing** in Diagnostics or device_ui/stop.cmd.
@@ -78,12 +78,13 @@ The timed acquisition/live portion of P4b is now active. See
 OLED data is sent in short chunks by the single I2C owner. The browser independently
 animates up to 60 FPS. Maintenance commands pause acquisition and mark a gap.
 
-Production SD sessions, totals and file download remain pending. Recorder fields are
-marked as future settings. FIFO budget changes require saving then rebooting; Apply
-does not resize the recording pool.
+[Production SD sessions](P5_RECORDING.md), totals and file downloads are implemented.
+The stopped recorder reallocates the FIFO at the next START after a budget change;
+Save remains a separate explicit action. Browser disconnect does not request STOP.
 
-The encoder remains a no-GPIO stub. Local menus, confirmed input GPIO, AP lifecycle
-during production recording and log list/download are still pending.
+The encoder remains a no-GPIO stub. Local menus, confirmed input GPIO and optional
+AP lifecycle controls remain pending. See [P6 Wi-Fi acceptance](P6_WIFI.md) for
+native-radio tests, separately from the earlier USB evidence.
 
 ## v0.14 baseline validation
 
