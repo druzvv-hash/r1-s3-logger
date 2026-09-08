@@ -100,12 +100,26 @@ class Session:
     def close(self):
         self.db.close()
 
+    def sample(self, segment, seconds):
+        """Nearest original row, including invalid rows; never interpolate a tooltip."""
+        if not 0 <= segment < len(self.summary['segments']) or not math.isfinite(seconds) or seconds < 0:
+            raise ValueError('Invalid sample position')
+        candidates = []
+        for comparison, order in (('<=', 'DESC'), ('>=', 'ASC')):
+            item = self.db.execute(
+                f'SELECT seconds,payload FROM samples WHERE segment=? AND seconds{comparison}? ORDER BY seconds {order} LIMIT 1',
+                (segment, seconds)).fetchone()
+            if item: candidates.append(item)
+        if not candidates: raise ValueError('Empty segment')
+        position, payload = min(candidates, key=lambda item: (abs(item[0]-seconds), item[0]))
+        return dict(seconds=position, distance_s=abs(position-seconds), row=json.loads(payload))
+
     def window(self, segment, start, end, channels, pixels=1000):
         if not 0 <= segment < len(self.summary['segments']):
             raise ValueError('Unknown segment')
         if not all(math.isfinite(v) for v in (start,end)) or start < 0 or end < start:
             raise ValueError('Invalid time range')
-        if not 1 <= len(channels) <= 8 or len(set(channels)) != len(channels) or any(k not in self.summary['channels'] for k in channels):
+        if not 1 <= len(channels) <= 32 or len(set(channels)) != len(channels) or any(k not in self.summary['channels'] for k in channels):
             raise ValueError('Unknown channel')
         pixels = max(50,min(int(pixels),2000))
         base = int(self.summary['segments'][segment]['start_us'])

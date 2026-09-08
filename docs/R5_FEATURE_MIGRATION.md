@@ -30,3 +30,9 @@ The Python/browser split and need for start.cmd are product tradeoffs introduced
 ## Completion gate
 
 P2.1a–c precede P3. Demonstrate R5-style marker/selection/series workflows on representative old and native files; verify starter/metric results using controlled event fixtures and preserve ambiguous/invalid statuses. Publish an updated feature matrix distinguishing implemented, hardware/API-dependent and deferred items. Live/device-log integration remains P6, binary readers P8. Updating this document does not implement the omitted features.
+
+## 2026-09-08 — P2.1a implementation
+
+Implemented selectable simultaneous series as synchronized individual-axis panels; persistent sample-snapped A/B and channel-specific C/D; signed deltas; independent full-resolution A/B statistics; wheel zoom, explicit drag-zoom/pan modes, reset and exact original-row hover. Separate axes intentionally prevent comparing A/V/W on an unlabeled shared scale. This is not a literal Plotly overlay port. Sample lookup uses indexed predecessor/successor reads and exposes invalid rows rather than inventing good values in gaps. New files/segments clear markers; changing viewport/series preserves them.
+
+Validation: 30 host tests, existing Chrome import/mapping/corruption/mobile smoke, and dedicated real-pointer R5 interaction acceptance. Tested old eight-column and native sign-crossing fixtures. No new large-file throughput claim; viewport scans still use the P2 disk-backed path. P2.1b starter/battery analysis and P2.1c plugin recovery are still pending; P3 remains gated on them. No firmware or device changes.

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewer-token" content="__TOKEN__"><title>R1 · Вювер записів</title><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
 <body><header><div class="brand">R1<span> / </span>S3</div><span class="offline">● Локально · без інтернету</span></header>
-<main><section class="intro"><p class="eyebrow">ВЮВЕР ЗАПИСІВ / P2</p><h1>Записи напруги та струму.</h1><p>Відкрий запис, вибери ділянку й перевір напругу, струм та енергію.</p></section>
+<main><section class="intro"><p class="eyebrow">ВЮВЕР ЗАПИСІВ / R5</p><h1>Записи напруги та струму.</h1><p>Відкрий запис, вибери ділянку й перевір напругу, струм та енергію.</p></section>
 <section class="panel upload" id="drop"><div><h2>Запис R1 або R1-S3</h2><p id="filename">Перетягни CSV сюди або вибери файл. Оригінал залишиться незмінним.</p></div><label class="button" for="file">Вибрати файл <span>↗</span></label><input id="file" type="file" accept=".csv,.part,.txt,.bin" hidden></section>
 <details class="panel import"><summary>Налаштування імпорту старих файлів</summary><div class="controls">
 <label>Колонки<select id="mapping"><option value="auto">Визначити за заголовком</option><option value="short">Підтверджую: ms, A, V, W, Wh net</option><option value="headerless-six">Без заголовка: час, ms, A, V, W, Wh net</option><option value="headerless-eight">Без заголовка: + Whc, Whd</option></select></label>
@@ -13,9 +13,13 @@
 <div id="status" role="status" aria-live="polite">Готовий до відкриття файлу.</div><pre id="preview" hidden></pre>
 <section id="workspace" hidden>
 <div class="overview"><div><span class="eyebrow">ВІДКРИТИЙ ЗАПИС</span><h2 id="format"></h2></div><div id="counts"></div></div>
-<section class="panel controls range"><label>Сегмент<select id="segment"></select></label><label>Від, с<input id="start" type="number" min="0" step="any" value="0"></label><label>До, с<input id="end" type="number" min="0" step="any"></label><button id="apply">Показати ділянку</button><button id="reset" class="secondary">Увесь сегмент</button><label>Другий графік<select id="channel"></select></label></section>
-<div class="cards" id="cards"></div><section class="panel plot"><div class="plot-title"><h2>Струм <span>A</span></h2><span>Виділи ділянку мишею · подвійний клік — увесь сегмент</span></div><canvas id="current" aria-label="Графік струму" role="img"></canvas></section>
-<section class="panel plot"><div class="plot-title"><h2 id="other-title">Напруга <span>V</span></h2><span>Мінімуми й максимуми збережено навіть на загальному огляді</span></div><canvas id="other" aria-label="Другий графік вимірювань" role="img"></canvas></section>
+<section class="panel controls range"><label>Сегмент<select id="segment"></select></label><label>Від, с<input id="start" type="number" min="0" step="any" value="0"></label><label>До, с<input id="end" type="number" min="0" step="any"></label><button id="apply">Показати ділянку</button><button id="reset" class="secondary">Увесь сегмент</button><label>Канал статистики<select id="channel"></select></label></section>
+<section class="panel"><div class="controls" id="series"></div><div class="controls tools">
+<label>Дія мишею<select id="gesture"><option value="markers">Маркери A/B · Shift — C/D</option><option value="zoom">Виділити масштаб</option><option value="pan">Перемістити графік</option></select></label>
+<button id="clear-markers" class="secondary">Очистити маркери</button><button id="zoom-markers" class="secondary">Масштаб A–B</button>
+</div><p class="muted">Колесо — масштаб біля курсора · подвійний клік — увесь сегмент. C/D належать обраному каналу.</p>
+<pre id="marker-info">Постав A і B кліками на графіку.</pre><pre id="sample-info" aria-live="off">Наведи курсор: тут буде точний вимір із файлу.</pre></section>
+<div id="plots"></div><div class="cards" id="cards"></div>
 <p class="muted">Середнє та інтеграли обчислено з усіх придатних вимірів обраної ділянки, а не з точок екрана. Пропуски не з’єднуються. Неперевірений хвіст перерваного файлу не входить у графіки.</p>
 <details class="panel"><summary>Перевірки, метадані та походження</summary><button id="report" class="secondary">Зберегти звіт JSON</button><div id="diagnostics"></div><pre id="metadata"></pre></details>
-</section><footer>R1-S3 Logger · Офлайн-вювер 0.1 · R1 CSV / R1S3 CSV v1</footer></main></body></html>
+</section><footer>R1-S3 Logger · Офлайн-вювер 0.2 · R1 CSV / R1S3 CSV v1</footer></main></body></html>

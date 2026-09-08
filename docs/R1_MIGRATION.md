@@ -211,3 +211,7 @@ Plan v1.2 records Python/SQLite instead of the proposed TypeScript core to reuse
 Owner pointed out that R5 already contained substantial useful work missing from the new interface. Re-read the primary R5 UI, marker/plugin APIs and battery/advanced-starter modules. Added R5_FEATURE_MIGRATION.md with concrete source evidence and P2.1a–c recovery/acceptance work; live/device-log portions retain P6 dependencies. P2 is the data-reading foundation, not a full R5 replacement. Plan revised to 1.3; P3 follows R5 recovery.
 
 Screenshot also showed direct file:// opening of viewer/index.html, which cannot use this version's local service API. Added an explicit launcher explanation and disabled direct-file import rather than allowing Failed to fetch. This change does not yet implement the missing R5 features or standalone HTML operation.
+
+### 2026-09-08 — P2.1a: restore R5 graph interactions
+
+Viewer 0.2 restores selectable simultaneous channels on synchronized axes, persistent A/B and C/D markers, signed differences, independent full-resolution A/B statistics, wheel/drag zoom, pan and original-row tooltips. Added an indexed sample endpoint preserving source timestamps, line/quality and invalid samples. Existing importer/checksum behavior remains covered by tests. Thirty host tests and Chrome smoke plus dedicated pointer-gesture acceptance pass; desktop/mobile screenshots reviewed. Source ZIP updated to 0.2. Starter/battery analysis and plugins remain P2.1b/c, before P3.

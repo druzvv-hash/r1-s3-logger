@@ -77,6 +77,8 @@ class Handler(BaseHTTPRequestHandler):
                 session=self.server.session
                 if not session: raise ValueError('Choose a recording first')
                 if url.path=='/api/summary': self.respond(200,session.summary)
+                elif url.path=='/api/sample':
+                    self.respond(200,session.sample(int(query.get('segment',['0'])[0]),float(query['seconds'][0])))
                 elif url.path=='/api/window':
                     self.respond(200,session.window(int(query.get('segment',['0'])[0]),float(query['start'][0]),float(query['end'][0]),query.get('channels',['I_A,U_V'])[0].split(','),int(query.get('pixels',['1000'])[0])))
                 else: self.respond(404,dict(error='Not found'))

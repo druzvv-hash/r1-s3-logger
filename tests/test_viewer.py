@@ -36,6 +36,19 @@ class Viewer(unittest.TestCase):
     def rows(self,s):
         return [json.loads(row[0]) for row in s.db.execute('SELECT payload FROM samples ORDER BY n')]
 
+    def test_exact_sample_lookup_keeps_invalid_and_segment_boundaries(self):
+        raw=HEADER+b't,0,1,5,5,0,0,0\nt,20,NaN,5,5,0,0,0\nt,40,3,5,15,0,0,0\nt,0,9,5,45,0,0,0\n'
+        session=self.read(raw)
+        hit=session.sample(0,.021)
+        self.assertEqual(hit['row']['t_us'],'20000')
+        self.assertIsNone(hit['row']['I_A'])
+        self.assertTrue(hit['row']['quality'] & core.c.INVALID)
+        self.assertAlmostEqual(hit['distance_s'],.001)
+        self.assertEqual(session.sample(1,0)['row']['I_A'],9)
+        self.assertEqual(session.sample(0,100)['row']['I_A'],3)
+        for segment,seconds in [(99,0),(0,float('nan')),(0,-1)]:
+            with self.assertRaises(ValueError):session.sample(segment,seconds)
+
     def test_native_matches_reference_all_fixtures(self):
         for path in (ROOT/'tests/fixtures').glob('native-*.csv'):
             raw=path.read_bytes()
