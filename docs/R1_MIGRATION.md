@@ -390,3 +390,16 @@ near-zero intervals. Net energy is 0.149848712757469 Wh; net charge is
 0.042256051443865815 Ah. Current minimum is -0.04375 A; no automatic zero correction
 or reference-accuracy claim is made. Local evidence is in ignored
 `data/recording-tests/user-latest/` (CSV, analysis JSON and dated-list screenshots).
+
+Five serializer/reader tests and browser filename/date checks pass, including UTC,
+leap day, dates after 2038, unknown time and old names. Actual desktop/mobile file
+lists display the owner's start as 12:55:37 Prague without changing the SD name.
+The owner's file also opens in the real viewer browser with both plots rendered.
+Normal build and deployed v0.19 smoke pass: 204 rows / 53,260 bytes in
+`r1s3_2026-09-08_11-24-46Z_caf53f56_c7124bb8_0000.csv`, complete download and verified
+viewer import. Filename and metadata UTC anchors agree; panel and file versions
+both report 0.19 from clean commit `18209d9ea69ebc7556a473d875021421eec19728`.
+The board is READY at the original 50 Hz, exact applied configuration and generation
+3 unchanged. USB flashing remains intermittent (connection and mid-write failures);
+the successful final write used extended reset timing and 38,400 baud with flash
+hash verification. No permanent transport fix is claimed.
