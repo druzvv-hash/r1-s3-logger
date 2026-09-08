@@ -157,6 +157,13 @@ function fileNotice(text){$('files-status').textContent=text;}
 async function filesCommand(command){const r=await api('/api/files?command='+encodeURIComponent(command));if(!r.ok)throw Error(r.message||'Помилка читання SD');return r;}
 async function closeDirectory(){const id=fileSession;fileSession=0;$('files-more').hidden=true;if(id)await filesCommand('CLOSE '+id);}
 function fileSize(size){return size<1024?size+' B':size<1048576?(size/1024).toFixed(1)+' KiB':(size/1048576).toFixed(2)+' MiB';}
+function recordingDate(name){
+  // Derive only from our session names, never the FAT modification timestamp.
+  const match=/^r1s3_(\d{4}-\d{2}-\d{2})_(\d{2})-(\d{2})-(\d{2})Z_[0-9a-f]{8}_[0-9a-f]{8}_\d{4,}\.(?:csv|part)$/i.exec(name);
+  const legacy=/^r1s3_(\d+)_[0-9a-f]{8}_[0-9a-f]{8}_\d{4,}\.(?:csv|part)$/i.exec(name);
+  const date=match?new Date(`${match[1]}T${match[2]}:${match[3]}:${match[4]}Z`):legacy&&Number(legacy[1])>0?new Date(Number(legacy[1])*1000):null;
+  return date&&Number.isFinite(date.getTime())?date:null;
+}
 async function listFiles(directory=fileDirectory,more=false){
   if(fileBusy)return;
   if(!online||!state?.files_available){fileNotice('Потрібне підключення до логера з прошивкою v0.16+.');return;}
@@ -167,12 +174,16 @@ async function listFiles(directory=fileDirectory,more=false){
     const result=await filesCommand(more?'NEXT '+fileSession:'LIST '+pathHex(directory));
     fileSession=result.more?result.session:0;
     for(const entry of result.entries){
-      const row=document.createElement('div'),name=document.createElement('span'),size=document.createElement('small'),button=document.createElement('button');
+      const row=document.createElement('div'),label=document.createElement('div'),name=document.createElement('span'),size=document.createElement('small'),button=document.createElement('button');
       row.className='file-row';name.textContent=(entry.directory?'📁 ':'')+entry.name;
+      label.className='file-label';label.append(name);
+      const date=entry.directory?null:recordingDate(entry.name);
+      if(date){const time=document.createElement('time');time.dateTime=date.toISOString();time.textContent='Початок: '+date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',timeZoneName:'short'});time.title='Місцевий час браузера. UTC: '+date.toISOString();label.append(time);}
+      else if(!entry.directory&&/^r1s3_(?:0_|time-unknown_)/.test(entry.name)){const note=document.createElement('small');note.textContent='Час початку невідомий';label.append(note);}
       size.textContent=entry.directory?'Папка':fileSize(entry.size);button.textContent=entry.directory?'Відкрити':'Завантажити';
       button.disabled=!entry.path;
       button.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
-      row.append(name,size,button);$('file-list').append(row);
+      row.append(label,size,button);$('file-list').append(row);
     }
     $('files-more').hidden=!result.more;$('files-up').disabled=directory==='/';
     fileNotice($('file-list').children.length?'Файлів і папок: '+$('file-list').children.length+(result.more?' · є наступна сторінка':''):'Папка порожня.');

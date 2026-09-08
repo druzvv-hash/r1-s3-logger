@@ -17,6 +17,8 @@ private:
 std::string jsonQuote(const std::string& text);
 std::string configJson(const settings::Config& config);
 std::string utcText(uint64_t epochUs);
+// UTC in a FAT/Windows-safe name; keep the random suffix for same-second starts.
+std::string sessionId(uint64_t utcUs, uint32_t randomHi, uint32_t randomLo);
 struct SessionInfo {
     settings::Config config;
     uint64_t generation = 0, originUs = 0, utcUs = 0;

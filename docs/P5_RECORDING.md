@@ -56,7 +56,15 @@ configured reserve. This is bounded buffering, not a claim of power-loss durabil
 
 ## Files, integrity and totals
 
-New sessions use `/records/r1s3_<utc-or-0>_<random64>_0000.part`, created exclusively.
+Since v0.19, new sessions use
+`/records/r1s3_YYYY-MM-DD_HH-MM-SSZ_<random32>_<random32>_0000.part`, created
+exclusively. The date is the session's RTC UTC anchor; `Z` explicitly denotes UTC,
+independent of browser timezone and daylight-saving changes. Unknown permitted
+RTC time uses `time-unknown` instead of a fabricated date. The two random words
+retain same-second uniqueness; the final number is the rotation part. Every part
+retains the original session date. The panel also displays the start in the
+browser's local timezone, including old v0.18 Unix-seconds filenames. Existing
+recordings are not renamed or rewritten.
 No existing file is opened for overwrite. The content follows the unchanged
 [R1S3 CSV v1 contract](FILE_FORMAT.md): full interpretation metadata/config hash,
 raw and calibrated values, monotonic timestamps, quality flags, metadata CRC32,

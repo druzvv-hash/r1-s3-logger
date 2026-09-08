@@ -7,7 +7,7 @@ const data=Buffer.from([0,255,10,13,35,34,65,66,67]);
 (async()=>{
  const browser=await chromium.launch({channel:'chrome',headless:true});let fixtureServer;
  try{
-  const page=await browser.newPage({viewport:{width:1440,height:1050},acceptDownloads:true});
+  const page=await browser.newPage({viewport:{width:1440,height:1050},acceptDownloads:true,timezoneId:'Europe/Prague'});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   let url;
   if(hardware)url=JSON.parse(fs.readFileSync(path.join(root,'data/device-panel/session.json'),'utf8')).url;
@@ -33,6 +33,13 @@ const data=Buffer.from([0,255,10,13,35,34,65,66,67]);
   }
   await page.goto(url);
   await page.waitForFunction(()=>state?.files_available&&online);
+  assert.deepEqual(await page.evaluate(()=>[
+   recordingDate('r1s3_1788864937_4ee24d5b_9ebc8459_0000.csv')?.toISOString(),
+   recordingDate('r1s3_2026-09-08_10-55-37Z_4ee24d5b_9ebc8459_0001.part')?.toISOString(),
+   recordingDate('r1s3_time-unknown_00000000_00000001_0000.csv'),
+   recordingDate('r1s3_0_00000000_00000001_0000.csv'),
+   recordingDate('unrelated.csv')
+  ]),['2026-09-08T10:55:37.000Z','2026-09-08T10:55:37.000Z',null,null,null]);
   await page.getByRole('button',{name:'Файли SD',exact:true}).click();
   await page.locator('#files-refresh').click();
   await page.waitForFunction(()=>!fileBusy&&document.querySelectorAll('.file-row').length>0);

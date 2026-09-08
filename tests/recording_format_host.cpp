@@ -15,6 +15,10 @@ Sample sample(unsigned n){Sample s{};s.seq=100+n;s.t_us=2000000ULL+n*20000;s.vsh
 void writeFile(const std::string& path,const std::string& bytes){std::ofstream f(path,std::ios::binary);f<<bytes;assert(f.good());}
 int main(int argc,char** argv){
     assert(argc==2);std::string dir=argv[1];
+    assert(sessionId(1788864937000000ULL,0x4ee24d5b,0x9ebc8459)=="r1s3_2026-09-08_10-55-37Z_4ee24d5b_9ebc8459");
+    assert(sessionId(951782400123456ULL,0,1)=="r1s3_2000-02-29_00-00-00Z_00000000_00000001");
+    assert(sessionId(2147483648000000ULL,0,2)=="r1s3_2038-01-19_03-14-08Z_00000000_00000002");
+    assert(sessionId(0,0,3)=="r1s3_time-unknown_00000000_00000003");
     Sha256 h;assert(h.hex()=="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");h.add("abc",3);assert(h.hex()=="ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
     Sha256 million;std::string a(1000,'a');for(unsigned i=0;i<1000;++i)million.add(a.data(),a.size());assert(million.hex()=="cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0");
     for(unsigned unknown=0;unknown<2;++unknown){

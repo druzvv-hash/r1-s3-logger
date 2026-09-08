@@ -263,8 +263,8 @@ bool runPanelAction(const char* verb, const char* argument, const char*& message
         recording::SessionInfo info;info.config=appliedSettings();info.generation=settingsGeneration();info.revision=settingsRevision();
         if(!captureInaIdentity(info.manufacturer,info.device,info.adc)){message="INA identity/config readback failed";return false;}
         rtcStatus=pollRtc(false);info.utcUs=rtcUtcNow()*1000000;info.originUs=esp_timer_get_time();
-        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version="0.18";
-        char id[80];snprintf(id,sizeof(id),"r1s3_%llu_%08lx_%08lx",(unsigned long long)(info.utcUs/1000000),(unsigned long)esp_random(),(unsigned long)esp_random());info.id=id;
+        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version="0.19";
+        info.id=recording::sessionId(info.utcUs,esp_random(),esp_random());
         return recorder::start(info,message);
     }
     if (!i2cReady) { message="I2C unavailable"; return false; }
@@ -305,7 +305,7 @@ void setup() {
 #endif
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\nR1-S3 PANEL v0.18: PSRAM FIFO + SD session recording");
+    Serial.println("\nR1-S3 PANEL v0.19: dated SD session files");
     Serial.println(R1_SERVICE_TESTS ? "SERVICE BUILD: SD/EEPROM write tests enabled."
                                  : "NORMAL BUILD: no SD/EEPROM test writes. Command: EEPROM DUMP");
     Serial.printf("Chip: %s rev %u, CPU %u MHz\n", ESP.getChipModel(),

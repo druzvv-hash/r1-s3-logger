@@ -54,6 +54,12 @@ std::string utcText(uint64_t epochUs){time_t seconds=epochUs/1000000;struct tm u
 #endif
     char b[40];snprintf(b,sizeof(b),"%04d-%02d-%02dT%02d:%02d:%02d.%06luZ",utc.tm_year+1900,utc.tm_mon+1,utc.tm_mday,utc.tm_hour,utc.tm_min,utc.tm_sec,(unsigned long)(epochUs%1000000));return b;
 }
+std::string sessionId(uint64_t utcUs,uint32_t randomHi,uint32_t randomLo){
+    std::string stamp="time-unknown";
+    if(utcUs){stamp=utcText(utcUs).substr(0,19);stamp[10]='_';stamp[13]=stamp[16]='-';stamp+='Z';}
+    char suffix[20];snprintf(suffix,sizeof(suffix),"_%08lx_%08lx",(unsigned long)randomHi,(unsigned long)randomLo);
+    return "r1s3_"+stamp+suffix;
+}
 void LogWriter::beginSession(const SessionInfo& info){info_=info;previous_=false;incomplete_=false;totals_={};sessionRows_=0;failed_=false;}
 bool LogWriter::append(const std::string& bytes){
     if(failed_)return false;

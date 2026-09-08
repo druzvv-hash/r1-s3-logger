@@ -371,3 +371,22 @@ interrupted-file recovery are tested on host; physical power cuts, card full/rem
 and long-duration operation remain open. See [P5 behavior and acceptance](P5_RECORDING.md)
 and [owner controls](uk/RECORDING.md). Remaining R5 viewer features and local menus
 continue according to the staged plan; there are now real logger files to use.
+
+### 2026-09-08 — Readable recording dates and owner's first session review
+
+PANEL v0.19 replaces the Unix-seconds filename prefix with the RTC UTC date and
+time (`YYYY-MM-DD_HH-MM-SSZ`), retaining random uniqueness and part numbering.
+The file list shows browser-local start times for both naming generations;
+existing SD files and their metadata/checksums remain unchanged.
+
+Downloaded the owner's latest completed session
+`r1s3_1788864937_4ee24d5b_9ebc8459_0000.csv` in full (615,956 bytes).
+Its anchor is 2026-09-08 10:55:37 UTC / 12:55:37 Prague. Both contract decoder and
+production viewer report verified clean: 2763 rows, zero unverified rows, sequence
+losses or quality flags. First-to-last duration is 55.239999 s at 50.0000009 Hz;
+intervals range from 18.995 to 21.004 ms (median 20 ms). Initial 15 s are near
+3.00 A / 3.02 V; later values change up to 4.79375 A / 6.146484375 V and include
+near-zero intervals. Net energy is 0.149848712757469 Wh; net charge is
+0.042256051443865815 Ah. Current minimum is -0.04375 A; no automatic zero correction
+or reference-accuracy claim is made. Local evidence is in ignored
+`data/recording-tests/user-latest/` (CSV, analysis JSON and dated-list screenshots).
