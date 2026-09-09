@@ -3,16 +3,18 @@
 Architecture decision, 2026-09-09. Owner requirement: R1-S3 must connect to R3
 over Bluetooth and understand its time beacon. Correlate voltage/current/energy
 from R1-S3, fast sensor signals from R3, and CAN events on one timeline.
-[Engineering plan](R1_S3_PLAN.md) · [Owner notes](uk/ECOSYSTEM_TIME_SYNC.md).
+[Engineering plan](R1_S3_PLAN.md) · [S1 BLE operation and wire contract](BLE_LINK.md) ·
+[Owner notes](uk/ECOSYSTEM_TIME_SYNC.md).
 
 ## Implementation boundary
 
 | Part | Status |
 |---|---|
-| R3 RV3028 authority and `$TMB` | Source audited; current transport is UART to STM32 |
-| R1-S3 legacy decoder/tracker | Portable `r3_time_beacon.h/.cpp` foundation; host-tested; no runtime transport attached |
-| R3 BLE server / R1-S3 BLE client | Required next implementation; not implemented by this change |
-| Offset/drift model, synchronized file records and UI | Design below; not implemented or physically qualified |
+| R3 RV3028 authority and `$TMB` | UART to STM32 retained; S1 BLE wraps the same coarse metronome snapshot |
+| R1-S3 legacy decoder/tracker | Portable `r3_time_beacon.h/.cpp`; S1 runtime adapter feeds validated BLE observations into the tracker |
+| R3 BLE server / R1-S3 BLE client | S1 implemented: shared versioned wire format, authenticated pairing, discovery/selection, notifications, bounded reconnect; hardware acceptance pending |
+| BLE operation and diagnostics UI | S1 implemented; volatile STOP-only selection, freshness and loss diagnostics; no synchronized-clock claim |
+| Offset/drift model and synchronized file records | S2/S3 design below; not implemented or physically qualified |
 | DS3231, sample timing, EEPROM and CSV v1 | Existing behavior unchanged |
 
 The CAN sniffer's source/board and timestamp contract have not been audited here.
@@ -30,7 +32,7 @@ equal filenames and START reception times cannot align their samples.
 flowchart LR
   RTC[RV3028 UTC] --> CC[R3 Control Center: time authority]
   CC -->|existing UART TMB| ADS[R3 STM32: DRDY clock]
-  CC -.->|planned BLE time link| R1[R1-S3: monotonic clock]
+  CC -->|S1 BLE coarse observations| R1[R1-S3: monotonic clock]
   CC -.->|adapter to qualify| CAN[CAN: capture clock]
   ADS --> RF[R3 data + clock evidence]
   R1 --> LF[R1-S3 data + clock evidence]
@@ -84,9 +86,10 @@ software polling does not prove millisecond phase accuracy. R3 DATA/DTBM preserv
 the local ADC clock; existing TCHK/TCKS are not repeated precise captures of real
 received beacons. A measured bridge from CC monotonic time to STM32 DRDY time is
 still needed. The current implementation establishes no inter-device error bound.
-R3 docs reserve BLE for future service links and propose RS-485 for precise sync.
+The audited R3 documents reserved BLE for future service links and proposed
+RS-485 for precise sync; S1 now implements the coarse BLE service.
 
-## BLE connection contract to implement
+## S1 BLE contract and remaining clock exchange
 
 Use **Bluetooth LE GATT**: R3 peripheral/server, R1-S3 central/client selecting
 one R3. ESP32-S3 supports LE rather than Classic SPP; see the
@@ -94,29 +97,37 @@ one R3. ESP32-S3 supports LE rather than Classic SPP; see the
 R3 should support R1-S3 and a capable CAN node together; other CAN hardware needs
 a qualified gateway/wired adapter.
 
-Publish one shared versioned service definition in both repos: stable project
-UUIDs, exact lengths, byte order, capabilities and golden packets. No deployed
-UUID exists today. The following is required content, not an assigned wire ABI:
+S1 now shares an identical `r3_ble_protocol.h` in both repositories, with stable
+project UUIDs, exact byte lengths, little-endian fields, identity/boot/revision,
+coarse-only capability and CRC32. Protected identity reads are 36 bytes; complete
+beacon notifications are 64 bytes, requiring ATT MTU at least 67 (preferred 128).
+Full offsets and operation are documented in [BLE_LINK.md](BLE_LINK.md).
+Physical acceptance remains pending. The richer synchronization interface still
+needs the following work:
 
-- **Identity/capabilities (read):** version, stable public device ID, role, boot ID,
-  time-domain ID, clock-exchange capability and transport limits.
-- **Beacon (notify):** sequence, boot ID, clock revision, sender monotonic capture
-  in u64 microseconds, UTC anchor/validity, source uncertainty and capture method.
-  Legacy TMB can be carried only as an explicitly identified coarse record.
+- **Identity/capabilities (read):** extend the implemented device/boot/role/version
+  and transport limits with a time-domain ID and qualified exchange capabilities.
+- **Beacon (notify):** S1 carries sequence, boot/revision, CC software capture,
+  legacy integer RTC seconds/tick, UTC validity and explicitly unknown uncertainty.
+  It is a coarse snapshot, not an RTC edge or a qualified precise anchor.
 - **Exchange (request/reply):** request ID, local send t1, R3 receive t2 and reply
   send t3; R1 captures t4 immediately on notification entry. Match IDs/boot/revision
   and reject expired replies. Define each capture point and timestamp resolution.
 
-Support negotiated ATT sizes with bounded framing/message IDs/lengths/timeouts;
-do not assume one notification can carry a complete exchange. Detect missing
-notifications by sequence. Discovery, subscription, reconnect and capped backoff
-must not block recording. Reject unsupported versions and unexpected identities.
-Choose the R3 explicitly in UI; use pairing/bonding and identity verification,
-not just its advertised name. Keep keys outside public profiles/logs.
+S1 rejects smaller MTUs instead of fragmenting notifications, detects sequence
+gaps and validates identity/version. Discovery, subscription and capped backoff
+run on a separate core-0 worker. Future exchanges must define bounded framing,
+request IDs, lengths and expiry rather than assume one notification always fits.
+Select R3 explicitly in UI. S1 uses passkey-authenticated LE Secure Connections
+with legacy pairing and persistent BLE storage disabled at build time. It does
+not persist bonds or CCCD state; each link authenticates and subscribes again.
+Keep keys and pairing output outside public profiles/logs.
 
-Peer and sync policy are explicit Save settings while stopped. Add a versioned
-settings migration with default disabled; do not silently consume EEPROM reserve
-or change the current config-v1 layout. No per-beacon EEPROM writes.
+S1 peer/PIN selection is volatile and STOP-only. After an R1 reboot, select again;
+an R3 reboot requires its new PIN from `ble pair`. Persistent peer and sync policy
+belong to an explicit Save operation with a versioned settings migration, default
+disabled. Do not silently consume EEPROM reserve or alter config-v1. There are
+no per-beacon EEPROM writes.
 
 ## Clock model and failure behavior
 
@@ -161,15 +172,18 @@ dynamic clock evidence awaits the versioned extension below.
 
 ## Ownership and buffering
 
-Core 0 owns BLE discovery/client lifecycle and clock estimation alongside UI.
+Core 0 owns S1 BLE discovery/client lifecycle alongside UI; clock estimation is
+future work.
 Callbacks only capture local time and copy bounded data; no I2C, SD, EEPROM, JSON
 or blocking operations. Core 1 retains acquisition/I2C at highest application
 priority plus the separate lower-priority sole SD owner. Pass bounded messages
 and snapshots; do not expose mutable clock/config state across tasks.
 
-Preserve PSRAM sample FIFO and 8 KiB internal output staging. Plan a separate
-64-entry fixed-size clock-event queue, finalized with the wire ABI; avoid per-packet
-allocation. The SD owner orders/associates evidence by local capture time, not
+Preserve PSRAM sample FIFO and 8 KiB internal output staging. S1 uses an eight-entry
+R3 observation queue and a 12-entry R1 notification queue, with counted overflow.
+The separate persistent clock-event path remains planned (initial target: 64
+fixed-size entries); avoid per-packet allocation. The SD owner orders/associates
+persisted evidence by local capture time, not
 callback scheduling. Sync overflow is counted and invalidates sync coverage;
 it must not discard samples or block the producer. Persist relevant evidence before
 claiming file synchronization; RAM-only status is insufficient.
@@ -205,15 +219,16 @@ marker alignment is a labelled user estimate. Existing v1 readers must keep pass
 
 | Stage | Deliverable | Acceptance |
 |---|---|---|
-| S0, this change | Audit, legacy decoder/tracker, architecture | Host malformed/wrap/stale tests and normal build; no radio claim |
-| S1 | Shared BLE contract, R3 server, R1 client, peer selection/diagnostics | Real connect/reconnect, MTU/version/identity failures; no acquisition regression |
+| S0, completed foundation | Audit, legacy decoder/tracker, architecture | Host malformed/wrap/stale tests and normal build; no radio claim |
+| S1, implemented; hardware acceptance pending | Shared BLE contract, R3 server, R1 client, volatile peer/PIN selection and diagnostics | Real connect/reconnect, MTU/version/identity failures; no acquisition regression |
 | S2 | Offset/drift/error model, CC-to-DRDY bridge, CAN clock audit | Shared physical event and independent reference establish error bounds |
 | S3 | Versioned files/readers, owner queues, UI quality and saved policy | Golden/corruption/rotation/reboot tests, backward compatibility and autonomous operation |
 | S4 | R1-S3 + R3 + actual CAN node | End-to-end alignment and endurance; no silent time jumps or optimistic lock |
 
-S1 is the next synchronization step and changes both repositories. Preserve R3's
-existing local work and UART behavior. Keep sync work separate from the unresolved
-UART endurance fault. S0 performs no firmware flashing or physical BLE tests.
+S1 changes both repositories while retaining R3 UART behavior and local work.
+Its runtime implementation must pass the physical gates before acceptance.
+Keep synchronization work separate from the unresolved UART endurance fault.
+The historical S0 validation below did not flash firmware or test physical BLE.
 
 Bench matrix: R1 at 1/50/300 Hz, representative R3 high-rate recording, Wi-Fi UI
 active/absent, allowed download load, multiple BLE clients, poor reception,

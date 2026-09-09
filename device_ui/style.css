@@ -25,3 +25,4 @@
 #rate-presets button{min-width:45px;padding:9px 12px}
 #rate-presets button[aria-pressed="true"]{border-color:var(--accent,#a4e5c8);color:var(--accent,#a4e5c8)}
 #rate-profile{flex-basis:100%;margin:0;font-size:14px;line-height:1.5}
+.ble-fields{display:grid;grid-template-columns:minmax(200px,2fr) minmax(140px,1fr);gap:18px;max-width:640px;margin:20px 0 12px}.ble-fields input{min-height:44px}#ble-peer{font-family:ui-monospace,monospace}#ble-summary dd,#ble-diagnostics dd{overflow-wrap:anywhere;min-width:0}#ble-summary,#ble-diagnostics{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#ble-note{min-height:24px;color:#a6d9e7}#ble .button-row button{min-height:44px}@media(max-width:480px){.ble-fields{grid-template-columns:1fr;gap:14px}#ble .button-row{display:grid;grid-template-columns:1fr 1fr}#ble-connect{grid-column:2;grid-row:1}#ble-off{grid-column:1/-1}}

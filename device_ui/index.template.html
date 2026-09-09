@@ -11,7 +11,7 @@
 <article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
 <article class="meter power"><label>ПОТУЖНІСТЬ</label><div><strong id="watts">—</strong><span>W</span></div><small id="temperature">Температура INA228: —</small></article>
 </section>
-<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="wifi">Wi-Fi</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="wifi">Wi-Fi</button><button class="tab" data-tab="ble">BLE · R3</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
 <section id="live" class="page">
 <div class="panel live-controls">
 <div class="rate-choices"><label>Частота вимірів, Гц<input id="quick-rate" type="number" min="1" max="300" step="1" inputmode="numeric" value="50" aria-describedby="rate-profile rate-note"></label><div id="rate-presets" role="group" aria-label="Швидкий вибір частоти"></div></div>
@@ -54,6 +54,15 @@
 <p class="muted">Закриття браузера чи втрата Wi-Fi не зупиняє запис. Повернися в панель і перевір стан перед наступною командою. Сам логер має залишатися під живленням.</p>
 <p class="muted">Це окрема мережа приладу без інтернету. Підключення логера до домашнього роутера поки не налаштовується.</p></div>
 </section>
+<section id="ble" class="page" hidden>
+<div class="panel"><div class="section-title"><div><h2>Часовий маяк R3</h2><p>Зв’язок між приладами для спільної часової шкали.</p></div><span id="ble-state" class="badge">BLE вимкнено</span></div>
+<p id="ble-note" role="status" aria-live="polite">Очікування стану BLE…</p>
+<form id="ble-form" autocomplete="off"><div class="ble-fields"><label class="field">R3 · адреса BLE<input id="ble-peer" list="ble-peers" placeholder="AA:BB:CC:DD:EE:FF" maxlength="17" spellcheck="false" autocomplete="off" aria-describedby="ble-discovery"><datalist id="ble-peers"></datalist><small id="ble-discovery">Запусти пошук або введи адресу R3 вручну.</small></label><label class="field">PIN із R3<input id="ble-pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="off" aria-describedby="ble-pair-note"><small>Шість цифр для підтвердження з’єднання.</small></label></div>
+<div class="button-row"><button id="ble-scan" type="button" disabled>Знайти R3</button><button id="ble-connect" class="primary" type="submit" disabled>Підключити</button><button id="ble-off" type="button" disabled>Вимкнути BLE</button></div></form>
+<p id="ble-pair-note" class="muted">PIN: команда <code>ble pair</code> у консолі R3; вибір діє до перезапуску R1. PIN очищається після надсилання. Пошук і зміну з’єднання запускай між записами.</p>
+<dl id="ble-summary"></dl><details><summary>Діагностика маяка</summary><dl id="ble-diagnostics"></dl></details>
+<p class="muted">Отримання маяка ще не підтверджує точність спільного часу. Власний час вимірів R1-S3 не змінюється; втрата BLE не зупиняє запис.</p>
+</div></section>
 <footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
 </main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*RATE_PROFILE*/
 /*APP*/</script></body></html>

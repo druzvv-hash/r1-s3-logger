@@ -20,6 +20,7 @@
 #include "build_provenance.h"
 #include "firmware_version.h"
 #include "rate_benchmark.h"
+#include "r3_ble_client.h"
 #include <esp_timer.h>
 #include <esp_system.h>
 
@@ -259,6 +260,7 @@ void scanI2c() {
 }
 
 bool runPanelAction(const char* verb, const char* argument, const char*& message) {
+    if(!strcmp(verb,"BLE"))return r3BleCommand(argument,message);
 #if R1_BENCHMARK
     if(!strcmp(verb,"BENCH"))return rateBenchmarkStart(argument,message,runPanelAction);
 #endif
@@ -360,6 +362,7 @@ void setup() {
     Serial.println("BUFFER: acquisition -> PSRAM FIFO -> SD owner; recording starts only on START.");
     Serial.printf("LIVE history in PSRAM: %s\n",liveHistoryBegin()?"READY":"FAIL");
     sd_files::begin();
+    r3BleBegin();
     panelBegin(runPanelAction);
     panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
     updateOled();

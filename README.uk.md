@@ -17,7 +17,9 @@ USB або Wi-Fi. [Коротка інструкція](docs/uk/SD_FILES.md).
 ## Апаратна архітектура
 
 [Спільний час R1-S3, R3 та CAN](docs/uk/ECOSYSTEM_TIME_SYNC.md): закладено
-архітектуру і розбір маяка R3; BLE-з'єднання ще потрібно реалізувати на обох приладах.
+архітектуру та приймання маяка R3. [Як підключити через BLE](docs/uk/BLE_LINK.md):
+вкладка **BLE · R3**, вибір приладу й PIN. Зв’язок S1 реалізований, апаратне
+приймання ще попереду; точність спільного часу не визначена.
 
 - ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
 - I²C на GPIO8/9: INA228 (0x40), OLED SH1106 128×64 (0x3C), EEPROM 24C32 (0x50), RTC DS3231 (0x68).
@@ -45,7 +47,7 @@ USB або Wi-Fi. [Коротка інструкція](docs/uk/SD_FILES.md).
 
 ## VS Code / PlatformIO
 
-Відкрити всю папку **C:\Projects\r1-s3-logger**, встановити PlatformIO IDE. Arduino platform зафіксована на espressif32 6.12.0 (Arduino 2.0.17); OLED — Adafruit SH110X 2.1.12.
+Відкрити всю папку **C:\Projects\r1-s3-logger**, встановити PlatformIO IDE. Arduino platform зафіксована на espressif32 6.12.0 (Arduino 2.0.17); OLED — Adafruit SH110X 2.1.12; BLE — NimBLE-Arduino 1.4.3.
 
 ```sh
 pio run

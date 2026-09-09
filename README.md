@@ -42,7 +42,7 @@ Automatic UART uploads succeeded after USB-UART controller rework. The cause of 
 
 ## VS Code / PlatformIO
 
-Open the repository root in VS Code with PlatformIO IDE installed. Dependencies are pinned to `espressif32@6.12.0` (Arduino 2.0.17) and `Adafruit SH110X@2.1.12`.
+Open the repository root in VS Code with PlatformIO IDE installed. Dependencies are pinned to `espressif32@6.12.0` (Arduino 2.0.17), `Adafruit SH110X@2.1.12` and `NimBLE-Arduino@1.4.3`.
 
 ```sh
 pio run
@@ -69,7 +69,8 @@ The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is imp
 
 ## Repository guide
 
-- [Ecosystem synchronization](docs/ECOSYSTEM_TIME_SYNC.md): R3 / R1-S3 / CAN clock architecture and legacy beacon decoder; BLE transport remains pending.
+- [BLE link controls](docs/BLE_LINK.md): connect R1-S3 to R3 using the **BLE · R3** tab and volatile PIN pairing; S1 transport is implemented, with hardware acceptance pending.
+- [Ecosystem synchronization](docs/ECOSYSTEM_TIME_SYNC.md): R3 / R1-S3 / CAN clock architecture; received coarse beacons do not yet synchronize recorded files.
 - [firmware/](firmware/README.md): Arduino test firmware and GPIO constants.
 - [hardware/](hardware/README.md): hardware notes and pin map.
 - [Bring-up plan and results](docs/bring-up.md).

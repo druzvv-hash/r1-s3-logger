@@ -79,6 +79,58 @@ function updateDraft(){
 }
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
+let blePeerDirty=false,bleDiscoveryKey='';
+function bleControls(){
+  const available=!!state?.ble,locked=recordingBusy()||busy||!online||!available;
+  const address=$('ble-peer').value.trim(),pin=$('ble-pin').value;
+  $('ble-scan').disabled=locked;
+  $('ble-connect').disabled=locked||!/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i.test(address)||!/^\d{6}$/.test(pin);
+  $('ble-off').disabled=locked||!state?.ble?.enabled;
+  $('ble-peer').disabled=locked;$('ble-pin').disabled=locked;
+  if(!online){$('ble-state').classList.remove('online');$('ble-note').textContent='Немає свіжого стану логера. Перевір його підключення.';}
+}
+function renderBle(ble){
+  const names={OFF:'BLE вимкнено',SCANNING:'Пошук R3…',READY:'Вибери R3',CONNECTING:'Підключення…',PAIRING:'Перевірка PIN…',CONNECTED:'R3 підключений',RETRY:'Повторне підключення…',ERROR:'Помилка BLE'};
+  $('ble-state').textContent=ble?(names[ble.state]||'Стан BLE невідомий'):'BLE вимкнено';
+  $('ble-state').classList.toggle('online',!!(ble?.authenticated&&ble?.fresh));
+  $('ble-note').textContent=!ble?'Ця прошивка не повідомляє стан BLE. Потрібне оновлення логера.':
+    !ble.enabled?'Увімкни пошук і вибери R3 для отримання часових маяків.':
+    ble.authenticated&&ble.fresh?'Маяк отримано; точність синхронізації ще не визначена':
+    ble.state==='CONNECTED'?'З’єднання встановлено; очікування свіжого підтвердженого маяка.':
+    ble.state==='SCANNING'?'Шукаємо R3 поблизу. Вибери адресу зі списку або введи її вручну.':
+    ble.state==='READY'?'Пошук завершено. Вибери R3 та введи PIN для підключення.':
+    ble.state==='PAIRING'?'R3 перевіряє PIN. Дочекайся результату підключення.':
+    ble.state==='RETRY'?'Зв’язок втрачено. Логер повторює підключення; вимірювання тривають.':
+    ble.state==='ERROR'?'Не вдалося встановити зв’язок. Перевір R3, адресу та PIN.':'Підключаємося до вибраного R3…';
+  if(!blePeerDirty&&ble?.peer)$('ble-peer').value=ble.peer;
+  const devices=Array.isArray(ble?.devices)?ble.devices.slice(0,6):[];
+  const discoveryKey=JSON.stringify(devices);
+  if(discoveryKey!==bleDiscoveryKey){
+    bleDiscoveryKey=discoveryKey;$('ble-peers').replaceChildren();
+    for(const device of devices){const option=document.createElement('option');option.value=device.address;option.label=device.name||'R3';$('ble-peers').append(option);}
+  }
+  $('ble-discovery').textContent=devices.length?'Знайдено: '+devices.length+'. Вибери адресу або введи її вручну.':'Запусти пошук або введи адресу R3 вручну.';
+  rows('ble-summary',ble?[
+    ['Вибраний R3',ble.peer||'—'],['Підтвердження з’єднання',ble.authenticated?'Підтверджено':'Не підтверджено'],
+    ['Свіжий маяк',ble.fresh?'Так':'Ні'],['Вік маяка',Number.isFinite(ble.age_ms)?number(ble.age_ms/1000,1)+' с':'—'],
+    ['UTC у маяку',ble.utc_valid?'Валідний за даними R3':'Невідомий / невалідний'],['Точність синхронізації','Ще не визначена']
+  ]:[]);
+  // Counters are decimal strings: avoid precision loss through Number conversion.
+  rows('ble-diagnostics',ble?[
+    ['Запуск R3 / ревізія часу',(ble.source_boot||'—')+' / '+(ble.clock_revision??'—')],['Сегмент',ble.segment||'—'],
+    ['Останній номер маяка',ble.last_sequence??'—'],['Отримано / пропущено',(ble.received??'0')+' / '+(ble.missing??'0')],
+    ['Некоректні / дублікати / не за порядком',(ble.malformed??'0')+' / '+(ble.duplicates??'0')+' / '+(ble.out_of_order??'0')],
+    ['Втрати черги',ble.drops??0],['З’єднання / повторні з’єднання',(ble.connections??0)+' / '+(ble.reconnects??0)],
+    ['MTU',ble.mtu||'—'],['Остання помилка',ble.last_error||'—']
+  ]:[]);
+}
+async function submitBle(event){
+  event.preventDefault();
+  if($('ble-connect').disabled)return;
+  const address=$('ble-peer').value.trim().toUpperCase(),pin=$('ble-pin').value;
+  $('ble-pin').value='';bleControls();
+  await command('BLE','CONNECT '+address+' '+pin);
+}
 function setOffline(error){online=false;document.body.classList.add('offline');$('connection').textContent='Немає зв’язку';$('connection').classList.remove('online');for(const id of ['amps','volts','watts'])$(id).textContent='—';$('temperature').textContent='Температура INA228: —';notice(error,true);controls();}
 function controls(){
   const hz=Number($('quick-rate').value);let validRate=true;
@@ -93,7 +145,7 @@ function controls(){
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||state?.recording_state!=='RUNNING';
   $('record-files').disabled=recordingBusy()||busy||!online;
-  $('files-refresh').disabled=recordingBusy()||!online;fileControls();updateDraft();}
+  $('files-refresh').disabled=recordingBusy()||!online;fileControls();bleControls();updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
   // HTTP may still answer from core 0 when the hardware owner's snapshot stops.
@@ -123,6 +175,7 @@ function render(s){
   rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
   $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
   $('wifi-password').textContent=s.ap_password;
+  renderBle(s.ble);
   $('generation').textContent='EEPROM · покоління '+s.generation;
   $('config-state').textContent=({'SAVED':'Застосовано та збережено','UNSAVED':'Застосовано, ще не збережено','BLOCKED':'EEPROM заблоковано: перевір формат','APPLY FAIL':'Помилка застосування'})[s.settings_status]||s.settings_status;
   $('footer-device').textContent='R1-S3 · прошивка '+s.firmware+' · '+(s.boot||'');
@@ -157,8 +210,8 @@ async function command(verb,arg='',useDraft=false){
     // Owner publishes a new snapshot at most 500 ms after the acknowledged command.
     await new Promise(r=>setTimeout(r,600));await refresh();
     if(verb==='APPLY'||verb==='SAVE')reload();
-    notice(verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
-  }catch(e){notice('Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
+    notice(verb==='BLE'?'Команду BLE прийнято. Стеж за станом з’єднання.':verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
+  }catch(e){notice(verb==='BLE'?'Команду BLE не виконано. Перевір стан R3 й онови стан перед повторенням.':'Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
   finally{busy=false;controls();}
 }
 
@@ -350,6 +403,11 @@ function animate(now){
   requestAnimationFrame(animate);
 }
 makeFields();
+$('ble-form').addEventListener('submit',submitBle);
+$('ble-peer').oninput=()=>{blePeerDirty=true;bleControls();};
+$('ble-pin').oninput=bleControls;
+$('ble-scan').onclick=()=>command('BLE','SCAN');
+$('ble-off').onclick=()=>{$('ble-pin').value='';command('BLE','OFF');};
 $('files-refresh').onclick=()=>listFiles();
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
 $('record-start').onclick=async()=>{try{await stopListing();await command('START');}catch(e){notice(e.message,true);}};

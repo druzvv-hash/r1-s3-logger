@@ -1,5 +1,6 @@
 #include "test_panel.h"
 #include "firmware_version.h"
+#include "r3_ble_client.h"
 #include "settings.h"
 #include "ina228_test.h"
 #include "rtc_test.h"
@@ -280,7 +281,8 @@ void serializePanel(const PanelSnapshot& p){
     s+=",\"maintenance_count\":"+String(a.maintenance)+",\"maintenance_ms\":"+String(a.maintenanceMs);
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
     s+=",\"files_available\":"+String(recorder::busy()?"false":"true")+",\"file_transfer\":"+String(sd_files::active()?"true":"false");
-    s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ap_clients\":"+String(networkClients.load())+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password)+"}";
+    s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ap_clients\":"+String(networkClients.load())+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password);
+    s+=",\"ble\":"+r3BleStatusJson()+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);
 }
