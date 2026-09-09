@@ -11,6 +11,15 @@ struct Sink:SyncSink {
     bool sync()override{return ++syncs!=failSync;}
 };
 SessionInfo info(){SessionInfo s;s.generation=3;s.revision=7;s.originUs=2000000;s.utcUs=1788854400123456ULL;s.id="host-roundtrip";s.commit="host-test";s.version="0.18";s.manufacturer=0x5449;s.device=0x2281;s.adc=0x7000|settings::adcBits(s.config);s.description="Synthetic \"roundtrip\"\nwith controls and UTF-8 Ω";return s;}
+SessionInfo ecosystemInfo(bool grouped,bool corrected){
+    auto s=info();s.schema=2;s.version="host-schema2";s.deviceId="02:11:22:33:44:55";
+    s.bootId=0x123456789abcdef0ULL;s.controlSessionId=0x1020304050607080ULL;
+    if(grouped){s.groupId=0x1122334455667788ULL;s.coordinatorId="02:AA:BB:CC:DD:EE";s.coordinatorBoot=0x8877665544332211ULL;}
+    if(corrected){auto& c=s.clockCorrection;c.applied=true;c.authorityId="02:AA:BB:CC:DD:EE";
+        c.authorityBoot=0x8877665544332211ULL;c.requestId=0xaabbccddeeff0011ULL;c.revision=3;c.unixS=1788854399;
+        c.receivedLocalUs=500000;c.appliedLocalUs=800000;c.sourceCaptureUs=9007199254741009ULL;c.sourceReadAgeMs=250;c.roundtripUs=100000;}
+    return s;
+}
 Sample sample(unsigned n){Sample s{};s.seq=100+n;s.t_us=2000000ULL+n*20000;s.vshunt_raw=n%16<8?1440:-1440;s.vbus_raw=15360;s.temp_raw=2944;s.raw_present=7;s.config_revision=7;return s;}
 void writeFile(const std::string& path,const std::string& bytes){std::ofstream f(path,std::ios::binary);f<<bytes;assert(f.good());}
 int main(int argc,char** argv){
@@ -37,6 +46,26 @@ int main(int argc,char** argv){
     {uint8_t bytes[8192];BlockBuffer b;b.attach(bytes,sizeof(bytes));Sink sink;LogWriter w(b,sink);w.beginSession(info());assert(w.beginPart(0,""));std::string digest;assert(w.finish(false,digest));writeFile(dir+"/empty.csv",sink.bytes);}
     {uint8_t bytes[8192];BlockBuffer b;b.attach(bytes,sizeof(bytes));Sink sink;LogWriter w(b,sink);auto cfg=info();cfg.config.requested_rate_hz=10;cfg.config.max_gap_us=200000;w.beginSession(cfg);assert(w.beginPart(0,""));
         for(unsigned n=0;n<30;++n){auto s=sample(n);s.t_us=cfg.originUs+n*100000;assert(w.row(s));}std::string h;assert(w.finish(false,h));writeFile(dir+"/ten-hz.csv",sink.bytes);}
+    // Exercise the actual C++ serializer; readers must not depend on a Python-only fixture.
+    for(unsigned variant=0;variant<4;++variant){
+        uint8_t bytes[8192];BlockBuffer b;assert(b.attach(bytes,sizeof(bytes)));Sink sink;LogWriter w(b,sink);
+        auto cfg=ecosystemInfo(variant==1,variant!=0);const char* names[]={"v2-local","v2-remote","v2-local-corrected","v2-unknown"};
+        cfg.id=names[variant];if(variant==3){cfg.utcUs=0;cfg.config.allow_unknown_utc=true;}
+        w.beginSession(cfg);assert(w.beginPart(0,""));for(unsigned n=0;n<30;++n)assert(w.row(sample(n)));
+        std::string digest;assert(w.finish(false,digest));assert(sink.bytes.find("# R1S3_LOG schema=2\n")==0);
+        writeFile(dir+"/"+names[variant]+".csv",sink.bytes);
+    }
+    {uint8_t bytes[8192];BlockBuffer b;assert(b.attach(bytes,sizeof(bytes)));Sink sink;LogWriter w(b,sink);auto cfg=ecosystemInfo(true,true);
+        w.beginSession(cfg);assert(w.beginPart(0,""));for(unsigned n=0;n<25;++n)assert(w.row(sample(n)));
+        std::string digest;assert(w.finish(true,digest));writeFile(dir+"/v2-part0.csv",sink.bytes);sink.bytes.clear();
+        // Later caller state must not change a session's frozen provenance at rotation.
+        cfg.clockCorrection.revision=99;cfg.groupId=42;cfg.utcUs+=86400000000ULL;
+        assert(w.beginPart(1,digest));for(unsigned n=25;n<55;++n)assert(w.row(sample(n)));
+        assert(w.finish(false,digest));writeFile(dir+"/v2-part1.csv",sink.bytes);}
+    for(unsigned invalid=0;invalid<5;++invalid){
+        uint8_t bytes[8192];BlockBuffer b;assert(b.attach(bytes,sizeof(bytes)));Sink sink;LogWriter w(b,sink);auto cfg=ecosystemInfo(false,false);
+        if(invalid==0)cfg.schema=3;if(invalid==1)cfg.schema=0;if(invalid==2)cfg.controlSessionId=0;if(invalid==3)cfg.bootId=0;if(invalid==4)cfg.deviceId.clear();
+        w.beginSession(cfg);assert(!w.beginPart(0,""));assert(w.failed());std::string digest;assert(!w.finish(false,digest));assert(sink.bytes.empty());}
     // Failure before END may leave a verified prefix; no retry may turn it clean.
     for(size_t cut:{size_t(0),size_t(200),size_t(8191),size_t(8200),size_t(16000)}){
         uint8_t bytes[8192];BlockBuffer b;b.attach(bytes,sizeof(bytes));Sink sink;sink.limit=cut;LogWriter w(b,sink);w.beginSession(info());

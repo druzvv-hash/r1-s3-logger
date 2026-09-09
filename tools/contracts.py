@@ -19,6 +19,7 @@ TYPES = {'u32': (1, '<I'), 'i32': (2, '<i'), 'f64': (3, '<d'),
 HEADER = struct.Struct('<4sHHHHQIII')
 COLUMNS = 'timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd,seq,t_us,vshunt_raw,vbus_raw,temp_raw,quality,Ah_net,Ahc,Ahd'.split(',')
 MAGIC = b'# R1S3_LOG schema=1\n'
+MAGICS = {1: MAGIC, 2: b'# R1S3_LOG schema=2\n'}
 INVALID, GAP, SATURATED, UTC_UNKNOWN, TOTALS_INCOMPLETE = 1, 2, 4, 8, 16
 
 
@@ -188,7 +189,11 @@ def validate_meta(meta):
     required = {'schema', 'session_id', 'part', 'previous_part_sha256', 'writer', 'hardware',
                 'config', 'config_generation', 'config_sha256', 'acquisition', 'time',
                 'raw', 'units', 'integration', 'description'}
-    if set(meta) != required or meta['schema'] != 1:
+    if not isinstance(meta, dict) or type(meta.get('schema')) is not int or meta['schema'] not in MAGICS:
+        raise ValueError('Metadata keys/schema mismatch')
+    if meta['schema'] == 2:
+        required.add('ecosystem')
+    if set(meta) != required:
         raise ValueError('Metadata keys/schema mismatch')
     if not isinstance(meta['session_id'], str) or not meta['session_id'] or not isinstance(meta['description'], str):
         raise ValueError('Missing session identity/description')
@@ -241,8 +246,58 @@ def validate_meta(meta):
             raise ValueError('Unknown UTC policy mismatch')
     else:
         parse_utc(clock['utc_anchor'])
-        if type(clock['uncertainty_us']) is not int or clock['uncertainty_us'] < 0 or not isinstance(clock['source'], str) or not clock['source'] or clock['source'] == 'unknown':
+        uncertainty_ok = (meta['schema'] == 2 and clock['uncertainty_us'] is None) or (type(clock['uncertainty_us']) is int and clock['uncertainty_us'] >= 0)
+        if not uncertainty_ok or not isinstance(clock['source'], str) or not clock['source'] or clock['source'] == 'unknown':
             raise ValueError('UTC source/uncertainty missing')
+    if meta['schema'] == 2:
+        validate_ecosystem(meta['ecosystem'], clock)
+
+
+def validate_ecosystem(value, clock):
+    import re
+    keys = {'version', 'device_id', 'boot_id', 'recording_id', 'group_id',
+            'coordinator_id', 'coordinator_boot_id', 'rtc_correction'}
+    if not isinstance(value, dict) or set(value) != keys or type(value['version']) is not int or value['version'] != 1:
+        raise ValueError('Ecosystem metadata version/keys mismatch')
+    def identity(v):
+        return isinstance(v, str) and re.fullmatch('[0-9a-f]{16}', v) and int(v, 16) != 0
+    def device(v):
+        return isinstance(v, str) and re.fullmatch('(?:[0-9A-F]{2}:){5}[0-9A-F]{2}', v) and v != '00:00:00:00:00:00'
+    def uint(v, bits=32):
+        return type(v) is int and 0 <= v < 2**bits
+    def decimal(v):
+        return isinstance(v, str) and re.fullmatch('0|[1-9][0-9]*', v) and int(v) < 2**64
+    if not device(value['device_id']) or not identity(value['boot_id']) or not identity(value['recording_id']):
+        raise ValueError('Invalid ecosystem recording identity')
+    grouped = value['group_id'] is not None
+    if grouped:
+        if not identity(value['group_id']) or not device(value['coordinator_id']) or not identity(value['coordinator_boot_id']):
+            raise ValueError('Missing group coordinator identity')
+    elif value['coordinator_id'] is not None or value['coordinator_boot_id'] is not None:
+        raise ValueError('Ungrouped recording has coordinator identity')
+    correction = value['rtc_correction']
+    if correction is None:
+        if clock['source'] == 'DS3231/R3': raise ValueError('Missing R3 RTC correction evidence')
+        return
+    expected = {'authority_id', 'authority_boot_id', 'clock_revision', 'request_id', 'unix_s',
+                'received_local_us', 'applied_local_us', 'source_capture_us', 'source_read_age_ms',
+                'roundtrip_us', 'uncertainty_us'}
+    if not isinstance(correction, dict) or set(correction) != expected:
+        raise ValueError('RTC correction metadata keys mismatch')
+    if not device(correction['authority_id']) or not identity(correction['authority_boot_id']) or not identity(correction['request_id']):
+        raise ValueError('Invalid RTC authority/request identity')
+    if not uint(correction['clock_revision']) or not uint(correction['unix_s']) or not 946684800 <= correction['unix_s'] < 4102444799:
+        raise ValueError('Invalid RTC correction calendar/revision')
+    if not decimal(correction['received_local_us']) or not decimal(correction['applied_local_us']) or not 0 <= int(correction['applied_local_us'])-int(correction['received_local_us']) <= 1000000:
+        raise ValueError('Expired RTC correction application')
+    if correction['source_capture_us'] is not None and not decimal(correction['source_capture_us']):
+        raise ValueError('Invalid RTC source capture')
+    if not uint(correction['source_read_age_ms']) or correction['source_read_age_ms'] > 1500 or not uint(correction['roundtrip_us']) or correction['roundtrip_us'] > 1000000:
+        raise ValueError('RTC correction source/transport age exceeds acceptance')
+    if correction['uncertainty_us'] is not None or clock['uncertainty_us'] is not None:
+        raise ValueError('Coarse RTC correction cannot claim measured uncertainty')
+    if clock['utc_anchor'] is not None and clock['source'] != 'DS3231/R3':
+        raise ValueError('RTC correction/source mismatch')
 
 
 def parse_utc(value):
@@ -263,7 +318,7 @@ def write_native(meta, rows, block_rows=256, clean=True):
     if not 1 <= block_rows <= 1024:
         raise ValueError('Invalid checkpoint interval')
     metaraw = b'# META ' + canonical(meta) + b'\n'
-    out = bytearray(MAGIC + metaraw + f'# META_CRC32 {crc(metaraw):08X}\n'.encode() + (','.join(COLUMNS)+'\n').encode())
+    out = bytearray(MAGICS[meta['schema']] + metaraw + f'# META_CRC32 {crc(metaraw):08X}\n'.encode() + (','.join(COLUMNS)+'\n').encode())
     for start in range(0, len(rows), block_rows):
         block = rows[start:start+block_rows]
         first = len(out)
@@ -363,7 +418,7 @@ def parse_row(raw, meta, previous):
 def read_native(data):
     if len(data) > 16*1024*1024:
         raise ValueError('Reference decoder limit: 16 MiB; production streaming is P2')
-    if not data.startswith(MAGIC):
+    if not any(data.startswith(magic) for magic in MAGICS.values()):
         raise Unsupported('Unsupported native magic/version')
     if b'\r' in data or data.startswith(b'\xef\xbb\xbf'):
         raise ValueError('Native requires UTF8 without BOM and LF')
@@ -372,6 +427,8 @@ def read_native(data):
         raise ValueError('Missing/oversized metadata')
     meta = strict_json(lines[1][7:])
     validate_meta(meta)
+    if lines[0] != MAGICS[meta['schema']]:
+        raise ValueError('Header/metadata schema mismatch')
     if lines[2] != f'# META_CRC32 {crc(lines[1]):08X}\n'.encode():
         raise ValueError('Metadata CRC mismatch')
     if lines[3] != (','.join(COLUMNS)+'\n').encode():

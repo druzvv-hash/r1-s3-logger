@@ -6,6 +6,7 @@ enum class State : uint8_t { Ready, Starting, Running, Stopping, Error };
 struct Status {
     char path[160]={}, error[96]={};
     uint64_t rows=0, bytes=0, elapsedUs=0;
+    uint64_t controlSessionId=0;
     uint32_t queued=0, highWater=0, overflows=0, maxWriteUs=0, maxSyncUs=0, part=0;
     double wh=0, ah=0;
 };

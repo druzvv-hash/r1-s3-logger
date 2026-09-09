@@ -167,19 +167,22 @@ class Session:
 
 
 def native(lines, first, session):
-    if first != c.MAGIC: raise c.Unsupported('Unsupported R1S3 version')
+    if first not in c.MAGICS.values(): raise c.Unsupported('Unsupported R1S3 version')
     digest = hashlib.sha256(first)
     rawmeta = lines.read(16384)
     if not rawmeta.startswith(b'# META ') or not rawmeta.endswith(b'\n') or b'\r' in rawmeta:
         raise ValueError('Missing/corrupt native metadata')
     meta = c.strict_json(rawmeta[7:]); c.validate_meta(meta)
+    if first != c.MAGICS[meta['schema']]: raise ValueError('Header/metadata schema mismatch')
     crcmeta = lines.read(1024)
     if crcmeta != f'# META_CRC32 {c.crc(rawmeta):08X}\n'.encode():
         raise ValueError('Metadata CRC mismatch')
     header = lines.read(4096)
     if header != (','.join(c.COLUMNS)+'\n').encode(): raise ValueError('Native columns mismatch')
     for raw in (rawmeta,crcmeta,header): digest.update(raw)
-    session.summary.update(format='R1S3 CSV v1',metadata=meta,channels={k:v for k,v in UNITS.items() if k in c.COLUMNS},integrity='interrupted')
+    session.summary.update(format=f"R1S3 CSV v{meta['schema']}",metadata=meta,channels={k:v for k,v in UNITS.items() if k in c.COLUMNS},integrity='interrupted')
+    if meta['schema'] == 2 and meta['time']['utc_anchor'] is not None and meta['time']['uncertainty_us'] is None:
+        session.diagnostic('Calendar UTC is available; its accuracy is unknown. Ecosystem membership does not establish precise sample alignment.')
     start, block_crc, pending, previous = lines.offset,0,[],None
     ended = False
     while True:

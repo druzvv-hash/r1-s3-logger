@@ -719,3 +719,76 @@ monotonic time, I2C/SD ownership, PSRAM buffering and current file schemas.
 This entry is an architecture audit and plan amendment only. No firmware,
 EEPROM, RTC or connected hardware was changed. Documentation links and whitespace
 were checked; executable tests and physical qualification belong to each stage.
+
+### 2026-09-09 — PANEL v0.24 ecosystem implementation
+
+Implemented authenticated persistent BLE bonds and an explicit, versioned NVS
+association policy. SAVE/SAVE 0 enrolls time only; SAVE 1 separately allows the
+enrolled R3 to control recording. ON resumes saved retries, OFF temporarily
+disconnects without erasing enrollment, and FORGET removes policy and bond.
+Boot reconnect authenticates and revalidates identity without storing a PIN.
+Measurement EEPROM config-v1 and its slots remain unchanged.
+
+The existing I2C owner applies fresh R3-derived calendar time only while idle,
+checks source identity/boot/revision, bounded read age/roundtrip/application delay
+and RTC readback. Correction defers throughout STARTING/recording/STOPPING and
+file closure, then requests fresh evidence. Invalid R3 time is not copied.
+Manual RTC setting clears R3 correction provenance. Sample deadlines, monotonic
+timestamps, integration, PSRAM FIFO and the sole block-writing SD owner remain.
+
+Session-scoped remote commands use explicit permission and current device/boot/
+session identities with bounded lifetime and duplicate handling. R1 accepts
+local Stop during STARTING, then closes through the SD owner. R3's new
+`/ecosystem` panel controls an explicit selection of up to three compatible BLE
+nodes, performs all-selected readiness preflight and shows queued, accepted,
+recording, closing, closed, rejected/error and unknown separately. Loss or
+partial dispatch causes no automatic Start replay or rollback Stop. R3's own
+STM32 recorder is not included: its final-owner expected-session gate still
+needs work. No CAN adapter is implemented.
+
+New local and remote recordings use [CSV schema 2](FILE_FORMAT_V2.md). Every part
+repeats frozen device/boot/recording identity, nullable group/coordinator identity
+and coarse RTC correction evidence. Known UTC may have unknown uncertainty;
+the writer does not attach an unsupported accuracy claim to R3-corrected time.
+Both readers retain CSV v1 fixtures and compatibility. Static provenance is
+not precise sample alignment, an offset/drift model or a dynamic clock-event log.
+
+Targeted host validation: 9 real-serializer/cross-reader tests and 21 format/
+configuration contract tests passed. BLE UI checks cover time-only versus remote
+Save, ON/FORGET, draft permission preservation and STARTING Stop. R3 browser
+fixtures passed 30 assertions, including stale/pending/unknown state and no
+reload replay; portable HTTP parser tests passed 199 assertions for valid and
+malformed/truncated/duplicate/oversized requests. These checks do not establish
+radio, RTC accuracy, group timing or long-duration hardware acceptance.
+
+English [operator instructions](ECOSYSTEM_CONTROL.md), [BLE transport](BLE_LINK.md),
+both READMEs and [Ukrainian owner notes](uk/ECOSYSTEM_CONTROL.md) now describe the
+implemented scope. The following separate physical entry records the new
+v0.24 bench; earlier S1 acceptance is not evidence for the new functions.
+
+### 2026-09-09 — bounded v0.24 two-board ecosystem acceptance
+
+The final R1 v0.24 build was flashed. Saved authenticated time-only enrollment
+(SAVE 0) persisted, coarse RTC correction completed, and both the API and actual
+R3 UI denied remote Start. After explicit SAVE 1, the real R3 selection UI
+started and stopped a 50 Hz session: 549 rows, verified by both readers with
+clean integrity and no gaps.
+
+Resetting R3 during a local R1 recording left the same R1 boot and file running.
+Saved authentication reconnected; RTC correction deferred until closure. The
+722-row file passed both readers without gaps. R1 reboot with R3 BLE disabled
+left the logger autonomously READY; enabling R3 BLE later led to automatic
+authenticated connection and RTC correction. These were reboot/service-availability
+tests, not hard power-cut qualification.
+
+The final binary also recorded 3,304 rows at 300 Hz through the R3 UI. The
+726,180-byte download passed both readers with a valid END and whole-file SHA-256
+`042f101499616c79c4ccb8bca5442c09ba4341b719b6129161b9d0f31b81b5ea`.
+Measured rate was 300.030875 Hz; missing/invalid/gap rows and FIFO overflow were
+all zero. This verifies transport and file integrity, not signal quality. See
+the [acceptance report](ECOSYSTEM_ACCEPTANCE_2026-09-09.md) for the bounded result.
+
+Exact runtime configuration was restored to saved generation 3 without EEPROM
+Save. This bounded bench does not establish three physical-node operation,
+invalid-source-RTC behavior, hard power-cut recovery, long-duration reliability
+or precise sample alignment. CAN and R3-local STM32 group adapters remain absent.

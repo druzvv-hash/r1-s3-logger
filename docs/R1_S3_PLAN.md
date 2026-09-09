@@ -9,8 +9,9 @@ part of the product scope. R3 is the shared time authority/BLE server; R1-S3 is
 the BLE client, retaining autonomous acquisition and recording. S0 added the
 audited UART protocol and portable decoder/tracker. S1 now implements both BLE
 endpoints and has passed a short physical link/recording bench; expanded
-qualification remains open. S2–S4 cover measured clock mapping, versioned file
-evidence/UI and three-device acceptance; they are not yet implemented.
+qualification remains open. S2–S4 cover measured clock mapping, dynamic file
+evidence/UI and three-device acceptance; those remain pending. The v0.24
+implementation update below adds static CSV v2 provenance independently.
 Preserve local monotonic sample time and integrate energy on that timebase.
 
 ### Plan amendment 1.11 — R3 coordinator and startup clock, 2026-09-09
@@ -32,11 +33,16 @@ Implementation order: **E1 saved trust and boot reconnect → E2 idle RTC correc
 → E3 session-safe commands → E4 R3 selection/control UI → E5 versioned file
 evidence**. Complete and test each stage before moving on. S2 measured clock
 precision remains separate; coarse RTC correction is not precise sample alignment.
-Current firmware remains S1: enrollment persistence, RTC discipline and remote
-recording control are planned, not implemented by this amendment.
+Implementation update, PANEL v0.24: saved trust, idle coarse RTC correction,
+session-scoped commands and selected-device UI are implemented and host-tested.
+CSV v2 adds static group/RTC provenance with unknown uncertainty and preserves
+v1 reading. The [bounded v0.24 two-board bench](ECOSYSTEM_ACCEPTANCE_2026-09-09.md)
+passed saved permissions, RTC correction, selected control and reboot recovery;
+extended physical gates remain open. [Operator guide](ECOSYSTEM_CONTROL.md).
 
 Preserve acquisition/I2C and SD ownership, PSRAM FIFO, local monotonic timing and
-current CSV/BIN schemas. Bond keys belong in NVS, never public settings or files.
+existing CSV/BIN reader compatibility through explicit versioning. Bond keys
+belong in NVS, never public settings or files.
 Version and migrate saved association/policy explicitly; do not silently alter
 the existing EEPROM schema. Block RTC changes throughout STARTING/RUNNING/STOPPING
 and refresh deferred time evidence before applying it after finalization.
@@ -77,8 +83,8 @@ Proposed modules, introduced incrementally:
 | `storage/eeprom` | Explicit serialization, A/B persistence and migration |
 | `recorder` | State machine, queue, SD writer, sessions, checksums and recovery |
 | `time_service` | Immutable local time, RTC validity, UTC anchor and segmented R3 clock mappings with uncertainty |
-| `r3_time_link` | S1 BLE lifecycle, bounded beacon capture, peer identity and reconnect; E1/E2 add saved trust and startup RTC correction; S2 adds qualified exchanges |
-| `ecosystem_control` | Planned E3 typed remote commands and session results through existing owners; R3 E4 coordinates the selected devices |
+| `r3_time_link` | S1 BLE lifecycle and bounded capture; implemented E1/E2 saved trust and idle startup RTC correction; S2 qualified clock model pending |
+| `ecosystem_control` | Implemented E3 typed session-scoped commands through existing owners; R3 E4 selects downstream nodes; bounded two-board bench passed, extended qualification pending |
 | `ui` / `web` | Display/control from snapshots; never own acquisition or SD writes |
 | `diagnostics` | Health, counters, last error and exportable troubleshooting snapshot |
 

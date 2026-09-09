@@ -18,6 +18,24 @@ constexpr uint32_t k[64]={
 0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
 0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2};
 std::string integer(uint64_t v){char b[32];snprintf(b,sizeof(b),"%llu",(unsigned long long)v);return b;}
+std::string identity(uint64_t v){char b[17];snprintf(b,sizeof(b),"%016llx",(unsigned long long)v);return jsonQuote(b);}
+bool deviceIdentity(const std::string& s){
+    if(s.size()!=17||s=="00:00:00:00:00:00")return false;
+    for(size_t i=0;i<17;++i){
+        if(i%3==2){if(s[i]!=':')return false;}
+        else if(!((s[i]>='0'&&s[i]<='9')||(s[i]>='A'&&s[i]<='F')))return false;
+    }
+    return true;
+}
+bool validEcosystem(const SessionInfo& s){
+    if(!s.controlSessionId||!s.bootId||!deviceIdentity(s.deviceId))return false;
+    if(s.groupId){if(!s.coordinatorBoot||!deviceIdentity(s.coordinatorId))return false;}
+    else if(s.coordinatorBoot||!s.coordinatorId.empty())return false;
+    const auto& c=s.clockCorrection;
+    return !c.applied||(deviceIdentity(c.authorityId)&&c.authorityBoot&&c.requestId&&
+        c.unixS>=946684800&&c.unixS<4102444799ULL&&c.appliedLocalUs>=c.receivedLocalUs&&
+        c.appliedLocalUs-c.receivedLocalUs<=1000000&&c.sourceReadAgeMs<=1500&&c.roundtripUs<=1000000);
+}
 std::string signedInteger(int64_t v){char b[32];snprintf(b,sizeof(b),"%lld",(long long)v);return b;}
 std::string real(double v){char b[40];snprintf(b,sizeof(b),"%.17g",v);return b;}
 void crcAdd(uint32_t& crc,const std::string& s){for(uint8_t c:s){crc^=c;for(unsigned i=0;i<8;++i)crc=(crc>>1)^((crc&1)?0xedb88320:0);}}
@@ -72,15 +90,25 @@ bool LogWriter::append(const std::string& bytes){
 }
 bool LogWriter::beginPart(uint32_t part,const std::string& previousSha){
     if(failed_||block_.pending()||block_.fault()!=WriteFault::None)return false;
+    if(info_.schema!=1&&info_.schema!=2)return failed_=true,false;
+    if(info_.schema==2&&!validEcosystem(info_))return failed_=true,false;
     offset_=rows_=blockStart_=firstSeq_=lastSeq_=0;blockRows_=0;crc_=0xffffffff;hash_=Sha256();
     auto payload=settings::encode(info_.config);Sha256 configHash;configHash.add(payload.data(),payload.size());
     std::string meta="# META {\"acquisition\":{\"adc_config\":"+integer(info_.adc)+",\"measured_hz\":"+(info_.measuredHz>0?real(info_.measuredHz):"null")+",\"requested_hz\":"+integer(info_.config.requested_rate_hz)+",\"timestamp_note\":\"Sequential VSHUNT/VBUS/TEMP; conversion-ready observed before register readback\"},\"config\":"+configJson(info_.config)+",\"config_generation\":"+integer(info_.generation)+",\"config_sha256\":"+jsonQuote(configHash.hex())+",\"description\":"+jsonQuote(info_.description);
     meta+=",\"hardware\":{\"board\":\"ESP32-S3-N32R16V\",\"device_id\":"+integer(info_.device)+",\"manufacturer_id\":"+integer(info_.manufacturer)+",\"sensor\":\"INA228\",\"sensor_address\":64,\"shunt_nameplate\":\"60mV/400A\",\"topology\":\"low-side\"},\"integration\":\"trapezoid-sign-split-no-gap-v1\",\"part\":"+integer(part)+",\"previous_part_sha256\":"+(part?jsonQuote(previousSha):"null");
-    meta+=",\"raw\":{\"temp\":\"signed16\",\"temp_C_lsb\":0.0078125,\"vbus\":\"unsigned20\",\"vbus_V_lsb\":0.0001953125,\"vshunt\":\"signed20\",\"vshunt_uV_lsb\":"+std::string(info_.config.adc_range?"0.078125":"0.3125")+"},\"schema\":1,\"session_id\":"+jsonQuote(info_.id);
-    meta+=",\"time\":{\"anchor_t_us\":0,\"sample_point\":\"conversion-ready-observed\",\"source\":"+std::string(info_.utcUs?"\"DS3231\"":"\"unknown\"")+",\"uncertainty_us\":"+(info_.utcUs?"1100000":"null")+",\"utc_anchor\":"+(info_.utcUs?jsonQuote(utcText(info_.utcUs)):"null")+"}";
+    meta+=",\"raw\":{\"temp\":\"signed16\",\"temp_C_lsb\":0.0078125,\"vbus\":\"unsigned20\",\"vbus_V_lsb\":0.0001953125,\"vshunt\":\"signed20\",\"vshunt_uV_lsb\":"+std::string(info_.config.adc_range?"0.078125":"0.3125")+"},\"schema\":"+integer(info_.schema)+",\"session_id\":"+jsonQuote(info_.id);
+    const char* source=!info_.utcUs?"unknown":info_.schema==2&&info_.clockCorrection.applied?"DS3231/R3":"DS3231";
+    meta+=",\"time\":{\"anchor_t_us\":0,\"sample_point\":\"conversion-ready-observed\",\"source\":"+jsonQuote(source)+",\"uncertainty_us\":"+(info_.utcUs&&info_.schema==1?"1100000":"null")+",\"utc_anchor\":"+(info_.utcUs?jsonQuote(utcText(info_.utcUs)):"null")+"}";
+    if(info_.schema==2){
+        meta+=",\"ecosystem\":{\"version\":1,\"device_id\":"+jsonQuote(info_.deviceId)+",\"boot_id\":"+identity(info_.bootId)+",\"recording_id\":"+identity(info_.controlSessionId)+",\"group_id\":"+(info_.groupId?identity(info_.groupId):"null")+",\"coordinator_id\":"+(info_.coordinatorId.empty()?"null":jsonQuote(info_.coordinatorId))+",\"coordinator_boot_id\":"+(info_.coordinatorBoot?identity(info_.coordinatorBoot):"null")+",\"rtc_correction\":";
+        const auto& c=info_.clockCorrection;
+        if(!c.applied)meta+="null";
+        else meta+="{\"authority_id\":"+jsonQuote(c.authorityId)+",\"authority_boot_id\":"+identity(c.authorityBoot)+",\"clock_revision\":"+integer(c.revision)+",\"request_id\":"+identity(c.requestId)+",\"unix_s\":"+integer(c.unixS)+",\"received_local_us\":"+jsonQuote(integer(c.receivedLocalUs))+",\"applied_local_us\":"+jsonQuote(integer(c.appliedLocalUs))+",\"source_capture_us\":"+(c.sourceCaptureUs?jsonQuote(integer(c.sourceCaptureUs)):"null")+",\"source_read_age_ms\":"+integer(c.sourceReadAgeMs)+",\"roundtrip_us\":"+integer(c.roundtripUs)+",\"uncertainty_us\":null}";
+        meta+="}";
+    }
     meta+=",\"units\":{\"Ah_net\":\"Ah\",\"Ahc\":\"Ah\",\"Ahd\":\"Ah\",\"I_A\":\"A\",\"P_W\":\"W\",\"U_V\":\"V\",\"Wh_net\":\"Wh\",\"Whc\":\"Wh\",\"Whd\":\"Wh\",\"ms_from_start\":\"ms\",\"t_us\":\"us\"},\"writer\":{\"commit\":"+jsonQuote(info_.commit)+",\"dirty\":"+(info_.dirty?"true":"false")+",\"name\":\"R1-S3\",\"version\":"+jsonQuote(info_.version)+"}}\n";
     uint32_t crc=0xffffffff;crcAdd(crc,meta);
-    return append("# R1S3_LOG schema=1\n")&&append(meta)&&append("# META_CRC32 "+crcHex(~crc)+"\n")&&append("timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd,seq,t_us,vshunt_raw,vbus_raw,temp_raw,quality,Ah_net,Ahc,Ahd\n");
+    return append("# R1S3_LOG schema="+integer(info_.schema)+"\n")&&append(meta)&&append("# META_CRC32 "+crcHex(~crc)+"\n")&&append("timestamp,ms_from_start,I_A,U_V,P_W,Wh_net,Whc,Whd,seq,t_us,vshunt_raw,vbus_raw,temp_raw,quality,Ah_net,Ahc,Ahd\n");
 }
 bool LogWriter::row(const Sample& input){
     if(failed_||input.t_us<info_.originUs||input.config_revision!=info_.revision)return failed_=true,false;

@@ -15,6 +15,7 @@ namespace recorder {
 namespace {
 std::atomic<State> phase{State::Ready};
 std::atomic<bool> overflow{false};
+std::atomic<bool> stopRequested{false};
 recording::SessionInfo session;
 portMUX_TYPE statusLock=portMUX_INITIALIZER_UNLOCKED;
 Status published, local;
@@ -83,13 +84,19 @@ bool start(const recording::SessionInfo& info,const char*& message){
     if(info.config.max_gap_us<=1000000/info.config.requested_rate_hz){message="Gap threshold must exceed one sample period; use twice the period or more";return false;}
     if(!info.generation||(!info.utcUs&&!info.config.allow_unknown_utc)){message="Set RTC time and save an initial valid settings generation before recording";return false;}
     if(!recording::resetMemory(info.config.queue_bytes)){message="Cannot allocate recording buffers in PSRAM/internal RAM";return false;}
-    session=info;overflow.store(false);phase.store(State::Starting,std::memory_order_release);
+    session=info;overflow.store(false);stopRequested.store(false);phase.store(State::Starting,std::memory_order_release);
     message="START accepted; wait for RUNNING";return true;
 }
 bool stop(const char*& message){
     if(state()==State::Stopping){message="Already finishing; wait for READY";return true;}
-    if(state()!=State::Running){message="Recording is not running";return false;}
-    phase.store(State::Stopping,std::memory_order_release);message="STOP accepted; draining and verifying file close";return true;
+    const State p=state();
+    if(p!=State::Running&&p!=State::Starting){message="Recording is not starting or running";return false;}
+    // Keep STARTING until the SD owner has opened/synced the file. Latch Stop
+    // across that transition; never finalize an unopened or previous file.
+    stopRequested.store(true,std::memory_order_release);
+    State running=State::Running;
+    phase.compare_exchange_strong(running,State::Stopping,std::memory_order_acq_rel);
+    message="STOP accepted; draining and verifying file close";return true;
 }
 void push(const recording::Sample& s){
     if(state()!=State::Running||overflow.load())return;
@@ -98,7 +105,7 @@ void push(const recording::Sample& s){
 void storageStep(bool transferActive){
     State p=state();
     if(p==State::Starting){
-        local={};part=0;sessionBytes=0;previousSha.clear();writer.beginSession(session);
+        local={};local.controlSessionId=session.controlSessionId;part=0;sessionBytes=0;previousSha.clear();writer.beginSession(session);
         if(transferActive){fault("SD transfer is active; close it before START");return;}
         pinMode(pins::SD_CS,OUTPUT);digitalWrite(pins::SD_CS,HIGH);SPI.begin(pins::SD_SCK,pins::SD_MISO,pins::SD_MOSI,pins::SD_CS);
         mounted=true;
@@ -106,7 +113,12 @@ void storageStep(bool transferActive){
         if(!freeSpace()){fault("SD free space is below the configured reserve");return;}
         if(::mkdir("/sd/records",0777)!=0&&errno!=EEXIST){fault("Cannot create records directory");return;}
         if(!openPart()){fault("Cannot create/sync unique session file");return;}
-        publish();phase.store(State::Running,std::memory_order_release);return;
+        publish();phase.store(State::Running,std::memory_order_release);
+        if(stopRequested.load(std::memory_order_acquire)){
+            State running=State::Running;
+            phase.compare_exchange_strong(running,State::Stopping,std::memory_order_acq_rel);
+        }
+        return;
     }
     if(p!=State::Running&&p!=State::Stopping)return;
     if(overflow.load()){fault("PSRAM FIFO overflow; incomplete .part retained");return;}

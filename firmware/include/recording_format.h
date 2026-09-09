@@ -27,6 +27,17 @@ struct SessionInfo {
     double measuredHz = 0;
     std::string id, commit, version, description;
     bool dirty = false;
+    // Schema 2 adds explicit ecosystem provenance. Schema 1 output stays exact.
+    uint8_t schema = 1;
+    uint64_t controlSessionId = 0, groupId = 0, bootId = 0, coordinatorBoot = 0;
+    std::string deviceId, coordinatorId;
+    struct ClockCorrection {
+        bool applied = false;
+        std::string authorityId;
+        uint64_t authorityBoot = 0, requestId = 0, receivedLocalUs = 0;
+        uint64_t appliedLocalUs = 0, sourceCaptureUs = 0;
+        uint32_t revision = 0, unixS = 0, sourceReadAgeMs = 0, roundtripUs = 0;
+    } clockCorrection;
 };
 struct Totals { double whc=0, whd=0, ahc=0, ahd=0; };
 struct SyncSink : ByteSink { virtual bool sync() = 0; };

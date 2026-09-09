@@ -11,7 +11,11 @@ explicit selection of connected instruments. Enrolled devices must reconnect on
 boot and correct their RTC from R3 when available. The
 [canonical coordinator contract](https://github.com/druzvv-hash/lily-logger-r3/blob/main/docs/ECOSYSTEM_CONTROL.md)
 defines E1–E5 operational delivery; [owner explanation](uk/ECOSYSTEM_CONTROL.md).
-These requirements are planned extensions to S1, not existing runtime behavior.
+PANEL v0.24 implements saved trust, idle coarse RTC correction, selected-device
+commands and static CSV v2 provenance. Host checks and a
+[bounded two-board bench](ECOSYSTEM_ACCEPTANCE_2026-09-09.md) pass; remaining
+physical cases are listed in that report. [Current operator guide](ECOSYSTEM_CONTROL.md). Precise alignment and
+dynamic clock records remain separate S2/S3 work.
 
 ## Implementation boundary
 
@@ -20,11 +24,12 @@ These requirements are planned extensions to S1, not existing runtime behavior.
 | R3 RV3028 authority and `$TMB` | UART to STM32 retained; S1 BLE wraps the same coarse metronome snapshot |
 | R1-S3 legacy decoder/tracker | Portable `r3_time_beacon.h/.cpp`; S1 runtime adapter feeds validated BLE observations into the tracker |
 | R3 BLE server / R1-S3 BLE client | S1 implemented; short authenticated link/reconnect and 50/150/300 Hz recording/file bench passed; expanded qualification pending ([results](BLE_ACCEPTANCE_2026-09-09.md)) |
-| BLE operation and diagnostics UI | S1 implemented; volatile STOP-only selection, freshness and loss diagnostics; no synchronized-clock claim |
+| BLE operation and diagnostics UI | v0.24 saved authenticated association, explicit time-only/remote permission, ON/OFF/FORGET and diagnostics; host-tested; bounded permission/control/recovery bench passed |
 | Offset/drift model and synchronized file records | S2/S3 design below; not implemented or physically qualified |
-| DS3231, sample timing, EEPROM and CSV v1 | Existing behavior unchanged |
-| Saved enrollment, boot reconnect and downstream RTC correction | Required E1/E2; not implemented in S1 |
-| R3 selected-device registry and group START/STOP | Required E3/E4; not implemented in S1 |
+| DS3231, sample timing, EEPROM and CSV v1 | Idle RTC correction added; sample timing and EEPROM config unchanged; v1 reader compatibility retained |
+| Saved enrollment, boot reconnect and downstream RTC correction | E1/E2 implemented; saved permissions, automatic recovery and idle/deferred correction passed the bounded two-board bench; invalid source RTC/hard power-cut cases remain untested physically |
+| R3 selected-device registry and group START/STOP | E3/E4 implemented for downstream BLE nodes, up to three; own STM32 recorder and CAN adapter excluded |
+| Static group/RTC file provenance | CSV schema 2 implemented and cross-reader host-tested; no offset/drift model or dynamic clock-event stream |
 
 R3's RV3028 is the owner-designated preferred RTC and sole ecosystem time
 authority. This choice does not supply a measured UTC accuracy or alignment bound.
@@ -113,7 +118,9 @@ S1 now shares an identical `r3_ble_protocol.h` in both repositories, with stable
 project UUIDs, exact byte lengths, little-endian fields, identity/boot/revision,
 coarse-only capability and CRC32. Protected identity reads are 36 bytes; complete
 beacon notifications are 64 bytes, requiring ATT MTU at least 67 (preferred 128).
-Full offsets and operation are documented in [BLE_LINK.md](BLE_LINK.md).
+Full offsets and operation are documented in [BLE_LINK.md](BLE_LINK.md). The
+current ECO1 request/control extension uses 96-byte frames and requires MTU 99;
+the S1 36/64-byte layouts remain unchanged.
 Short physical bench results are available; expanded radio and clock qualification
 remain pending. The richer synchronization interface still
 needs the following work:
@@ -131,21 +138,19 @@ S1 rejects smaller MTUs instead of fragmenting notifications, detects sequence
 gaps and validates identity/version. Discovery, subscription and capped backoff
 run on a separate core-0 worker. Future exchanges must define bounded framing,
 request IDs, lengths and expiry rather than assume one notification always fits.
-Select R3 explicitly in UI. S1 uses passkey-authenticated LE Secure Connections
-with legacy pairing and persistent BLE storage disabled at build time. It does
-not persist bonds or CCCD state; each link authenticates and subscribes again.
-Keep keys and pairing output outside public profiles/logs.
+Select R3 explicitly in UI. Current v0.24 uses passkey-authenticated LE Secure
+Connections, disables legacy pairing and enables persistent authenticated bonds.
+Each new link authenticates, validates identity and subscribes again. Keep keys
+and pairing output outside public profiles/logs.
 
-S1 peer/PIN selection is volatile and STOP-only. After an R1 reboot, select again;
-an R3 reboot requires its new PIN from `ble pair`. E1 must replace that limitation
-with one-time authenticated enrollment and NVS bonds on both sides. After explicit
-enrollment/Save, reconnect to the approved R3 automatically on boot, reauthenticate
-and validate identity; never persist/replay a PIN. Unenrolled devices default to
-no trusted authority. Provide Forget/Revoke and bounded retries when R3 is absent.
-Connection does not automatically start logging. Saved association/policy needs
-a versioned migration preserving existing measurement settings; keys remain
-outside EEPROM/exported profiles. Do not silently consume EEPROM reserve or
-alter config-v1. There are no per-beacon EEPROM writes.
+The earlier S1 selection was volatile. E1 now replaces it with explicit Save
+of a versioned association/permission policy and NVS bonds on both sides.
+SAVE 0 permits time only; SAVE 1 explicitly permits remote recording. Boot
+reconnect and bounded retries use saved trust, never a saved/replayed PIN.
+Unenrolled or incompatible policies do not authorize a random nearby R3.
+ON resumes saved retries; OFF is temporary; FORGET removes association/bond.
+Connection does not automatically start logging. Existing measurement settings
+and EEPROM config-v1 are preserved; no per-beacon EEPROM writes occur.
 
 ## Clock model and failure behavior
 
@@ -183,22 +188,26 @@ separately from relative-clock quality. Peer reboot, source/clock revision chang
 time jump or ambiguous reset begins a new segment; do not join them silently.
 Automatic master election is outside the initial scope.
 
-DS3231 remains the offline wall clock. E2 must correct it from fresh valid time
+DS3231 remains the offline wall clock. E2 corrects it from fresh valid time
 of the enrolled R3 at startup/first available link through the existing I2C owner
 while idle. Defer during STARTING/RUNNING/STOPPING and file closure, then request
 fresh evidence and revalidate its age, source boot and revision before applying.
 Reconnection/revision changes trigger revalidation, not unconditional writes.
 Never propagate invalid R3 time or write RTC/EEPROM on every beacon. Verify RTC
 readback and distinguish calendar correction from qualified S2 clock lock.
-Losing BLE neither stops a session nor rewrites past UTC. Current CSV v1 keeps
-its frozen starting anchor; dynamic clock evidence awaits versioned file work.
+Losing BLE neither stops a session nor rewrites past UTC. New CSV v2 files keep
+their frozen starting anchor and static correction evidence; dynamic clock
+events remain future work.
 
-E2 must define source-capture age and transport-delay acceptance before allowing
-RTC correction. Current CSV v1 emits a 1,100,000 us uncertainty for valid DS3231
-anchors, whereas S1 source uncertainty is unknown. Either qualify that bound for
-the correction path or explicitly support unknown/coarse anchor uncertainty in
-a compatible writer/reader contract before enabling R3-derived RTC writes. Do
-not defer this truthfulness gate to E5 and produce unsupported accuracy claims.
+E2 limits source RTC read age to 1,500 ms, request roundtrip to 1,000,000 us and
+receive-to-application delay to 1,000,000 us. These are freshness gates, not a
+qualified accuracy bound. [CSV v2](FILE_FORMAT_V2.md) explicitly supports a known
+UTC anchor with unknown uncertainty (null); both readers enforce the correction
+evidence contract. Its writer uses unknown uncertainty, avoiding the historical
+CSV v1 1,100,000 us claim for an unqualified R3 path. V1 fixtures/readers remain
+unchanged. RTC correction and deferral passed the
+[bounded bench](ECOSYSTEM_ACCEPTANCE_2026-09-09.md); its freshness gates do not
+establish precise accuracy, and invalid source RTC was not exercised physically.
 
 ## Ownership and buffering
 
@@ -225,9 +234,12 @@ sample lateness and SD latency. See [Espressif RF coexistence](https://docs.espr
 
 ## Files and viewer
 
-Leave native schema 1 unchanged. New sync control records need an explicitly
-versioned format/reader contract, not extra v1 columns or unrecognized comments.
-The extension must carry:
+Native schema 1 remains unchanged. [Schema 2](FILE_FORMAT_V2.md) now carries
+static device/boot/recording/group/coordinator identities and nullable coarse
+RTC correction evidence, repeated in every rotated part and accepted by both
+readers. It does not implement the full precise synchronization event model.
+That future extension requires an explicit compatible version/reader contract,
+not extra v1 columns or unrecognized comments. It must carry:
 
 - device/local boot ID, shared test/group ID and independent recording ID;
 - authority device/boot/domain/clock revision and mapping segment;
@@ -249,9 +261,13 @@ marker alignment is a labelled user estimate. Existing v1 readers must keep pass
 
 The owner now prioritizes E1 trust/reboot reconnect, E2 startup RTC, E3 targeted
 session-safe control, E4 R3 selection UI and E5 versioned group/time evidence.
-Use the coordinator contract for those gates. S2 below remains the separate
-precision investigation; E5 and S3 must share one explicit format/reader revision.
-S1 transport acceptance alone does not complete any of E1–E5.
+Use the coordinator contract for those gates. E1–E4 and the static provenance
+subset of E5 are implemented in v0.24 and host-tested; a bounded two-board
+permission/RTC/control/recovery bench passed with verified files. See the
+[remaining physical gates](ECOSYSTEM_ACCEPTANCE_2026-09-09.md). S2 remains the
+separate precision investigation. S3 must extend
+the explicit schema 2 contract compatibly. S1 transport acceptance alone does
+not qualify the new enrollment, RTC or control behavior.
 
 | Stage | Deliverable | Acceptance |
 |---|---|---|

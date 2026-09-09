@@ -1,5 +1,6 @@
 """Firmware serializer -> independent contract and production viewer roundtrip."""
 import hashlib
+import io
 import os
 from pathlib import Path
 import shutil
@@ -62,3 +63,69 @@ class RecordingFormat(unittest.TestCase):
         try:
             self.assertEqual(session.summary['rows'],599)
         finally:session.db.close()
+    def test_v2_real_serializer_keeps_local_and_remote_provenance_distinct(self):
+        for name, grouped, corrected, known in (
+            ('v2-local.csv',False,False,True), ('v2-remote.csv',True,True,True),
+            ('v2-local-corrected.csv',False,True,True), ('v2-unknown.csv',False,True,False)):
+            with self.subTest(name=name):
+                parsed=self.read(name);meta=parsed['metadata'];eco=meta['ecosystem']
+                self.assertTrue(parsed['clean']);self.assertEqual(meta['schema'],2)
+                self.assertEqual(eco['device_id'],'02:11:22:33:44:55')
+                self.assertEqual(eco['boot_id'],'123456789abcdef0')
+                self.assertEqual(eco['recording_id'],'1020304050607080')
+                self.assertEqual(eco['group_id'],'1122334455667788' if grouped else None)
+                self.assertEqual(eco['coordinator_id'],'02:AA:BB:CC:DD:EE' if grouped else None)
+                self.assertEqual(eco['coordinator_boot_id'],'8877665544332211' if grouped else None)
+                self.assertEqual(meta['time']['source'],'DS3231/R3' if corrected and known else 'DS3231' if known else 'unknown')
+                self.assertIsNone(meta['time']['uncertainty_us'])
+                self.assertEqual(meta['time']['utc_anchor'] is not None,known)
+                self.assertEqual(bool(parsed['rows'][0]['quality']&8),not known)
+                if corrected:
+                    correction=eco['rtc_correction']
+                    self.assertEqual(correction['authority_boot_id'],'8877665544332211')
+                    self.assertEqual(correction['source_capture_us'],'9007199254741009')
+                    self.assertEqual(correction['received_local_us'],'500000')
+                    self.assertEqual(correction['applied_local_us'],'800000')
+                    self.assertEqual(correction['source_read_age_ms'],250)
+                    self.assertEqual(correction['roundtrip_us'],100000)
+                    self.assertIsNone(correction['uncertainty_us'])
+                else:self.assertIsNone(eco['rtc_correction'])
+                with (self.folder/name).open('rb') as stream:
+                    session=core.load(stream,self.folder/(name+'.sqlite'))
+                try:
+                    self.assertEqual(session.summary['format'],'R1S3 CSV v2')
+                    self.assertEqual(session.summary['metadata'],meta)
+                    self.assertEqual(session.summary['rows'],30)
+                    self.assertEqual(session.summary['integrity'],'verified clean')
+                    self.assertEqual(any('accuracy is unknown' in item['message'] for item in session.summary['diagnostics']),known)
+                finally:session.close()
+    def test_v2_rotation_keeps_complete_frozen_evidence_and_monotonic_clock(self):
+        first=self.read('v2-part0.csv');second=self.read('v2-part1.csv')
+        self.assertEqual(first['metadata']['ecosystem'],second['metadata']['ecosystem'])
+        self.assertEqual(first['metadata']['time'],second['metadata']['time'])
+        self.assertEqual(second['metadata']['ecosystem']['rtc_correction']['clock_revision'],3)
+        self.assertEqual(second['metadata']['previous_part_sha256'],hashlib.sha256((self.folder/'v2-part0.csv').read_bytes()).hexdigest())
+        self.assertEqual(second['rows'][0]['seq'],first['rows'][-1]['seq']+1)
+        self.assertEqual(second['rows'][0]['t_us']-first['rows'][-1]['t_us'],20000)
+        contracts.parse_row((self.folder/'v2-part1.csv').read_bytes().splitlines(keepends=True)[4],second['metadata'],first['rows'][-1])
+        with (self.folder/'v2-part1.csv').open('rb') as stream:
+            session=core.load(stream,self.folder/'independent-v2-part.sqlite')
+        try:
+            self.assertEqual(session.summary['rows'],30)
+            self.assertEqual(session.summary['metadata']['ecosystem'],second['metadata']['ecosystem'])
+        finally:session.close()
+    def test_v2_integrity_remains_required_even_with_valid_provenance(self):
+        raw=(self.folder/'v2-remote.csv').read_bytes()
+        prefix=raw[:raw.index(b'# END ')]
+        self.assertFalse(contracts.read_native(prefix)['clean'])
+        self.assertEqual(len(contracts.read_native(prefix)['rows']),30)
+        broken=raw.replace(b'"clock_revision":3',b'"clock_revision":4',1)
+        with self.assertRaisesRegex(ValueError,'CRC'):contracts.read_native(broken)
+        with self.assertRaisesRegex(ValueError,'CRC'):core.load(io.BytesIO(broken),self.folder/'broken-v2.sqlite')
+    def test_v1_firmware_files_keep_original_contract_and_known_bound(self):
+        for name in ('known.csv','unknown.csv','part0.csv','part1.csv'):
+            with self.subTest(name=name):
+                raw=(self.folder/name).read_bytes();meta=contracts.read_native(raw)['metadata']
+                self.assertTrue(raw.startswith(b'# R1S3_LOG schema=1\n'))
+                self.assertNotIn('ecosystem',meta)
+                self.assertEqual(meta['time']['uncertainty_us'],None if name=='unknown.csv' else 1100000)

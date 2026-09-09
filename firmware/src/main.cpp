@@ -21,6 +21,7 @@
 #include "firmware_version.h"
 #include "rate_benchmark.h"
 #include "r3_ble_client.h"
+#include "ecosystem_owner.h"
 #include <esp_timer.h>
 #include <esp_system.h>
 
@@ -264,15 +265,9 @@ bool runPanelAction(const char* verb, const char* argument, const char*& message
 #if R1_BENCHMARK
     if(!strcmp(verb,"BENCH"))return rateBenchmarkStart(argument,message,runPanelAction);
 #endif
-    if(!strcmp(verb,"STOP")&&!*argument)return recorder::stop(message);
+    if(!strcmp(verb,"STOP")&&!*argument){r3BleCancelPendingStarts();return recorder::stop(message);}
     if(!strcmp(verb,"START")&&!*argument){
-        if(!settingsReady()){message="Valid INA settings required";return false;}
-        recording::SessionInfo info;info.config=appliedSettings();info.generation=settingsGeneration();info.revision=settingsRevision();
-        if(!captureInaIdentity(info.manufacturer,info.device,info.adc)){message="INA identity/config readback failed";return false;}
-        rtcStatus=pollRtc(false);info.utcUs=rtcUtcNow()*1000000;info.originUs=esp_timer_get_time();
-        info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;info.dirty=R1_BUILD_DIRTY;info.version=R1_FIRMWARE_VERSION;
-        info.id=recording::sessionId(info.utcUs,esp_random(),esp_random());
-        return recorder::start(info,message);
+        return ecosystemStartRecording(nullptr,message);
     }
     if (!i2cReady) { message="I2C unavailable"; return false; }
     if (!strcmp(verb,"MEASURE") && !*argument) {
@@ -376,6 +371,7 @@ void loop() {
     acquisitionStep();
     rateBenchmarkStep();
     if(acquisitionIdle())panelPoll();
+    if(acquisitionIdle())ecosystemOwnerPoll(i2cReady,sdPassed);
     inaStatus=acquisitionStatus();
     // Publish before optional OLED work consumes the remaining acquisition slack.
     // Otherwise a healthy 100 Hz acquisition can leave the UI snapshot stale for seconds.

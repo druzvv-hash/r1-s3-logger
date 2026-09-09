@@ -2,6 +2,10 @@
 
 P1 specification and executable host reference, implemented by the [v0.18 SD recorder](P5_RECORDING.md). [Golden files and expected results](../tests/fixtures/manifest.json), [reference encoder/decoder](../tools/contracts.py), [configuration](CONFIG_SCHEMA.md). Examples contain synthetic data only.
 
+[CSV v2](FILE_FORMAT_V2.md) adds explicit ecosystem/session and coarse RTC
+provenance, with reader support for unknown uncertainty on a known calendar
+anchor. The v1 grammar below and existing v1 files remain unchanged.
+
 ## Byte grammar
 
 UTF-8 without BOM, LF only, decimal dot, comma delimiter. One physical line per record. CSV uses standard double-quote escaping, no embedded CR/LF. Floating values must be finite; write sufficient precision to meet `abs_error <= max(1e-9, abs(expected)*1e-8)`. Integers are decimal, never exponent notation. Empty means unavailable, not zero. JSON control records use unique keys, finite numbers, no NaN/Infinity; canonical writer sorts keys and omits insignificant whitespace. CRC uses actual stored bytes, not reserialized JSON.
@@ -73,7 +77,8 @@ No END means interrupted, not clean. Return checkpoint-verified rows separately 
 
 [R3 / R1-S3 / CAN synchronization](ECOSYSTEM_TIME_SYNC.md) requires a separately
 versioned extension for clock mappings, raw beacon/exchange evidence, uncertainty
-and discontinuities. Schema 1 has no such records; its frozen time anchor and
+and discontinuities. [Schema 2](FILE_FORMAT_V2.md) adds static group/RTC correction
+provenance, but does not claim precise clock mappings. Schema 1 has no such records; its frozen time anchor and
 exact byte grammar remain unchanged. Do not mark existing files synchronized
 merely because BLE was connected. New writers and readers must ship together
 with golden fixtures and retain v1 compatibility.

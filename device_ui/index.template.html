@@ -59,9 +59,11 @@
 <p id="ble-note" role="status" aria-live="polite">Очікування стану BLE…</p>
 <form id="ble-form" autocomplete="off"><div class="ble-fields"><label class="field">R3 · адреса BLE<input id="ble-peer" list="ble-peers" placeholder="AA:BB:CC:DD:EE:FF" maxlength="17" spellcheck="false" autocomplete="off" aria-describedby="ble-discovery"><datalist id="ble-peers"></datalist><small id="ble-discovery">Запусти пошук або введи адресу R3 вручну.</small></label><label class="field">PIN із R3<input id="ble-pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="off" aria-describedby="ble-pair-note"><small>Шість цифр для підтвердження з’єднання.</small></label></div>
 <div class="button-row"><button id="ble-scan" type="button" disabled>Знайти R3</button><button id="ble-connect" class="primary" type="submit" disabled>Підключити</button><button id="ble-off" type="button" disabled>Вимкнути BLE</button></div></form>
-<p id="ble-pair-note" class="muted">PIN: команда <code>ble pair</code> у консолі R3; вибір діє до перезапуску R1. PIN очищається після надсилання. Пошук і зміну з’єднання запускай між записами.</p>
+<p id="ble-pair-note" class="muted">Перше підключення: команда <code>ble pair</code> у консолі R3 відкриває вікно прив’язки на 2 хвилини. Введи PIN і підключись, потім збережи прив’язку. Після цього R1 підключатиметься сам після ввімкнення. PIN не зберігається.</p>
+<label class="field"><span><input id="ble-allow-remote" type="checkbox"> Дозволити R3 запускати й зупиняти запис</span><small>Звіряння RTC працює і без цього дозволу. Зміна дозволу застосовується кнопкою збереження прив’язки.</small></label>
+<div class="button-row"><button id="ble-save" type="button" disabled>Зберегти прив’язку</button><button id="ble-on" type="button" disabled>Підключити збережений R3</button><button id="ble-forget" type="button" disabled>Забути R3</button></div>
 <dl id="ble-summary"></dl><details><summary>Діагностика маяка</summary><dl id="ble-diagnostics"></dl></details>
-<p class="muted">Отримання маяка ще не підтверджує точність спільного часу. Власний час вимірів R1-S3 не змінюється; втрата BLE не зупиняє запис.</p>
+<p class="muted">RTC звіряється зі збереженим R3 між записами. Отримання маяка ще не підтверджує точність спільного часу. Власний час вимірів R1-S3 не змінюється; втрата BLE не зупиняє запис. Пошук і зміну прив’язки запускай між записами.</p>
 </div></section>
 <footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
 </main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*RATE_PROFILE*/

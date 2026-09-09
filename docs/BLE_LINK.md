@@ -1,46 +1,58 @@
-# R3 / R1-S3 BLE link — S1
+# R3 / R1-S3 BLE link — S1 transport and ECO1 control
 
-Implementation contract, 2026-09-09. **The short physical link/recording bench
-passed; expanded qualification remains pending.** See the
+Implementation contract, 2026-09-09. **PANEL v0.24 saved enrollment and control
+are implemented and host-tested; a [bounded two-board bench](ECOSYSTEM_ACCEPTANCE_2026-09-09.md)
+passed.** Saved permissions, RTC correction, selected control and reboot recovery
+were exercised; expanded qualification remains open. The earlier
+S1 short physical link/recording bench passed; see the
 [results and 300 Hz measurement-quality limitation](BLE_ACCEPTANCE_2026-09-09.md).
 This document describes transport and its limits, not a measured clock
 synchronization result. [Architecture](ECOSYSTEM_TIME_SYNC.md) ·
 [Ukrainian owner instructions](uk/BLE_LINK.md).
 
-The [coordinator requirement](ECOSYSTEM_TIME_SYNC.md) now adds saved enrollment,
-automatic boot connection/RTC correction and R3 group START/STOP as planned
-E1–E5 stages. S1 does not yet implement them; the manual pairing instructions
-below describe the current firmware.
+The [operator guide](ECOSYSTEM_CONTROL.md) describes saved enrollment, automatic
+boot connection, idle RTC correction and R3 selected-device START/STOP. These
+ECO1 functions extend the unchanged S1 identity/beacon frames. CSV v2 stores
+static group and RTC provenance; precise S2/S3 clock alignment remains future work.
 
 R3 is a Bluetooth LE GATT peripheral/server. R1-S3 is a central/client that
 selects one R3 and receives its coarse time-metronome observations. Both builds
-pin `h2zero/NimBLE-Arduino@1.4.3`. R3 starts advertising on boot; R1-S3 starts
-with BLE selection disabled. Existing R3 UART `$TMB` transmission is retained.
+pin `h2zero/NimBLE-Arduino@1.4.3`. R3 starts advertising on boot; an enrolled
+R1-S3 retries its saved R3. Unenrolled R1-S3 starts with BLE disabled. Existing
+R3 UART `$TMB` transmission is retained.
 
 ## Connecting the instruments
 
 1. Open the R3 USB console and send `ble?` to inspect status. `ble on` enables
-   advertising if it was disabled. `ble pair` returns the current device address
-   and six-digit PIN through this console only; ordinary `ble?` excludes the PIN.
+   advertising if it was disabled. `ble pair` opens a 120-second enrollment
+   window and returns the address and temporary six-digit PIN through this
+   console only; ordinary `ble?` excludes the PIN.
 2. Stop any R1-S3 recording and wait for the file to close. In its panel, open
    **BLE · R3**, press **Знайти R3**, and select the R3 address. A manual address
    can also be entered. Discovery is a five-second scan, capped at six devices.
 3. Enter the current R3 PIN and press **Підключити**. The PIN field clears on
    submission. Wait for authenticated connection and fresh beacon status.
-4. **Вимкнути BLE** cancels the selected connection and automatic retries.
+4. Explicitly save the authenticated association: `SAVE 0` (or `SAVE`) for time
+   only, or `SAVE 1` to permit remote recording control. The panel's remote
+   permission checkbox determines which Save it sends. Check the saved status.
+5. **Вимкнути BLE** cancels the selected connection and automatic retries
+   temporarily. `ON` resumes the saved connection, `FORGET` removes trust.
    Starting another scan also disconnects the current peer and clears the
    retained PIN. Discovery never chooses a new peer automatically.
 
 These panel actions use the existing owner command envelope with current
 R1 boot and settings revision: verb `BLE`, argument `SCAN`, `CONNECT <address>
-<six-digit-PIN>`, or `OFF`. They are STOP-only; configuration races are rejected
+<six-digit-PIN>`, `SAVE 0`, `SAVE 1`, `ON`, `OFF`, or `FORGET`. They are STOP-only; configuration races are rejected
 by the owner. UI callbacks never operate the radio directly.
 
-Selection and PIN are **volatile**, not EEPROM or browser settings. During the
-same R1/R3 boot pair, unexpected link loss retries the selected peer with delays
-of 1, 2, 4 and then at most 8 seconds. Each new link authenticates and subscribes
-again. R3 reboot creates a new boot ID and PIN: obtain it with `ble pair`, select
-R3 and connect again. R1 reboot requires selection and PIN entry again.
+PIN entry is volatile, but explicit Save persists the authenticated association
+and permission in NVS. Unexpected link loss and boot reconnect retry the saved
+peer with delays of 1, 2, 4 and then at most 8 seconds. Each new link authenticates,
+validates identity and subscribes again. OFF retains the policy; the next R1 boot
+resumes reconnect. FORGET removes policy and bond. R3 reboot changes its boot ID,
+requiring fresh RTC confirmation, not a new PIN for a valid bonded association.
+If trust was erased or incompatible, revoke stale enrollment on both sides and
+enroll explicitly again. No saved PIN fallback is allowed.
 
 Keep pairing output, actual device addresses, local panel access tokens and
 other bench identifiers out of public logs. No literal bench values belong in
@@ -49,19 +61,20 @@ this document or test fixtures.
 ## Authentication and storage
 
 The pair uses LE Secure Connections with passkey authentication, encryption and
-a 16-byte encryption key. Build flags prohibit legacy pairing and persistent
-NimBLE storage in both repositories:
+a 16-byte encryption key. Build flags prohibit legacy pairing and enable
+persistent NimBLE bond storage in both repositories:
 
 ```ini
 -DMYNEWT_VAL_BLE_SM_LEGACY=0
--DMYNEWT_VAL_BLE_STORE_CONFIG_PERSIST=0
+-DMYNEWT_VAL_BLE_STORE_CONFIG_PERSIST=1
 ```
 
-Runtime configuration requests authentication and Secure Connections with
-bonding disabled. R3 is display-only (PIN available on its console); R1 accepts
-the entered PIN. There is **no persistent bond or CCCD subscription state**;
-CCCD enables notifications for the current link and must be written again after
-reconnection. No BLE keys or subscription state are written to NVS by this path.
+Runtime configuration requires authenticated Secure Connections and bonding.
+R3 is display-only (PIN available on its console); R1 accepts the entered PIN.
+Bond keys and the versioned association/permission policy are separate NVS data.
+They do not change external EEPROM config-v1 or exported settings. Notification
+subscriptions are explicitly renewed and validated on each new connection;
+runtime logic does not assume a prior CCCD is sufficient.
 
 Advertised names aid discovery; they do not authenticate a source. After link
 authentication, R1 validates the protected identity against the selected device
@@ -80,8 +93,11 @@ S1 uses little-endian integers; the six device-ID bytes use printed MAC order.
 | Identity | `7e57a101-7a1e-4e54-a930-64e137711031` | Protected read, exactly 36 bytes |
 | Beacon | `7e57a102-7a1e-4e54-a930-64e137711031` | Protected read and authenticated notification, exactly 64 bytes |
 
-The preferred ATT MTU is 128; the minimum is **67** (64-byte value plus the
-three-byte notification overhead). S1 sends exactly one whole beacon per
+The preferred ATT MTU is 128. The S1-only minimum is **67** (64-byte value plus
+the three-byte notification overhead); current ECO1 control requires **99**.
+Its upstream/downstream characteristics end in `a103`/`a104` and carry bounded
+96-byte frames; see the [coordinator contract](https://github.com/druzvv-hash/lily-logger-r3/blob/main/docs/ECOSYSTEM_CONTROL.md).
+S1 sends exactly one whole beacon per
 notification. A smaller negotiated MTU is rejected; there is no fragmentation
 or truncation fallback. The readable beacon remains empty until R3 has an actual
 metronome observation. Notifications, not repeated reads, drive R1 tracking.
@@ -120,11 +136,13 @@ age, negotiated MTU, received/missing/malformed/duplicate/reordered counts,
 queue drops and successful connections/reconnections. JSON u64 values remain
 decimal strings; they must not be converted through JavaScript `Number`.
 
-S1 does not estimate offset or drift, discipline either clock, set DS3231 time,
-write EEPROM settings, modify sample deadlines/timestamps, or add synchronization
-records to CSV schema 1. BLE loss leaves autonomous recording running. RAM-only
-observations do not make an SD file synchronized. Versioned file evidence,
-clock exchange, error bounds and the R3 CC-to-STM32 DRDY bridge belong to S2/S3.
+The S1 beacon alone does not estimate offset/drift or set DS3231. ECO1 adds a
+separate bounded, fresh, authenticated request/reply and idle I2C-owner correction.
+`rtc_synced` reports that coarse correction for the current R3 boot/revision;
+it is distinct from `synchronized` precision. [CSV v2](FILE_FORMAT_V2.md) stores
+frozen correction/group evidence with unknown uncertainty; CSV v1 readers and
+sample deadlines/timestamps remain unchanged. BLE loss leaves recording running.
+Qualified clock fitting, dynamic events and the CC-to-STM32 DRDY bridge remain S2/S3.
 
 ## Ownership and qualification
 

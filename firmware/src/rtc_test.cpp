@@ -149,9 +149,17 @@ bool setRtcUtc(uint64_t epoch) {
 #include "storage_check.h"
 #include "settings.h"
 #include "test_panel.h"
+#include "recorder.h"
+#include "ecosystem_owner.h"
 
 uint64_t rtcUtcNow(){return trustedUtc ? previousSeconds+946684800ULL+(uint32_t(millis()-previousMillis)/1000) : 0;}
-bool panelSetRtcUtc(uint64_t epoch){return epoch>=946684800ULL&&epoch<4102444799ULL&&setRtcUtc(epoch);}
+bool panelSetRtcUtc(uint64_t epoch){
+    if(recorder::busy()||epoch<946684800ULL||epoch>=4102444799ULL)return false;
+    // Also covers the legacy serial path; failed writes cannot preserve a
+    // misleading R3 provenance or continue advertising an old trusted value.
+    ecosystemForgetClockEvidence();trustedUtc=false;
+    return setRtcUtc(epoch);
+}
 
 
 bool handleLegacyLine(const char* line) {

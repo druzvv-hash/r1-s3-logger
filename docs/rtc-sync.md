@@ -1,5 +1,11 @@
 # Browser RTC synchronization (HWTEST v0.7)
 
+This describes the original manual browser/serial path, retained in PANEL v0.24.
+Manual RTC writes require idle recording state and clear prior R3 correction
+provenance. A saved [R3 association](ECOSYSTEM_CONTROL.md) also enables automatic
+fresh coarse RTC correction while idle; the historical no-automatic-setting
+statement below applies to the standalone v0.7 path, not that enrolled mode.
+
 After uploading the UART `esp32-s3` environment, close all serial monitors. Run from the repository root using Python with pyserial (PlatformIO's Python already includes it):
 
 ```powershell

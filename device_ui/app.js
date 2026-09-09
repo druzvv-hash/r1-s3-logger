@@ -79,13 +79,18 @@ function updateDraft(){
 }
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
-let blePeerDirty=false,bleDiscoveryKey='';
+let blePeerDirty=false,bleDiscoveryKey='',blePermissionDirty=false;
 function bleControls(){
   const available=!!state?.ble,locked=recordingBusy()||busy||!online||!available;
   const address=$('ble-peer').value.trim(),pin=$('ble-pin').value;
   $('ble-scan').disabled=locked;
   $('ble-connect').disabled=locked||!/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i.test(address)||!/^\d{6}$/.test(pin);
   $('ble-off').disabled=locked||!state?.ble?.enabled;
+  const enrollment=available&&typeof state.ble.enrolled==='boolean';
+  $('ble-save').disabled=locked||!enrollment||!state.ble.authenticated||!state.ble.ecosystem;
+  $('ble-on').disabled=locked||!enrollment||!state.ble.enrolled||state.ble.authenticated;
+  $('ble-forget').disabled=locked||!enrollment||!(state.ble.enrolled||state.ble.peer);
+  $('ble-allow-remote').disabled=locked||!enrollment;
   $('ble-peer').disabled=locked;$('ble-pin').disabled=locked;
   if(!online){$('ble-state').classList.remove('online');$('ble-note').textContent='Немає свіжого стану логера. Перевір його підключення.';}
 }
@@ -94,7 +99,8 @@ function renderBle(ble){
   $('ble-state').textContent=ble?(names[ble.state]||'Стан BLE невідомий'):'BLE вимкнено';
   $('ble-state').classList.toggle('online',!!(ble?.authenticated&&ble?.fresh));
   $('ble-note').textContent=!ble?'Ця прошивка не повідомляє стан BLE. Потрібне оновлення логера.':
-    !ble.enabled?'Увімкни пошук і вибери R3 для отримання часових маяків.':
+    !ble.enabled?(ble.enrolled?'Збережена прив’язка є. Підключи R3 без повторного PIN.':'Увімкни пошук і вибери R3 для отримання часових маяків.'):
+    ble.authenticated&&ble.rtc_synced?'RTC звірено з R3. Точність вирівнювання відліків ще не визначена.':
     ble.authenticated&&ble.fresh?'Маяк отримано; точність синхронізації ще не визначена':
     ble.state==='CONNECTED'?'З’єднання встановлено; очікування свіжого підтвердженого маяка.':
     ble.state==='SCANNING'?'Шукаємо R3 поблизу. Вибери адресу зі списку або введи її вручну.':
@@ -103,6 +109,7 @@ function renderBle(ble){
     ble.state==='RETRY'?'Зв’язок втрачено. Логер повторює підключення; вимірювання тривають.':
     ble.state==='ERROR'?'Не вдалося встановити зв’язок. Перевір R3, адресу та PIN.':'Підключаємося до вибраного R3…';
   if(!blePeerDirty&&ble?.peer)$('ble-peer').value=ble.peer;
+  if(!blePermissionDirty)$('ble-allow-remote').checked=!!ble?.remote_allowed;
   const devices=Array.isArray(ble?.devices)?ble.devices.slice(0,6):[];
   const discoveryKey=JSON.stringify(devices);
   if(discoveryKey!==bleDiscoveryKey){
@@ -113,7 +120,9 @@ function renderBle(ble){
   rows('ble-summary',ble?[
     ['Вибраний R3',ble.peer||'—'],['Підтвердження з’єднання',ble.authenticated?'Підтверджено':'Не підтверджено'],
     ['Свіжий маяк',ble.fresh?'Так':'Ні'],['Вік маяка',Number.isFinite(ble.age_ms)?number(ble.age_ms/1000,1)+' с':'—'],
-    ['UTC у маяку',ble.utc_valid?'Валідний за даними R3':'Невідомий / невалідний'],['Точність синхронізації','Ще не визначена']
+    ['UTC у маяку',ble.utc_valid?'Валідний за даними R3':'Невідомий / невалідний'],['Точність синхронізації','Ще не визначена'],
+    ['Прив’язка після перезапуску',ble.enrolled?'Збережена':'Не збережена'],['Керування записом із R3',ble.remote_allowed?'Дозволено':'Не дозволено'],
+    ['Звіряння RTC',ble.rtc_synced?'Виконано для цього запуску R3':ble.enrolled?'Очікує зв’язку, чинного часу або завершення запису':'Потрібна збережена прив’язка']
   ]:[]);
   // Counters are decimal strings: avoid precision loss through Number conversion.
   rows('ble-diagnostics',ble?[
@@ -143,7 +152,7 @@ function controls(){
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
   for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=recordingBusy()||busy||!online;
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
-  $('record-stop').disabled=busy||!online||state?.recording_state!=='RUNNING';
+  $('record-stop').disabled=busy||!online||!['STARTING','RUNNING','STOPPING'].includes(state?.recording_state);
   $('record-files').disabled=recordingBusy()||busy||!online;
   $('files-refresh').disabled=recordingBusy()||!online;fileControls();bleControls();updateDraft();}
 function render(s){
@@ -408,6 +417,10 @@ $('ble-peer').oninput=()=>{blePeerDirty=true;bleControls();};
 $('ble-pin').oninput=bleControls;
 $('ble-scan').onclick=()=>command('BLE','SCAN');
 $('ble-off').onclick=()=>{$('ble-pin').value='';command('BLE','OFF');};
+$('ble-allow-remote').onchange=()=>{blePermissionDirty=true;bleControls();};
+$('ble-save').onclick=async()=>{await command('BLE','SAVE '+($('ble-allow-remote').checked?'1':'0'));blePermissionDirty=false;};
+$('ble-on').onclick=()=>command('BLE','ON');
+$('ble-forget').onclick=()=>{$('ble-pin').value='';blePeerDirty=false;blePermissionDirty=false;command('BLE','FORGET');};
 $('files-refresh').onclick=()=>listFiles();
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
 $('record-start').onclick=async()=>{try{await stopListing();await command('START');}catch(e){notice(e.message,true);}};
