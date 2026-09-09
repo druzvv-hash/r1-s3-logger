@@ -1,8 +1,10 @@
 # R3 / R1-S3 BLE link — S1
 
-Implementation contract, 2026-09-09. **Hardware acceptance is pending.**
-This document describes the implemented transport and its limits, not a measured
-clock synchronization result. [Architecture](ECOSYSTEM_TIME_SYNC.md) ·
+Implementation contract, 2026-09-09. **The short physical link/recording bench
+passed; expanded qualification remains pending.** See the
+[results and 300 Hz measurement-quality limitation](BLE_ACCEPTANCE_2026-09-09.md).
+This document describes transport and its limits, not a measured clock
+synchronization result. [Architecture](ECOSYSTEM_TIME_SYNC.md) ·
 [Ukrainian owner instructions](uk/BLE_LINK.md).
 
 R3 is a Bluetooth LE GATT peripheral/server. R1-S3 is a central/client that
@@ -119,7 +121,7 @@ records to CSV schema 1. BLE loss leaves autonomous recording running. RAM-only
 observations do not make an SD file synchronized. Versioned file evidence,
 clock exchange, error bounds and the R3 CC-to-STM32 DRDY bridge belong to S2/S3.
 
-## Ownership and acceptance still required
+## Ownership and qualification
 
 R3's time owner enqueues bounded snapshots to an eight-entry queue; its core-0
 BLE worker publishes them. R1's core-0 worker manages discovery, authentication,
@@ -141,7 +143,9 @@ tests.test_r3_ble_receiver tests.test_r3_time_beacon -v` passed all **11 tests**
 These cover shared wire bytes, strict decoding, receiver identity/boot/revision
 handling, invalid UTC, sequence wrap/reconnect and the legacy tracker. They run
 without radios and do not establish physical link stability or synchronization
-accuracy. Hardware acceptance remains pending.
+accuracy. The separate [physical report](BLE_ACCEPTANCE_2026-09-09.md) covers a
+short correct/wrong-PIN, reconnect, 50/150/300 Hz recording and download bench;
+expanded radio/clock qualification remains pending.
 
 Qualification must cover correct/wrong PIN, identity/version/MTU rejection,
 disconnect/reconnect and both device reboots; beacon continuity and invalid UTC;

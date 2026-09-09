@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.22**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.23**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 **Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
@@ -69,7 +69,7 @@ The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is imp
 
 ## Repository guide
 
-- [BLE link controls](docs/BLE_LINK.md): connect R1-S3 to R3 using the **BLE · R3** tab and volatile PIN pairing; S1 transport is implemented, with hardware acceptance pending.
+- [BLE link controls](docs/BLE_LINK.md): connect R1-S3 to R3 using the **BLE · R3** tab and volatile PIN pairing. The [short physical bench passed](docs/BLE_ACCEPTANCE_2026-09-09.md); expanded qualification and the observed 300 Hz current spread remain open.
 - [Ecosystem synchronization](docs/ECOSYSTEM_TIME_SYNC.md): R3 / R1-S3 / CAN clock architecture; received coarse beacons do not yet synchronize recorded files.
 - [firmware/](firmware/README.md): Arduino test firmware and GPIO constants.
 - [hardware/](hardware/README.md): hardware notes and pin map.

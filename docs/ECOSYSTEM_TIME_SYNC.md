@@ -12,7 +12,7 @@ from R1-S3, fast sensor signals from R3, and CAN events on one timeline.
 |---|---|
 | R3 RV3028 authority and `$TMB` | UART to STM32 retained; S1 BLE wraps the same coarse metronome snapshot |
 | R1-S3 legacy decoder/tracker | Portable `r3_time_beacon.h/.cpp`; S1 runtime adapter feeds validated BLE observations into the tracker |
-| R3 BLE server / R1-S3 BLE client | S1 implemented: shared versioned wire format, authenticated pairing, discovery/selection, notifications, bounded reconnect; hardware acceptance pending |
+| R3 BLE server / R1-S3 BLE client | S1 implemented; short authenticated link/reconnect and 50/150/300 Hz recording/file bench passed; expanded qualification pending ([results](BLE_ACCEPTANCE_2026-09-09.md)) |
 | BLE operation and diagnostics UI | S1 implemented; volatile STOP-only selection, freshness and loss diagnostics; no synchronized-clock claim |
 | Offset/drift model and synchronized file records | S2/S3 design below; not implemented or physically qualified |
 | DS3231, sample timing, EEPROM and CSV v1 | Existing behavior unchanged |
@@ -102,7 +102,8 @@ project UUIDs, exact byte lengths, little-endian fields, identity/boot/revision,
 coarse-only capability and CRC32. Protected identity reads are 36 bytes; complete
 beacon notifications are 64 bytes, requiring ATT MTU at least 67 (preferred 128).
 Full offsets and operation are documented in [BLE_LINK.md](BLE_LINK.md).
-Physical acceptance remains pending. The richer synchronization interface still
+Short physical bench results are available; expanded radio and clock qualification
+remain pending. The richer synchronization interface still
 needs the following work:
 
 - **Identity/capabilities (read):** extend the implemented device/boot/role/version
@@ -220,13 +221,15 @@ marker alignment is a labelled user estimate. Existing v1 readers must keep pass
 | Stage | Deliverable | Acceptance |
 |---|---|---|
 | S0, completed foundation | Audit, legacy decoder/tracker, architecture | Host malformed/wrap/stale tests and normal build; no radio claim |
-| S1, implemented; hardware acceptance pending | Shared BLE contract, R3 server, R1 client, volatile peer/PIN selection and diagnostics | Real connect/reconnect, MTU/version/identity failures; no acquisition regression |
+| S1, short bench passed; expanded qualification pending | Shared BLE contract, R3 server, R1 client, volatile peer/PIN selection and diagnostics | Correct/wrong PIN, reconnect and three verified SD files passed; remaining radio edge cases/endurance and 300 Hz signal-quality investigation are open |
 | S2 | Offset/drift/error model, CC-to-DRDY bridge, CAN clock audit | Shared physical event and independent reference establish error bounds |
 | S3 | Versioned files/readers, owner queues, UI quality and saved policy | Golden/corruption/rotation/reboot tests, backward compatibility and autonomous operation |
 | S4 | R1-S3 + R3 + actual CAN node | End-to-end alignment and endurance; no silent time jumps or optimistic lock |
 
 S1 changes both repositories while retaining R3 UART behavior and local work.
-Its runtime implementation must pass the physical gates before acceptance.
+Its targeted physical bench passed; complete the remaining radio/clock gates
+before broad acceptance. The file/transport result does not qualify the observed
+300 Hz current spread.
 Keep synchronization work separate from the unresolved UART endurance fault.
 The historical S0 validation below did not flash firmware or test physical BLE.
 

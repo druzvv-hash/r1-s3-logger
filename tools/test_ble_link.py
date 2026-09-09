@@ -6,7 +6,6 @@ PIN stays in memory. Evidence/files go to ignored data/ble-acceptance/<label>.
 Restores exact runtime settings without SAVE; leaves the selected BLE link on.
 """
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -18,6 +17,10 @@ import contracts
 from analyze_rate_record import analyze
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class CommandRejected(RuntimeError):
+    """A definite negative acknowledgement, rather than a transport timeout."""
 
 
 def main():
@@ -48,6 +51,7 @@ def main():
     (out/'baseline-private.json').write_text(json.dumps(initial))
     samples, records = [], []
     owned = ''
+    pending_start = False
     source_disabled = False
 
     def state():
@@ -59,7 +63,8 @@ def main():
     def command(text):
         s = state()
         r = api('/api/command', f"{s['boot']} {s['revision']} {text}")
-        assert r.get('ok'), r.get('message', 'Command rejected')
+        if not r.get('ok'):
+            raise CommandRejected(r.get('message', 'Command rejected'))
 
     def wait_for(predicate, timeout=25):
         deadline = time.monotonic()+timeout
@@ -100,6 +105,7 @@ def main():
         assert pair['ready'] and pair['enabled']
         connected = connect(pair)
         print('PASS authenticated identity, MTU and fresh beacons', flush=True)
+        rejected_before = r3('ble?')['rejected']
         wrong = str((int(pair['pairing_pin'])+1) % 1000000).zfill(6)
         command('BLE CONNECT '+pair['device_id']+' '+wrong)
         wait_for(lambda s: not s['ble']['authenticated'] and not s['ble']['fresh'])
@@ -109,6 +115,7 @@ def main():
             s = state()
             assert not s['ble']['authenticated'] and not s['ble']['fresh'] and s['ble']['received'] == before
             time.sleep(.5)
+        assert r3('ble?')['rejected'] > rejected_before, 'No source-side authentication rejection observed'
         command('BLE OFF'); wait_for(lambda s: s['ble']['state'] == 'OFF')
         connected = connect(pair)
         print('PASS wrong PIN rejected; correct PIN reconnects', flush=True)
@@ -120,13 +127,20 @@ def main():
             command('APPLY '+contracts.encode_payload(profile).hex())
             wait_for(lambda s: s['requested_hz'] == hz)
             before = state()
-            command('START')
+            pending_start = True
+            try:
+                command('START')
+            except CommandRejected:
+                pending_start = False
+                raise
             s = wait_for(lambda s: s['recording_state'] == 'RUNNING')
             owned = s['recording_path']
+            pending_start = False
             began = time.monotonic()
             if hz == 300:
                 previous_segment = int(s['ble']['segment'])
-                r3('ble off'); source_disabled = True
+                source_disabled = True
+                r3('ble off')
                 wait_for(lambda s: not s['ble']['fresh'], timeout=8)
                 time.sleep(2)
                 r3('ble on'); source_disabled = False
@@ -139,7 +153,10 @@ def main():
                 time.sleep(.5)
             command('STOP')
             s = wait_for(lambda s: s['recording_state'] == 'READY')
-            path = owned; owned = ''
+            # The SD owner atomically renames .part to .csv on clean closure.
+            path = s['recording_path']
+            assert path == owned.removesuffix('.part')+'.csv', 'Unexpected finalized recording path'
+            owned = ''
             result = dict(hz=hz, path=path, rows=s['recording_rows'],
                           seconds=s['recording_seconds'], missed=s['missed_samples']-before['missed_samples'],
                           invalid=s['invalid_samples']-before['invalid_samples'], overflows=s['recording_overflows'],
@@ -158,27 +175,39 @@ def main():
                 while chunk := response.read(65536):
                     target.write(chunk)
             assert dest.stat().st_size == expected
+            wait_for(lambda s: not s['file_transfer'])
             result = analyze(dest)
             assert result['clean'] and result['verified_rows'] == record['rows']
+            assert result['viewer_rows'] == record['rows'] and result['viewer_integrity'] == 'verified clean'
+            assert result['requested_hz'] == record['hz'] and abs(result['actual_hz']/record['hz']-1)<.02
             assert not any(result[k] for k in ('missing_sequences','invalid_rows','gap_rows','unverified_rows','partial_line'))
             record['file'] = result
             print('PASS downloaded and verified '+json.dumps({k: result[k] for k in ('requested_hz','verified_rows','actual_hz','viewer_integrity')}), flush=True)
         source = r3('ble?')
-        assert source['authenticated_clients'] == 1 and source['notify_errors'] == source['drops'] == 0
+        assert source['authenticated_clients'] == 1
+        assert source['notify_errors'] == pair['notify_errors'] and source['drops'] == pair['drops']
         (out/'source-final.json').write_text(json.dumps(source, indent=2))
         print('PASS BLE acceptance; original settings restored without SAVE', flush=True)
     finally:
-        (out/'snapshots.json').write_text(json.dumps(samples))
-        (out/'recordings.json').write_text(json.dumps(records, indent=2))
-        if source_disabled:
-            r3('ble on')
-        s = api('/api/state')
-        if s['boot'] == initial['boot']:
-            if owned and s['recording_path'] == owned and s['recording_state'] == 'RUNNING':
-                command('STOP'); s = wait_for(lambda s: s['recording_state'] == 'READY')
-            if s['recording_state'] == 'READY' and s['config_hex'] != initial['config_hex']:
-                command('APPLY '+initial['config_hex'])
-                wait_for(lambda s: s['config_hex'] == initial['config_hex'])
+        try:
+            try:
+                if source_disabled:
+                    r3('ble on')
+            finally:
+                s = api('/api/state')
+                if s['boot'] == initial['boot']:
+                    our_pending = pending_start and s['recording_path'] and s['recording_path'] != initial['recording_path']
+                    if (our_pending or (owned and s['recording_path'] == owned)) and s['recording_state'] == 'RUNNING':
+                        command('STOP'); s = wait_for(lambda s: s['recording_state'] == 'READY')
+                    if s['recording_state'] == 'READY' and s['config_hex'] != initial['config_hex']:
+                        command('APPLY '+initial['config_hex'])
+                        wait_for(lambda s: s['config_hex'] == initial['config_hex'])
+        finally:
+            # A full/unwritable evidence disk must not prevent device cleanup.
+            try:
+                (out/'snapshots.json').write_text(json.dumps(samples))
+            finally:
+                (out/'recordings.json').write_text(json.dumps(records, indent=2))
 
 
 if __name__ == '__main__':

@@ -645,3 +645,45 @@ were reported. Exact configuration and saved EEPROM generation 3 matched the
 pre-upload baseline at 50 Hz. No recording or settings/RTC write was requested.
 This is a short startup check, not UART endurance or BLE acceptance. Private
 upload/build/state evidence is retained under `data/upload-cb19e4e/`.
+
+### 2026-09-09 — BLE S1 runtime and short physical acceptance
+
+Implemented the shared 36-byte identity / 64-byte beacon contract, R3 GATT
+server and R1-S3 central, with passkey-authenticated LE Secure Connections,
+volatile selection, no persistent bonds/CCCD state, and bounded reconnect.
+BLE workers run on core 0; R1 host pools use PSRAM while stacks/controller/DMA
+stay internal. An allocation-free receiver validates identity, source boot,
+clock revision, sequence and freshness. The panel now provides discovery,
+PIN connection, BLE off and diagnostic counters. Host protocol/receiver/legacy
+tracker checks passed all 11 tests; browser fixture checks passed.
+
+Deployed clean R1 PANEL v0.23 from `f5508afba14599fa4e6488a828da64039d3eaa62`.
+R3 ESP32-S3 used `0e4925e` plus preserved pre-existing working-tree changes;
+STM32 firmware was not replaced. Exact binary hashes and limitations are in
+[the English acceptance report](BLE_ACCEPTANCE_2026-09-09.md) and
+[Ukrainian summary](uk/BLE_ACCEPTANCE_2026-09-09.md).
+
+Final optimized-firmware discovery found R3 and explicit reselection connected
+at MTU 128; correct PIN succeeded and wrong PIN was rejected. Three SD sessions at
+50/150/300 Hz produced 1,053 / 3,367 / 6,681 rows, all downloaded and independently
+verified by both readers: 11,101 rows / 2,423,076 bytes total, clean integrity,
+zero missing/invalid/gap rows. During 300 Hz recording, R3 BLE off/on caused a
+new R1 connection segment and successful automatic recovery without stopping
+the file. Missed samples, I2C errors and FIFO overflows remained zero. A 100.8 s
+real USB-panel browser check saw no JS errors or UI disconnects. AP was enabled
+but had zero Wi-Fi clients: this was not an over-the-air Wi-Fi UI acceptance run.
+
+The initial download runner incorrectly reused a pre-STOP `.part` path after
+firmware had published the correct finalized `.csv` path in READY. The harness
+was corrected; all final files passed. Original 50 Hz configuration and SAVED
+EEPROM generation 3 were restored without Save or RTC writes. R3's own status
+reported UART beacons and CM4 reception still active; it was not a STM32-load test.
+
+Transport/file success does not qualify signal quality: the 300 Hz file had
+current standard deviation 0.813849 A and range −1.702083…2.481250 A at near-zero
+recorded bus voltage, versus 0.011180/0.018317 A deviations at 50/150 Hz. Input
+conditions and ADC profiles were not an independent controlled noise reference;
+the cause is unresolved. Do not treat 300 Hz as production-quality approval.
+Expanded radio/reboot/endurance tests, clock-error measurement and persistent
+clock evidence remain pending. CSV v1, local timing and RTC/EEPROM schemas are
+unchanged; S1 always reports synchronization false and uncertainty unknown.
