@@ -2,6 +2,16 @@
 
 Plan version 1.9, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested. P4a now has a usable [USB/Wi-Fi test panel](P4A_TEST_PANEL.md), with web core 0 / hardware owner core 1; P4b timed acquisition and chunked OLED are implemented. [P5 recording](P5_RECORDING.md) now connects PSRAM FIFO, block writes, session metadata, checkpoints and rotation. P6a direct Wi-Fi UI, browser disconnect and native-radio recording/download acceptance passed on a PC; physical Android acceptance remains open. See [P6 Wi-Fi](P6_WIFI.md). Local controls and fault/long-duration physical acceptance remain open. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
+### Plan amendment 1.10 — ecosystem time, 2026-09-09
+
+The [R3 / R1-S3 / CAN synchronization contract](ECOSYSTEM_TIME_SYNC.md) is now
+part of the product scope. R3 is the shared time authority/BLE server; R1-S3 is
+the BLE client, retaining autonomous acquisition and recording. Current R3 TMB
+is UART-only. S0 adds the audited protocol and portable decoder/tracker; S1–S4
+cover both BLE endpoints, measured clock mapping, versioned file evidence/UI and
+three-device acceptance. This does not claim an existing Bluetooth connection.
+Preserve local monotonic sample time and integrate energy on that timebase.
+
 ## 1. Product and scope
 
 Build a dependable single-shunt voltage/current/energy logger, easier to operate than the old R1 and more explicit about data quality. Retain ESP32-S3, INA228, SH1106G 128x64 at 180 degrees, DS3231 UTC, 24C32 and SPI SD. Current shunt is nominal 60 mV / 400 A = 150 microohms; the module's R015 has been removed by the owner. GPIOs remain in `hardware/pinmap.md`.
@@ -37,7 +47,8 @@ Proposed modules, introduced incrementally:
 | `config` | Typed schema, defaults, validation, editing, applying, import/export |
 | `storage/eeprom` | Explicit serialization, A/B persistence and migration |
 | `recorder` | State machine, queue, SD writer, sessions, checksums and recovery |
-| `time_service` | Monotonic time, RTC validity, UTC anchor and explicit synchronization |
+| `time_service` | Immutable local time, RTC validity, UTC anchor and segmented R3 clock mappings with uncertainty |
+| `r3_time_link` | BLE client lifecycle, bounded beacon/exchange capture, peer identity and reconnection; portable legacy TMB decoder exists, runtime transport pending |
 | `ui` / `web` | Display/control from snapshots; never own acquisition or SD writes |
 | `diagnostics` | Health, counters, last error and exportable troubleshooting snapshot |
 
@@ -80,6 +91,11 @@ Avoid redundant current-offset and voltage-offset knobs with overlapping meaning
 Integrate using actual elapsed monotonic time and valid samples. Specify trapezoidal integration and split sign crossings for positive/negative totals. Never integrate through a missing-data gap beyond the agreed maximum or fabricate zero samples. Mark totals incomplete with covered/missing duration. By default record source-side power UBUS*I; if load-side voltage/power is added, give it a distinct channel and formula rather than silently subtracting shunt/lead drops.
 
 Config lifecycle: edit draft -> validate -> apply/read back while stopped -> explicit save -> verify persistence. Keep draft, applied and persisted generations visible; failed save leaves applied values marked unsaved, failed apply retains/restores the previous runtime config. START requires a valid applied config and normally a saved matching generation. Freeze measurement/calibration/time-setting for a running session; changes require STOP/new session. Each file contains the applied snapshot, never a later EEPROM read.
+
+Future ecosystem synchronization observations may continue during recording as
+separate versioned evidence. They must not step the sample clock or alter the
+frozen CSV v1 UTC anchor. Peer/policy persistence requires a settings schema
+migration and explicit Save; ephemeral beacons/models never belong in EEPROM.
 
 ## 5. EEPROM 24C32, 4096 bytes
 

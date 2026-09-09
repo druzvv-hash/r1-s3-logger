@@ -604,3 +604,31 @@ existing panel owner by 22:37 local time. No reset, firmware/EEPROM/RTC write or
 second endurance run occurred. The repeated fault with the bench supply OFF
 shows that powered load is not required, but does not identify its component
 cause. See the [final overnight evidence and cleanup limits](OVERNIGHT_TEST.md).
+
+### 2026-09-09 — ecosystem time synchronization foundation (S0)
+
+Owner added R3 / R1-S3 / CAN correlation as an architecture requirement. A
+read-only R3 audit found the implemented RV3028 `$TMB` beacon on CCTX UART,
+with no BLE service yet. The software RTC poll and extrapolated FILELOG TCHK
+values do not establish precise cross-device time. Source paths/fingerprints,
+limits and delivery gates are in [ECOSYSTEM_TIME_SYNC.md](ECOSYSTEM_TIME_SYNC.md).
+
+Added an allocation-free, length-aware decoder for the current exact TMB emitter
+and a single-owner observation tracker. Tests cover malformed/truncated fields,
+u32 overflow, zero-skipping sequence wrap, missing/duplicate/reordered packets,
+invalid-time revocation, stale evidence, reconnect segments and long local uptime.
+The module is a portable foundation, not an active UART/BLE receiver or clock fit.
+
+Plan amendment 1.10 specifies R3 BLE peripheral/time authority, R1-S3 central,
+immutable local sample clocks, offset/drift/uncertainty segments, bounded core-0
+service work, separate clock-event buffering and sole-owner SD writes. Clock
+evidence requires an explicit file version plus matching readers. CAN timing
+needs an audit of its actual implementation. Ukrainian owner notes are linked
+from both the owner index and README.
+
+Validation: 24 targeted host tests passed (new decoder/tracker, sample deadlines,
+firmware CSV writer and format/config contracts); `pio run -e esp32-s3` passed.
+Independent source review found
+no protocol mismatch. No firmware flash, RTC/EEPROM write, live serial session or
+R3 edit occurred. The BLE endpoints, UI controls, clock fitting and physical
+precision/endurance qualification remain S1–S4 work; S0 does not claim connection.

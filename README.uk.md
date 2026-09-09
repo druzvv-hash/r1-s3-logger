@@ -16,6 +16,9 @@ USB або Wi-Fi. [Коротка інструкція](docs/uk/SD_FILES.md).
 
 ## Апаратна архітектура
 
+[Спільний час R1-S3, R3 та CAN](docs/uk/ECOSYSTEM_TIME_SYNC.md): закладено
+архітектуру і розбір маяка R3; BLE-з'єднання ще потрібно реалізувати на обох приладах.
+
 - ESP32-S3-WROOM-2-N32R16V (MCN32R16V): 32 MB Octal Flash, 16 MB Octal PSRAM.
 - I²C на GPIO8/9: INA228 (0x40), OLED SH1106 128×64 (0x3C), EEPROM 24C32 (0x50), RTC DS3231 (0x68).
 - SD через SPI: CS=10, MOSI=11, SCK=12, MISO=13.

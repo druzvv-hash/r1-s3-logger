@@ -69,6 +69,15 @@ Totals start at zero at the first sample of a session. For adjacent valid rows w
 
 No END means interrupted, not clean. Return checkpoint-verified rows separately from any complete but unverified trailing rows; discard incomplete last row from numeric data and report its presence. A malformed complete row, mismatching checkpoint or bad END is corruption, never a clean partial success. The P1 reference fails explicitly on corruption; P2 may offer a separately labelled valid-prefix recovery report without changing the source file. CRC/SHA detect corruption, not malicious authenticity or guaranteed SD/FAT power-loss durability.
 
+## Future ecosystem synchronization
+
+[R3 / R1-S3 / CAN synchronization](ECOSYSTEM_TIME_SYNC.md) requires a separately
+versioned extension for clock mappings, raw beacon/exchange evidence, uncertainty
+and discontinuities. Schema 1 has no such records; its frozen time anchor and
+exact byte grammar remain unchanged. Do not mark existing files synchronized
+merely because BLE was connected. New writers and readers must ship together
+with golden fixtures and retain v1 compatibility.
+
 ## Reference scope and verification
 
 `python tools/contracts.py tests/fixtures/native-sign-crossing.csv` reports four verified rows and clean=true. `python -m unittest discover -s tests -v` checks signed conversion, zero crossing, invalid/gap behavior, raw/value consistency, config bytes, CRC, torn slot fallback and file interruption/corruption. `python tools/make_contract_fixtures.py` regenerates the synthetic corpus deterministically.

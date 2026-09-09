@@ -69,6 +69,7 @@ The [PSRAM FIFO and block-buffer foundation](docs/BUFFERING_AND_REUSE.md) is imp
 
 ## Repository guide
 
+- [Ecosystem synchronization](docs/ECOSYSTEM_TIME_SYNC.md): R3 / R1-S3 / CAN clock architecture and legacy beacon decoder; BLE transport remains pending.
 - [firmware/](firmware/README.md): Arduino test firmware and GPIO constants.
 - [hardware/](hardware/README.md): hardware notes and pin map.
 - [Bring-up plan and results](docs/bring-up.md).

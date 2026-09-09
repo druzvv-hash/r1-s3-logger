@@ -14,6 +14,7 @@ owner is in `sd_files.cpp`. See [file transfers](../docs/SD_DOWNLOADS.md).
 - `src/eeprom_test.cpp`: 24C32 backup to SD, sample write, restoration and full-image comparison.
 - `src/rtc_test.cpp`: read-only DS3231 calendar/BCD, temperature, OSF/EOSC and tick checks.
 - `include/pins.h`: GPIO constants matching [hardware/pinmap.md](../hardware/pinmap.md).
+- `r3_time_beacon.h/.cpp`: portable strict legacy R3 TMB decoder and bounded observation tracker. Not attached to runtime BLE/UART; never changes RTC or sample time. [Ecosystem time architecture](../docs/ECOSYSTEM_TIME_SYNC.md).
 
 Ordinary boot only reads SD/EEPROM. Explicit CONFIG SAVE writes settings; see [P3 workflow](../docs/P3_SETTINGS.md). `esp32-s3-service` explicitly enables the legacy SD file and EEPROM pattern/restore tests. Periodic checks never set time; the explicit browser command does. See [RTC sync](../docs/rtc-sync.md). The EEPROM write test is temporary diagnostic code; keep power connected until restoration completes.
 
