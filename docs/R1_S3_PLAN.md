@@ -1,16 +1,45 @@
 # R1-S3 engineering and compatibility plan
 
-Plan version 1.9, 2026-09-08. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested. P4a now has a usable [USB/Wi-Fi test panel](P4A_TEST_PANEL.md), with web core 0 / hardware owner core 1; P4b timed acquisition and chunked OLED are implemented. [P5 recording](P5_RECORDING.md) now connects PSRAM FIFO, block writes, session metadata, checkpoints and rotation. P6a direct Wi-Fi UI, browser disconnect and native-radio recording/download acceptance passed on a PC; physical Android acceptance remains open. See [P6 Wi-Fi](P6_WIFI.md). Local controls and fault/long-duration physical acceptance remain open. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
+Plan version 1.11, 2026-09-09. Status: P0/P1/P2, P2.1a graph interactions and P3 settings completed with documented validation limits. Encoder stub and PSRAM/block-buffer primitives are implemented and host-tested. P4a now has a usable [USB/Wi-Fi test panel](P4A_TEST_PANEL.md), with web core 0 / hardware owner core 1; P4b timed acquisition and chunked OLED are implemented. [P5 recording](P5_RECORDING.md) now connects PSRAM FIFO, block writes, session metadata, checkpoints and rotation. P6a direct Wi-Fi UI, browser disconnect and native-radio recording/download acceptance passed on a PC; physical Android acceptance remains open. See [P6 Wi-Fi](P6_WIFI.md). Local controls and fault/long-duration physical acceptance remain open. Remaining R5 viewer work resumes with real logger files. Owner-facing Ukrainian edition: [plan](uk/R1_S3_PLAN.md). Evidence and execution history: [migration journal](R1_MIGRATION.md).
 
 ### Plan amendment 1.10 — ecosystem time, 2026-09-09
 
 The [R3 / R1-S3 / CAN synchronization contract](ECOSYSTEM_TIME_SYNC.md) is now
 part of the product scope. R3 is the shared time authority/BLE server; R1-S3 is
-the BLE client, retaining autonomous acquisition and recording. Current R3 TMB
-is UART-only. S0 adds the audited protocol and portable decoder/tracker; S1–S4
-cover both BLE endpoints, measured clock mapping, versioned file evidence/UI and
-three-device acceptance. This does not claim an existing Bluetooth connection.
+the BLE client, retaining autonomous acquisition and recording. S0 added the
+audited UART protocol and portable decoder/tracker. S1 now implements both BLE
+endpoints and has passed a short physical link/recording bench; expanded
+qualification remains open. S2–S4 cover measured clock mapping, versioned file
+evidence/UI and three-device acceptance; they are not yet implemented.
 Preserve local monotonic sample time and integrate energy on that timebase.
+
+### Plan amendment 1.11 — R3 coordinator and startup clock, 2026-09-09
+
+Owner requirement: R3 has the preferred RTC and is the designated time authority
+and main recording-control panel. Enrolled instruments automatically authenticate
+to their saved R3 after power-up, retry if it arrives later, and correct their RTC
+from fresh valid R3 time while idle. Automatic connection never starts recording.
+Offline instruments retain their own RTC and independent local recording.
+
+The [canonical R3 control contract](https://github.com/druzvv-hash/lily-logger-r3/blob/main/docs/ECOSYSTEM_CONTROL.md)
+and [Ukrainian owner notes](uk/ECOSYSTEM_CONTROL.md) define the required behavior.
+R3 takes an explicit selection of connected, permitted instruments and provides
+group START/STOP with fresh, session-specific results for each device. Acceptance,
+actual recording and successful file closure are separate states. Lost links and
+partial dispatch cannot be reported as a successful group operation.
+
+Implementation order: **E1 saved trust and boot reconnect → E2 idle RTC correction
+→ E3 session-safe commands → E4 R3 selection/control UI → E5 versioned file
+evidence**. Complete and test each stage before moving on. S2 measured clock
+precision remains separate; coarse RTC correction is not precise sample alignment.
+Current firmware remains S1: enrollment persistence, RTC discipline and remote
+recording control are planned, not implemented by this amendment.
+
+Preserve acquisition/I2C and SD ownership, PSRAM FIFO, local monotonic timing and
+current CSV/BIN schemas. Bond keys belong in NVS, never public settings or files.
+Version and migrate saved association/policy explicitly; do not silently alter
+the existing EEPROM schema. Block RTC changes throughout STARTING/RUNNING/STOPPING
+and refresh deferred time evidence before applying it after finalization.
 
 ## 1. Product and scope
 
@@ -48,7 +77,8 @@ Proposed modules, introduced incrementally:
 | `storage/eeprom` | Explicit serialization, A/B persistence and migration |
 | `recorder` | State machine, queue, SD writer, sessions, checksums and recovery |
 | `time_service` | Immutable local time, RTC validity, UTC anchor and segmented R3 clock mappings with uncertainty |
-| `r3_time_link` | BLE client lifecycle, bounded beacon/exchange capture, peer identity and reconnection; portable legacy TMB decoder exists, runtime transport pending |
+| `r3_time_link` | S1 BLE lifecycle, bounded beacon capture, peer identity and reconnect; E1/E2 add saved trust and startup RTC correction; S2 adds qualified exchanges |
+| `ecosystem_control` | Planned E3 typed remote commands and session results through existing owners; R3 E4 coordinates the selected devices |
 | `ui` / `web` | Display/control from snapshots; never own acquisition or SD writes |
 | `diagnostics` | Health, counters, last error and exportable troubleshooting snapshot |
 

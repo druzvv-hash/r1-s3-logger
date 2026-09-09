@@ -6,6 +6,13 @@ from R1-S3, fast sensor signals from R3, and CAN events on one timeline.
 [Engineering plan](R1_S3_PLAN.md) · [S1 BLE operation and wire contract](BLE_LINK.md) ·
 [Owner notes](uk/ECOSYSTEM_TIME_SYNC.md).
 
+Requirement amendment, 2026-09-09: R3 is also the main panel for START/STOP on an
+explicit selection of connected instruments. Enrolled devices must reconnect on
+boot and correct their RTC from R3 when available. The
+[canonical coordinator contract](https://github.com/druzvv-hash/lily-logger-r3/blob/main/docs/ECOSYSTEM_CONTROL.md)
+defines E1–E5 operational delivery; [owner explanation](uk/ECOSYSTEM_CONTROL.md).
+These requirements are planned extensions to S1, not existing runtime behavior.
+
 ## Implementation boundary
 
 | Part | Status |
@@ -16,6 +23,11 @@ from R1-S3, fast sensor signals from R3, and CAN events on one timeline.
 | BLE operation and diagnostics UI | S1 implemented; volatile STOP-only selection, freshness and loss diagnostics; no synchronized-clock claim |
 | Offset/drift model and synchronized file records | S2/S3 design below; not implemented or physically qualified |
 | DS3231, sample timing, EEPROM and CSV v1 | Existing behavior unchanged |
+| Saved enrollment, boot reconnect and downstream RTC correction | Required E1/E2; not implemented in S1 |
+| R3 selected-device registry and group START/STOP | Required E3/E4; not implemented in S1 |
+
+R3's RV3028 is the owner-designated preferred RTC and sole ecosystem time
+authority. This choice does not supply a measured UTC accuracy or alignment bound.
 
 The CAN sniffer's source/board and timestamp contract have not been audited here.
 Do not assume it already supports BLE or hardware bus-arrival timestamps.
@@ -125,10 +137,15 @@ not persist bonds or CCCD state; each link authenticates and subscribes again.
 Keep keys and pairing output outside public profiles/logs.
 
 S1 peer/PIN selection is volatile and STOP-only. After an R1 reboot, select again;
-an R3 reboot requires its new PIN from `ble pair`. Persistent peer and sync policy
-belong to an explicit Save operation with a versioned settings migration, default
-disabled. Do not silently consume EEPROM reserve or alter config-v1. There are
-no per-beacon EEPROM writes.
+an R3 reboot requires its new PIN from `ble pair`. E1 must replace that limitation
+with one-time authenticated enrollment and NVS bonds on both sides. After explicit
+enrollment/Save, reconnect to the approved R3 automatically on boot, reauthenticate
+and validate identity; never persist/replay a PIN. Unenrolled devices default to
+no trusted authority. Provide Forget/Revoke and bounded retries when R3 is absent.
+Connection does not automatically start logging. Saved association/policy needs
+a versioned migration preserving existing measurement settings; keys remain
+outside EEPROM/exported profiles. Do not silently consume EEPROM reserve or
+alter config-v1. There are no per-beacon EEPROM writes.
 
 ## Clock model and failure behavior
 
@@ -166,10 +183,22 @@ separately from relative-clock quality. Peer reboot, source/clock revision chang
 time jump or ambiguous reset begins a new segment; do not join them silently.
 Automatic master election is outside the initial scope.
 
-DS3231 remains the autonomous wall clock. No RTC writes per beacon. Explicit RTC
-adjustment is STOP-only via the existing I2C owner. Losing BLE neither stops a
-session nor rewrites past UTC. Current CSV v1 keeps its frozen starting anchor;
-dynamic clock evidence awaits the versioned extension below.
+DS3231 remains the offline wall clock. E2 must correct it from fresh valid time
+of the enrolled R3 at startup/first available link through the existing I2C owner
+while idle. Defer during STARTING/RUNNING/STOPPING and file closure, then request
+fresh evidence and revalidate its age, source boot and revision before applying.
+Reconnection/revision changes trigger revalidation, not unconditional writes.
+Never propagate invalid R3 time or write RTC/EEPROM on every beacon. Verify RTC
+readback and distinguish calendar correction from qualified S2 clock lock.
+Losing BLE neither stops a session nor rewrites past UTC. Current CSV v1 keeps
+its frozen starting anchor; dynamic clock evidence awaits versioned file work.
+
+E2 must define source-capture age and transport-delay acceptance before allowing
+RTC correction. Current CSV v1 emits a 1,100,000 us uncertainty for valid DS3231
+anchors, whereas S1 source uncertainty is unknown. Either qualify that bound for
+the correction path or explicitly support unknown/coarse anchor uncertainty in
+a compatible writer/reader contract before enabling R3-derived RTC writes. Do
+not defer this truthfulness gate to E5 and produce unsupported accuracy claims.
 
 ## Ownership and buffering
 
@@ -217,6 +246,12 @@ event order is unresolved. Unknown historical relationships stay unknown; manual
 marker alignment is a labelled user estimate. Existing v1 readers must keep passing.
 
 ## Delivery order and gates
+
+The owner now prioritizes E1 trust/reboot reconnect, E2 startup RTC, E3 targeted
+session-safe control, E4 R3 selection UI and E5 versioned group/time evidence.
+Use the coordinator contract for those gates. S2 below remains the separate
+precision investigation; E5 and S3 must share one explicit format/reader revision.
+S1 transport acceptance alone does not complete any of E1–E5.
 
 | Stage | Deliverable | Acceptance |
 |---|---|---|

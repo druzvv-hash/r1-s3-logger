@@ -687,3 +687,35 @@ the cause is unresolved. Do not treat 300 Hz as production-quality approval.
 Expanded radio/reboot/endurance tests, clock-error measurement and persistent
 clock evidence remain pending. CSV v1, local timing and RTC/EEPROM schemas are
 unchanged; S1 always reports synchronization false and uncertainty unknown.
+
+### 2026-09-09 — Plan 1.11: R3 authority and selected-device recording control
+
+Recorded the owner's requirement that R3 is the preferred RTC/time authority
+and main control panel. Enrolled instruments must authenticate/reconnect after
+power-up, correct their RTC from fresh valid R3 time while idle, and support
+START/STOP on explicitly selected current sessions. Automatic connection must
+not start recording. BLE loss must not stop autonomous recording.
+
+Audited both existing BLE endpoints, RTC/config ownership and recorder paths.
+Current S1 has volatile peer/PIN state with persistent bonding disabled and no
+remote logging contract. R1's `recorder::stop()` rejects STARTING; R3's final
+`sd_filelog_v2_stop_scheduled()` owner needs expected-session matching, and its
+UI must distinguish successful closure from ERROR/IDLE. These are implementation
+gates, not bugs fixed by this documentation change.
+
+Independent review added an E2 accuracy gate: the fixed CSV v1 DS3231 uncertainty
+of 1,100,000 us must not silently describe an R3-corrected clock without qualified
+capture-age/delay acceptance. Establish that bound or add a compatible explicit
+unknown/coarse-anchor contract before enabling RTC writes; E5 cannot defer this.
+
+Updated the English/Ukrainian engineering plan and time architecture. The
+[R3 canonical control contract](https://github.com/druzvv-hash/lily-logger-r3/blob/main/docs/ECOSYSTEM_CONTROL.md)
+and [owner notes](uk/ECOSYSTEM_CONTROL.md) define E1 trust, E2 startup RTC,
+E3 session-safe commands, E4 R3 UI and E5 versioned file evidence. Qualified
+offset/drift/uncertainty work remains S2; E5 must share the S3 reader contract.
+Preserve NVS-only bond secrets, explicit versioned settings migration, local
+monotonic time, I2C/SD ownership, PSRAM buffering and current file schemas.
+
+This entry is an architecture audit and plan amendment only. No firmware,
+EEPROM, RTC or connected hardware was changed. Documentation links and whitespace
+were checked; executable tests and physical qualification belong to each stage.

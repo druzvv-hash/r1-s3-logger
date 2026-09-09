@@ -7,6 +7,11 @@ This document describes transport and its limits, not a measured clock
 synchronization result. [Architecture](ECOSYSTEM_TIME_SYNC.md) ·
 [Ukrainian owner instructions](uk/BLE_LINK.md).
 
+The [coordinator requirement](ECOSYSTEM_TIME_SYNC.md) now adds saved enrollment,
+automatic boot connection/RTC correction and R3 group START/STOP as planned
+E1–E5 stages. S1 does not yet implement them; the manual pairing instructions
+below describe the current firmware.
+
 R3 is a Bluetooth LE GATT peripheral/server. R1-S3 is a central/client that
 selects one R3 and receives its coarse time-metronome observations. Both builds
 pin `h2zero/NimBLE-Arduino@1.4.3`. R3 starts advertising on boot; R1-S3 starts
