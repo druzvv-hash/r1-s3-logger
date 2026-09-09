@@ -632,3 +632,16 @@ Independent source review found
 no protocol mismatch. No firmware flash, RTC/EEPROM write, live serial session or
 R3 edit occurred. The BLE endpoints, UI controls, clock fitting and physical
 precision/endurance qualification remain S1–S4 work; S0 does not claim connection.
+
+### 2026-09-09 — owner-authorized upload of S0 build
+
+Uploaded normal PANEL v0.22 from clean commit `cb19e4e` through COM5; automatic
+ROM entry and all esptool data-hash checks passed. Build and upload succeeded.
+The USB panel was stopped to release UART and restarted after upload. Eleven
+post-boot snapshots spanning 22.089 seconds showed one stable new boot, 1,105
+advancing samples, 43 OLED frames, READY, ADC OK, RTC TICK OK, readable SD/EEPROM
+and four I2C addresses. No missed/invalid samples, I2C errors or FIFO overflows
+were reported. Exact configuration and saved EEPROM generation 3 matched the
+pre-upload baseline at 50 Hz. No recording or settings/RTC write was requested.
+This is a short startup check, not UART endurance or BLE acceptance. Private
+upload/build/state evidence is retained under `data/upload-cb19e4e/`.
