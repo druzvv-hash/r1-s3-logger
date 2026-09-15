@@ -15,6 +15,7 @@
 #include <WebServer.h>
 #include <Preferences.h>
 #include <esp_system.h>
+#include <esp_heap_caps.h>
 #include <atomic>
 #include <cstring>
 
@@ -25,6 +26,11 @@ portMUX_TYPE snapshotLock=portMUX_INITIALIZER_UNLOCKED;
 char bootId[9], ssid[24], password[17];
 std::atomic<bool> networkReady{false};
 std::atomic<unsigned> networkClients{0};
+std::atomic<uint32_t> networkJoins{0}, networkLeaves{0}, webLoopAt{0};
+TaskHandle_t webHandle=nullptr, downloadHandle=nullptr, publicationHandle=nullptr, serialHandle=nullptr;
+// Leave internal RAM for Wi-Fi/LwIP. These stacks include the 8 KiB state/SD
+// frames; their measured low-water marks are exported below for qualification.
+constexpr uint32_t WEB_STACK=16384, DOWNLOAD_STACK=16384, PUBLICATION_STACK=12288;
 PanelAction ownerAction=nullptr;
 struct Command { uint32_t id, expires; bool legacy; char text[COMMAND_BYTES]; };
 struct Reply { uint32_t id; char json[256]; };
@@ -160,12 +166,30 @@ void downloadTask(void*){
 }
 
 void webTask(void*){
+    WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t){
+        if(event==ARDUINO_EVENT_WIFI_AP_STACONNECTED)networkJoins.fetch_add(1);
+        if(event==ARDUINO_EVENT_WIFI_AP_STADISCONNECTED)networkLeaves.fetch_add(1);
+    });
     WiFi.mode(WIFI_AP);
     networkReady.store(WiFi.softAP(ssid,password,1,0,2));
-    xTaskCreatePinnedToCore(downloadTask,"file-http",24576,nullptr,1,nullptr,0);
+    xTaskCreatePinnedToCore(downloadTask,"file-http",DOWNLOAD_STACK,nullptr,1,&downloadHandle,0);
     WebServer server(80);
     const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
-    server.on("/",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");server.send_P(200,"text/html; charset=utf-8",reinterpret_cast<const char*>(PANEL_HTML),sizeof(PANEL_HTML));});
+    server.on("/",HTTP_GET,[&]{
+        server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");
+        server.setContentLength(sizeof(PANEL_HTML));server.send(200,"text/html; charset=utf-8","");
+        WiFiClient client=server.client();
+        // Avoid offering the whole compressed page to LwIP at once on a board
+        // sharing internal memory/radio with BLE. A short send closes cleanly;
+        // Content-Length lets the browser detect an incomplete page.
+        size_t offset=0;
+        while(offset<sizeof(PANEL_HTML)&&client.connected()){
+            const size_t count=std::min(size_t(1024),sizeof(PANEL_HTML)-offset);
+            const size_t sent=client.write(PANEL_HTML+offset,count);
+            if(sent!=count){client.stop();break;}
+            offset+=sent;vTaskDelay(pdMS_TO_TICKS(1));
+        }
+    });
     server.on("/api/state",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",snapshot("wifi"));});
     server.on("/api/live",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send(200,"application/json",live(server.hasArg("after")?server.arg("after").c_str():"0"));});
     server.on("/api/files",HTTP_GET,[&]{
@@ -190,6 +214,7 @@ void webTask(void*){
     uint32_t lastClients=0;
     for(;;){
         server.handleClient();
+        webLoopAt.store(millis());
         if(millis()-lastClients>=500){networkClients.store(WiFi.softAPgetStationNum());lastClients=millis();}
         vTaskDelay(pdMS_TO_TICKS(5));
     }
@@ -198,7 +223,7 @@ void webTask(void*){
 
 void panelBegin(PanelAction action){
     publications=xQueueCreate(1,sizeof(PanelSnapshot));
-    if(publications)xTaskCreatePinnedToCore(publicationTask,"panel-state",24576,nullptr,1,nullptr,0);
+    if(publications)xTaskCreatePinnedToCore(publicationTask,"panel-state",PUBLICATION_STACK,nullptr,1,&publicationHandle,0);
     ownerAction=action;snprintf(bootId,sizeof(bootId),"%08lx",static_cast<unsigned long>(esp_random()));
     snprintf(ssid,sizeof(ssid),"R1-S3-%04X",unsigned(ESP.getEfuseMac()>>32)&0xFFFF);
     // Only at boot, before the UI task. Credentials never enter EEPROM profiles/log files.
@@ -209,8 +234,8 @@ void panelBegin(PanelAction action){
     commands=xQueueCreate(1,sizeof(Command));replies=xQueueCreate(1,sizeof(Reply));
     commandGate=xSemaphoreCreateMutex();
     if(commands&&replies&&commandGate){
-        xTaskCreatePinnedToCore(webTask,"test-web",24576,nullptr,1,nullptr,0);
-        xTaskCreatePinnedToCore(serialTask,"panel-uart",24576,nullptr,1,nullptr,0);
+        xTaskCreatePinnedToCore(webTask,"test-web",WEB_STACK,nullptr,1,&webHandle,0);
+        xTaskCreatePinnedToCore(serialTask,"panel-uart",24576,nullptr,1,&serialHandle,0);
     }
     Serial.printf("PANEL AP: %s password=%s URL=http://192.168.4.1/; USB PANEL protocol ready.\n",ssid,password);
 }
@@ -282,6 +307,14 @@ void serializePanel(const PanelSnapshot& p){
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
     s+=",\"files_available\":"+String(recorder::busy()?"false":"true")+",\"file_transfer\":"+String(sd_files::active()?"true":"false");
     s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ap_clients\":"+String(networkClients.load())+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password);
+    s+=",\"network_diag\":{\"joins\":"+String(networkJoins.load())+",\"leaves\":"+String(networkLeaves.load());
+    s+=",\"web_loop_age_ms\":"+String(uint32_t(millis()-webLoopAt.load()));
+    s+=",\"internal_free\":"+String(heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
+    s+=",\"internal_largest\":"+String(heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
+    s+=",\"web_stack_free\":"+String(webHandle?uxTaskGetStackHighWaterMark(webHandle):0);
+    s+=",\"download_stack_free\":"+String(downloadHandle?uxTaskGetStackHighWaterMark(downloadHandle):0);
+    s+=",\"publication_stack_free\":"+String(publicationHandle?uxTaskGetStackHighWaterMark(publicationHandle):0);
+    s+=",\"uart_stack_free\":"+String(serialHandle?uxTaskGetStackHighWaterMark(serialHandle):0)+"}";
     s+=",\"ble\":"+r3BleStatusJson()+"}";
     if(s.length()>=STATE_BYTES)return;
     portENTER_CRITICAL(&snapshotLock);memcpy(cached,s.c_str(),s.length()+1);portEXIT_CRITICAL(&snapshotLock);

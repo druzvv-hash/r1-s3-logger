@@ -38,7 +38,7 @@ def capture(port):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path, help="Private output .bin; must not exist")
-    parser.add_argument("--port", default="COM5")
+    parser.add_argument("--port", default="COM9")
     args = parser.parse_args()
     if args.output.exists() or args.output.with_suffix(".json").exists():
         parser.error("Backup or manifest already exists")

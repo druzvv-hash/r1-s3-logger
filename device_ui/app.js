@@ -7,12 +7,12 @@ i_zero_uV:['Нуль струму, µV','Зсув вхідної напруги 
 i_gain:['Коефіцієнт струму','1 = без корекції масштабу'],
 u_zero_V:['Нуль напруги, V','Віднімається перед коефіцієнтом'],
 u_gain:['Коефіцієнт напруги','1 = без корекції масштабу'],
-requested_rate_hz:['Частота вимірів, Hz','Ціле число 1–300 Hz; для автоматичного вибору ADC користуйся частотою в огляді'],
-adc_range:['Діапазон шунта','0: ±163.84 mV · 1: ±40.96 mV; вузький не охоплює 400 A'],
-vshunt_ct_code:['Час конверсії шунта','Код 0–7: 50, 84, 150, 280, 540, 1052, 2074, 4120 µs'],
-vbus_ct_code:['Час конверсії VBUS','Код 0–7: 50 … 4120 µs'],
-temp_ct_code:['Час конверсії температури','Код 0–7: 50 … 4120 µs'],
-average_code:['Усереднення ADC','Код 0–7: 1, 4, 16, 64, 128, 256, 512, 1024'],
+requested_rate_hz:['Частота вимірів, Гц','Ціле число 1–300 Гц; має вміщувати конверсії та усереднення'],
+adc_range:['Діапазон шунта','Чутливий режим для менших струмів; із шунтом 400 А / 60 мВ він не охоплює всі 400 А'],
+vshunt_ct_code:['Час конверсії шунта','Довше вимірювання — менше шуму струму, повільніша реакція'],
+vbus_ct_code:['Час конверсії напруги','Довше вимірювання — менше шуму напруги'],
+temp_ct_code:['Час конверсії температури','Температура чипа; входить у загальний цикл виміру'],
+average_code:['Усереднення INA228','Кількість конверсій на один результат для всіх трьох каналів'],
 ready_timeout_us:['Очікування ADC, µs','Має вміщувати конверсії з усередненням'],
 max_gap_us:['Межа розриву, µs','Через довші паузи енергія не інтегрується; більше за період відліку'],
 flush_interval_ms:['Інтервал збереження, ms','Періодична синхронізація запису з microSD'],
@@ -32,7 +32,8 @@ oled_contrast:['Контраст OLED','0–255']
 };
 const groups=[
 ['Вимірювання та коефіцієнти',REGISTRY.slice(0,6)],
-['Аналого-цифрове перетворення',REGISTRY.slice(6,13)],
+['Аналого-цифрове перетворення',REGISTRY.slice(6,12)],
+['Додаткові параметри часу',[REGISTRY[12]]],
 ['Буфер і запис на microSD',REGISTRY.slice(13,19)],
 ['Екран і Live',REGISTRY.slice(19,23).concat(REGISTRY.slice(27))],
 ['Походження калібрування',REGISTRY.slice(23,27)]
@@ -41,7 +42,8 @@ let state=null,base=null,baseBoot='',baseRevision=0,dirty=false,busy=false,onlin
 let lastReceived=0,polling=false,stopped=false;
 let liveCursor=0,liveBoot='',lastLiveAt=0,clockAt=0,clockDevice=0,streamGaps=0,frameCount=0,fps=0,fpsAt=performance.now(),lastFrame=0;
 let nextBreak=false;
-function resetStream(boot=''){points=[];liveCursor=0;liveBoot=boot;clockAt=0;lastLiveAt=0;nextBreak=true;}
+const chartNav=new ChartNavigation();
+function resetStream(boot=''){points=[];liveCursor=0;liveBoot=boot;clockAt=0;lastLiveAt=0;nextBreak=true;chartNav.live(Number($('chart-window').value)*1000);}
 function meters(u,i){$('volts').textContent=number(u,4);$('amps').textContent=number(i,4);$('watts').textContent=number(Number.isFinite(u)&&Number.isFinite(i)?u*i:null,3);}
 
 function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
@@ -52,14 +54,17 @@ function makeFields(){
     for(const f of fields){
       const label=document.createElement('label'),name=document.createElement('span'),help=document.createElement('small');
       label.className='field';name.textContent=labels[f.name][0];help.textContent=labels[f.name][1];
-      let input=document.createElement(f.enum?'select':'input');input.id='f-'+f.name;input.name=f.name;
-      if(f.enum)for(const value of f.enum){const option=document.createElement('option');option.value=value;option.textContent=value;input.append(option);}
+      const choices=f.name==='average_code'?INA_AVERAGES.map((n,i)=>[i,n===1?'Без усереднення · ×1':'×'+n]):
+        ['vshunt_ct_code','vbus_ct_code','temp_ct_code'].includes(f.name)?INA_CT_US.map((n,i)=>[i,n+' мкс']):
+        f.name==='adc_range'?[[0,'Широкий · ±163,84 мВ'],[1,'Чутливий · ±40,96 мВ']]:f.enum?.map(v=>[v,v]);
+      let input=document.createElement(choices?'select':'input');input.id='f-'+f.name;input.name=f.name;
+      if(choices)for(const [value,text] of choices){const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option);}
       else if(f.type==='bool')input.type='checkbox';
       else if(f.type==='utf8'){input.type='text';input.maxLength=f.max_bytes;}
       else{input.type='number';input.step=f.type==='f64'?'any':'1';if(f.min!=null)input.min=f.min;if(f.max!=null)input.max=f.max;}
       label.append(name,input,help);grid.append(label);
     }
-    $('config-form').append(fieldset);
+    $(title==='Аналого-цифрове перетворення'?'ina-fields':'config-form').append(fieldset);
   }
 }
 function values(){const out={};for(const f of REGISTRY){const el=$('f-'+f.name);out[f.name]=f.type==='bool'?el.checked:f.type==='utf8'?el.value:el.value.trim()===''?NaN:Number(el.value);}return out;}
@@ -70,17 +75,53 @@ function recordingBusy(){return ['STARTING','RUNNING','STOPPING'].includes(state
 function updateDraft(){
   const current=values(),changes=base?REGISTRY.filter(f=>current[f.name]!==base[f.name]):[];
   dirty=changes.length>0;let invalid='';
-  try{validateConfig(current,REGISTRY);}catch(e){invalid=e.message;}
+  try{validateConfig(current,REGISTRY);if(!inaTiming(current,!!state?.benchmark).valid)invalid='Режим INA228 не встигає за частотою або часом очікування.';}catch(e){invalid=e.message;}
   $('changes').textContent=changes.map(f=>labels[f.name][0]+': '+String(base[f.name])+' → '+String(current[f.name])).join('\n');
   $('draft-note').textContent=stale()?'Стан змінився. Прочитай з логера заново.':invalid|| (dirty?'Змін у чернетці: '+changes.length:'Чернетка відповідає логеру');
   $('apply').disabled=recordingBusy()||!online||busy||!base||stale()||!dirty||!!invalid;
   $('save').disabled=state?.benchmark||recordingBusy()||!online||busy||!base||stale()||dirty||state?.settings_status!=='UNSAVED';
   $('export').disabled=!base||!!invalid;
+  const timing=inaTiming(current,!!state?.benchmark),locked=recordingBusy()||!online||busy;
+  $('ina-timing').textContent=Number.isFinite(timing.us)?`Цикл АЦП: ${number(timing.us/1000,3)} мс · період вимірів: ${number(timing.period/1000,3)} мс. `+
+    (timing.maximum?`Розрахункова межа з резервом: ${timing.maximum} Гц.`:'Ця комбінація не вміщується навіть у 1 Гц. Скороти конверсії або усереднення.')+
+    (!timing.valid?' Зменш частоту або обери швидший режим.':''):'Вибери коректні параметри INA228.';
+  $('ina-timing').classList.toggle('error',!timing.valid);
+  $('ina-range').textContent=Number.isFinite(timing.limitAmps)?`Межа АЦП для заданого шунта: ±${number(timing.limitAmps,1)} А.`+(current.adc_range===1?' Чутливий діапазон дає вчетверо менший крок, але зменшує межу вимірювання.':''):'';
+  $('ina-fit').hidden=timing.valid||!timing.maximum;
+  $('ina-fit').textContent='Узгодити частоту: '+timing.maximum+' Гц';$('ina-fit').disabled=locked||stale();
+  $('ina-apply').disabled=$('apply').disabled;$('ina-save').disabled=$('save').disabled;
+  $('ina-reload').disabled=busy||!online;
+  for(const el of $('ina-fields').querySelectorAll('input,select'))el.disabled=locked;
+  $('ina-changes').textContent=$('changes').textContent;
+  $('ina-note').textContent=$('draft-note').textContent+' · Застосування змінює всі параметри спільної чернетки. EEPROM зберігається окремою кнопкою.';
+  if(state?.config_hex){const applied=decodeConfig(state.config_hex,REGISTRY);$('ina-applied').textContent='Застосовано: '+applied.requested_rate_hz+' Гц · ×'+INA_AVERAGES[applied.average_code];}
 }
+function editConfig(event){
+  if(INA_FIELDS.includes(event.target.name)){
+    const adjusted=inaWithTiming(values());
+    if(Number.isFinite(adjusted.ready_timeout_us))$('f-ready_timeout_us').value=adjusted.ready_timeout_us;
+    if(Number.isFinite(adjusted.max_gap_us))$('f-max_gap_us').value=adjusted.max_gap_us;
+  }
+  updateDraft();controls();
+}
+function quickConfig(hz){const applied=decodeConfig(state.config_hex,REGISTRY);return $('rate-mode').value==='auto'?configForRate(applied,hz):inaWithTiming(applied,hz);}
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
 let blePeerDirty=false,bleDiscoveryKey='',blePermissionDirty=false;
+function canControls(){
+  if(!$('can-state'))return;
+  const c=state?.ble?.canbox,locked=busy||!online||stale()||!c,ready=!locked&&c?.mode&&c?.saved&&c?.fresh&&!c?.pending;
+  const names={idle:'Готовий',closed:'Файл закрито',recording:'Запис триває',starting:'Запуск',stopping:'Завершення',error:'Помилка',rejected:'Команду відхилено',unknown:'Стан невідомий'};
+  $('can-state').textContent=!c?.mode?'CANBox не вибрано':!c.fresh?'Немає свіжого стану CANBox — запис може тривати':(c.pending?'Очікуємо результат · ':'')+(names[c.phase]||'Стан невідомий')+' · сесія '+c.session+(c.detail?' · причина '+c.detail:'');
+  $('can-start').disabled=!ready||!['idle','closed'].includes(c?.phase);
+  $('can-stop').disabled=!ready||!['recording','starting','stopping'].includes(c?.phase);
+  $('can-query').disabled=!ready;
+  $('can-on').disabled=locked||recordingBusy()||!c?.saved;
+  $('can-save').disabled=locked||!c?.connected;
+  $('can-connect').disabled=locked||recordingBusy();
+}
 function bleControls(){
+  canControls();
   const available=!!state?.ble,locked=recordingBusy()||busy||!online||!available;
   const address=$('ble-peer').value.trim(),pin=$('ble-pin').value;
   $('ble-scan').disabled=locked;
@@ -98,7 +139,7 @@ function renderBle(ble){
   const names={OFF:'BLE вимкнено',SCANNING:'Пошук R3…',READY:'Вибери R3',CONNECTING:'Підключення…',PAIRING:'Перевірка PIN…',CONNECTED:'R3 підключений',RETRY:'Повторне підключення…',ERROR:'Помилка BLE'};
   $('ble-state').textContent=ble?(names[ble.state]||'Стан BLE невідомий'):'BLE вимкнено';
   $('ble-state').classList.toggle('online',!!(ble?.authenticated&&ble?.fresh));
-  $('ble-note').textContent=!ble?'Ця прошивка не повідомляє стан BLE. Потрібне оновлення логера.':
+  $('ble-note').textContent=ble?.canbox?.mode?'Зараз вибрано CANBox. Канал R3 призупинено; збережена прив’язка залишається.':!ble?'Ця прошивка не повідомляє стан BLE. Потрібне оновлення логера.':
     !ble.enabled?(ble.enrolled?'Збережена прив’язка є. Підключи R3 без повторного PIN.':'Увімкни пошук і вибери R3 для отримання часових маяків.'):
     ble.authenticated&&ble.rtc_synced?'RTC звірено з R3. Точність вирівнювання відліків ще не визначена.':
     ble.authenticated&&ble.fresh?'Маяк отримано; точність синхронізації ще не визначена':
@@ -143,10 +184,15 @@ async function submitBle(event){
 function setOffline(error){online=false;document.body.classList.add('offline');$('connection').textContent='Немає зв’язку';$('connection').classList.remove('online');for(const id of ['amps','volts','watts'])$(id).textContent='—';$('temperature').textContent='Температура INA228: —';notice(error,true);controls();}
 function controls(){
   const hz=Number($('quick-rate').value);let validRate=true;
-  try{$('rate-profile').textContent='Після застосування: '+rateDescription(hz);}catch(e){validRate=false;$('rate-profile').textContent=e.message;}
+  try{
+    rateProfile(hz);
+    if(state){const candidate=quickConfig(hz);if(!inaTiming(candidate,!!state.benchmark).valid)throw Error('Ці параметри INA228 не встигають. Зміни їх нижче або вибери «Авто ADC».');}
+    $('rate-profile').textContent='Після застосування: '+($('rate-mode').value==='auto'?rateDescription(hz):state?inaDescription(quickConfig(hz)):'параметри INA228 збережуться.');
+  }catch(e){validRate=false;$('rate-profile').textContent=e.message;}
   $('rate-profile').classList.toggle('error',!validRate);
   const locked=recordingBusy()||busy||!online;
   $('quick-rate').disabled=locked;
+  $('rate-mode').disabled=locked;
   for(const b of $('rate-presets').children){b.disabled=locked;b.setAttribute('aria-pressed',String(Number(b.dataset.hz)===hz));}
   $('apply-rate').disabled=locked||dirty||stale()||!state||!validRate||hz===state.requested_hz;
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
@@ -347,7 +393,8 @@ function acceptLive(batch){
     const recent=((state.uptime_ms-Math.floor(tUs/1000))|0)<2500;
     if(online)meters((q&5)||!recent?null:u,(q&5)||!recent?null:i);
   }
-  if(points.length>6000)points.splice(0,points.length-6000);
+  if(points.length){const cutoff=points.at(-1).t-CHART_HISTORY_MS;let first=0;while(first<points.length&&points[first].t<cutoff)first++;
+    first=Math.max(first,points.length-CHART_MAX_POINTS);if(first>0)points.splice(0,first);}
 }
 async function pollLive(){
   const began=performance.now();
@@ -367,18 +414,24 @@ async function pollLive(){
   if(catchUp)hz=Math.max(hz,10);
   setTimeout(pollLive,Math.max(15,1000/hz-(performance.now()-began)));
 }
+function chartLimits(now=performance.now()){
+  const oldest=points[0]?.t||0;
+  return {oldest,latest:Math.max(oldest,paused?(points.at(-1)?.t||0):clockDevice+Math.min(Math.max(0,now-clockAt),1000)-300)};
+}
 function draw(now=performance.now()){
   const canvas=$('chart'),rect=canvas.getBoundingClientRect();if(!rect.width)return false;
   const dpr=window.devicePixelRatio||1,w=rect.width,h=rect.height;
   const pw=Math.round(w*dpr),ph=Math.round(h*dpr);
   if(canvas.width!==pw||canvas.height!==ph){canvas.width=pw;canvas.height=ph;}
   const c=canvas.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);
-  const left=65,right=w-15,span=Number($('chart-window').value)*1000;
+  const left=65,right=w-15;
   c.fillStyle='#0b1016';c.fillRect(0,0,w,h);c.font='11px system-ui';
   if(!points.length){c.fillStyle='#8095a5';c.fillText('Очікування вимірів…',left,50);return true;}
   // Delay only the viewport, not the samples. Scroll between actual packets at display cadence.
-  const t1=paused?points.at(-1).t:clockDevice+Math.min(Math.max(0,now-clockAt),1000)-300;
-  const t0=t1-span,visible=points.filter(p=>p.t>=t0&&p.t<=t1);
+  const limits=chartLimits(now),view=chartNav.range(limits.oldest,limits.latest);
+  const {start:t0,end:t1,span}=view,visible=chartVisible(points,t0,t1);
+  $('chart-range').textContent=(chartNav.follow?'Наживо':'Перегляд історії')+' · '+number(span/1000,span<1000?2:1)+' с';
+  $('chart-live').setAttribute('aria-pressed',String(chartNav.follow&&!paused));
   for(const [index,key,color,unit] of [[0,'i','#00c8ff','A'],[1,'u','#ffd600','V']]){
     const top=18+index*(h/2),height=h/2-43,vals=visible.map(p=>p[key]).filter(Number.isFinite);
     let min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1,pad=Math.max((max-min)*.15,.005);
@@ -386,15 +439,16 @@ function draw(now=performance.now()){
     for(let j=0;j<3;j++){const y=top+j*height/2;c.strokeStyle='#22303a';c.beginPath();c.moveTo(left,y);c.lineTo(right,y);c.stroke();c.fillStyle='#8294a2';c.fillText((max-j*(max-min)/2).toFixed(3),4,y+4);}
     c.fillStyle=color;c.fillText(unit,4,top+height+17);
     c.strokeStyle=color;c.lineWidth=1.7;c.beginPath();let last=null;
-    for(const p of visible){
-      if(!Number.isFinite(p[key])){last=null;continue;}
+    for(const p of chartEnvelope(visible,key,t0,span,right-left)){
+      if(!p||!Number.isFinite(p[key])){last=null;continue;}
       const x=left+(p.t-t0)/span*(right-left),y=top+(max-p[key])/(max-min)*height;
       if(last&&!p.gap&&p.revision===last.revision)c.lineTo(x,y);else c.moveTo(x,y);
       last=p;
     }c.stroke();
     const tail=visible.at(-1);if(tail&&Number.isFinite(tail[key])){c.fillStyle=color;c.beginPath();c.arc(left+(tail.t-t0)/span*(right-left),top+(max-tail[key])/(max-min)*height,2.5,0,Math.PI*2);c.fill();}
   }
-  c.fillStyle='#8294a2';c.fillText('-'+span/1000+' s',left,h-4);c.fillText('зараз',Math.max(left,right-40),h-4);
+  const age=t=>number((t-limits.latest)/1000,1)+' с';
+  c.fillStyle='#8294a2';c.fillText(age(t0),left,h-4);c.fillText(chartNav.follow?'зараз':age(t1),Math.max(left,right-65),h-4);
   return true;
 }
 function animate(now){
@@ -433,7 +487,11 @@ $('files-sort').onchange=$('files-type').onchange=()=>{$('files-scroll').scrollT
 $('files-download-selected').onclick=()=>{if(selectedFile)downloadFile(selectedFile);};
 $('files-up').onclick=()=>listFiles(fileDirectory.slice(0,fileDirectory.lastIndexOf('/'))||'/');
 $('file-download').onload=()=>{try{const text=$('file-download').contentDocument.body.textContent;if(text){const r=JSON.parse(text);if(r.message)fileNotice('Не вдалося завантажити: '+r.message);}}catch{}};
-$('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',updateDraft);
+$('config-form').addEventListener('submit',e=>e.preventDefault());$('config-form').addEventListener('input',editConfig);
+$('ina-fields').addEventListener('input',editConfig);
+$('ina-apply').onclick=()=>$('apply').click();$('ina-save').onclick=()=>$('save').click();$('ina-reload').onclick=()=>$('reload-config').click();
+$('ina-fit').onclick=()=>{const current=values(),maximum=inaTiming(current,!!state?.benchmark).maximum;if(maximum)fill(inaWithTiming(current,maximum));controls();};
+$('ina-from-settings').onclick=()=>{document.querySelector('[data-tab="live"]').click();$('ina-panel').scrollIntoView({behavior:'smooth',block:'start'});};
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
@@ -449,12 +507,26 @@ $('defaults').onclick=()=>{fill(Object.fromEntries(REGISTRY.map(f=>[f.name,f.def
 for(const hz of RATE_PRESETS){const b=document.createElement('button');b.type='button';b.textContent=hz;b.dataset.hz=hz;
   b.onclick=()=>{$('quick-rate').value=hz;controls();};$('rate-presets').append(b);}
 $('quick-rate').oninput=controls;
+$('rate-mode').onchange=controls;
 $('quick-rate').onkeydown=e=>{if(e.key==='Enter'&&!$('apply-rate').disabled)$('apply-rate').click();};
 $('apply-rate').onclick=()=>{if(!state||dirty||stale())return;
-  try{const config=configForRate(decodeConfig(state.config_hex,REGISTRY),Number($('quick-rate').value));command('APPLY',encodeConfig(config,REGISTRY));}
+  try{const config=quickConfig(Number($('quick-rate').value));if(!inaTiming(config,!!state.benchmark).valid)throw Error('Неприпустимий час конверсії');command('APPLY',encodeConfig(config,REGISTRY));}
   catch(e){notice(e.message,true);}};
-$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';};
-$('clear-chart').onclick=()=>{points=[];draw();};
+function chartGoLive(){paused=false;$('pause').textContent='Пауза графіка';chartNav.live(Number($('chart-window').value)*1000);draw();}
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Продовжити графік':'Пауза графіка';if(!paused)chartGoLive();else draw();};
+$('clear-chart').onclick=()=>{points=[];chartNav.live(Number($('chart-window').value)*1000);draw();};
+$('chart-live').onclick=chartGoLive;
+function chartZoom(factor,anchor=.5){const l=chartLimits();chartNav.zoom(factor,anchor,l.oldest,l.latest);draw();}
+function chartPan(delta){const l=chartLimits();chartNav.pan(delta,l.oldest,l.latest);draw();}
+$('chart-zoom-in').onclick=()=>chartZoom(.5);$('chart-zoom-out').onclick=()=>chartZoom(2);
+$('chart-left').onclick=()=>chartPan(-chartNav.span*.25);$('chart-right').onclick=()=>chartPan(chartNav.span*.25);
+$('chart').addEventListener('wheel',e=>{e.preventDefault();const r=$('chart').getBoundingClientRect();chartZoom(Math.exp(Math.max(-200,Math.min(200,e.deltaY))*.004),Math.max(0,Math.min(1,(e.clientX-r.left-65)/(r.width-80))));},{passive:false});
+let chartDrag=null;
+$('chart').onpointerdown=e=>{if(e.button!==0)return;const l=chartLimits();chartNav.range(l.oldest,l.latest);chartNav.follow=false;chartDrag={x:e.clientX,end:chartNav.end};$('chart').setPointerCapture(e.pointerId);$('chart').classList.add('dragging');};
+$('chart').onpointermove=e=>{if(!chartDrag)return;const l=chartLimits(),width=$('chart').getBoundingClientRect().width-80;chartNav.end=chartDrag.end-(e.clientX-chartDrag.x)/width*chartNav.span;chartNav.range(l.oldest,l.latest);draw();};
+$('chart').onpointerup=$('chart').onpointercancel=$('chart').onlostpointercapture=()=>{chartDrag=null;$('chart').classList.remove('dragging');};
+$('chart').ondblclick=chartGoLive;
+$('chart').onkeydown=e=>{if(!['ArrowLeft','ArrowRight','+','=','-','Home'].includes(e.key))return;e.preventDefault();if(e.key==='Home')chartGoLive();else if(e.key==='ArrowLeft'||e.key==='ArrowRight')chartPan(chartNav.span*(e.key==='ArrowLeft'?-.25:.25));else chartZoom(e.key==='-'?2:.5);};
 $('export').onclick=()=>{try{const v=values();validateConfig(v,REGISTRY);const url=URL.createObjectURL(new Blob([JSON.stringify(exportProfile(v,REGISTRY),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='r1s3-config-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){notice(e.message,true);}};
 $('import').onclick=()=>$('profile-file').click();
 $('profile-file').onchange=async()=>{
@@ -462,10 +534,15 @@ $('profile-file').onchange=async()=>{
 };
 window.addEventListener('resize',()=>draw());
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){liveCursor=0;nextBreak=true;clockAt=0;}});
-$('chart-window').onchange=()=>draw();
+$('chart-window').onchange=()=>{const l=chartLimits();chartNav.window(Number($('chart-window').value)*1000,l.oldest,l.latest);draw();};
 requestAnimationFrame(animate);
 setInterval(()=>{if(online&&Date.now()-lastReceived>5000)setOffline('Дані застаріли. Перевір підключення логера.');},1000);
 async function poll(){if(!busy&&!polling&&!stopped){polling=true;try{await refresh();}catch(e){setOffline('Немає відповіді: '+e.message);}finally{polling=false;}}setTimeout(poll,1000);}
 controls();draw();
 if(location.protocol==='file:')setOffline('Це панель пристрою. Запусти device_ui/start.cmd на ПК або відкрий http://192.168.4.1 у мережі логера.');
 else {poll();pollLive();}
+
+if($('can-form')){
+  $('can-form').onsubmit=async e=>{e.preventDefault();const peer=$('can-peer').value.trim(),pin=$('can-pin').value;if(!/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i.test(peer)||!/^\d{6}$/.test(pin)){notice('Введи адресу CANBox та PIN із шести цифр.',true);return;}$('can-pin').value='';await command('BLE','CAN CONNECT '+peer+' '+pin);};
+  for(const [id,verb] of [['can-save','SAVE'],['can-on','ON'],['can-start','START'],['can-stop','STOP'],['can-query','QUERY']])$(id).onclick=()=>command('BLE','CAN '+verb);
+}

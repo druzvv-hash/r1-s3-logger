@@ -792,3 +792,53 @@ Exact runtime configuration was restored to saved generation 3 without EEPROM
 Save. This bounded bench does not establish three physical-node operation,
 invalid-source-RTC behavior, hard power-cut recovery, long-duration reliability
 or precise sample alignment. CAN and R3-local STM32 group adapters remain absent.
+
+### 2026-09-10 — v0.25 Wi-Fi panel memory headroom and recovery
+
+Reproduced native page load/state timeouts on v0.24 while UART samples continued
+on the same boot. BLE OFF did not recover the failed AP state. Internal free heap
+was about 17–22 KiB. Reduced three oversized networking/serialization task stacks
+by a total of 28 KiB, sent the compressed page in 1 KiB writes, and added network
+and minimum-free-stack diagnostics. No measurement configuration or saved BLE
+policy was changed.
+
+Build/upload and 10 panel/download tests passed. Two AP visits on one v0.25 boot
+verified page load/reload, advancing samples in two Chrome pages, directory read
+and a small SD download. All reduced stacks retained over 5 KiB measured margin.
+BLE remained enabled; the saved R3 was absent. A transient live request network
+change error recovered on the second visit. Physical Android retest, active BLE
+coexistence and longer/heavier workloads remain open. See the
+[bounded acceptance report](WIFI_STABILITY_2026-09-10.md).
+
+### 2026-09-11 — v0.26 INA228 controls and chart navigation
+
+Added a dedicated INA228 block to the logger Overview: averaging, three channel
+conversion times, shunt ADC range and acquisition rate. It shares the Settings
+draft, preserves calibration, checks conversion timing and requires explicit
+Apply and separate EEPROM Save. Quick rate changes now preserve the ADC settings
+by default; the earlier automatic profiles remain an explicit choice. Neither
+the EEPROM layout nor CSV formats changed.
+
+Added 10/30/60-second chart windows, cursor-anchored wheel zoom, drag/button/key
+panning and return to Live. Browsing history continues collecting; the browser
+retains up to 180 seconds / 60,000 points. Visible-range reduction preserves
+extrema and gaps. Measurement and SD recording tasks are unaffected.
+
+The generated assets, production build, eight targeted panel/rate host tests,
+existing panel/rate browser fixtures and new INA/chart browser tests passed.
+The new fixture exercises timing limits, shared drafts, recording locks,
+averaging preservation, chart history and mobile layout. See the
+[English implementation guide](INA228_PANEL.md) and
+[Ukrainian operating notes](uk/INA228_UI.md).
+
+v0.26 was uploaded successfully to COM5 and read back in two valid STATE replies.
+At that checkpoint the complete configuration matched the pre-upload baseline,
+including saved EEPROM generation 3; acquisition was approximately 50 Hz with
+zero I2C errors. The user confirmed that OLED measurements keep updating.
+
+Live UI acceptance is incomplete: UART replies subsequently timed out or had
+corrupted leading bytes, so the bridge correctly rejected them. The browser
+test did not complete its apply/readback/restore sequence; current volatile ADC
+settings must be read again after USB recovery before further tests. No EEPROM
+Save was issued. These communication failures are not a passed hardware-control
+test, and native Wi-Fi has not been requalified for v0.26 in this step.

@@ -23,6 +23,7 @@ const fields=require('../schemas/config-v1.json').fields,root=path.resolve(__dir
   await page.goto('http://127.0.0.1:9878/');
   await page.waitForFunction(()=>state?.ready);
   assert.deepEqual(await page.locator('#rate-presets button').allTextContents(),RATE_PRESETS.map(String));
+  await page.locator('#rate-mode').selectOption('auto');
   for(const bad of ['', '0','301','1.5']){
    await page.locator('#quick-rate').fill(bad);assert(await page.locator('#apply-rate').isDisabled());
   }

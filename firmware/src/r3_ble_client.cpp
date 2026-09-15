@@ -19,6 +19,7 @@ namespace {
 constexpr unsigned kDevices = 6;
 struct Device { char address[18]; char name[32]; uint8_t type; };
 struct Status {
+    bool canboxMode;
     bool enabled, authenticated, utcValid, connected, enrolled, remote, ecosystem, rtcSynced;
     char state[16], peer[18], error[56];
     uint64_t boot, segment, received, missing, malformed, duplicates, outOfOrder;
@@ -30,7 +31,7 @@ struct Status {
     unsigned deviceCount;
     Device devices[kDevices];
 };
-struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget } kind; char peer[18]; uint32_t pin; bool remote; };
+struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget, CanConnect, CanOn, CanSave, CanStart, CanStop, CanQuery, CanForget } kind; char peer[18]; uint32_t pin; bool remote; };
 struct Packet { uint8_t bytes[r3_ble::kBeaconBytes]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct EcoPacket { uint8_t bytes[96]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct Completion { R3BleOwnerRequest request; bool accepted; char message[80]; };
@@ -517,7 +518,12 @@ void receivePackets() {
     }
 }
 
+#include "canbox_client.inc"
+
 void handleCommand(const Command& command) {
+    if(command.kind>=Command::CanConnect) {canHandle(command);return;}
+    if(canMode&&command.kind==Command::Save){setState("CANBOX","Use CAN SAVE for CANBox");return;}
+    canMode=false;canPublish();
     if (command.kind == Command::Save) {
         if (!subscribed || !authenticated.load() || !linkUp.load() || !ecoSubscribed ||
             !NimBLEDevice::isBonded(NimBLEAddress(std::string(desiredPeer), desiredType))) {
@@ -546,7 +552,10 @@ void handleCommand(const Command& command) {
         // Even an OFF/boot-time client can have persistent NimBLE keys. Bring
         // up its host before erasing, otherwise FORGET would leave stale keys.
         const bool radioReady = initRadio();
-        if (radioReady) NimBLEDevice::deleteAllBonds();
+        if (radioReady && policyPresent) {
+            char address[18];r3_ble::formatDevice(policy.peer,address);
+            NimBLEDevice::deleteBond(NimBLEAddress(std::string(address),policy.addressType));
+        }
         policyPresent = false; syncedSourceBoot = 0; syncedRevision = 0; desiredPeer[0] = 0;
         publishPolicy(); setState(erased && radioReady ? "OFF" : "ERROR",
             !erased ? "NVS forget failed; retry FORGET" : !radioReady ? "Bond erase unavailable; retry FORGET" : ""); return;
@@ -582,13 +591,15 @@ void handleCommand(const Command& command) {
 }
 
 void worker(void*) {
+    canLoad();
     if (loadPolicy()) {
         Command bootCommand = {}; bootCommand.kind = Command::On; handleCommand(bootCommand);
     } else if (policyInvalid) setState("OFF", "Unsupported peer policy; FORGET and enroll again");
     for (;;) {
         Command command;
         if (xQueueReceive(commands, &command, 0) == pdTRUE) handleCommand(command);
-        if (desired) {
+        if(canMode) canStep();
+        else if (desired) {
             if ((subscribed || pairing) && !linkUp.load()) retry("R3 disconnected; retrying selected device");
             if (pairing && linkUp.load()) {
                 if (authenticated.load()) discoverAndSubscribe();
@@ -657,6 +668,7 @@ void r3BleBegin() {
 bool r3BleCommand(const char* argument, const char*& message) {
     if (!workerHandle) { message="BLE worker unavailable"; return false; }
     Command c = {};
+    if(!strncmp(argument,"CAN ",4)) return canQueue(argument+4,message);
     if (!strcmp(argument,"SCAN")) c.kind=Command::Scan;
     else if (!strcmp(argument,"OFF")) c.kind=Command::Off;
     else if (!strcmp(argument,"ON")) c.kind=Command::On;
@@ -683,7 +695,7 @@ String r3BleStatusJson() {
     Status s; bool ownerSynced;
     portENTER_CRITICAL(&statusLock); s=status; ownerSynced=ownerSnapshot.clockSynced; portEXIT_CRITICAL(&statusLock);
     const uint64_t now=uint64_t(esp_timer_get_time());
-    const bool connected=s.connected && linkUp.load() && authenticated.load();
+    const bool connected=!s.canboxMode && s.connected && linkUp.load() && authenticated.load();
     const bool fresh=connected && s.receiveUs && now>=s.receiveUs && now-s.receiveUs<r3_time::kStaleAfterUs;
     String out;out.reserve(1600);
     out="{\"enabled\":"+String(s.enabled?"true":"false")+",\"state\":"+quoted(s.state)+",\"peer\":"+quoted(s.peer);
@@ -701,7 +713,7 @@ String r3BleStatusJson() {
         if(i)out+=',';
         out+="{\"address\":"+quoted(s.devices[i].address)+",\"name\":"+quoted(s.devices[i].name)+"}";
     }
-    return out+"]}";
+    return out+"],\"canbox\":"+canJson()+"}";
 }
 
 uint64_t r3BleBootId() { return ownBoot; }

@@ -55,7 +55,7 @@ def read_profile(path):
  if obj['minor']<c.config_minor(obj['values']):raise ValueError('Extended values require profile 1.1')
  return obj['values']
 def main():
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',default='COM5');subs=parser.add_subparsers(dest='cmd',required=True)
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',default='COM9');subs=parser.add_subparsers(dest='cmd',required=True)
  export=subs.add_parser('export');export.add_argument('path',type=Path);export.add_argument('--source',choices=['applied','draft','persisted'],default='applied')
  imp=subs.add_parser('import');imp.add_argument('path',type=Path)
  subs.add_parser('status');subs.add_parser('apply');subs.add_parser('defaults')

@@ -16,12 +16,17 @@
 <div class="panel live-controls">
 <div class="rate-choices"><label>Частота вимірів, Гц<input id="quick-rate" type="number" min="1" max="300" step="1" inputmode="numeric" value="50" aria-describedby="rate-profile rate-note"></label><div id="rate-presets" role="group" aria-label="Швидкий вибір частоти"></div></div>
 <button id="apply-rate" class="primary" disabled>Застосувати частоту</button>
+<label>При зміні частоти <select id="rate-mode"><option value="preserve">Зберегти параметри INA228</option><option value="auto">Авто ADC · скинути усереднення</option></select></label>
 <label>Плавність графіка <select id="frame-rate"><option value="60">60 FPS</option><option value="30">30 FPS</option></select></label>
-<label>Ділянка <select id="chart-window"><option value="10">10 с</option><option value="30">30 с</option></select></label>
 <p id="rate-profile" role="status"></p>
 <small id="rate-note">Зміна частоти застосовується одразу; збереження в EEPROM — у налаштуваннях.</small>
 </div>
-<div class="panel chart-panel"><div class="section-title"><h2>Струм і напруга</h2><div><span class="legend current">● I, A</span><span class="legend voltage">● U, V</span><button id="pause">Пауза графіка</button><button id="clear-chart">Очистити</button></div></div><canvas id="chart" aria-label="Графік струму і напруги за вибраний проміжок часу"></canvas><div class="chart-note"><span id="stream-status">Очікування потоку</span> · Незалежні шкали U та I · справжні відліки · розриви даних не з’єднуються</div></div>
+<div class="panel chart-panel"><div class="section-title"><h2>Струм і напруга</h2><div><span class="legend current">● I, A</span><span class="legend voltage">● U, V</span><button id="pause">Пауза графіка</button><button id="clear-chart">Очистити</button></div></div>
+<div class="chart-toolbar"><label>Ділянка <select id="chart-window"><option value="10">10 с</option><option value="30">30 с</option><option value="60">60 с</option></select></label><button id="chart-zoom-in" aria-label="Збільшити графік">＋</button><button id="chart-zoom-out" aria-label="Зменшити графік">−</button><button id="chart-left" aria-label="Раніше">←</button><button id="chart-right" aria-label="Пізніше">→</button><button id="chart-live" class="primary">Наживо</button><span id="chart-range" role="status"></span></div>
+<canvas id="chart" tabindex="0" aria-label="Графік струму і напруги. Коліщатко — масштаб, перетягування — переміщення, стрілки — раніше або пізніше."></canvas><p class="muted chart-help">Коліщатко — зум біля курсора. Перетягуй графік для перегляду історії; на телефоні також працюють кнопки. «Наживо» повертає до нових вимірів.</p><div class="chart-note"><span id="stream-status">Очікування потоку</span> · Історія до 3 хв у цій вкладці · розриви даних не з’єднуються</div></div>
+<div class="panel" id="ina-panel"><div class="section-title"><div><h2>INA228 · шум і швидкість</h2><p>Довша конверсія та усереднення згладжують шум, але сповільнюють реакцію. Ці параметри впливають і на записані виміри.</p></div><span id="ina-applied" class="badge">Очікування</span></div>
+<div id="ina-fields"></div><p id="ina-timing" role="status"></p><p id="ina-range" class="muted"></p><button id="ina-fit" type="button" hidden>Узгодити частоту</button>
+<div id="ina-changes" class="muted"></div><div class="button-row"><button id="ina-apply" class="primary" disabled>Застосувати INA228</button><button id="ina-save" disabled>Зберегти в EEPROM</button><button id="ina-reload">Скинути чернетку</button></div><p id="ina-note" class="muted"></p></div>
 <div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button><button id="sync-time">Час із цього пристрою → RTC</button></div></div>
 <div class="panel"><div class="section-title"><h2>Запис на microSD</h2><span id="record-state" class="badge">Очікування</span></div><p id="record-note" role="status">Почни новий запис, коли навантаження готове.</p><div class="button-row"><button id="record-start" class="primary" disabled>● Почати запис</button><button id="record-stop" disabled>■ Зупинити й зберегти</button><button id="record-files">Відкрити записи</button></div><p id="record-path" class="muted"></p><dl id="record-stats"></dl><details><summary>Буфер і пам’ять</summary><dl id="memory"></dl></details><p class="muted">Запис працює без відкритого браузера. Після Stop дочекайся повідомлення «Файл збережено». Частоту й налаштування змінюй між записами.</p></div></div>
 </section>
@@ -38,6 +43,7 @@
 <section id="settings" class="page" hidden>
 <div class="panel"><div class="section-title"><div><h2>Параметри логера</h2><p id="config-state">Очікування конфігурації</p></div><span id="generation" class="badge">EEPROM —</span></div>
 <p class="muted">Застосувати — змінити роботу зараз. Зберегти — записати застосовані значення в EEPROM для наступного запуску.</p>
+<p class="muted">Частота, усереднення, час конверсії та діапазон шунта — у блоці INA228 на сторінці огляду. Чернетка налаштувань спільна.</p><button id="ina-from-settings">До налаштувань INA228</button>
 <div class="button-row"><button id="reload-config">Прочитати з логера</button><button id="defaults">Типові значення в чернетку</button><button id="export">Експорт чернетки JSON</button><button id="import">Імпорт JSON</button><input id="profile-file" type="file" accept=".json" hidden></div>
 <form id="config-form"></form><div id="changes"></div>
 <div class="sticky-actions"><button id="apply" class="primary" disabled>Застосувати</button><button id="save" disabled>Зберегти в EEPROM</button><span id="draft-note">Змін немає</span></div></div>
@@ -55,6 +61,13 @@
 <p class="muted">Це окрема мережа приладу без інтернету. Підключення логера до домашнього роутера поки не налаштовується.</p></div>
 </section>
 <section id="ble" class="page" hidden>
+<div class="panel"><h2>CANBox · резервне керування</h2>
+<p>R3 — головний центр. Коли він недоступний, вибери CANBox для прямого керування з R1. Цей режим займає BLE-з’єднання; повернення до R3 — кнопкою «Підключити збережений R3» нижче.</p>
+<form id="can-form" autocomplete="off"><div class="ble-fields"><label class="field">Адреса CANBox<input id="can-peer" maxlength="17" placeholder="AA:BB:CC:DD:EE:FF" spellcheck="false"></label><label class="field">PIN із CANBox<input id="can-pin" type="password" maxlength="6" inputmode="numeric" autocomplete="off"></label></div><div class="button-row"><button id="can-connect" type="submit">Прив’язати CANBox</button><button id="can-save" type="button">Зберегти прив’язку CANBox</button><button id="can-on" type="button">Вибрати збережений CANBox</button></div></form>
+<p class="muted">Перша прив’язка: BLE PAIR у USB-консолі CANBox, потім введи PIN тут. Після підключення підтвердь BLE ENROLL на CANBox і збережи прив’язку. PIN не зберігається.</p>
+<p id="can-state" role="status" aria-live="polite">Стан CANBox невідомий</p><div class="button-row"><button id="can-start" class="primary">Почати CAN-запис</button><button id="can-stop">Зупинити CAN-запис</button><button id="can-query">Перевірити CANBox</button></div>
+<p class="muted">Запис на R1 і CANBox запускається окремо. Час CANBox поки не синхронізовано. Після втрати зв’язку запис може тривати; перевір стан перед новою дією.</p></div>
+
 <div class="panel"><div class="section-title"><div><h2>Часовий маяк R3</h2><p>Зв’язок між приладами для спільної часової шкали.</p></div><span id="ble-state" class="badge">BLE вимкнено</span></div>
 <p id="ble-note" role="status" aria-live="polite">Очікування стану BLE…</p>
 <form id="ble-form" autocomplete="off"><div class="ble-fields"><label class="field">R3 · адреса BLE<input id="ble-peer" list="ble-peers" placeholder="AA:BB:CC:DD:EE:FF" maxlength="17" spellcheck="false" autocomplete="off" aria-describedby="ble-discovery"><datalist id="ble-peers"></datalist><small id="ble-discovery">Запусти пошук або введи адресу R3 вручну.</small></label><label class="field">PIN із R3<input id="ble-pin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="off" aria-describedby="ble-pair-note"><small>Шість цифр для підтвердження з’єднання.</small></label></div>
@@ -67,4 +80,6 @@
 </div></section>
 <footer><span id="footer-device">R1-S3 · очікування плати</span><span>U/I без екранного фільтра · калібрування перевіряється окремо</span></footer>
 </main><script>const REGISTRY=/*SCHEMA*/;</script><script>/*CODEC*/</script><script>/*RATE_PROFILE*/
+/*INA_PROFILE*/
+/*CHART_NAVIGATION*/
 /*APP*/</script></body></html>

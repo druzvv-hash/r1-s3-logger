@@ -11,7 +11,7 @@ import serial
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--serial-port', default='COM5')
+    parser.add_argument('--serial-port', default='COM9')
     parser.add_argument('--http-port', type=int, default=8765)
     args = parser.parse_args()
     origin = f'http://127.0.0.1:{args.http_port}'

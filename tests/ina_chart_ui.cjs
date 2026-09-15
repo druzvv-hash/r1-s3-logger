@@ -1,0 +1,91 @@
+/* Synthetic device acceptance: ADC timing, shared drafts and live chart navigation. */
+const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('node:assert/strict');
+const {encodeConfig,decodeConfig}=require('../device_ui/codec.js');
+const {inaTiming,inaWithTiming}=require('../device_ui/ina_profile.js');
+const {ChartNavigation,chartEnvelope,chartVisible}=require('../device_ui/chart_navigation.js');
+const fields=require('../schemas/config-v1.json').fields,root=path.resolve(__dirname,'..');
+const defaults=Object.fromEntries(fields.map(f=>[f.name,f.default]));
+assert.equal(inaTiming(defaults).us,3156);
+const avg4=inaWithTiming({...defaults,average_code:1});
+assert.equal(inaTiming(avg4).valid,true);assert.equal(inaTiming(avg4).maximum,60);
+const avg16=inaWithTiming({...defaults,average_code:2});
+assert.equal(inaTiming(avg16).valid,false);assert.equal(inaTiming(avg16).maximum,18);
+assert.equal(inaTiming(inaWithTiming(avg16,18)).valid,true);
+assert.equal(inaTiming(inaWithTiming({...defaults,average_code:7})).maximum,0);
+assert.equal(inaTiming(inaWithTiming({...defaults,average_code:7,vshunt_ct_code:0,vbus_ct_code:0,temp_ct_code:0},6)).valid,true);
+assert.equal(inaTiming({...defaults,ready_timeout_us:3156}).valid,false);
+const nav=new ChartNavigation(60000);nav.range(0,180000);nav.zoom(.5,.25,0,180000);
+assert.equal(nav.range(0,180000).start+nav.span*.25,135000,'Zoom anchor must not shift');
+nav.pan(-1e9,0,180000);assert.equal(nav.range(0,180000).start,0);
+nav.pan(1e9,0,180000);assert.equal(nav.range(0,180000).end,180000);
+const series=Array.from({length:1000},(_,id)=>({t:id,i:id===350?99:1,revision:1,gap:false}));
+series[500].i=null;series[700].revision=2;series[700].gap=true;
+const envelope=chartEnvelope(series,'i',0,1000,10);
+assert(envelope.some(p=>p?.i===99),'Pixel reduction must retain extrema');
+assert(envelope.filter(p=>p===null).length>=2,'Invalid/configuration boundaries survive reduction');
+assert.deepEqual(chartVisible(series,30,32).map(p=>p.t),[30,31,32]);
+(async()=>{
+ const browser=await chromium.launch({channel:'chrome',headless:true});
+ try{
+  const page=await browser.newPage({viewport:{width:1440,height:1100}}),errors=[],commands=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  let config={...defaults},revision=1,tick=0,phase='READY';
+  await page.route('**/*',async route=>{
+   const req=route.request(),p=new URL(req.url()).pathname;
+   if(p==='/')return route.fulfill({contentType:'text/html',body:fs.readFileSync(path.join(root,'device_ui/index.html'),'utf8')});
+   if(p==='/api/state')return route.fulfill({json:{ready:true,boot:'12345678',revision,generation:'3',config_hex:encodeConfig(config,fields),settings_status:'UNSAVED',uptime_ms:++tick*500,sample_at_ms:tick*500,requested_hz:config.requested_rate_hz,recording_state:phase,recording_available:true,valid:true,volts:2.2,amps:1.972}});
+   if(p==='/api/command'){
+    const parts=req.postData().split(' ');commands.push(parts[2]);assert.equal(parts[2],'APPLY');
+    config=decodeConfig(parts[3],fields);assert(inaTiming(config).valid);revision++;
+    return route.fulfill({json:{ok:true,message:'Applied',revision}});
+   }
+   return route.fulfill({json:{ok:true}});
+  });
+  await page.goto('http://127.0.0.1:9879/');await page.waitForFunction(()=>state?.ready);
+  await page.locator('#f-average_code').selectOption('1');
+  assert(await page.locator('#ina-apply').isEnabled());assert(await page.locator('#ina-save').isDisabled());
+  await page.waitForTimeout(1100);assert.equal(await page.locator('#f-average_code').inputValue(),'1');
+  assert.equal(commands.length,0,'Changing a selector must not mutate hardware');
+  await page.locator('#ina-apply').click();await page.waitForFunction(()=>!busy&&base.average_code===1);
+  assert.equal(config.average_code,1);assert.equal(config.shunt_uohm,150);
+  await page.locator('#quick-rate').fill('60');await page.locator('#apply-rate').click();
+  await page.waitForFunction(()=>!busy&&state.requested_hz===60);assert.equal(config.average_code,1,'Frequency change retains averaging');
+  await page.locator('#quick-rate').fill('100');assert(await page.locator('#apply-rate').isDisabled());
+  await page.locator('#f-average_code').selectOption('2');assert(await page.locator('#ina-apply').isDisabled());
+  assert.match(await page.locator('#ina-timing').textContent(),/18 Гц/);
+  await page.locator('#ina-fit').click();assert.equal(await page.locator('#f-requested_rate_hz').inputValue(),'18');
+  assert(await page.locator('#ina-apply').isEnabled());await page.locator('#ina-apply').click();
+  await page.waitForFunction(()=>!busy&&state.requested_hz===18);assert.equal(config.average_code,2);
+  await page.locator('#f-adc_range').selectOption('1');assert.match(await page.locator('#ina-range').textContent(),/273\.1 А/);
+  revision++;await page.waitForFunction(()=>stale());assert(await page.locator('#ina-apply').isDisabled());
+  await page.locator('#ina-reload').click();await page.waitForFunction(()=>!stale()&&!dirty);
+  phase='RUNNING';await page.waitForFunction(()=>recordingBusy());assert(await page.locator('#f-average_code').isDisabled());
+  assert(await page.locator('#ina-save').isDisabled());phase='READY';await page.waitForFunction(()=>!recordingBusy());
+  const performanceResult=await page.evaluate(()=>{
+   points=Array.from({length:54001},(_,n)=>({id:n+1,t:n*1000/300,u:2.2+Math.sin(n)*.005,i:1.97+Math.sin(n)*.015,gap:n===30000,revision:1}));
+   clockDevice=180300;clockAt=performance.now();chartNav.live(60000);$('chart-window').value='60';
+   const start=performance.now();for(let i=0;i<20;i++)draw();return {draw_ms:(performance.now()-start)/20};
+  });
+  assert.equal(await page.locator('#chart-window option').allTextContents().then(v=>v.join(',')),'10 с,30 с,60 с');
+  await page.locator('#chart').scrollIntoViewIfNeeded();await page.locator('#chart-zoom-in').click();
+  assert.equal(await page.evaluate(()=>chartNav.span),30000);assert.equal(await page.evaluate(()=>chartNav.follow),false);
+  const initialEnd=await page.evaluate(()=>chartNav.end);await page.locator('#chart-left').click();
+  assert((await page.evaluate(()=>chartNav.end))<initialEnd);
+  const box=await page.locator('#chart').boundingBox();await page.mouse.move(box.x+box.width*.6,box.y+80);
+  await page.mouse.wheel(0,-100);assert((await page.evaluate(()=>chartNav.span))<30000);
+  const beforeDrag=await page.evaluate(()=>chartNav.end);await page.mouse.down();await page.mouse.move(box.x+box.width*.7,box.y+80,{steps:5});await page.mouse.up();
+  assert((await page.evaluate(()=>chartNav.end))<beforeDrag);
+  await page.locator('#chart-window').selectOption('10');assert.equal(await page.evaluate(()=>chartNav.span),10000);
+  await page.locator('#pause').click();await page.locator('#chart-zoom-in').click();assert.equal(await page.evaluate(()=>chartNav.span),5000);
+  await page.locator('#chart-live').click();assert(await page.evaluate(()=>!paused&&chartNav.follow&&chartNav.span===10000));
+  await page.locator('#chart-window').selectOption('60');
+  fs.mkdirSync(path.join(root,'data/ina-ui-tests'),{recursive:true});
+  await page.locator('.chart-panel').screenshot({path:path.join(root,'data/ina-ui-tests/chart-desktop.png')});
+  await page.locator('#ina-panel').screenshot({path:path.join(root,'data/ina-ui-tests/ina-desktop.png')});
+  await page.setViewportSize({width:390,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile overflow');
+  await page.locator('#ina-panel').screenshot({path:path.join(root,'data/ina-ui-tests/ina-mobile.png')});
+  await page.locator('.chart-panel').screenshot({path:path.join(root,'data/ina-ui-tests/chart-mobile.png')});
+  assert.deepEqual(errors,[]);assert.deepEqual(commands,['APPLY','APPLY','APPLY']);
+  console.log('INA + chart PASS',JSON.stringify(performanceResult));
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

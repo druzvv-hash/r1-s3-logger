@@ -228,7 +228,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--port',default='COM5')
+    p.add_argument('--port',default='COM9')
     p.add_argument('--http-port',type=int,default=8767)
     p.add_argument('--open',action='store_true')
     p.add_argument('--stop',action='store_true')

@@ -2,8 +2,10 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.24**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.27-canbox-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
+
+INA228 averaging/conversion controls and 10/30/60 s chart navigation: [guide](docs/INA228_PANEL.md).
 **R3 ecosystem:** saved authenticated association, boot reconnect, coarse RTC
 correction while idle and optional remote Start/Stop through R3's `/ecosystem`
 page are implemented and host-tested. A [bounded two-board bench passed](docs/ECOSYSTEM_ACCEPTANCE_2026-09-09.md)
@@ -11,7 +13,7 @@ for saved permissions, coarse RTC correction, selected control and reboot recove
 time-only or explicitly enable recording permission. New files use CSV v2 with
 static group/RTC provenance, preserving v1 reading. [Operator guide](docs/ECOSYSTEM_CONTROL.md).
 
-**Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on UART,
+**Device UI:** run [device_ui/start.cmd](device_ui/start.cmd) with the board on native USB (COM9 on this PC),
 or join the logger's Wi-Fi AP and open 192.168.4.1. Credentials are shown in the USB
 panel's Diagnostics tab. [Test-panel guide](docs/P4A_TEST_PANEL.md).
 
@@ -27,7 +29,7 @@ the experimental recording ceiling; v0.22 adds explicit [1–300 Hz profiles](do
 - Shared I²C bus: SDA GPIO8, SCL GPIO9, 100 kHz; INA228 `0x40`, SH1106G 128×64 OLED `0x3C`, 24C32 EEPROM `0x50`, DS3231 RTC `0x68`.
 - SPI SD: CS GPIO10, MOSI GPIO11, SCK GPIO12, MISO GPIO13.
 - INA228 ALERT: GPIO14. External shunt: owner-confirmed 60 mV / 400 A (150 microohms).
-- OLED rotation: 180°. The current bench uses a CP210x USB–UART bridge.
+- OLED rotation: 180°. The current bench uses direct ESP32-S3 USB Serial/JTAG on COM9.
 
 See the [pin map](hardware/pinmap.md). Board revision and SD module circuitry remain to be recorded.
 
@@ -45,7 +47,7 @@ Selected local control: [Bourns PEC11R-4220F-S0024](hardware/encoder.md), not ye
 | RTC | Browser UTC synchronization verified; OSF=0, tick PASS; retention checked after owner-reported power disconnection |
 | INA228 | Fresh ADC and owner-reported voltage comparison established; independent current calibration and active ALERT pending |
 
-Automatic UART uploads succeeded after USB-UART controller rework. The cause of earlier intermittent bootloader failures remains unproven; native USB operation is not confirmed.
+Native USB flashing, full-image verification and console operation are confirmed. Use direct USB going forward; the cause of intermittent CP210x failures remains unproven.
 
 ## VS Code / PlatformIO
 
@@ -55,14 +57,14 @@ Open the repository root in VS Code with PlatformIO IDE installed. Dependencies 
 pio run
 ```
 
-The default environment is `esp32-s3`: automatic UART upload, CDC disabled, COM5 at 115200 baud. Close Termite / Serial Monitor before uploading. Change the port for another workstation.
+The default environment is `esp32-s3-usb`: direct USB Serial/JTAG with the console enabled. This R1 is COM9; confirm device identity before flashing (CANBox is COM11). Close the UI bridge / Serial Monitor before uploading. Port numbers may change on another PC.
 
 ```sh
-pio run -e esp32-s3 -t upload
-pio device monitor -e esp32-s3
+pio run -e esp32-s3-usb -t upload --upload-port COM9
+pio device monitor -e esp32-s3-usb -p COM9
 ```
 
-`esp32-s3-uart-manual` retains the BOOT + RESET fallback (manual RESET after upload). `esp32-s3-usb` is an unverified native-USB alternative. The explicit `esp32-s3-service` build enables the original SD/EEPROM write tests; ordinary builds exclude them.
+`esp32-s3-uart-manual` retains the BOOT + RESET fallback (manual RESET after upload). `esp32-s3` retains the old UART profile; native USB is the normal workflow. The explicit `esp32-s3-service` build enables the original SD/EEPROM write tests; ordinary builds exclude them.
 
 ## Current behavior and migration
 
@@ -93,3 +95,11 @@ Legacy recovery: [R1 firmware and viewer review](docs/legacy-r1-analysis.md).
 - [Migration journal](docs/R1_MIGRATION.md): migration stages, decisions and dated hardware evidence.
 
 - [Engineering plan](docs/R1_S3_PLAN.md): architecture, EEPROM, self-contained recording and cross-version viewer roadmap.
+
+## CANBox fallback (experimental)
+
+The direct CANBox control adapter and panel are implemented in the working tree.
+R1 flashing and the two-board BLE acceptance are pending a manual BOOT/RESET.
+See [CANBox fallback status and procedure](docs/CANBOX_FALLBACK.md).
+
+The owner confirmed that the R1 SD card was removed during the CANBox bench. The observed SD FAIL therefore does not establish an SD fault; recheck after reinsertion.
