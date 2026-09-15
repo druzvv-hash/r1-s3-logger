@@ -11,6 +11,8 @@ enum class R3BleOwnerState : uint8_t { Ready, Starting, Running, Stopping, Error
 struct R3BleOwnerSnapshot {
     R3BleOwnerState state = R3BleOwnerState::Ready;
     uint64_t sessionId = 0, groupId = 0;
+    uint64_t utcUs=0, snapshotUs=0;
+    uint32_t rtcReadAgeMs=UINT32_MAX, rtcRevision=0;
     bool ready = false, rtcValid = false, fileClosed = false, clockSynced = false;
     char file[160] = {}, error[96] = {};
 };

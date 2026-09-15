@@ -124,6 +124,7 @@ function canControls(){
     note=c.phase==='recording'?'CANBox підтвердив запис на свою SD. Після зупинки дочекайся закриття файла.':c.phase==='closed'?'CANBox підтвердив зупинку й закриття файла.':c.phase==='idle'?'Нюхалка відповідає; запис ще не запущено.':'Перевір стан перед наступною дією.';
     tone=c.phase==='recording'?'recording':['error','rejected'].includes(c.phase)?'error':['idle','closed'].includes(c.phase)?'ready':'unknown';
     if(c.ready===false&&c.phase==='idle'){headline='Не готова до запису';note='CANBox не підтвердив готовність до нового запису. Перевір SD на нюхалці.';tone='error';}
+    if(c.clock_synced!==true&&['idle','closed'].includes(c.phase)){headline='Потрібна синхронізація часу';note='Старт заблоковано. Очікуємо час від R1; перевір RTC або встанови час із телефона у вкладці Огляд.';tone='pending';}
     if(!c.saved||c.authorized===false)note+=' Потрібно завершити прив’язку та дозвіл керування.';
     if(c.pending){headline='Очікуємо результат команди';note+=' Попередній підтверджений стан: '+(names[c.phase]||'невідомий')+'.';tone='pending';}
     if(c.detail)note+=' Код причини: '+c.detail+'.';
@@ -135,7 +136,8 @@ function canControls(){
   $('can-readiness').textContent=!known?'Немає свіжих даних':c.phase==='recording'?'Запис виконується':c.ready===true?'Готова':c.ready===false?'Не готова':'Не повідомляється';
   $('can-association').textContent=!live||!c?'Немає даних':c.saved?'Збережена · без PIN':'Не збережена';
   $('can-session').textContent=known&&c.session&&c.session!=='0'?'Сесія CANBox: '+c.session:'';
-  $('can-start').disabled=!ready||c.ready===false||!['idle','closed'].includes(c?.phase);
+  $('can-clock').textContent=!known?'Невідомо':c.clock_synced===true?'Синхронізовано з R1':c.phase==='recording'?'Перевір джерело часу':'Очікуємо час від R1';
+  $('can-start').disabled=!ready||c.clock_synced!==true||c.ready===false||!['idle','closed'].includes(c?.phase);
   $('can-stop').disabled=!ready||!['recording','starting','stopping'].includes(c?.phase);
   $('can-query').disabled=!ready;
   $('can-on').disabled=locked||recordingBusy()||!c?.saved||known;

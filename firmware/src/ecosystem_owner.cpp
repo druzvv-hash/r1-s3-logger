@@ -30,7 +30,9 @@ void publish(bool i2cReady,bool sdReady){
     out.state=static_cast<R3BleOwnerState>(phase);
     out.sessionId=sessionId;
     out.groupId=sessionGroupId;
-    out.rtcValid=rtcUtcNow()!=0;
+    out.utcUs=rtcUtcNowUs();out.snapshotUs=esp_timer_get_time();
+    out.rtcReadAgeMs=rtcReadAgeMs();out.rtcRevision=rtcClockRevision();
+    out.rtcValid=out.utcUs!=0;
     out.clockSynced=out.rtcValid&&correction.applied;
     out.ready=(phase==recorder::State::Ready||phase==recorder::State::Error)&&
         i2cReady&&sdReady&&settingsReady()&&settingsGeneration()!=0&&

@@ -140,3 +140,10 @@ Ready від CANBox, не окрема діагностика SD чи доказ
 Живий R1 підтвердив CANBox connected/fresh/ready/authorized=true, phase=idle.
 SD R1 читається, generation=5, I2C errors=0. Запис під час цієї перевірки
 не запускали. 83 host-тести пройшли.
+
+## CANBox clock update 0.29
+
+Deployed: the connected R1 supplies its valid, fresh RTC calendar to CANBox.
+START requires clock_synced; STOP remains available. Live synchronization
+passed; the new SD-file acceptance test awaits card reinsertion in CANBox.
+See `C:\Projects\GLL CANBox\docs\CLOCK_SYNC_2026-09-15.uk.md`.

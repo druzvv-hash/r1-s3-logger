@@ -9,14 +9,14 @@ uint8_t canSavedPeer[6]={};
 ecosystem::Frame canObserved;
 uint64_t canSeen=0,canPoll=0,canPending=0,canDeadline=0;
 NimBLERemoteCharacteristic *canRx=nullptr,*canTx=nullptr;
-struct CanView {bool mode,saved,connected,fresh,pending,ready,authorized;uint64_t boot,session,seen;uint8_t phase;uint32_t detail;char peer[18];};
+struct CanView {bool mode,saved,connected,fresh,pending,ready,authorized,clockSynced;uint64_t boot,session,seen;uint8_t phase;uint32_t detail;char peer[18];};
 CanView canView={};
 void canPublish() {
     CanView v={};v.mode=canMode;v.saved=canSaved;
     v.connected=canMode&&subscribed&&linkUp.load()&&authenticated.load();
     v.fresh=v.connected&&canSeen&&monoUs()-canSeen<3000000;
     v.seen=canSeen;v.pending=canPending!=0;v.boot=canObserved.sender_boot;v.session=canObserved.session;
-    v.ready=(canObserved.flags&ecosystem::Ready)!=0;v.authorized=canHello;
+    v.ready=(canObserved.flags&ecosystem::Ready)!=0;v.authorized=canHello;v.clockSynced=(canObserved.flags&ecosystem::RtcSynced)!=0;
     v.phase=uint8_t(canObserved.phase);v.detail=canObserved.detail;
     snprintf(v.peer,sizeof(v.peer),"%s",canMode?desiredPeer:"");
     portENTER_CRITICAL(&statusLock);canView=v;status.canboxMode=canMode;portEXIT_CRITICAL(&statusLock);
@@ -26,8 +26,8 @@ String canJson() {
     v.connected=v.connected&&linkUp.load()&&authenticated.load();
     v.fresh=v.connected&&v.seen&&monoUs()-v.seen<3000000;
     char text[520];snprintf(text,sizeof(text),
-        "{\"mode\":%s,\"saved\":%s,\"connected\":%s,\"fresh\":%s,\"pending\":%s,\"ready\":%s,\"authorized\":%s,\"boot\":\"%llu\",\"session\":\"%llu\",\"phase\":\"%s\",\"detail\":%lu,\"peer\":\"%s\"}",
-        v.mode?"true":"false",v.saved?"true":"false",v.connected?"true":"false",v.fresh?"true":"false",v.pending?"true":"false",v.ready?"true":"false",v.authorized?"true":"false",
+        "{\"mode\":%s,\"saved\":%s,\"connected\":%s,\"fresh\":%s,\"pending\":%s,\"ready\":%s,\"authorized\":%s,\"clock_synced\":%s,\"boot\":\"%llu\",\"session\":\"%llu\",\"phase\":\"%s\",\"detail\":%lu,\"peer\":\"%s\"}",
+        v.mode?"true":"false",v.saved?"true":"false",v.connected?"true":"false",v.fresh?"true":"false",v.pending?"true":"false",v.ready?"true":"false",v.authorized?"true":"false",v.clockSynced?"true":"false",
         (unsigned long long)v.boot,(unsigned long long)v.session,ecosystem::phaseName(ecosystem::Phase(v.phase)),(unsigned long)v.detail,v.peer);
     return String(text);
 }
@@ -57,6 +57,15 @@ bool canSend(ecosystem::Frame f) {
     memcpy(f.sender,ownId,6);memcpy(f.target,desiredId,6);f.sender_boot=ownBoot;f.target_boot=canObserved.sender_boot;
     uint8_t bytes[96];ecosystem::encode(f,bytes);deadlineMs.store(millis()+5000);
     bool ok=canRx->writeValue(bytes,96,true);deadlineMs.store(0);return ok;
+}
+void canReplyTime() {
+    const auto s=snapshot();const uint64_t now=monoUs();
+    ecosystem::Frame f;f.kind=ecosystem::Kind::TimeReply;f.request=canObserved.request;f.stamp_us=canObserved.stamp_us;f.revision=s.rtcRevision;
+    const uint64_t age=now>=s.snapshotUs?(now-s.snapshotUs)/1000:UINT64_MAX;
+    if(s.rtcValid&&s.utcUs&&age<=1500&&s.rtcReadAgeMs<=12000&&age+s.rtcReadAgeMs<=12000) {
+        f.value_us=s.utcUs+(now-s.snapshotUs);f.detail=uint32_t(age+s.rtcReadAgeMs);f.flags=ecosystem::RtcValid;
+    } else f.detail=UINT32_MAX;
+    canSend(f);
 }
 void canDiscover() {
     deadlineMs.store(millis()+10000);auto service=client->getService(canServiceUuid);
@@ -89,6 +98,7 @@ void canStep() {
             canPoll=monoUs();
             if(!canRead()) {canSeen=0;setState("CANBOX","CANBox status unavailable; outcome unknown");}
             else if(!canHello) {ecosystem::Frame hello;hello.kind=ecosystem::Kind::Hello;canHello=canSend(hello);}
+            else if(canObserved.kind==ecosystem::Kind::TimeRequest)canReplyTime();
         }
         if(canPending&&monoUs()>canDeadline) {canPending=0;setState("CANBOX","Command result unknown; inspect actual state before retry");}
     }
@@ -113,6 +123,7 @@ void canHandle(const Command& c) {
         }
         ecosystem::Frame f;f.kind=ecosystem::Kind::Command;
         f.op=c.kind==Command::CanStart?ecosystem::Op::Start:c.kind==Command::CanStop?ecosystem::Op::Stop:ecosystem::Op::Query;
+        if(f.op==ecosystem::Op::Start&&!(canObserved.flags&ecosystem::RtcSynced)){setState("CANBOX","Time sync required; check R1 RTC");return;}
         if(f.op==ecosystem::Op::Start&&(!(canObserved.flags&ecosystem::Ready)||!ecosystem::startable(canObserved.phase))) {setState("CANBOX","CANBox is not idle/closed");return;}
         f.request=(uint64_t(esp_random())<<32)|esp_random();if(!f.request)f.request=1;
         f.session=f.op==ecosystem::Op::Start?((uint64_t(esp_random())<<32)|esp_random()):canObserved.session;

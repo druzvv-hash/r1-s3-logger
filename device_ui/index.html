@@ -38,6 +38,8 @@
 #ina-changes{white-space:pre-wrap;color:#f0c786}#ina-note{line-height:1.6}#ina-panel .button-row button{min-height:44px}
 
 .can-card{border:2px solid #536579;margin:0 0 20px;background:#141d27}.can-card .section-title{align-items:center;gap:12px}.can-card h2{font-size:26px;margin:8px 0 0}.can-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:18px 0}.can-facts small{display:block;font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:6px}.can-facts strong{font-size:15px}.can-card[data-status="recording"]{border-color:#ff657c;background:#2b1821}.can-card[data-status="recording"] h2{color:#ff91a1}.can-card[data-status="ready"]{border-color:#399e80}.can-card[data-status="ready"] h2{color:#7ae6bb}.can-card[data-status="error"],.can-card[data-status="pending"]{border-color:#dfa04a}.can-card[data-status="error"] h2,.can-card[data-status="pending"] h2{color:#ffd08b}#can-session{overflow-wrap:anywhere}#can-stop:enabled{border-color:#ff657c;color:#ffb1bd}@media(max-width:600px){.can-card h2{font-size:22px}.can-card .section-title{align-items:flex-start;flex-direction:column}.can-facts{grid-template-columns:1fr;gap:12px}.can-card .button-row button{flex:1 1 45%;min-width:0}}
+
+.can-facts{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:600px){.can-facts{grid-template-columns:1fr}}
 </style></head>
 <body><header><div class="brand">R1<span> / </span>S3 <small>ПАНЕЛЬ ТЕСТІВ</small></div><div id="connection" class="badge">Підключення…</div></header>
 <main>
@@ -47,7 +49,7 @@
 <section id="can-card" class="panel can-card" data-status="unknown" aria-label="Стан CAN-нюхалки">
 <div class="section-title"><div><span class="eyebrow">CANBox · CAN-нюхалка</span><h2 id="can-headline" role="status" aria-live="polite">Стан невідомий</h2></div><span id="can-link" class="badge">Немає даних</span></div>
 <p id="can-state" role="status" aria-live="polite">Очікуємо зв’язок із R1. Живлення нюхалки дистанційно не підтверджено.</p>
-<div class="can-facts"><div><small>ЗАПИС НА CANBox</small><strong id="can-recording">Невідомо</strong></div><div><small>ГОТОВНІСТЬ ДО ЗАПИСУ</small><strong id="can-readiness">Немає даних</strong></div><div><small>ПРИВ’ЯЗКА</small><strong id="can-association">Немає даних</strong></div></div>
+<div class="can-facts"><div><small>ЗАПИС НА CANBox</small><strong id="can-recording">Невідомо</strong></div><div><small>ГОТОВНІСТЬ ДО ЗАПИСУ</small><strong id="can-readiness">Немає даних</strong></div><div><small>ЧАС CANBox</small><strong id="can-clock">Не синхронізовано</strong></div><div><small>ПРИВ’ЯЗКА</small><strong id="can-association">Немає даних</strong></div></div>
 <div class="button-row"><button id="can-on" type="button">Підключити нюхалку</button><button id="can-start" class="primary" disabled>● Почати CAN-запис</button><button id="can-stop" disabled>■ Зупинити й зберегти CAN</button><button id="can-query" disabled>Оновити стан CANBox</button><button id="can-manage" type="button">Прив’язка та налаштування</button></div>
 <p id="can-session" class="muted"></p><p class="muted">Це запис CANBox. Запис вимірювань R1 запускається окремо.</p>
 </section>
@@ -401,6 +403,7 @@ function canControls(){
     note=c.phase==='recording'?'CANBox підтвердив запис на свою SD. Після зупинки дочекайся закриття файла.':c.phase==='closed'?'CANBox підтвердив зупинку й закриття файла.':c.phase==='idle'?'Нюхалка відповідає; запис ще не запущено.':'Перевір стан перед наступною дією.';
     tone=c.phase==='recording'?'recording':['error','rejected'].includes(c.phase)?'error':['idle','closed'].includes(c.phase)?'ready':'unknown';
     if(c.ready===false&&c.phase==='idle'){headline='Не готова до запису';note='CANBox не підтвердив готовність до нового запису. Перевір SD на нюхалці.';tone='error';}
+    if(c.clock_synced!==true&&['idle','closed'].includes(c.phase)){headline='Потрібна синхронізація часу';note='Старт заблоковано. Очікуємо час від R1; перевір RTC або встанови час із телефона у вкладці Огляд.';tone='pending';}
     if(!c.saved||c.authorized===false)note+=' Потрібно завершити прив’язку та дозвіл керування.';
     if(c.pending){headline='Очікуємо результат команди';note+=' Попередній підтверджений стан: '+(names[c.phase]||'невідомий')+'.';tone='pending';}
     if(c.detail)note+=' Код причини: '+c.detail+'.';
@@ -412,7 +415,8 @@ function canControls(){
   $('can-readiness').textContent=!known?'Немає свіжих даних':c.phase==='recording'?'Запис виконується':c.ready===true?'Готова':c.ready===false?'Не готова':'Не повідомляється';
   $('can-association').textContent=!live||!c?'Немає даних':c.saved?'Збережена · без PIN':'Не збережена';
   $('can-session').textContent=known&&c.session&&c.session!=='0'?'Сесія CANBox: '+c.session:'';
-  $('can-start').disabled=!ready||c.ready===false||!['idle','closed'].includes(c?.phase);
+  $('can-clock').textContent=!known?'Невідомо':c.clock_synced===true?'Синхронізовано з R1':c.phase==='recording'?'Перевір джерело часу':'Очікуємо час від R1';
+  $('can-start').disabled=!ready||c.clock_synced!==true||c.ready===false||!['idle','closed'].includes(c?.phase);
   $('can-stop').disabled=!ready||!['recording','starting','stopping'].includes(c?.phase);
   $('can-query').disabled=!ready;
   $('can-on').disabled=locked||recordingBusy()||!c?.saved||known;

@@ -15,6 +15,7 @@ bool previousValid = false;
 uint64_t previousSeconds = 0;
 uint32_t previousMillis = 0;
 bool trustedUtc = false;
+uint32_t clockRevision=1;
 }
 
 const char* pollRtc(bool verbose) {
@@ -80,7 +81,7 @@ const char* pollRtc(bool verbose) {
     previousSeconds = seconds;
     previousMillis = sampledAt;
     previousValid = true;
-    trustedUtc = !osf;
+    trustedUtc = !osf && strcmp(result,"TICK FAIL")!=0;
     return result;
 }
 
@@ -153,11 +154,14 @@ bool setRtcUtc(uint64_t epoch) {
 #include "ecosystem_owner.h"
 
 uint64_t rtcUtcNow(){return trustedUtc ? previousSeconds+946684800ULL+(uint32_t(millis()-previousMillis)/1000) : 0;}
+uint64_t rtcUtcNowUs(){return trustedUtc?(previousSeconds+946684800ULL)*1000000ULL+uint64_t(uint32_t(millis()-previousMillis))*1000ULL:0;}
+uint32_t rtcReadAgeMs(){return trustedUtc?uint32_t(millis()-previousMillis):UINT32_MAX;}
+uint32_t rtcClockRevision(){return clockRevision;}
 bool panelSetRtcUtc(uint64_t epoch){
     if(recorder::busy()||epoch<946684800ULL||epoch>=4102444799ULL)return false;
     // Also covers the legacy serial path; failed writes cannot preserve a
     // misleading R3 provenance or continue advertising an old trusted value.
-    ecosystemForgetClockEvidence();trustedUtc=false;
+    ecosystemForgetClockEvidence();trustedUtc=false;++clockRevision;
     return setRtcUtc(epoch);
 }
 
