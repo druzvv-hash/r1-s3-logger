@@ -256,7 +256,10 @@ void panelPoll(){
     if(int32_t(millis()-command.expires)>0)response=result(false,"Expired command; no action taken");
     else if(recording){
         char boot[9]={},verb[16]={};unsigned revision=0;int consumed=0;
-        const bool stop=!command.legacy&&sscanf(command.text,"%8s %u %15s%n",boot,&revision,verb,&consumed)==3&&!strcmp(verb,"STOP")&&command.text[consumed]==0;
+        const bool parsed=!command.legacy&&sscanf(command.text,"%8s %u %15s%n",boot,&revision,verb,&consumed)==3;
+        const bool stop=parsed&&((!strcmp(verb,"STOP")&&command.text[consumed]==0)||
+            (!strcmp(verb,"LINK")&&!strcmp(command.text+consumed," STOP"))||
+            (!strcmp(verb,"BLE")&&!strcmp(command.text+consumed," CAN STOP")));
         response=stop?execute(command.text):result(false,"STOP required before settings, time or diagnostic commands");
     }
     else if(command.legacy){handleLegacyLine(command.text);response=result(true,"Legacy command completed");}

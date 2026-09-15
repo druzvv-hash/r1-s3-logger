@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.29-canbox-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.31-canbox-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 
 INA228 averaging/conversion controls and 10/30/60 s chart navigation: [guide](docs/INA228_PANEL.md).
@@ -112,3 +112,5 @@ Deployed: the connected R1 supplies its valid, fresh RTC calendar to CANBox.
 START requires clock_synced; STOP remains available. Live synchronization
 passed; the new SD-file acceptance test awaits card reinsertion in CANBox.
 See `C:\Projects\GLL CANBox\docs\CLOCK_SYNC_2026-09-15.uk.md`.
+
+**CANBox + R1:** [Спільний запис / linked Start and Stop](docs/LINKED_RECORDING.uk.md) — перемикач біля старту CANBox, одна група сесій, підтверджений стан обох пристроїв.

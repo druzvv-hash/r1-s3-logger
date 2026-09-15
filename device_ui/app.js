@@ -108,6 +108,30 @@ function quickConfig(hz){const applied=decodeConfig(state.config_hex,REGISTRY);r
 function rows(id,items){const dl=$(id);dl.replaceChildren();for(const [label,value] of items){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);dl.append(dt,dd);}}
 function number(v,n=3){return Number.isFinite(v)?v.toFixed(n):'—';}
 let blePeerDirty=false,bleDiscoveryKey='',blePermissionDirty=false;
+function linkedActive(){return state?.ble?.canbox?.linked_phase>=1&&state.ble.canbox.linked_phase<=5;}
+function linkedSelected(){return linkedActive()||$('record-link')?.checked;}
+function linkedControls(){
+  const toggle=$('record-link');if(!toggle)return;
+  const c=state?.ble?.canbox,p=c?.linked_phase,active=linkedActive();
+  const live=online&&Date.now()-lastReceived<5000;
+  if(active)toggle.checked=true;
+  toggle.disabled=!live||busy||p===undefined||recordingBusy()||active||c?.pending||['starting','recording','stopping'].includes(c?.phase);
+  const labels={1:'Спільний запуск: очікуємо запис CANBox.',2:'CANBox записує. Очікуємо запуск R1.',3:'Спільний запис триває: CANBox + R1.',4:'Зупиняємо обидва записи. Очікуємо закриття файлів.',5:'Спільний запис перервано. Зупиняємо; закриття обох файлів ще не підтверджене.',6:'Обидва записи зупинено.',7:'Спільний запис не завершився успішно. Обидва пристрої вже не записують; перевір файли та SD.'};
+  $('linked-state').textContent=!live?'Немає свіжого стану R1. Результат спільного запису невідомий.':active||p===6||p===7?(labels[p]+(c.linked_group&&c.linked_group!=='0'?' Сесія: '+c.linked_group:'')):p===undefined?'Спільний запис потребує оновлення прошивки R1.':toggle.checked?'Будь-яка кнопка Старт / Стоп керує CANBox і R1. Спільна сесія; CANBox починає першим.':'Увімкни «Спільно з R1», щоб будь-яка кнопка Старт / Стоп керувала обома записами.';
+  if(linkedSelected()){
+    const startDisabled=!live||busy||stale()||dirty||active||recordingBusy()||!state?.recording_available||!c?.mode||!c?.connected||!c?.fresh||!c?.saved||!c?.authorized||!c?.ready||!c?.clock_synced||c?.pending||!['idle','closed'].includes(c?.phase)||p===undefined;
+    $('can-start').disabled=$('record-start').disabled=startDisabled;
+    $('can-stop').disabled=$('record-stop').disabled=!live||busy||!active;
+  }
+  $('can-start').textContent=linkedSelected()?'● Почати обидва записи':'● Почати CAN-запис';
+  $('can-stop').textContent=linkedSelected()?'■ Зупинити обидва записи':'■ Зупинити й зберегти CAN';
+  $('record-start').textContent=linkedSelected()?'● Почати обидва записи':'● Почати запис';
+  $('record-stop').textContent=linkedSelected()?'■ Зупинити обидва записи':'■ Зупинити й зберегти';
+  if(active){$('can-on').disabled=true;$('can-save').disabled=true;$('can-connect').disabled=true;}
+}
+async function recordingAction(start,can=false){
+  try{if(start)await stopListing();await command(linkedSelected()?'LINK':can?'BLE':start?'START':'STOP',linkedSelected()?(start?'START':'STOP'):can?'CAN '+(start?'START':'STOP'):'');}catch(e){notice(e.message,true);}
+}
 function canControls(){
   if(!$('can-state'))return;
   const c=state?.ble?.canbox,live=online&&Date.now()-lastReceived<5000;
@@ -117,13 +141,13 @@ function canControls(){
   const names={idle:'Не записує',closed:'Зупинено · файл закрито',recording:'Запис триває',starting:'Запуск запису',stopping:'Завершення запису',error:'Помилка запису',rejected:'Команду відхилено'};
   let headline='Стан невідомий',note='Немає зв’язку з R1. Запис може тривати; живлення CANBox не підтверджено.',tone='unknown';
   if(live&&!c)note='Ця прошивка R1 не повідомляє стан CANBox. Потрібне оновлення.';
-  else if(live&&c&&!c.mode){headline='Нюхалку не підключено';note=c.saved?'Натисни «Підключити нюхалку». Прив’язка збережена, PIN не потрібен.':'Відкрий «Прив’язка та налаштування», щоб додати CANBox.';}
-  else if(live&&c&&!known){headline=c.connected?'Стан застарів':'Немає зв’язку з нюхалкою';note='Немає свіжого стану CANBox — запис може тривати. Перевір живлення та відстань між платами.';}
+  else if(live&&c&&!c.mode){headline='CANBox не підключено';note=c.saved?'Натисни «Підключити CANBox». Прив’язка збережена, PIN не потрібен.':'Відкрий «Прив’язка та налаштування», щоб додати CANBox.';}
+  else if(live&&c&&!known){headline=c.connected?'Стан застарів':'Немає зв’язку з CANBox';note='Немає свіжого стану CANBox — запис може тривати. Перевір живлення та відстань між платами.';}
   else if(known){
     headline=names[c.phase]||'Стан невідомий';
-    note=c.phase==='recording'?'CANBox підтвердив запис на свою SD. Після зупинки дочекайся закриття файла.':c.phase==='closed'?'CANBox підтвердив зупинку й закриття файла.':c.phase==='idle'?'Нюхалка відповідає; запис ще не запущено.':'Перевір стан перед наступною дією.';
+    note=c.phase==='recording'?'CANBox підтвердив запис на свою SD. Після зупинки дочекайся закриття файла.':c.phase==='closed'?'CANBox підтвердив зупинку й закриття файла.':c.phase==='idle'?'CANBox відповідає; запис ще не запущено.':'Перевір стан перед наступною дією.';
     tone=c.phase==='recording'?'recording':['error','rejected'].includes(c.phase)?'error':['idle','closed'].includes(c.phase)?'ready':'unknown';
-    if(c.ready===false&&c.phase==='idle'){headline='Не готова до запису';note='CANBox не підтвердив готовність до нового запису. Перевір SD на нюхалці.';tone='error';}
+    if(c.ready===false&&c.phase==='idle'){headline='Не готовий до запису';note='CANBox не підтвердив готовність до нового запису. Перевір SD на CANBox.';tone='error';}
     if(c.clock_synced!==true&&['idle','closed'].includes(c.phase)){headline='Потрібна синхронізація часу';note='Старт заблоковано. Очікуємо час від R1; перевір RTC або встанови час із телефона у вкладці Огляд.';tone='pending';}
     if(!c.saved||c.authorized===false)note+=' Потрібно завершити прив’язку та дозвіл керування.';
     if(c.pending){headline='Очікуємо результат команди';note+=' Попередній підтверджений стан: '+(names[c.phase]||'невідомий')+'.';tone='pending';}
@@ -143,6 +167,7 @@ function canControls(){
   $('can-on').disabled=locked||recordingBusy()||!c?.saved||known;
   $('can-save').disabled=locked||!c?.connected;
   $('can-connect').disabled=locked||recordingBusy();
+  linkedControls();
 }
 
 function bleControls(){
@@ -302,8 +327,8 @@ async function command(verb,arg='',useDraft=false){
     // Owner publishes a new snapshot at most 500 ms after the acknowledged command.
     await new Promise(r=>setTimeout(r,600));await refresh();
     if(verb==='APPLY'||verb==='SAVE')reload();
-    notice(verb==='BLE'?'Команду BLE прийнято. Стеж за станом з’єднання.':verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
-  }catch(e){notice(verb==='BLE'?'Команду BLE не виконано. Перевір стан R3 й онови стан перед повторенням.':'Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
+    notice(verb==='LINK'?'Спільну команду прийнято. Стеж за станом обох записів.':verb==='BLE'?'Команду BLE прийнято. Стеж за станом з’єднання.':verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
+  }catch(e){notice(verb==='LINK'?'Спільну команду прийнято. Стеж за станом обох записів.':verb==='BLE'?'Команду BLE не виконано. Перевір стан пристрою й онови стан перед повторенням.':'Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
   finally{busy=false;controls();}
 }
 
@@ -514,8 +539,9 @@ $('ble-on').onclick=()=>command('BLE','ON');
 $('ble-forget').onclick=()=>{$('ble-pin').value='';blePeerDirty=false;blePermissionDirty=false;command('BLE','FORGET');};
 $('files-refresh').onclick=()=>listFiles();
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
-$('record-start').onclick=async()=>{try{await stopListing();await command('START');}catch(e){notice(e.message,true);}};
-$('record-stop').onclick=()=>command('STOP');
+$('record-start').onclick=()=>recordingAction(true);
+$('record-stop').onclick=()=>recordingAction(false);
+$('record-link').onchange=()=>controls();
 $('record-files').onclick=()=>{document.querySelector('[data-tab="files"]').click();listFiles('/records');};
 $('files-records').onclick=()=>listFiles('/records');
 $('files-cancel').onclick=async()=>{await stopListing();renderFiles();};
@@ -582,5 +608,5 @@ else {poll();pollLive();}
 $('can-manage').onclick=()=>{document.querySelector('[data-tab="ble"]').click();$('can-form').scrollIntoView({behavior:'smooth',block:'center'});};
 if($('can-form')){
   $('can-form').onsubmit=async e=>{e.preventDefault();const peer=$('can-peer').value.trim(),pin=$('can-pin').value;if(!/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i.test(peer)||!/^\d{6}$/.test(pin)){notice('Введи адресу CANBox та PIN із шести цифр.',true);return;}$('can-pin').value='';await command('BLE','CAN CONNECT '+peer+' '+pin);};
-  for(const [id,verb] of [['can-save','SAVE'],['can-on','ON'],['can-start','START'],['can-stop','STOP'],['can-query','QUERY']])$(id).onclick=()=>command('BLE','CAN '+verb);
+  for(const [id,verb] of [['can-save','SAVE'],['can-on','ON'],['can-start','START'],['can-stop','STOP'],['can-query','QUERY']])$(id).onclick=()=>verb==='START'||verb==='STOP'?recordingAction(verb==='START',true):command('BLE','CAN '+verb);
 }

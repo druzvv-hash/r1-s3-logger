@@ -6,12 +6,12 @@
 <div class="topline"><div><span class="eyebrow">INA228 · 400 A / 60 mV</span><h1>Вимірювання наживо</h1></div><div class="clock"><b id="utc">—</b><small id="cadence">Очікування даних</small></div></div>
 <div id="notice" role="status" aria-live="polite">З’єднання з логером…</div>
 <p id="benchmark-notice" hidden>Дослідна прошивка: порівнюємо швидкість і шум. Режими ще не затверджені для роботи. Тест сам зупиняє запис і повертає попередні налаштування; запис у EEPROM вимкнений.</p>
-<section id="can-card" class="panel can-card" data-status="unknown" aria-label="Стан CAN-нюхалки">
-<div class="section-title"><div><span class="eyebrow">CANBox · CAN-нюхалка</span><h2 id="can-headline" role="status" aria-live="polite">Стан невідомий</h2></div><span id="can-link" class="badge">Немає даних</span></div>
-<p id="can-state" role="status" aria-live="polite">Очікуємо зв’язок із R1. Живлення нюхалки дистанційно не підтверджено.</p>
+<section id="can-card" class="panel can-card" data-status="unknown" aria-label="Стан CAN-логера">
+<div class="section-title"><div><span class="eyebrow">CANBox · CAN-логер</span><h2 id="can-headline" role="status" aria-live="polite">Стан невідомий</h2></div><span id="can-link" class="badge">Немає даних</span></div>
+<p id="can-state" role="status" aria-live="polite">Очікуємо зв’язок із R1. Живлення CANBox дистанційно не підтверджено.</p>
 <div class="can-facts"><div><small>ЗАПИС НА CANBox</small><strong id="can-recording">Невідомо</strong></div><div><small>ГОТОВНІСТЬ ДО ЗАПИСУ</small><strong id="can-readiness">Немає даних</strong></div><div><small>ЧАС CANBox</small><strong id="can-clock">Не синхронізовано</strong></div><div><small>ПРИВ’ЯЗКА</small><strong id="can-association">Немає даних</strong></div></div>
-<div class="button-row"><button id="can-on" type="button">Підключити нюхалку</button><button id="can-start" class="primary" disabled>● Почати CAN-запис</button><button id="can-stop" disabled>■ Зупинити й зберегти CAN</button><button id="can-query" disabled>Оновити стан CANBox</button><button id="can-manage" type="button">Прив’язка та налаштування</button></div>
-<p id="can-session" class="muted"></p><p class="muted">Це запис CANBox. Запис вимірювань R1 запускається окремо.</p>
+<div class="button-row"><button id="can-on" type="button">Підключити CANBox</button><button id="can-start" class="primary" disabled>● Почати CAN-запис</button><label class="record-link"><input id="record-link" type="checkbox" role="switch" aria-describedby="linked-state" disabled><span>Спільно з R1</span></label><button id="can-stop" disabled>■ Зупинити й зберегти CAN</button><button id="can-query" disabled>Оновити стан CANBox</button><button id="can-manage" type="button">Прив’язка та налаштування</button></div>
+<p id="can-session" class="muted"></p><p id="linked-state" class="muted" role="status" aria-live="polite">Увімкни «Спільно з R1», щоб будь-яка кнопка Старт / Стоп керувала обома записами.</p>
 </section>
 <section class="meters" aria-label="Поточні показники">
 <article class="meter current"><label>СТРУМ</label><div><strong id="amps">—</strong><span>A</span></div><small>Знак відповідно до полярності шунта</small></article>
@@ -72,7 +72,7 @@
 <p>R3 — головний центр. Коли він недоступний, вибери CANBox для прямого керування з R1. Цей режим займає BLE-з’єднання; повернення до R3 — кнопкою «Підключити збережений R3» нижче.</p>
 <form id="can-form" autocomplete="off"><div class="ble-fields"><label class="field">Адреса CANBox<input id="can-peer" maxlength="17" placeholder="AA:BB:CC:DD:EE:FF" spellcheck="false"></label><label class="field">PIN із CANBox<input id="can-pin" type="password" maxlength="6" inputmode="numeric" autocomplete="off"></label></div><div class="button-row"><button id="can-connect" type="submit">Прив’язати CANBox</button><button id="can-save" type="button">Зберегти прив’язку CANBox</button></div></form>
 <p class="muted">Перша прив’язка: BLE PAIR у USB-консолі CANBox, потім введи PIN тут. Після підключення підтвердь BLE ENROLL на CANBox і збережи прив’язку. PIN не зберігається.</p>
-<p class="muted">Стан нюхалки та керування записом — у постійному блоці CANBox над вкладками.</p>
+<p class="muted">Стан CANBox та керування записом — у постійному блоці CANBox над вкладками.</p>
 <p class="muted">Запис на R1 і CANBox запускається окремо. Час CANBox поки не синхронізовано. Після втрати зв’язку запис може тривати; перевір стан перед новою дією.</p></div>
 
 <div class="panel"><div class="section-title"><div><h2>Часовий маяк R3</h2><p>Зв’язок між приладами для спільної часової шкали.</p></div><span id="ble-state" class="badge">BLE вимкнено</span></div>

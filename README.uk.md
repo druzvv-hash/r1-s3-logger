@@ -2,7 +2,7 @@
 
 [English](README.md) | **Українська**
 
-Відновлений Logger R1 на **ESP32-S3 + INA228**. Поточна прошивка **PANEL v0.29-canbox-dev**: панель тестів через USB/Wi-Fi, показники, налаштування з явним збереженням в EEPROM, заглушка енкодера й запис через FIFO у PSRAM та блоки на microSD. Частота вимірів — будь-яке ціле число 1–300 Гц, із швидкими кнопками та ручним введенням, графік — до 60 FPS. Запис сесій на SD доступний через Start/Stop. [Як записати й завантажити файл](docs/uk/RECORDING.md). [Вибір частоти 1–300 Гц](docs/uk/MEASUREMENT_RATES.md).
+Відновлений Logger R1 на **ESP32-S3 + INA228**. Поточна прошивка **PANEL v0.31-canbox-dev**: панель тестів через USB/Wi-Fi, показники, налаштування з явним збереженням в EEPROM, заглушка енкодера й запис через FIFO у PSRAM та блоки на microSD. Частота вимірів — будь-яке ціле число 1–300 Гц, із швидкими кнопками та ручним введенням, графік — до 60 FPS. Запис сесій на SD доступний через Start/Stop. [Як записати й завантажити файл](docs/uk/RECORDING.md). [Вибір частоти 1–300 Гц](docs/uk/MEASUREMENT_RATES.md).
 
 
 [Усереднення INA228, діапазон і навігація по графіку](docs/uk/INA228_UI.md).
@@ -113,3 +113,5 @@ Deployed: the connected R1 supplies its valid, fresh RTC calendar to CANBox.
 START requires clock_synced; STOP remains available. Live synchronization
 passed; the new SD-file acceptance test awaits card reinsertion in CANBox.
 See `C:\Projects\GLL CANBox\docs\CLOCK_SYNC_2026-09-15.uk.md`.
+
+**CANBox + R1:** [Спільний запис / linked Start and Stop](docs/LINKED_RECORDING.uk.md) — перемикач біля старту CANBox, одна група сесій, підтверджений стан обох пристроїв.

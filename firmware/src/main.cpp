@@ -261,6 +261,11 @@ void scanI2c() {
 }
 
 bool runPanelAction(const char* verb, const char* argument, const char*& message) {
+    if(!strcmp(verb,"LINK"))return ecosystemLinkedCommand(argument,message);
+    if(ecosystemLinkedActive()){
+        if(!strcmp(verb,"STOP")&&!*argument)return ecosystemLinkedCommand("STOP",message);
+        message="Shared recording active; use LINK STOP";return false;
+    }
     if(!strcmp(verb,"BLE"))return r3BleCommand(argument,message);
 #if R1_BENCHMARK
     if(!strcmp(verb,"BENCH"))return rateBenchmarkStart(argument,message,runPanelAction);
@@ -387,10 +392,11 @@ void loop() {
         lastPublish=millis();publishedRevision=settingsRevision();
     }
     // A quiet acquisition slot is not guaranteed (100 Hz / 100 kHz can starve
-    // RTC reads indefinitely). While idle, reserve a short, accounted maintenance
-    // slot every five seconds. During recording retain the no-gap slack policy.
+    // RTC reads indefinitely). Shared recording requires fresh controller time.
+    // Reserve an accounted maintenance slot at a conversion boundary; the next
+    // sample carries GAP evidence. Independent recording retains its slack policy.
     if(i2cReady && millis()-lastRtc>=5000){
-        const bool reserve=!recorder::busy()&&acquisitionIdle();
+        const bool reserve=(!recorder::busy()||ecosystemLinkedActive())&&acquisitionIdle();
         if(reserve||acquisitionWorkBudgetUs()>(Wire.getClock()>100000?1600:4500)){
             if(reserve)acquisitionPause();
             rtcStatus=pollRtc(false);lastRtc=millis();

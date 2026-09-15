@@ -10,6 +10,8 @@
 #include <esp_timer.h>
 #include <esp_system.h>
 #include <cstring>
+#include "linked_recording.h"
+#include "ecosystem_protocol.h"
 
 namespace {
 // Owned on core 1, never accessed by a BLE callback. Reset after a manual RTC
@@ -18,6 +20,8 @@ recording::SessionInfo::ClockCorrection correction;
 uint64_t sessionId=0;
 uint64_t sessionGroupId=0;
 uint32_t lastPublication=0;
+linked_recording::Coordinator linked;
+uint64_t linkedGroup=0,linkedCanSession=0,linkedCanBoot=0;
 
 uint64_t newSessionId(){
     uint64_t value=(uint64_t(esp_random())<<32)|esp_random();
@@ -30,6 +34,7 @@ void publish(bool i2cReady,bool sdReady){
     out.state=static_cast<R3BleOwnerState>(phase);
     out.sessionId=sessionId;
     out.groupId=sessionGroupId;
+    out.linkedPhase=linked.phase;out.linkedGroup=linkedGroup;
     out.utcUs=rtcUtcNowUs();out.snapshotUs=esp_timer_get_time();
     out.rtcReadAgeMs=rtcReadAgeMs();out.rtcRevision=rtcClockRevision();
     out.rtcValid=out.utcUs!=0;
@@ -53,7 +58,8 @@ void publish(bool i2cReady,bool sdReady){
 
 void ecosystemForgetClockEvidence(){correction={};}
 
-bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& message){
+bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& message,uint64_t localGroup){
+    if(linked.active()&&!localGroup){message="Shared recording active; use LINK STOP";return false;}
     if(recorder::busy()){message="Recording is already starting, running or stopping";return false;}
     if(!settingsReady()){message="Valid INA settings required";return false;}
     if(sd_files::active()){message="SD transfer is active";return false;}
@@ -72,7 +78,7 @@ bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& messag
     if(!captureInaIdentity(info.manufacturer,info.device,info.adc)){
         message="INA identity/config readback failed";return false;
     }
-    pollRtc(false);info.utcUs=rtcUtcNow()*1000000;info.originUs=esp_timer_get_time();
+    pollRtc(false);info.utcUs=rtcUtcNowUs();info.originUs=esp_timer_get_time();
     info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;
     info.dirty=R1_BUILD_DIRTY;info.version=R1_FIRMWARE_VERSION;
     info.id=recording::sessionId(info.utcUs,esp_random(),esp_random());
@@ -81,6 +87,7 @@ bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& messag
     uint8_t localId[6];char address[18];r3BleCopyDeviceId(localId);
     r3_ble::formatDevice(localId,address);info.deviceId=address;
     info.clockCorrection=correction;
+    if(localGroup){info.groupId=localGroup;info.coordinatorBoot=info.bootId;info.coordinatorId=info.deviceId;}
     if(remote){
         info.groupId=remote->groupId;info.coordinatorBoot=remote->sourceBoot;
         r3_ble::formatDevice(remote->sourceDevice,address);info.coordinatorId=address;
@@ -93,7 +100,39 @@ bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& messag
     return true;
 }
 
+bool ecosystemLinkedActive(){return linked.active();}
+bool ecosystemLinkedCommand(const char* argument,const char*& message){
+    if(!strcmp(argument,"STOP")){
+        if(!linked.active()){message="No shared recording active";return false;}
+        r3BleCancelPendingStarts();linked.stop();message="Shared stop requested; wait for both files to close";return true;
+    }
+    if(strcmp(argument,"START")){message="Use LINK START or LINK STOP";return false;}
+    const auto can=r3BleCanBoxSnapshot();
+    if(linked.active()||recorder::busy()||sd_files::active()||!settingsReady()||!settingsGeneration()||!rtcUtcNowUs()||
+       !can.ready||can.pending||!ecosystem::startable(ecosystem::Phase(can.phase))){message="Both recorders must be idle, ready and time synchronized";return false;}
+    linkedGroup=newSessionId();linkedCanSession=newSessionId()|1;linkedCanBoot=can.boot;
+    if(!r3BleCanBoxRecord(true,linkedCanBoot,linkedCanSession,linkedGroup)){message="CANBox command queue busy";return false;}
+    linked.begin(esp_timer_get_time());message="Shared start queued; waiting for CANBox then R1";return true;
+}
+
 void ecosystemOwnerPoll(bool i2cReady,bool sdReady){
+    if(linked.active()){
+        const auto can=r3BleCanBoxSnapshot();const auto rs=recorder::state();
+        linked_recording::Observation o;
+        o.fresh=can.fresh;o.canOwned=can.boot==linkedCanBoot&&can.session==linkedCanSession&&can.group==linkedGroup;
+        o.canRecording=can.phase==uint8_t(ecosystem::Phase::Recording);
+        o.canClosed=can.phase==uint8_t(ecosystem::Phase::Idle)||can.phase==uint8_t(ecosystem::Phase::Closed);
+        o.r1Busy=recorder::busy();o.r1Running=rs==recorder::State::Running&&sessionGroupId==linkedGroup;
+        o.r1Failed=rs==recorder::State::Error;
+        const uint8_t action=linked.step(esp_timer_get_time(),o);const char* message="";
+        if(action&linked_recording::StartR1){
+            acquisitionPause();
+            if(!i2cReady||!sdReady||!ecosystemStartRecording(nullptr,message,linkedGroup))linked.fail();
+            acquisitionResume();
+        }
+        if(action&linked_recording::StopR1)recorder::stop(message);
+        if(action&linked_recording::StopCan)r3BleCanBoxRecord(false,linkedCanBoot,linkedCanSession,linkedGroup);
+    }
     R3BleOwnerRequest request;
     if(!r3BleTakeOwnerAction(request)){
         if(millis()-lastPublication>=200)publish(i2cReady,sdReady);

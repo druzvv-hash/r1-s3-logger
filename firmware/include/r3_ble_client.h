@@ -6,6 +6,13 @@
 void r3BleBegin();
 bool r3BleCommand(const char* argument, const char*& message);
 String r3BleStatusJson();
+struct CanBoxSnapshot {
+    bool fresh=false, ready=false, pending=false;
+    uint64_t boot=0, session=0, group=0;
+    uint8_t phase=0;
+};
+CanBoxSnapshot r3BleCanBoxSnapshot();
+bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group);
 
 enum class R3BleOwnerState : uint8_t { Ready, Starting, Running, Stopping, Error };
 struct R3BleOwnerSnapshot {
@@ -15,6 +22,8 @@ struct R3BleOwnerSnapshot {
     uint32_t rtcReadAgeMs=UINT32_MAX, rtcRevision=0;
     bool ready = false, rtcValid = false, fileClosed = false, clockSynced = false;
     char file[160] = {}, error[96] = {};
+    uint8_t linkedPhase=0;
+    uint64_t linkedGroup=0;
 };
 struct R3BleOwnerRequest {
     enum Kind : uint8_t { Start, Stop, SetTime } kind;

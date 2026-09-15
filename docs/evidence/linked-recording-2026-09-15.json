@@ -1,0 +1,42 @@
+{
+  "firmware": "0.31-canbox-dev",
+  "date": "2026-09-15",
+  "host_checks": 87,
+  "browser_checks": "passed: independent and linked button pairs, cancellation control, stale link, dirty draft, 64-bit session, desktop/mobile, no slang",
+  "hardware": {
+    "observed_running_seconds": 32.49,
+    "running_snapshots": 65,
+    "all_r1_running": true,
+    "all_can_recording": true,
+    "all_can_fresh": true,
+    "all_can_clock_synced": true,
+    "connections_during_interval": 0,
+    "read_errors_during_interval": 0,
+    "invalid_time_replies_during_interval": 0,
+    "group": "2275489393266321017",
+    "can_session": "12647697137337106425",
+    "r1_file": "/records/r1s3_2026-09-15_12-54-02Z_42caa08f_74c55c56_0000.csv",
+    "final_r1": "READY",
+    "final_can": "closed",
+    "final_linked_phase": 6
+  },
+  "storage_failure": "First CANBox metadata creation failed with detail 10 after SD removal/reinsertion. R1 remained READY; coordinator reached Failed. CANBox restart remounted SD; subsequent start succeeded. No media formatting or file deletion.",
+  "file_verification": {
+    "sha256": "574aa72a4470be5abe0eb0a52c411fca98d9935ded3f57bdf73efa2535d26d4c",
+    "clean": true,
+    "verified_rows": 5098,
+    "unverified_rows": 0,
+    "invalid_rows": 0,
+    "missing_sequences": 0,
+    "gap_rows": 10,
+    "actual_hz": 99.76482941946402,
+    "viewer_integrity": "verified clean",
+    "can": {
+      "bytes": 64,
+      "frames": 0,
+      "crc_end_verified": true,
+      "path": "/sd/39b3fff9.cbx"
+    },
+    "r1_group_matches_can_status": true
+  }
+}

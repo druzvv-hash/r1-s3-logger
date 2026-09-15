@@ -31,7 +31,7 @@ struct Status {
     unsigned deviceCount;
     Device devices[kDevices];
 };
-struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget, CanConnect, CanOn, CanSave, CanStart, CanStop, CanQuery, CanForget } kind; char peer[18]; uint32_t pin; bool remote; };
+struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget, CanConnect, CanOn, CanSave, CanStart, CanStop, CanQuery, CanForget } kind; char peer[18]; uint32_t pin; bool remote; uint64_t boot,session,group,expires; };
 struct Packet { uint8_t bytes[r3_ble::kBeaconBytes]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct EcoPacket { uint8_t bytes[96]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct Completion { R3BleOwnerRequest request; bool accepted; char message[80]; };
@@ -645,6 +645,19 @@ String decimal(uint64_t value) {
     char text[24]; snprintf(text,sizeof(text),"%llu",(unsigned long long)value); return quoted(text);
 }
 } // namespace
+
+CanBoxSnapshot r3BleCanBoxSnapshot(){
+    CanView v;portENTER_CRITICAL(&statusLock);v=canView;portEXIT_CRITICAL(&statusLock);
+    CanBoxSnapshot s;s.fresh=v.mode&&v.connected&&linkUp.load()&&authenticated.load()&&v.seen&&monoUs()-v.seen<3000000;
+    s.ready=s.fresh&&v.saved&&v.authorized&&v.ready&&v.clockSynced;
+    s.pending=v.pending;s.boot=v.boot;s.session=v.session;s.group=v.group;s.phase=v.phase;return s;
+}
+bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group){
+    if(!workerHandle||!commands)return false;
+    Command c={};c.kind=start?Command::CanStart:Command::CanStop;
+    c.boot=boot;c.session=session;c.group=group;c.expires=monoUs()+2000000;
+    return xQueueSend(commands,&c,0)==pdTRUE;
+}
 
 void r3BleBegin() {
     if (workerHandle) return;
