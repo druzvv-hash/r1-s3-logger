@@ -99,10 +99,35 @@ class Device:
                 diagnostic_lines(self.serial.read(self.serial.in_waiting).decode('utf8',errors='replace'))
             self.serial.write((prefix+command+'\n').encode('ascii'))
             deadline=time.monotonic()+11
+            pending=b''
+            damaged_reads=0
+            next_read_retry=time.monotonic()+1.5
             while time.monotonic()<deadline:
-                line=self.serial.readline(8192).decode('utf8',errors='replace').strip()
+                pending+=self.serial.readline(8192-len(pending))
+                if len(pending)>=8192 and not pending.endswith(b'\n'):
+                    raise ValueError('USB reply exceeds frame limit')
+                if not pending.endswith(b'\n'):
+                    if command=='STATE' and damaged_reads<2 and time.monotonic()>=next_read_retry:
+                        damaged_reads+=1
+                        pending=b''
+                        diagnostic('USB state reply incomplete; requesting a fresh snapshot')
+                        self.serial.write((prefix+command+'\n').encode('ascii'))
+                        next_read_retry=time.monotonic()+1.5
+                    continue  # A serial timeout is not an end-of-message marker.
+                line=pending.decode('utf8',errors='strict').strip()
+                pending=b''
                 if line.startswith(prefix):
-                    return json.loads(line[len(prefix):])
+                    try:
+                        return json.loads(line[len(prefix):])
+                    except json.JSONDecodeError:
+                        # Only a fresh state read is safe to repeat. Never resend
+                        # START/STOP/settings when their outcome is unknown.
+                        if command!='STATE' or damaged_reads>=2:
+                            raise
+                        damaged_reads+=1
+                        diagnostic('Damaged USB state frame; requesting a fresh snapshot')
+                        self.serial.write((prefix+command+'\n').encode('ascii'))
+                        next_read_retry=time.monotonic()+1.5
                 diagnostic_lines(line)
             raise TimeoutError('Логер не відповів. Перевір прошивку v0.14+ і COM-порт; не повторюй запис без перевірки стану.')
         except Exception as exc:

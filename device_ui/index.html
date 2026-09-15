@@ -442,7 +442,7 @@ function bleControls(){
 function renderBle(ble){
   const names={OFF:'BLE вимкнено',SCANNING:'Пошук R3…',READY:'Вибери R3',CONNECTING:'Підключення…',PAIRING:'Перевірка PIN…',CONNECTED:'R3 підключений',CANBOX:'CANBox вибрано · R3 призупинено',RETRY:'Повторне підключення…',ERROR:'Помилка BLE'};
   $('ble-state').textContent=ble?(names[ble.state]||'Стан BLE невідомий'):'BLE вимкнено';
-  $('ble-state').classList.toggle('online',!!(ble?.authenticated&&ble?.fresh));
+  $('ble-state').classList.toggle('online',!!(ble?.canbox?.mode?(ble.canbox.connected&&ble.canbox.fresh):(ble?.authenticated&&ble?.fresh)));
   $('ble-note').textContent=ble?.canbox?.mode?'Зараз вибрано CANBox. Канал R3 призупинено; збережена прив’язка залишається.':!ble?'Ця прошивка не повідомляє стан BLE. Потрібне оновлення логера.':
     !ble.enabled?(ble.enrolled?'Збережена прив’язка є. Підключи R3 без повторного PIN.':'Увімкни пошук і вибери R3 для отримання часових маяків.'):
     ble.authenticated&&ble.rtc_synced?'RTC звірено з R3. Точність вирівнювання відліків ще не визначена.':
@@ -462,7 +462,13 @@ function renderBle(ble){
     for(const device of devices){const option=document.createElement('option');option.value=device.address;option.label=device.name||'R3';$('ble-peers').append(option);}
   }
   $('ble-discovery').textContent=devices.length?'Знайдено: '+devices.length+'. Вибери адресу або введи її вручну.':'Запусти пошук або введи адресу R3 вручну.';
-  rows('ble-summary',ble?[
+  rows('ble-summary',ble?.canbox?.mode?[
+    ['Вибраний пристрій','CANBox · '+(ble.canbox.peer||'—')],
+    ['З’єднання з CANBox',ble.canbox.connected?'Підтверджено':'Не підтверджено'],
+    ['Свіжий стан CANBox',ble.canbox.fresh?'Так':'Ні'],
+    ['Час CANBox',ble.canbox.fresh&&ble.canbox.clock_synced?'Синхронізовано з R1':'Очікуємо підтвердження'],
+    ['Канал R3','Призупинено, поки вибрано CANBox']
+  ]:ble?[
     ['Вибраний R3',ble.peer||'—'],['Підтвердження з’єднання',ble.authenticated?'Підтверджено':'Не підтверджено'],
     ['Свіжий маяк',ble.fresh?'Так':'Ні'],['Вік маяка',Number.isFinite(ble.age_ms)?number(ble.age_ms/1000,1)+' с':'—'],
     ['UTC у маяку',ble.utc_valid?'Валідний за даними R3':'Невідомий / невалідний'],['Точність синхронізації','Ще не визначена'],
@@ -470,7 +476,13 @@ function renderBle(ble){
     ['Звіряння RTC',ble.rtc_synced?'Виконано для цього запуску R3':ble.enrolled?'Очікує зв’язку, чинного часу або завершення запису':'Потрібна збережена прив’язка']
   ]:[]);
   // Counters are decimal strings: avoid precision loss through Number conversion.
-  rows('ble-diagnostics',ble?[
+  rows('ble-diagnostics',ble?.canbox?.mode?[
+    ['З’єднань із CANBox',ble.canbox.connections??'—'],
+    ['Помилки читання стану',ble.canbox.read_errors??'—'],
+    ['Відповіді часу / без чинного RTC',(ble.canbox.time_replies??'—')+' / '+(ble.canbox.invalid_time_replies??'—')],
+    ['Вік перевірки RTC',Number.isFinite(ble.canbox.rtc_read_age_ms)?number(ble.canbox.rtc_read_age_ms/1000,1)+' с':'Немає чинного часу'],
+    ['Остання помилка',ble.last_error||'—']
+  ]:ble?[
     ['Запуск R3 / ревізія часу',(ble.source_boot||'—')+' / '+(ble.clock_revision??'—')],['Сегмент',ble.segment||'—'],
     ['Останній номер маяка',ble.last_sequence??'—'],['Отримано / пропущено',(ble.received??'0')+' / '+(ble.missing??'0')],
     ['Некоректні / дублікати / не за порядком',(ble.malformed??'0')+' / '+(ble.duplicates??'0')+' / '+(ble.out_of_order??'0')],

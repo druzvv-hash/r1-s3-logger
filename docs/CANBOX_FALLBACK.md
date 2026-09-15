@@ -147,3 +147,21 @@ Deployed: the connected R1 supplies its valid, fresh RTC calendar to CANBox.
 START requires clock_synced; STOP remains available. Live synchronization
 passed; the new SD-file acceptance test awaits card reinsertion in CANBox.
 See `C:\Projects\GLL CANBox\docs\CLOCK_SYNC_2026-09-15.uk.md`.
+
+
+## Стабільність 0.30 / CANBox 0.4.1
+
+Виправлено голодування перевірки RTC при 100 Гц / I²C 100 кГц: без власного запису R1 перевіряє RTC кожні 5 с з облікованою короткою паузою acquisition. Власний активний запис R1 примусово не переривається. CANBox оновлює час і під час запису; часовий якір у відкритому файлі залишається незмінним.
+
+Native USB має TX 16 KiB та RX 4 KiB. ПК збирає часткові рядки та максимум двічі перечитує пошкоджений STATE. Команди зі зміною стану автоматично не повторюються. Поля діагностики CANBox: connections, read_errors, time_replies, invalid_time_replies, rtc_read_age_ms. У вкладці пристроїв активний CANBox відділений від призупиненого R3.
+
+На стороні CANBox виправлено переповнення стека main під час START і запису часових метаданих (3584 → 8192 байти). Повний звіт та докази: `C:\Projects\GLL CANBox\docs\STABILITY_2026-09-15.uk.md`.
+
+
+### Native USB: прив’язка задачі до ядра
+
+Збільшення буфера не усувало пошкодження повністю. Причина відповідає між’ядерній гонці HWCDC: Serial.begin() встановлює USB-переривання на ядрі setup, а задача передачі PANEL була на іншому ядрі. Для native Serial/JTAG передавач PANEL тепер працює на ядрі setup з низьким пріоритетом. UART-профіль зберігає попереднє ядро; Wi-Fi та формування JSON залишаються окремими задачами. Глобальні бібліотеки не змінено.
+
+Первинне джерело: [Espressif arduino-esp32 #11959](https://github.com/espressif/arduino-esp32/issues/11959), обговорення однакового ядра для ISR і write(). Це локальний обхід для зафіксованої Arduino 2.x; повний перехід на іншу версію framework не виконувався.
+
+Фінальний стендовий тест: 94,61 с / 107 знімків, два успішні START/STOP, без повторного BLE-підключення чи втрати часу. Два файли CANBox мають UTC, правильні CRC/END та нуль CAN-кадрів. R1 host suite: 86/86. Сирі USB-відповіді можуть бути відсутні; обмежене повторне читання STATE також покриває цей випадок, без повторення команд.

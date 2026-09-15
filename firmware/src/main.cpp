@@ -305,6 +305,13 @@ void setup() {
 #if !ARDUINO_USB_CDC_ON_BOOT
     Serial.setRxBufferSize(8192);
 #endif
+#if ARDUINO_USB_CDC_ON_BOOT && ARDUINO_USB_MODE == 1
+    // Keep a complete panel reply in the native Serial/JTAG TX ring. The
+    // default 256-byte ring repeatedly flushes the hardware FIFO mid-reply.
+    Serial.setTxBufferSize(16384);
+    Serial.setRxBufferSize(4096);
+    Serial.setTxTimeoutMs(1000);
+#endif
     Serial.begin(115200);
     delay(2000);
     Serial.println("\nR1-S3 PANEL v" R1_FIRMWARE_VERSION ": direct Wi-Fi + SD session recording");
@@ -379,8 +386,16 @@ void loop() {
         panelPublish({sdStatus,eepromStatus,rtcStatus,inaStatus,oledReady,i2cCount,i2cErrors,oledFrames,oledChunkUs});
         lastPublish=millis();publishedRevision=settingsRevision();
     }
-    if(i2cReady && millis()-lastRtc>=10000 && acquisitionWorkBudgetUs()>(Wire.getClock()>100000?1600:4500)){
-        rtcStatus=pollRtc(false);lastRtc=millis();
+    // A quiet acquisition slot is not guaranteed (100 Hz / 100 kHz can starve
+    // RTC reads indefinitely). While idle, reserve a short, accounted maintenance
+    // slot every five seconds. During recording retain the no-gap slack policy.
+    if(i2cReady && millis()-lastRtc>=5000){
+        const bool reserve=!recorder::busy()&&acquisitionIdle();
+        if(reserve||acquisitionWorkBudgetUs()>(Wire.getClock()>100000?1600:4500)){
+            if(reserve)acquisitionPause();
+            rtcStatus=pollRtc(false);lastRtc=millis();
+            if(reserve)acquisitionResume();
+        }
     }
     if(oledOffset==sizeof(oledFrame) && millis()-lastDisplay>=1000/appliedSettings().display_hz && acquisitionWorkBudgetUs()>1500){
         updateOled();lastDisplay=millis();

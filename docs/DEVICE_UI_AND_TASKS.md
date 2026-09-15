@@ -1,5 +1,7 @@
 # Device control UI and task ownership
 
+Update 2026-09-15 (0.30): native USB Serial/JTAG PANEL TX runs at low priority on the setup/USB-ISR core to avoid the HWCDC cross-core race. UART profiles, HTTP and JSON publication retain core 0. See [CANBox stability update](CANBOX_FALLBACK.md).
+
 Implementation update, 2026-09-08: PANEL v0.22 provides USB/AP control, integer 1–300 Hz acquisition and batched live preview. See [rate profiles](MEASUREMENT_RATES.md). Core 0 handles UART/HTTP and snapshot JSON; core 1 owns INA/OLED/RTC I2C and the separate SD recorder task. Local encoder menus remain pending hardware.
 
 Owner requirement, 2026-09-08: operate the logger through an actual UI, preserve the late R1 Fnirsi-style instrument workflow, and separate UI from acquisition/storage across the ESP32-S3 cores. This concerns the **device control panel**, not further offline-viewer feature work. The P3 UART/JSON utility is a service tool, not the final user interface.

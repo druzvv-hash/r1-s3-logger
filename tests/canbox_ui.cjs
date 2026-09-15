@@ -24,6 +24,8 @@ const fields=require('../schemas/config-v1.json').fields;
   assert.equal(await page.locator('#can-card').isVisible(),true);
   assert.match(await page.locator('#can-headline').textContent(),/Зупинено/);
   assert.match(await page.locator('#can-readiness').textContent(),/Готова/);
+  assert.match(await page.locator('#ble-summary').textContent(),/З’єднання з CANBoxПідтверджено/);
+  assert.match(await page.locator('#ble-summary').textContent(),/Канал R3Призупинено/);
   assert.equal(await page.locator('#can-start').isEnabled(),true);
   assert.equal(await page.locator('#can-stop').isDisabled(),true);
   assert.match(await page.locator('#can-session').textContent(),/9007199254740993/);

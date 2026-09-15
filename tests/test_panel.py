@@ -71,6 +71,53 @@ class BridgeTests(unittest.TestCase):
         try:
             with urllib.request.urlopen(req,timeout=3) as r:return r.status,r.read()
         except urllib.error.HTTPError as e:return e.code,e.read()
+    def test_serial_partial_reply_is_assembled_without_repeating_command(self):
+        class Port:
+            in_waiting=0
+            def __init__(self):self.parts=[];self.writes=[]
+            def write(self,data):
+                self.writes.append(data)
+                prefix=b' '.join(data.split(b' ')[:2])+b' '
+                self.parts=[prefix+b'{"ok":tr',b'',b'ue,"message":"',
+                            b'\xd0',b'\xa7\xd0\xb0\xd1\x81"}\n']
+            def readline(self,limit):return self.parts.pop(0)
+            def close(self):pass
+        device=self.module.Device('fake');port=Port();device.serial=port
+        self.assertEqual(device.request('DO boot 1 BLE CAN START'),dict(ok=True,message='Час'))
+        self.assertEqual(len(port.writes),1)
+
+    def test_damaged_serial_state_retries_but_actions_do_not(self):
+        class Port:
+            in_waiting=0
+            def __init__(self):self.writes=[]
+            def write(self,data):self.writes.append(data)
+            def readline(self,limit):
+                prefix=b' '.join(self.writes[-1].split(b' ')[:2])+b' '
+                return prefix+(b'{"ready":true}\n' if len(self.writes)>1 else b'{"reaBROKEN\n')
+            def close(self):pass
+        device=self.module.Device('fake');port=Port();device.serial=port
+        self.assertEqual(device.request('STATE'),dict(ready=True))
+        self.assertEqual(len(port.writes),2)
+        device=self.module.Device('fake');port=Port();device.serial=port
+        with self.assertRaises(json.JSONDecodeError):device.request('DO boot 1 BLE CAN START')
+        self.assertEqual(len(port.writes),1)
+
+    def test_missing_state_reply_retries_within_same_deadline(self):
+        from unittest.mock import patch
+        import itertools
+        class Port:
+            in_waiting=0
+            def __init__(self):self.writes=[]
+            def write(self,data):self.writes.append(data)
+            def readline(self,limit):
+                prefix=b' '.join(self.writes[-1].split(b' ')[:2])+b' '
+                return prefix+b'{"ready":true}\n' if len(self.writes)>1 else b''
+            def close(self):pass
+        device=self.module.Device('fake');port=Port();device.serial=port
+        with patch.object(self.module.time,'monotonic',side_effect=itertools.count()):
+            self.assertEqual(device.request('STATE'),dict(ready=True))
+        self.assertEqual(len(port.writes),2)
+
     def test_auth_and_origin_do_not_touch_serial(self):
         self.assertEqual(self.call('/api/state')[0],403)
         self.assertEqual(self.call('/api/command?token=test-token',b'abc')[0],403)

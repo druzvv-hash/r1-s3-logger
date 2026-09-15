@@ -235,7 +235,15 @@ void panelBegin(PanelAction action){
     commandGate=xSemaphoreCreateMutex();
     if(commands&&replies&&commandGate){
         xTaskCreatePinnedToCore(webTask,"test-web",WEB_STACK,nullptr,1,&webHandle,0);
-        xTaskCreatePinnedToCore(serialTask,"panel-uart",24576,nullptr,1,&serialHandle,0);
+        // Arduino 2.x HWCDC loses bytes when its writer and USB ISR run on
+        // different cores (Espressif arduino-esp32 #11959). begin() ran on this
+        // setup core; keep the native USB writer there at low priority.
+#if ARDUINO_USB_CDC_ON_BOOT && ARDUINO_USB_MODE == 1
+        const BaseType_t serialCore=xPortGetCoreID();
+#else
+        const BaseType_t serialCore=0;
+#endif
+        xTaskCreatePinnedToCore(serialTask,"panel-uart",24576,nullptr,1,&serialHandle,serialCore);
     }
     Serial.printf("PANEL AP: %s password=%s URL=http://192.168.4.1/; USB PANEL protocol ready.\n",ssid,password);
 }

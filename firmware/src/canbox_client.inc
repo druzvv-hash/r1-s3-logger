@@ -8,6 +8,7 @@ bool canMode=false,canSaved=false,canHello=false;
 uint8_t canSavedPeer[6]={};
 ecosystem::Frame canObserved;
 uint64_t canSeen=0,canPoll=0,canPending=0,canDeadline=0;
+std::atomic<uint32_t> canReadErrors(0),canConnections(0),canTimeReplies(0),canInvalidTime(0);
 NimBLERemoteCharacteristic *canRx=nullptr,*canTx=nullptr;
 struct CanView {bool mode,saved,connected,fresh,pending,ready,authorized,clockSynced;uint64_t boot,session,seen;uint8_t phase;uint32_t detail;char peer[18];};
 CanView canView={};
@@ -29,7 +30,13 @@ String canJson() {
         "{\"mode\":%s,\"saved\":%s,\"connected\":%s,\"fresh\":%s,\"pending\":%s,\"ready\":%s,\"authorized\":%s,\"clock_synced\":%s,\"boot\":\"%llu\",\"session\":\"%llu\",\"phase\":\"%s\",\"detail\":%lu,\"peer\":\"%s\"}",
         v.mode?"true":"false",v.saved?"true":"false",v.connected?"true":"false",v.fresh?"true":"false",v.pending?"true":"false",v.ready?"true":"false",v.authorized?"true":"false",v.clockSynced?"true":"false",
         (unsigned long long)v.boot,(unsigned long long)v.session,ecosystem::phaseName(ecosystem::Phase(v.phase)),(unsigned long)v.detail,v.peer);
-    return String(text);
+    const auto source=snapshot();const uint64_t now=monoUs();
+    const uint64_t age=now>=source.snapshotUs?(now-source.snapshotUs)/1000:UINT64_MAX;
+    String out(text);out.remove(out.length()-1);
+    out+=",\"connections\":"+String(canConnections.load())+",\"read_errors\":"+String(canReadErrors.load());
+    out+=",\"time_replies\":"+String(canTimeReplies.load())+",\"invalid_time_replies\":"+String(canInvalidTime.load());
+    out+=",\"rtc_read_age_ms\":"+(source.rtcValid&&age<=UINT32_MAX&&source.rtcReadAgeMs<=UINT32_MAX-age?String(uint32_t(age+source.rtcReadAgeMs)):String("null"));
+    return out+"}";
 }
 void canLoad() {
     Preferences prefs;if(!prefs.begin("r1-canbox",true))return;
@@ -64,8 +71,8 @@ void canReplyTime() {
     const uint64_t age=now>=s.snapshotUs?(now-s.snapshotUs)/1000:UINT64_MAX;
     if(s.rtcValid&&s.utcUs&&age<=1500&&s.rtcReadAgeMs<=12000&&age+s.rtcReadAgeMs<=12000) {
         f.value_us=s.utcUs+(now-s.snapshotUs);f.detail=uint32_t(age+s.rtcReadAgeMs);f.flags=ecosystem::RtcValid;
-    } else f.detail=UINT32_MAX;
-    canSend(f);
+    } else {f.detail=UINT32_MAX;++canInvalidTime;}
+    if(canSend(f))++canTimeReplies;
 }
 void canDiscover() {
     deadlineMs.store(millis()+10000);auto service=client->getService(canServiceUuid);
@@ -79,7 +86,7 @@ void canDiscover() {
     if(value.size()!=16||memcmp(value.data(),expected,16)){retry("CANBox capabilities unsupported");return;}
     canHello=false;canObserved=ecosystem::Frame();
     if(!canRead()){retry("CANBox identity/status invalid");return;}
-    deadlineMs.store(0);subscribed=true;pairing=false;retryDelay=1000;canHello=false;
+    deadlineMs.store(0);subscribed=true;pairing=false;retryDelay=1000;canHello=false;++canConnections;
     setState("CANBOX",canSaved?"":"Use CANBox BLE ENROLL, then save association on R1");
 }
 void canStep() {
@@ -96,7 +103,7 @@ void canStep() {
         }
         if(subscribed&&monoUs()-canPoll>=500000) {
             canPoll=monoUs();
-            if(!canRead()) {canSeen=0;setState("CANBOX","CANBox status unavailable; outcome unknown");}
+            if(!canRead()) {++canReadErrors;setState("CANBOX","CANBox status read failed; checking link");}
             else if(!canHello) {ecosystem::Frame hello;hello.kind=ecosystem::Kind::Hello;canHello=canSend(hello);}
             else if(canObserved.kind==ecosystem::Kind::TimeRequest)canReplyTime();
         }
