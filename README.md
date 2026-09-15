@@ -2,7 +2,7 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.27-canbox-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.28-canbox-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
 
 
 INA228 averaging/conversion controls and 10/30/60 s chart navigation: [guide](docs/INA228_PANEL.md).
@@ -103,3 +103,5 @@ R1 flashing and the two-board BLE acceptance are pending a manual BOOT/RESET.
 See [CANBox fallback status and procedure](docs/CANBOX_FALLBACK.md).
 
 The owner confirmed that the R1 SD card was removed during the CANBox bench. The observed SD FAIL therefore does not establish an SD fault; recheck after reinsertion.
+
+Deployed update: **0.28-canbox-dev** adds an always-visible CANBox status and controls, including unknown/offline and pending states. Native USB deployment and live CANBox readiness/authorization verified.

@@ -9,13 +9,14 @@ uint8_t canSavedPeer[6]={};
 ecosystem::Frame canObserved;
 uint64_t canSeen=0,canPoll=0,canPending=0,canDeadline=0;
 NimBLERemoteCharacteristic *canRx=nullptr,*canTx=nullptr;
-struct CanView {bool mode,saved,connected,fresh,pending;uint64_t boot,session,seen;uint8_t phase;uint32_t detail;char peer[18];};
+struct CanView {bool mode,saved,connected,fresh,pending,ready,authorized;uint64_t boot,session,seen;uint8_t phase;uint32_t detail;char peer[18];};
 CanView canView={};
 void canPublish() {
     CanView v={};v.mode=canMode;v.saved=canSaved;
     v.connected=canMode&&subscribed&&linkUp.load()&&authenticated.load();
     v.fresh=v.connected&&canSeen&&monoUs()-canSeen<3000000;
     v.seen=canSeen;v.pending=canPending!=0;v.boot=canObserved.sender_boot;v.session=canObserved.session;
+    v.ready=(canObserved.flags&ecosystem::Ready)!=0;v.authorized=canHello;
     v.phase=uint8_t(canObserved.phase);v.detail=canObserved.detail;
     snprintf(v.peer,sizeof(v.peer),"%s",canMode?desiredPeer:"");
     portENTER_CRITICAL(&statusLock);canView=v;status.canboxMode=canMode;portEXIT_CRITICAL(&statusLock);
@@ -24,9 +25,9 @@ String canJson() {
     CanView v;portENTER_CRITICAL(&statusLock);v=canView;portEXIT_CRITICAL(&statusLock);
     v.connected=v.connected&&linkUp.load()&&authenticated.load();
     v.fresh=v.connected&&v.seen&&monoUs()-v.seen<3000000;
-    char text[450];snprintf(text,sizeof(text),
-        "{\"mode\":%s,\"saved\":%s,\"connected\":%s,\"fresh\":%s,\"pending\":%s,\"boot\":\"%llu\",\"session\":\"%llu\",\"phase\":\"%s\",\"detail\":%lu,\"peer\":\"%s\"}",
-        v.mode?"true":"false",v.saved?"true":"false",v.connected?"true":"false",v.fresh?"true":"false",v.pending?"true":"false",
+    char text[520];snprintf(text,sizeof(text),
+        "{\"mode\":%s,\"saved\":%s,\"connected\":%s,\"fresh\":%s,\"pending\":%s,\"ready\":%s,\"authorized\":%s,\"boot\":\"%llu\",\"session\":\"%llu\",\"phase\":\"%s\",\"detail\":%lu,\"peer\":\"%s\"}",
+        v.mode?"true":"false",v.saved?"true":"false",v.connected?"true":"false",v.fresh?"true":"false",v.pending?"true":"false",v.ready?"true":"false",v.authorized?"true":"false",
         (unsigned long long)v.boot,(unsigned long long)v.session,ecosystem::phaseName(ecosystem::Phase(v.phase)),(unsigned long)v.detail,v.peer);
     return String(text);
 }
@@ -70,7 +71,7 @@ void canDiscover() {
     canHello=false;canObserved=ecosystem::Frame();
     if(!canRead()){retry("CANBox identity/status invalid");return;}
     deadlineMs.store(0);subscribed=true;pairing=false;retryDelay=1000;canHello=false;
-    setState("CANBOX","Use CANBox BLE ENROLL, then save association on R1");
+    setState("CANBOX",canSaved?"":"Use CANBox BLE ENROLL, then save association on R1");
 }
 void canStep() {
     if(desired) {

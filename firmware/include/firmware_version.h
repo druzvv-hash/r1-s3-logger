@@ -3,5 +3,5 @@
 #if R1_BENCHMARK
 #define R1_FIRMWARE_VERSION "0.26-bench"
 #else
-#define R1_FIRMWARE_VERSION "0.27-canbox-dev"
+#define R1_FIRMWARE_VERSION "0.28-canbox-dev"
 #endif
