@@ -23,4 +23,7 @@ String protocol(const char* command);
 bool decodePath(const char* hex, char* output);
 String encodePath(const char* path);
 bool active();
+// Hardware owner holds the request gate throughout firmware update.
+bool lockForUpdate();
+void unlockForUpdate();
 }

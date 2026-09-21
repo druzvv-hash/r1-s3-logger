@@ -37,3 +37,6 @@ implemented. See WORK_REPORT.md.
 R1-only implementation: 0.34-local-time-dev uses the existing saved offset for
 UI/OLED/new filenames; PC sync refreshes that offset. Automatic DST and shared
 R3 timezone distribution remain deferred. See docs/uk/TIME_SETTINGS.md.
+
+R1 0.35 includes browser OTA (/update); see docs/OTA.md and the physical acceptance
+in WORK_REPORT.md. Keep OTA idle-only and preserve storage/acquisition ownership.

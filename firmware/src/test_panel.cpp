@@ -1,4 +1,5 @@
 #include "test_panel.h"
+#include "ota_update.h"
 #include "firmware_version.h"
 #include "r3_ble_client.h"
 #include "settings.h"
@@ -179,7 +180,8 @@ void webTask(void*){
     wifiStationBegin();
     xTaskCreatePinnedToCore(downloadTask,"file-http",DOWNLOAD_STACK,nullptr,1,&downloadHandle,0);
     WebServer server(80);
-    const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
+    const char* headers[]={"X-R1-Panel","Origin","X-R1-Size"};server.collectHeaders(headers,3);
+    otaRoutes(server,password);
     server.on("/",HTTP_GET,[&]{
         server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");
         server.setContentLength(sizeof(PANEL_HTML));server.send(200,"text/html; charset=utf-8","");
@@ -219,6 +221,7 @@ void webTask(void*){
     uint32_t lastClients=0;
     for(;;){
         server.handleClient();
+        otaTick();
         webLoopAt.store(millis());
         wifiStationTick();
         if(millis()-lastClients>=500){networkClients.store(WiFi.softAPgetStationNum());lastClients=millis();}

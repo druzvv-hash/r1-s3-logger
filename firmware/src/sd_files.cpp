@@ -152,6 +152,8 @@ bool request(const Request& input,Response& output){
     if(received)output=done->response;else error(output,"SD timeout: download incomplete");
     xSemaphoreGive(gate);return received&&output.ok;
 }
+bool lockForUpdate(){if(!gate||xSemaphoreTake(gate,pdMS_TO_TICKS(100))!=pdTRUE)return false;if(busy.load()){xSemaphoreGive(gate);return false;}return true;}
+void unlockForUpdate(){xSemaphoreGive(gate);}
 bool active(){return busy.load();}
 String protocol(const char* command){
     char text[600];if(strlen(command)>=sizeof(text))return "{\"ok\":false,\"message\":\"File command too large\"}";

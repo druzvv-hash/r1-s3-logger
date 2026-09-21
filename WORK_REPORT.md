@@ -146,3 +146,28 @@ no cross-timezone physical browser test claimed.
 Limit: fixed saved offset, not automatic DST; update from PC at seasonal change.
 Historical UTC-named files have no filename offset and use current R1 display
 offset. Canonical CSV times remain UTC; viewer display work is deferred as asked.
+
+## 2026-09-21 — browser OTA delivered
+
+Read TTGO src/main.cpp as reference; no TTGO edits. Added authenticated /update
+page with progress, same-origin/header validation, bounded exact image length,
+S3 header check and standard Update verification before slot activation. R1
+owner pauses acquisition only after excluding active/linked recording and taking
+the SD request gate; releases on failure. Added Wi-Fi panel link and OTA guide.
+USB bootstrap deployed 0.35-ota-dev, RAM 90,012 bytes, Flash 1,235,577 bytes.
+
+Validation: nine panel host tests PASS; production build and USB upload/hash PASS.
+Physical HTTP bench: missing authentication 401; foreign Origin, invalid header,
+and truncated image rejected without reboot; owner resumed. Real Wi-Fi firmware
+upload succeeded, verified app0 -> app1 and new boot ID, READY. Full configuration
+and EEPROM generation preserved. Additional actual file OPEN lease blocked OTA;
+lease closed afterward. A short test recording also blocked OTA while continuing
+RUNNING, then STOP finalized it and returned READY. That SD file is a guard test,
+not measurement qualification. An initial exhausted directory-list test did not
+hold a lease (expected auto-close); the subsequent file OPEN exercised the guard.
+
+Limits: browser form itself not manually uploaded in this bench; matching HTTP
+multipart endpoint was exercised. Power loss, unhealthy-image rollback and hostile
+LAN isolation are not qualified. See docs/OTA.md for authentication boundary and
+firmware selection. No ArduinoOTA IDE protocol added. Existing trusted-LAN model
+retained; credentials/images remain outside Git.

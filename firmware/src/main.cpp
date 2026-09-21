@@ -7,6 +7,7 @@
 #include <ctime>
 #include <Adafruit_SH110X.h>
 #include "pins.h"
+#include "ota_update.h"
 #include "eeprom_test.h"
 #include "rtc_test.h"
 #include "ina228_test.h"
@@ -383,6 +384,7 @@ void loop() {
     static bool started=false;
     static uint32_t lastRtc=0,lastDisplay=0,lastPublish=0,publishedRevision=0;
     if(!started){vTaskPrioritySet(nullptr,3);acquisitionBegin();started=true;}
+    if(otaOwnerPoll())return;
     setSettingsRecording(recorder::busy());
     acquisitionStep();
     rateBenchmarkStep();
