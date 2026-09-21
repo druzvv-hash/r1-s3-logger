@@ -171,3 +171,32 @@ multipart endpoint was exercised. Power loss, unhealthy-image rollback and hosti
 LAN isolation are not qualified. See docs/OTA.md for authentication boundary and
 firmware selection. No ArduinoOTA IDE protocol added. Existing trusted-LAN model
 retained; credentials/images remain outside Git.
+
+## 2026-09-21 — external-memory audit and bootstrap
+
+### Request / Context
+Establish durable project context without copying chat transcripts. Reviewed
+existing entry documents, relevant reports, repository status and recent commits.
+
+### Changes
+Added/linked bootstrap and concise evidence-aware project memory. Existing
+technical history, owner notes and unsuccessful approaches retained.
+
+### Validation
+Documentation-only audit: local reference existence and Git change scope checked.
+No new build, host runtime, browser, bench, hardware acceptance or vehicle test.
+Previously reported evidence remains attributed to its original source/scope.
+
+### Result / Limitations
+A new task can enter via AGENTS -> NOTES -> relevant WORK_REPORT/docs. This is
+not a full code re-audit; contradictory old dates/version banners require the
+linked newer report and current code. Private raw evidence may be local-only.
+
+### Failed / rejected approaches
+Rejected copying entire histories or turning backup/snapshot folders into active
+projects. See NOTES for project-specific negative knowledge.
+
+### Deployment / Next
+Documentation only; no device changes. Workspace audit at
+C:/Projects/PROJECT_MEMORY.md records repository classification and commit status.
+Maintain checkpoints after substantial work; resolve the open tasks in NOTES.

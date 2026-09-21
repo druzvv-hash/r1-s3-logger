@@ -1,3 +1,32 @@
+# Current memory entry point
+
+## Memory checkpoint — 2026-09-21
+
+### Current state and evidence
+BENCH TESTED within the bounded 2026-09-21 report: 0.35-ota-dev deployed, browser OTA app0 -> app1; local display offset saved at +120, EEPROM generation 6. Do not assume live IP/COM/firmware remain unchanged.
+
+### Canonical references
+- [docs/R1_S3_PLAN.md](docs/R1_S3_PLAN.md)
+- [docs/DEVICE_UI_AND_TASKS.md](docs/DEVICE_UI_AND_TASKS.md)
+- [docs/FILE_FORMAT_V2.md](docs/FILE_FORMAT_V2.md)
+- [docs/UART_DIAGNOSTICS.md](docs/UART_DIAGNOSTICS.md)
+- [docs/RATE_BENCHMARK.md](docs/RATE_BENCHMARK.md)
+- [docs/OTA.md](docs/OTA.md)
+- [docs/R5_FEATURE_MIGRATION.md](docs/R5_FEATURE_MIGRATION.md)
+
+### Negative knowledge / do not repeat
+UART/CP210x: cleaning and cable changes did not prove a root cause; keep cause unresolved, see UART_DIAGNOSTICS. Native USB is a separate path; see CANBox stability report for core affinity evidence. Do not equate 300 Hz clean transport with analog accuracy, or a closed directory enumeration with a held SD transfer. Do not replace R5 tools with a reduced viewer and claim feature parity.
+
+### Open work
+Automatic timezone/DST and shared display-zone propagation remain IDEA; only R1 fixed local offset is deployed. Extend OTA fault/power-loss qualification, loaded UART isolation and noise/calibration qualification. Encoder remains a stub. Unified viewer work stays in lily-viewer.
+
+### Dependencies
+R3 time/control authority, CANBox fallback control, lily-viewer file readers; TTGO is an OTA/network reference only.
+
+Shared time/control contract: [R3 ECOSYSTEM_CONTROL](../lily-logger-r3/docs/ECOSYSTEM_CONTROL.md). Read the sibling notes before changing it. A shared local timezone remains a requirement, not a completed cross-device feature.
+
+---
+
 # R1-S3 ideas and continuity
 
 Read before changes and revisit at scope/milestone changes.
