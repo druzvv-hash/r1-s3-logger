@@ -104,3 +104,45 @@ recordings were changed; no Git commit/push was performed.
 ## 2026-09-21 — requested Git synchronization
 
 Set RTC from PC using the visible UI button; UI confirmed RTC UTC written and verified. R3 time was unavailable, recorder idle. Audited the five outgoing CANBox commits and current time/LAN work for known WLAN secrets; ignored bootstrap/data remain excluded. Committing and pushing to the existing origin/main as requested. Previous build and targeted tests are recorded above.
+
+## 2026-09-21 — unified local operator time requirement
+
+Reviewed the reported two-hour discrepancy and current time/display code.
+The R1 live clock explicitly renders UTC, whereas RTC input and directory dates
+use browser local time. Existing display_utc_offset_min is not used for these
+views; recording session names explicitly use UTC Z. The ecosystem contract
+currently synchronizes UTC, without a shared operator timezone.
+Recorded the owner requirement in NOTES.md: one shared local display convention
+from the Control Center, persistent fallback, recording-time timezone provenance,
+and compatible canonical timestamps. No firmware, RTC, recording or remote
+repository was changed in this requirement review. Implementation and hardware
+validation across R1, R3, CANBox and viewer remain outstanding.
+
+## 2026-09-21 — R1 local operator time implemented
+
+Deployed 0.34-local-time-dev on R1 native USB COM9. UI live clock and manual
+calendar now use saved display_utc_offset_min rather than mixing UTC and browser
+local time. PC time button applies/saves its current offset when different, then
+sets RTC; existing priority/recording locks remain. OLED header now shows local
+HH:MM:SS. New recording names include local calendar and explicit numeric offset;
+random identity suffixes remain. Directory parser accepts both new offset names
+and legacy UTC names; new names preserve their original local date after an
+offset change. Existing CSV canonical UTC and config snapshot remain compatible;
+recorded config already carries display_utc_offset_min. Other devices/viewer
+were not modified.
+
+Validation: nine serializer/contract/viewer roundtrip tests PASS, including
+positive/negative offset, leap-day rollover and unknown time. Nine panel tests
+PASS; browser fixture passed local conversion, legacy/new filename recognition,
+priority/recording locks and mobile layout. Production build/upload PASS with
+hash verification (RAM 89,796; Flash 1,220,093 bytes). Actual visible UI PC-time
+button saved generation 6 and offset +120; full config comparison showed ONLY
+that field changed. UI displayed 18:08:30 local; RTC was within one second of PC
+in a sequential HTTP comparison, TICK OK, zero I2C errors. OLED time rendering
+compiled/deployed but not visually observed. No new physical SD recording was
+created; filename serialization was host-tested. Browser fixture ran in Prague;
+no cross-timezone physical browser test claimed.
+
+Limit: fixed saved offset, not automatic DST; update from PC at seasonal change.
+Historical UTC-named files have no filename offset and use current R1 display
+offset. Canonical CSV times remain UTC; viewer display work is deferred as asked.

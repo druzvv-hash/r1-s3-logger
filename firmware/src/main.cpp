@@ -4,6 +4,7 @@
 #include <SD.h>
 #include <cstring>
 #include <cmath>
+#include <ctime>
 #include <Adafruit_SH110X.h>
 #include "pins.h"
 #include "eeprom_test.h"
@@ -53,7 +54,9 @@ void updateOled() {
     oled.setTextWrap(false);
     oled.setTextSize(1);
     oled.setCursor(4, 3);
-    oled.print("R1-S3");
+    const uint64_t utc=rtcUtcNow();
+    if(utc){const time_t local=time_t(int64_t(utc)+int64_t(appliedSettings().display_utc_offset_min)*60);struct tm clock{};gmtime_r(&local,&clock);oled.printf("%02d:%02d:%02d",clock.tm_hour,clock.tm_min,clock.tm_sec);}
+    else oled.print("SET TIME");
     const auto& reading = latestIna228Reading();
     static double shownVolts=0, shownAmps=0;
     static uint32_t lastDisplay=0;

@@ -81,7 +81,7 @@ bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& messag
     pollRtc(false);info.utcUs=rtcUtcNowUs();info.originUs=esp_timer_get_time();
     info.measuredHz=acquisitionStats().measuredHz;info.commit=R1_BUILD_COMMIT;
     info.dirty=R1_BUILD_DIRTY;info.version=R1_FIRMWARE_VERSION;
-    info.id=recording::sessionId(info.utcUs,esp_random(),esp_random());
+    info.id=recording::sessionId(info.utcUs,esp_random(),esp_random(),info.config.display_utc_offset_min);
     info.controlSessionId=remote?remote->sessionId:newSessionId();
     info.bootId=r3BleBootId();
     uint8_t localId[6];char address[18];r3BleCopyDeviceId(localId);

@@ -23,7 +23,7 @@ allow_unknown_utc:['Дозволити невідомий UTC','Запис із 
 display_hz:['Оновлення OLED, Hz','Оновлення екрана, не частота вимірів'],
 live_hz:['Пакети Live, Hz','Базова частота пакетів; Wi-Fi забирає додаткові при відставанні. USB показує свіжі ділянки з позначеними розривами.'],
 display_filter_tau_ms:['Фільтр OLED, ms','0 = без фільтра; графік панелі показує нефільтровані дані'],
-display_utc_offset_min:['Зсув від UTC, хвилини','Для майбутнього UI; панель показує UTC'],
+display_utc_offset_min:['Місцевий час: зсув, хвилини','Спільний для R1, усіх браузерів і нових файлів. Кнопка часу ПК оновлює зсув; сезонний перехід не автоматичний.'],
 calibration_id:['Ідентифікатор калібрування','Назва процедури або еталона'],
 calibration_note:['Примітка калібрування','Умови та прилади'],
 calibration_utc:['UTC калібрування','YYYY-MM-DDTHH:MM:SSZ або порожньо'],
@@ -265,7 +265,7 @@ function controls(){
   $('manual-time').disabled=timeLocked;
   $('set-manual-time').disabled=timeLocked||!$('manual-time').value;
   $('time-policy').textContent=authority?'Джерело: контрольний центр R3. Ручну зміну заблоковано.':recordingBusy()?'Триває запис. Час можна змінити після завершення.':'Чинний час R3 недоступний. Працює RTC R1; можна налаштувати час вручну або взяти з телефона / ПК.';
-  $('time-zone').textContent='Часовий пояс введення: '+Intl.DateTimeFormat().resolvedOptions().timeZone+' · RTC: '+(state?.utc?new Date(state.utc*1000).toLocaleString():'не налаштований');
+  $('time-zone').textContent='Місцевий час R1: '+(state?.utc?localTime(state.utc):'не налаштований')+' · зсув '+localOffset()+' хв. Однаково на всіх браузерах.';
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||!['STARTING','RUNNING','STOPPING'].includes(state?.recording_state);
   $('record-files').disabled=recordingBusy()||busy||!online;
@@ -289,7 +289,7 @@ function render(s){
   const valid=s.valid&&((s.uptime_ms-s.sample_at_ms)>>>0)<3500;
   if(!s.live_available)meters(valid?s.volts:null,valid?s.amps:null);
   $('temperature').textContent='Температура INA228: '+(valid?number(s.temp_c,2)+' °C':'—');
-  $('utc').textContent=s.utc?new Date(s.utc*1000).toISOString().replace('T',' ').replace('.000Z',' UTC'):'RTC: потрібно встановити час';
+  $('utc').textContent=s.utc?localTime(s.utc)+' · місцевий час R1':'RTC: потрібно встановити час';
   $('cadence').textContent=(s.requested_hz||'—')+' Гц задано · '+number(s.measured_hz,1)+' Гц фактично';
   if(wasOffline)notice('Логер підключений. Можна змінювати навантаження та запускати тести.');
   rows('health',[['INA228',s.ina],['microSD',s.sd==='READ'?'Читання OK':s.sd],['24C32',s.eeprom==='READ'?'Читання OK':s.eeprom],['DS3231',s.rtc],['OLED',s.oled?'Працює':'Недоступний']]);
@@ -341,7 +341,8 @@ async function command(verb,arg='',useDraft=false){
     await new Promise(r=>setTimeout(r,600));await refresh();
     if(verb==='APPLY'||verb==='SAVE')reload();
     notice(verb==='LINK'?'Спільну команду прийнято. Стеж за станом обох записів.':verb==='BLE'?'Команду BLE прийнято. Стеж за станом з’єднання.':verb==='START'?'Запит запису прийнято. Стеж за станом запису.':verb==='STOP'?'Завершуємо запис. Дочекайся закриття файлу.':(verb==='APPLY'?'Налаштування застосовано. Збереження в EEPROM — окремо. ':verb==='SAVE'?'EEPROM: запис і перевірка завершені. ':'Тест завершено. ')+response.message);
-  }catch(e){notice(verb==='LINK'?'Спільну команду прийнято. Стеж за станом обох записів.':verb==='BLE'?'Команду BLE не виконано. Перевір стан пристрою й онови стан перед повторенням.':'Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}}
+    return true;
+  }catch(e){notice(verb==='LINK'?'Спільну команду прийнято. Стеж за станом обох записів.':verb==='BLE'?'Команду BLE не виконано. Перевір стан пристрою й онови стан перед повторенням.':'Команда: '+e.message+'. Онови стан перед повторенням.',true);try{await refresh();}catch{}return false;}
   finally{busy=false;controls();}
 }
 
@@ -362,10 +363,20 @@ function fileControls(){
   for(const button of document.querySelectorAll('.file-action,.file-name,#files-path button'))button.disabled=blocked||button.dataset.unavailable==='true';
 }
 function fileSize(size){return size<1024?size+' B':size<1048576?(size/1024).toFixed(1)+' KiB':(size/1048576).toFixed(2)+' MiB';}
+function localOffset(){return state?.config_hex?decodeConfig(state.config_hex,REGISTRY).display_utc_offset_min:0;}
+function localTime(epoch,offset=localOffset()){
+  return new Date((epoch+offset*60)*1000).toISOString().slice(0,19).replace('T',' ');
+}
+function recordedOffset(name){
+  const m=/_([+-])(\d{2})(\d{2})_[0-9a-f]{8}_/i.exec(name);
+  return m?(m[1]==='-'?-1:1)*(Number(m[2])*60+Number(m[3])):localOffset();
+}
 function recordingDate(name){
   // Derive only from our session names, never the FAT modification timestamp.
   const match=/^r1s3_(\d{4}-\d{2}-\d{2})_(\d{2})-(\d{2})-(\d{2})Z_[0-9a-f]{8}_[0-9a-f]{8}_\d{4,}\.(?:csv|part)$/i.exec(name);
   const legacy=/^r1s3_(\d+)_[0-9a-f]{8}_[0-9a-f]{8}_\d{4,}\.(?:csv|part)$/i.exec(name);
+  const local=/^r1s3_(\d{4}-\d{2}-\d{2})_(\d{2})-(\d{2})-(\d{2})_([+-])(\d{2})(\d{2})_[0-9a-f]{8}_[0-9a-f]{8}_\d{4,}\.(?:csv|part)$/i.exec(name);
+  if(local){const d=new Date(`${local[1]}T${local[2]}:${local[3]}:${local[4]}${local[5]}${local[6]}:${local[7]}`);return Number.isFinite(d.getTime())?d:null;}
   const date=match?new Date(`${match[1]}T${match[2]}:${match[3]}:${match[4]}Z`):legacy&&Number(legacy[1])>0?new Date(Number(legacy[1])*1000):null;
   return date&&Number.isFinite(date.getTime())?date:null;
 }
@@ -399,7 +410,7 @@ function renderFiles(){
     label.onclick=()=>{selectFile(entry);if(entry.directory&&entry.path)listFiles(pathText(entry.path));};
     label.ondblclick=()=>{if(!entry.directory)downloadFile(entry);};
     label.onkeydown=e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const next=e.key==='ArrowDown'?row.nextElementSibling:row.previousElementSibling;next?.querySelector('.file-name')?.focus();}if(e.key==='Enter'&&!entry.directory){e.preventDefault();downloadFile(entry);}};
-    date.className='file-date';date.textContent=entry.directory?'—':entry.dateText||'—';if(entry.date){date.dateTime=entry.date.toISOString();date.title='Місцевий час браузера. UTC: '+entry.date.toISOString();}else date.title='Час початку невідомий';
+    date.className='file-date';date.textContent=entry.directory?'—':entry.dateText||'—';if(entry.date){date.dateTime=entry.date.toISOString();date.title='Місцевий час запису: '+entry.dateText;}else date.title='Час початку невідомий';
     size.className='file-size';size.textContent=entry.directory?'Папка':fileSize(entry.size);
     action.className='file-action';action.textContent=entry.directory?'→':'↓';action.title=entry.directory?'Відкрити':'Завантажити';action.setAttribute('aria-label',action.title);action.dataset.unavailable=String(!entry.path);action.onclick=()=>entry.directory?listFiles(pathText(entry.path)):downloadFile(entry);
     row.onclick=()=>selectFile(entry);row.append(label,date,size,action);fragment.append(row);
@@ -422,7 +433,7 @@ async function listFiles(directory=fileDirectory){
         fileSession=result.more?result.session:0;if(epoch!==fileEpoch)break;
         for(const entry of result.entries){
           entry.key=entry.path||entry.name;if(seen.has(entry.key))continue;seen.add(entry.key);
-          entry.date=entry.directory?null:recordingDate(entry.name);entry.dateText=entry.date?entry.date.toLocaleString('uk-UA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';fileEntries.push(entry);
+          entry.date=entry.directory?null:recordingDate(entry.name);entry.dateText=entry.date?localTime(entry.date.getTime()/1000,recordedOffset(entry.name)):'';fileEntries.push(entry);
         }
         next=result.more;fileComplete=!next;renderFiles();
         // Yield between bounded device pages; search, scrolling and cancellation stay responsive.
@@ -576,15 +587,24 @@ $('ina-fit').onclick=()=>{const current=values(),maximum=inaTiming(current,!!sta
 $('ina-from-settings').onclick=()=>{document.querySelector('[data-tab="live"]').click();$('ina-panel').scrollIntoView({behavior:'smooth',block:'start'});};
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
-$('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
+$('sync-time').onclick=async()=>{
+  if(dirty){notice('Спочатку застосуй або скинь чернетку налаштувань.',true);return;}
+  const config=decodeConfig(state.config_hex,REGISTRY),offset=-new Date().getTimezoneOffset();
+  if(config.display_utc_offset_min!==offset){
+    config.display_utc_offset_min=offset;
+    if(!await command('APPLY',encodeConfig(config,REGISTRY)))return;
+    if(!await command('SAVE'))return;
+  }
+  await command('TIME',String(Math.floor(Date.now()/1000)));
+};
 $('manual-time').oninput=controls;
 $('set-manual-time').onclick=()=>{
-  const value=$('manual-time').value, d=new Date(value), epoch=Math.floor(d.getTime()/1000);
+  const value=$('manual-time').value, d=new Date(value+'Z'), epoch=Math.floor(d.getTime()/1000)-localOffset()*60;
   const parts=value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/);
   if(!parts||!Number.isFinite(epoch)||epoch<946684800||epoch>=4102444799||
-     d.getFullYear()!==+parts[1]||d.getMonth()+1!==+parts[2]||d.getDate()!==+parts[3]||
-     d.getHours()!==+parts[4]||d.getMinutes()!==+parts[5]||d.getSeconds()!==+(parts[6]||0)){
-    notice('Некоректна дата або час, якого немає через перехід на літній час.',true);return;
+     d.getUTCFullYear()!==+parts[1]||d.getUTCMonth()+1!==+parts[2]||d.getUTCDate()!==+parts[3]||
+     d.getUTCHours()!==+parts[4]||d.getUTCMinutes()!==+parts[5]||d.getUTCSeconds()!==+(parts[6]||0)){
+    notice('Некоректна дата або час.',true);return;
   }
   command('TIME',String(epoch));
 };

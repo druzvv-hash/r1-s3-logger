@@ -72,9 +72,11 @@ std::string utcText(uint64_t epochUs){time_t seconds=epochUs/1000000;struct tm u
 #endif
     char b[40];snprintf(b,sizeof(b),"%04d-%02d-%02dT%02d:%02d:%02d.%06luZ",utc.tm_year+1900,utc.tm_mon+1,utc.tm_mday,utc.tm_hour,utc.tm_min,utc.tm_sec,(unsigned long)(epochUs%1000000));return b;
 }
-std::string sessionId(uint64_t utcUs,uint32_t randomHi,uint32_t randomLo){
+std::string sessionId(uint64_t utcUs,uint32_t randomHi,uint32_t randomLo,int32_t localOffsetMin){
     std::string stamp="time-unknown";
-    if(utcUs){stamp=utcText(utcUs).substr(0,19);stamp[10]='_';stamp[13]=stamp[16]='-';stamp+='Z';}
+    if(utcUs){stamp=utcText(uint64_t(int64_t(utcUs)+int64_t(localOffsetMin)*60000000)).substr(0,19);stamp[10]='_';stamp[13]=stamp[16]='-';
+        char offset[8];const int minutes=localOffsetMin<0?-localOffsetMin:localOffsetMin;
+        snprintf(offset,sizeof(offset),"_%c%02d%02d",localOffsetMin<0?'-':'+',minutes/60,minutes%60);stamp+=offset;}
     char suffix[20];snprintf(suffix,sizeof(suffix),"_%08lx_%08lx",(unsigned long)randomHi,(unsigned long)randomLo);
     return "r1s3_"+stamp+suffix;
 }
