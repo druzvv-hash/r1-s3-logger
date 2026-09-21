@@ -157,7 +157,8 @@ uint64_t rtcUtcNow(){return trustedUtc ? previousSeconds+946684800ULL+(uint32_t(
 uint64_t rtcUtcNowUs(){return trustedUtc?(previousSeconds+946684800ULL)*1000000ULL+uint64_t(uint32_t(millis()-previousMillis))*1000ULL:0;}
 uint32_t rtcReadAgeMs(){return trustedUtc?uint32_t(millis()-previousMillis):UINT32_MAX;}
 uint32_t rtcClockRevision(){return clockRevision;}
-bool panelSetRtcUtc(uint64_t epoch){
+bool panelSetRtcUtc(uint64_t epoch, bool fromControlCenter){
+    if(!fromControlCenter && r3BleTimeAuthorityAvailable())return false;
     if(recorder::busy()||epoch<946684800ULL||epoch>=4102444799ULL)return false;
     // Also covers the legacy serial path; failed writes cannot preserve a
     // misleading R3 provenance or continue advertising an old trusted value.

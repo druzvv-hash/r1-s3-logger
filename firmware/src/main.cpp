@@ -297,8 +297,9 @@ bool runPanelAction(const char* verb, const char* argument, const char*& message
         rtcStatus=pollRtc();message=rtcStatus;return rtcUtcNow()!=0;
     }
     if (!strcmp(verb,"TIME")) {
+        if(r3BleTimeAuthorityAvailable()){message="Control Center time has priority; local time editing unavailable";return false;}
         uint64_t epoch=0;const size_t n=strlen(argument);
-        if(n!=10){message="Expected Unix seconds";return false;}
+        if(n<9||n>10){message="Expected Unix seconds";return false;}
         for(size_t i=0;i<n;++i){if(argument[i]<'0'||argument[i]>'9'){message="Invalid UTC";return false;}epoch=epoch*10+argument[i]-'0';}
         const bool ok=panelSetRtcUtc(epoch);rtcStatus=pollRtc();
         message=ok?"RTC UTC written and verified":"RTC write/readback failed";return ok;

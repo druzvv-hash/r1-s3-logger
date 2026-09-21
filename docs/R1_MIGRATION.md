@@ -842,3 +842,11 @@ test did not complete its apply/readback/restore sequence; current volatile ADC
 settings must be read again after USB recovery before further tests. No EEPROM
 Save was issued. These communication failures are not a passed hardware-control
 test, and native Wi-Fi has not been requalified for v0.26 in this step.
+
+### 2026-09-21 — clock controls and work reporting
+
+Added local calendar entry and browser-time fallback, with firmware-enforced
+fresh authenticated R3 clock priority and the existing recording lock. UTC RTC
+storage and monotonic recording timestamps are unchanged. Detailed validation
+and deployment status are maintained in [WORK_REPORT.md](../WORK_REPORT.md).
+Owner instructions: [time controls](uk/TIME_SETTINGS.md).

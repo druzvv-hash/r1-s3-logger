@@ -704,6 +704,17 @@ bool r3BleCommand(const char* argument, const char*& message) {
     message="BLE command queued; check connection status"; return true;
 }
 
+bool r3BleTimeAuthorityAvailable() {
+    bool eligible; uint64_t received;
+    portENTER_CRITICAL(&statusLock);
+    eligible=!status.canboxMode && status.connected && status.utcValid;
+    received=status.receiveUs;
+    portEXIT_CRITICAL(&statusLock);
+    const uint64_t now=uint64_t(esp_timer_get_time());
+    return eligible && linkUp.load() && authenticated.load() && received &&
+           now>=received && now-received<r3_time::kStaleAfterUs;
+}
+
 String r3BleStatusJson() {
     Status s; bool ownerSynced;
     portENTER_CRITICAL(&statusLock); s=status; ownerSynced=ownerSnapshot.clockSynced; portEXIT_CRITICAL(&statusLock);

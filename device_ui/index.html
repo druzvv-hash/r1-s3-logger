@@ -76,7 +76,8 @@
 <div class="panel" id="ina-panel"><div class="section-title"><div><h2>INA228 · шум і швидкість</h2><p>Довша конверсія та усереднення згладжують шум, але сповільнюють реакцію. Ці параметри впливають і на записані виміри.</p></div><span id="ina-applied" class="badge">Очікування</span></div>
 <div id="ina-fields"></div><p id="ina-timing" role="status"></p><p id="ina-range" class="muted"></p><button id="ina-fit" type="button" hidden>Узгодити частоту</button>
 <div id="ina-changes" class="muted"></div><div class="button-row"><button id="ina-apply" class="primary" disabled>Застосувати INA228</button><button id="ina-save" disabled>Зберегти в EEPROM</button><button id="ina-reload">Скинути чернетку</button></div><p id="ina-note" class="muted"></p></div>
-<div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button><button id="sync-time">Час із цього пристрою → RTC</button></div></div>
+<section class="panel" id="time-panel"><h2>Дата й час</h2><p id="time-policy"></p><p id="time-zone"></p><div class="button-row"><button id="sync-time">Взяти час телефона / ПК</button><label>Дата й час у часовому поясі цього пристрою <input id="manual-time" type="datetime-local" step="1" min="2000-01-01T00:00:00" max="2099-12-31T23:59:58"></label><button id="set-manual-time">Встановити вручну</button></div><p class="muted">RTC зберігає UTC. Ручне налаштування доступне без чинного часу контрольного центру та лише між записами. При поверненні R3 його час знову має пріоритет.</p></section>
+<div class="overview"><div class="panel"><h2>Стан пристрою</h2><dl id="health"></dl><div class="button-row"><button data-command="MEASURE">Вимір зараз</button><button data-command="RTC">Перевірити RTC</button></div></div>
 <div class="panel"><div class="section-title"><h2>Запис на microSD</h2><span id="record-state" class="badge">Очікування</span></div><p id="record-note" role="status">Почни новий запис, коли навантаження готове.</p><div class="button-row"><button id="record-start" class="primary" disabled>● Почати запис</button><button id="record-stop" disabled>■ Зупинити й зберегти</button><button id="record-files">Відкрити записи</button></div><p id="record-path" class="muted"></p><dl id="record-stats"></dl><details><summary>Буфер і пам’ять</summary><dl id="memory"></dl></details><p class="muted">Запис працює без відкритого браузера. Після Stop дочекайся повідомлення «Файл збережено». Частоту й налаштування змінюй між записами.</p></div></div>
 </section>
 <section id="files" class="page" hidden>
@@ -102,12 +103,13 @@
 <div class="panel"><h2>Підключення</h2><p>Назва мережі, пароль і перевірка прямого зв’язку з телефоном — у вкладці Wi-Fi.</p><button id="wifi-from-diagnostics">Підключення Wi-Fi та пароль</button><p class="muted">Перед прошиванням звільни COM-порт. Закриття вкладки браузера саме по собі не зупиняє USB-сервер.</p><button id="release-usb" hidden>Звільнити USB для прошивання</button></div></div>
 </section>
 <section id="wifi" class="page" hidden>
-<div class="panel"><h2>Телефон напряму з логером</h2><p id="wifi-connection-note">Очікування стану мережі…</p><dl id="network"></dl>
+<div class="panel"><h2>Спільна мережа Wi-Fi</h2><p id="lan-status">Очікування мережі…</p><p><a id="lan-url" hidden></a></p><p><a id="lan-name" hidden></a></p><p>Телефон / ПК і логер мають бути в одній мережі. Перемикатися на точку доступу R1 не потрібно.</p><div class="button-row"><label class="field">Назва мережі (SSID)<input id="lan-ssid" maxlength="32" autocomplete="off"></label><label class="field">Пароль мережі<input id="lan-password" type="password" maxlength="63" autocomplete="new-password"></label><button id="lan-save">Зберегти й підключити</button></div><p class="muted">Мережа 2,4 ГГц. Зміни доступні між записами. Пароль зберігається в пам’яті логера й не повертається в панель. При зміні мережі ця сторінка може від’єднатися.</p></div>
+<div class="panel"><h2>Резервна точка доступу R1</h2><p id="wifi-connection-note">Очікування стану мережі…</p><dl id="network"></dl>
 <details><summary>Показати пароль Wi-Fi</summary><code id="wifi-password">—</code></details>
 <ol class="wifi-steps"><li>Вибери у налаштуваннях Wi-Fi телефона мережу логера, зазначену вище, та введи пароль.</li><li>Якщо Android попереджає про відсутність інтернету, вибери «Залишатися підключеним».</li><li>Відкрий у браузері <a href="http://192.168.4.1/">http://192.168.4.1/</a>. Позначка вгорі має показати «Wi-Fi».</li></ol>
 <p>Починай і зупиняй запис у вкладці «Огляд». Після збереження завантажуй CSV у «Файли SD».</p>
 <p class="muted">Закриття браузера чи втрата Wi-Fi не зупиняє запис. Повернися в панель і перевір стан перед наступною командою. Сам логер має залишатися під живленням.</p>
-<p class="muted">Це окрема мережа приладу без інтернету. Підключення логера до домашнього роутера поки не налаштовується.</p></div>
+<p class="muted">Резервна мережа приладу не надає інтернет. Для щоденної роботи використовуй спільну мережу, налаштовану вище.</p></div>
 </section>
 <section id="ble" class="page" hidden>
 <div class="panel"><h2>CANBox · резервне керування</h2>
@@ -540,9 +542,17 @@ function controls(){
   $('apply-rate').disabled=locked||dirty||stale()||!state||!validRate||hz===state.requested_hz;
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
   for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=recordingBusy()||busy||!online;
+  const authority=state?.time_authority_available===true;
+  const timeLocked=recordingBusy()||busy||!online||authority;
+  $('sync-time').disabled=timeLocked;
+  $('manual-time').disabled=timeLocked;
+  $('set-manual-time').disabled=timeLocked||!$('manual-time').value;
+  $('time-policy').textContent=authority?'Джерело: контрольний центр R3. Ручну зміну заблоковано.':recordingBusy()?'Триває запис. Час можна змінити після завершення.':'Чинний час R3 недоступний. Працює RTC R1; можна налаштувати час вручну або взяти з телефона / ПК.';
+  $('time-zone').textContent='Часовий пояс введення: '+Intl.DateTimeFormat().resolvedOptions().timeZone+' · RTC: '+(state?.utc?new Date(state.utc*1000).toLocaleString():'не налаштований');
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||!['STARTING','RUNNING','STOPPING'].includes(state?.recording_state);
   $('record-files').disabled=recordingBusy()||busy||!online;
+  $('lan-save').disabled=recordingBusy()||busy||!online||!state?.station||state?.file_transfer;
   $('files-refresh').disabled=recordingBusy()||!online;fileControls();bleControls();updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
@@ -571,7 +581,12 @@ function render(s){
   rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Частота I²C',s.i2c_hz?s.i2c_hz/1000+' кГц':'—'],['Останній запуск',resetNames[s.reset_reason]||'—'],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
   rows('timing',[['Задана / виміряна частота',(s.requested_hz||'—')+' / '+number(s.measured_hz,2)+' Hz'],['Коректні / некоректні відліки',s.valid_samples+' / '+s.invalid_samples],['Пропущені періоди',s.missed_samples],['Найбільша затримка старту',(s.max_late_us/1000).toFixed(2)+' ms'],['Читання INA / фрагмент OLED',(s.max_read_us/1000).toFixed(2)+' / '+(s.oled_chunk_us/1000).toFixed(2)+' ms'],['Планові паузи на команди',s.maintenance_count+' · '+s.maintenance_ms+' ms'],['Втрати preview / кадри OLED',s.preview_drops+' / '+s.oled_frames]]);
   rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
-  $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
+  $('wifi-connection-note').textContent=s.station?.connected?'Логер уже у спільній мережі. Точка доступу нижче — резервний спосіб підключення.':s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. Можна підключитися до спільної мережі або резервної точки доступу логера.';
+  const lan=s.station;
+  $('lan-status').textContent=lan?.connected?'Підключено: '+lan.ssid+' · '+lan.rssi+' dBm':lan?.profiles?'Підключення до '+lan.ssid+'… Резервна точка доступу працює.':'Спільну мережу ще не налаштовано.';
+  if(lan?.error)$('lan-status').textContent+=' '+lan.error;
+  for(const [id,host] of [['lan-url',lan?.connected?lan.ip:''],['lan-name',lan?.connected?lan.hostname+'.local':'']]){const a=$(id);a.hidden=!host;if(host){a.href='http://'+host+'/';a.textContent=a.href;}}
+
   $('wifi-password').textContent=s.ap_password;
   renderBle(s.ble);
   $('generation').textContent='EEPROM · покоління '+s.generation;
@@ -819,6 +834,12 @@ $('ble-save').onclick=async()=>{await command('BLE','SAVE '+($('ble-allow-remote
 $('ble-on').onclick=()=>command('BLE','ON');
 $('ble-forget').onclick=()=>{$('ble-pin').value='';blePeerDirty=false;blePermissionDirty=false;command('BLE','FORGET');};
 $('files-refresh').onclick=()=>listFiles();
+$('lan-save').onclick=()=>{
+  const enc=new TextEncoder(),ssid=enc.encode($('lan-ssid').value),key=enc.encode($('lan-password').value);
+  if(!ssid.length||ssid.length>32||key.length<8||key.length>63||ssid.includes(0)||key.includes(0)){notice('SSID: 1–32 байти; пароль: 8–63 байти.',true);return;}
+  const hex=b=>Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');
+  $('lan-password').value='';command('WIFI',hex(ssid)+' '+hex(key));
+};
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
 $('record-start').onclick=()=>recordingAction(true);
 $('record-stop').onclick=()=>recordingAction(false);
@@ -839,6 +860,17 @@ $('ina-from-settings').onclick=()=>{document.querySelector('[data-tab="live"]').
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
+$('manual-time').oninput=controls;
+$('set-manual-time').onclick=()=>{
+  const value=$('manual-time').value, d=new Date(value), epoch=Math.floor(d.getTime()/1000);
+  const parts=value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/);
+  if(!parts||!Number.isFinite(epoch)||epoch<946684800||epoch>=4102444799||
+     d.getFullYear()!==+parts[1]||d.getMonth()+1!==+parts[2]||d.getDate()!==+parts[3]||
+     d.getHours()!==+parts[4]||d.getMinutes()!==+parts[5]||d.getSeconds()!==+(parts[6]||0)){
+    notice('Некоректна дата або час, якого немає через перехід на літній час.',true);return;
+  }
+  command('TIME',String(epoch));
+};
 $('release-usb').onclick=async()=>{
   if(busy)return;stopped=true;
   try{await api('/api/shutdown','');setOffline('USB-сервер зупинено. Можна прошивати. Для повернення до панелі запусти device_ui/start.cmd.');}

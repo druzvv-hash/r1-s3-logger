@@ -259,9 +259,17 @@ function controls(){
   $('apply-rate').disabled=locked||dirty||stale()||!state||!validRate||hz===state.requested_hz;
   $('rate-note').textContent=dirty?'Спочатку застосуй або скинь чернетку в налаштуваннях.':state?.settings_status==='UNSAVED'?'Застосовано. Щоб залишити після перезапуску — збережи в EEPROM у налаштуваннях.':'Частота вимірів і FPS незалежні. Збереження в EEPROM — у налаштуваннях.';
   for(const el of document.querySelectorAll('[data-command],#sync-time'))el.disabled=recordingBusy()||busy||!online;
+  const authority=state?.time_authority_available===true;
+  const timeLocked=recordingBusy()||busy||!online||authority;
+  $('sync-time').disabled=timeLocked;
+  $('manual-time').disabled=timeLocked;
+  $('set-manual-time').disabled=timeLocked||!$('manual-time').value;
+  $('time-policy').textContent=authority?'Джерело: контрольний центр R3. Ручну зміну заблоковано.':recordingBusy()?'Триває запис. Час можна змінити після завершення.':'Чинний час R3 недоступний. Працює RTC R1; можна налаштувати час вручну або взяти з телефона / ПК.';
+  $('time-zone').textContent='Часовий пояс введення: '+Intl.DateTimeFormat().resolvedOptions().timeZone+' · RTC: '+(state?.utc?new Date(state.utc*1000).toLocaleString():'не налаштований');
   $('record-start').disabled=recordingBusy()||busy||!online||dirty||!state?.recording_available;
   $('record-stop').disabled=busy||!online||!['STARTING','RUNNING','STOPPING'].includes(state?.recording_state);
   $('record-files').disabled=recordingBusy()||busy||!online;
+  $('lan-save').disabled=recordingBusy()||busy||!online||!state?.station||state?.file_transfer;
   $('files-refresh').disabled=recordingBusy()||!online;fileControls();bleControls();updateDraft();}
 function render(s){
   if(!s.ready)throw Error('Логер запускається. Очікуємо готовності.');
@@ -290,7 +298,12 @@ function render(s){
   rows('raw',[['Вхід шунта',valid?number(s.shunt_uv,4)+' µV':'—'],['VSHUNT / VBUS / TEMP raw',valid?[s.shunt_raw,s.bus_raw,s.temp_raw].join(' / '):'—'],['I²C: адрес / помилок',s.i2c_count+' / '+s.i2c_errors],['Частота I²C',s.i2c_hz?s.i2c_hz/1000+' кГц':'—'],['Останній запуск',resetNames[s.reset_reason]||'—'],['Ядро апаратних тестів / UI',s.owner_core+' / '+s.ui_core],['Час після запуску',Math.floor(s.uptime_ms/1000)+' s']]);
   rows('timing',[['Задана / виміряна частота',(s.requested_hz||'—')+' / '+number(s.measured_hz,2)+' Hz'],['Коректні / некоректні відліки',s.valid_samples+' / '+s.invalid_samples],['Пропущені періоди',s.missed_samples],['Найбільша затримка старту',(s.max_late_us/1000).toFixed(2)+' ms'],['Читання INA / фрагмент OLED',(s.max_read_us/1000).toFixed(2)+' / '+(s.oled_chunk_us/1000).toFixed(2)+' ms'],['Планові паузи на команди',s.maintenance_count+' · '+s.maintenance_ms+' ms'],['Втрати preview / кадри OLED',s.preview_drops+' / '+s.oled_frames]]);
   rows('network',[['Ця панель',transport],['Точка доступу',s.ap_ready?'Увімкнена':'Запуск / недоступна'],['Назва мережі',s.ssid||'—'],['Пристроїв у Wi-Fi',Number.isInteger(s.ap_clients)?s.ap_clients:'—']]);
-  $('wifi-connection-note').textContent=s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. На телефоні підключись до мережі логера та відкрий адресу нижче.';
+  $('wifi-connection-note').textContent=s.station?.connected?'Логер уже у спільній мережі. Точка доступу нижче — резервний спосіб підключення.':s.transport==='wifi'?'Ти працюєш напряму з логером. USB-сервер на ПК не потрібен.':'Ця панель працює через ПК. Можна підключитися до спільної мережі або резервної точки доступу логера.';
+  const lan=s.station;
+  $('lan-status').textContent=lan?.connected?'Підключено: '+lan.ssid+' · '+lan.rssi+' dBm':lan?.profiles?'Підключення до '+lan.ssid+'… Резервна точка доступу працює.':'Спільну мережу ще не налаштовано.';
+  if(lan?.error)$('lan-status').textContent+=' '+lan.error;
+  for(const [id,host] of [['lan-url',lan?.connected?lan.ip:''],['lan-name',lan?.connected?lan.hostname+'.local':'']]){const a=$(id);a.hidden=!host;if(host){a.href='http://'+host+'/';a.textContent=a.href;}}
+
   $('wifi-password').textContent=s.ap_password;
   renderBle(s.ble);
   $('generation').textContent='EEPROM · покоління '+s.generation;
@@ -538,6 +551,12 @@ $('ble-save').onclick=async()=>{await command('BLE','SAVE '+($('ble-allow-remote
 $('ble-on').onclick=()=>command('BLE','ON');
 $('ble-forget').onclick=()=>{$('ble-pin').value='';blePeerDirty=false;blePermissionDirty=false;command('BLE','FORGET');};
 $('files-refresh').onclick=()=>listFiles();
+$('lan-save').onclick=()=>{
+  const enc=new TextEncoder(),ssid=enc.encode($('lan-ssid').value),key=enc.encode($('lan-password').value);
+  if(!ssid.length||ssid.length>32||key.length<8||key.length>63||ssid.includes(0)||key.includes(0)){notice('SSID: 1–32 байти; пароль: 8–63 байти.',true);return;}
+  const hex=b=>Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');
+  $('lan-password').value='';command('WIFI',hex(ssid)+' '+hex(key));
+};
 $('wifi-from-diagnostics').onclick=()=>document.querySelector('[data-tab="wifi"]').click();
 $('record-start').onclick=()=>recordingAction(true);
 $('record-stop').onclick=()=>recordingAction(false);
@@ -558,6 +577,17 @@ $('ina-from-settings').onclick=()=>{document.querySelector('[data-tab="live"]').
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=()=>command('TIME',String(Math.floor(Date.now()/1000)));
+$('manual-time').oninput=controls;
+$('set-manual-time').onclick=()=>{
+  const value=$('manual-time').value, d=new Date(value), epoch=Math.floor(d.getTime()/1000);
+  const parts=value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/);
+  if(!parts||!Number.isFinite(epoch)||epoch<946684800||epoch>=4102444799||
+     d.getFullYear()!==+parts[1]||d.getMonth()+1!==+parts[2]||d.getDate()!==+parts[3]||
+     d.getHours()!==+parts[4]||d.getMinutes()!==+parts[5]||d.getSeconds()!==+(parts[6]||0)){
+    notice('Некоректна дата або час, якого немає через перехід на літній час.',true);return;
+  }
+  command('TIME',String(epoch));
+};
 $('release-usb').onclick=async()=>{
   if(busy)return;stopped=true;
   try{await api('/api/shutdown','');setOffline('USB-сервер зупинено. Можна прошивати. Для повернення до панелі запусти device_ui/start.cmd.');}

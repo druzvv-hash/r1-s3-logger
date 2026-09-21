@@ -26,3 +26,6 @@ secrets.h
 # Local measurement output
 data/
 firmware/include/build_provenance.h
+
+# Private Wi-Fi bootstrap (never publish firmware binaries containing it)
+firmware/include/wifi_secrets.h

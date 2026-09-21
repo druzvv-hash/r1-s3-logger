@@ -4,7 +4,7 @@ uint64_t rtcUtcNow();
 uint64_t rtcUtcNowUs();
 uint32_t rtcReadAgeMs();
 uint32_t rtcClockRevision();
-bool panelSetRtcUtc(uint64_t epoch);
+bool panelSetRtcUtc(uint64_t epoch, bool fromControlCenter=false);
 // Read-only DS3231 check. Call periodically; never sets time or clears OSF.
 const char* pollRtc(bool verbose=true);
 

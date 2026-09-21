@@ -6,6 +6,8 @@
 void r3BleBegin();
 bool r3BleCommand(const char* argument, const char*& message);
 String r3BleStatusJson();
+// Fresh authenticated R3 UTC has priority over local calendar edits.
+bool r3BleTimeAuthorityAvailable();
 struct CanBoxSnapshot {
     bool fresh=false, ready=false, pending=false;
     uint64_t boot=0, session=0, group=0;

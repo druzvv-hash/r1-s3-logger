@@ -160,7 +160,7 @@ void ecosystemOwnerPoll(bool i2cReady,bool sdReady){
                 // Whole-second calendar correction only. No offset/drift claim.
                 const uint64_t utc=request.unixS+(now-request.receivedLocalUs)/1000000;
                 ecosystemForgetClockEvidence();
-                ok=panelSetRtcUtc(utc);
+                ok=panelSetRtcUtc(utc,true);
                 pollRtc(false);
                 ok=ok&&rtcUtcNow()!=0;
                 if(ok){

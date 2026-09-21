@@ -7,7 +7,7 @@ const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 // Assemble in memory so this isolated test does not rewrite firmware assets.
 const html=read('device_ui/index.template.html').replace('/*STYLE*/',()=>read('device_ui/style.css'))
  .replace('/*SCHEMA*/',()=>JSON.stringify(fields)).replace('/*CODEC*/',()=>read('device_ui/codec.js'))
- .replace('/*RATE_PROFILE*/',()=>read('device_ui/rate_profile.js')).replace('/*APP*/',()=>read('device_ui/app.js'));
+ .replace('/*RATE_PROFILE*/',()=>read('device_ui/rate_profile.js')).replace('/*INA_PROFILE*/',()=>read('device_ui/ina_profile.js')).replace('/*CHART_NAVIGATION*/',()=>read('device_ui/chart_navigation.js')).replace('/*APP*/',()=>read('device_ui/app.js'));
 (async()=>{
  const browser=await chromium.launch({channel:'chrome',headless:true});
  try{
@@ -46,7 +46,7 @@ const html=read('device_ui/index.template.html').replace('/*STYLE*/',()=>read('d
   });
   await page.goto('http://127.0.0.1:9877/');
   await page.waitForFunction(()=>online);
-  await page.getByRole('button',{name:'BLE · R3',exact:true}).click();
+  await page.locator('[data-tab=ble]').click();
   assert.equal(await page.locator('#ble-scan').isDisabled(),true,'Older firmware must disable BLE commands');
   for(const id of ['ble-save','ble-on','ble-forget'])assert.equal(await page.locator('#'+id).isDisabled(),true,'No enrollment commands without firmware capability');
   assert.match(await page.locator('#ble-note').textContent(),/прошивка не повідомляє/);
@@ -92,7 +92,7 @@ const html=read('device_ui/index.template.html').replace('/*STYLE*/',()=>read('d
   await page.evaluate(()=>refresh());
   assert.equal(await page.locator('#f-oled_contrast').inputValue(),'100','BLE polling must preserve settings draft');
   assert.equal(await page.locator('#apply').isDisabled(),true,'Revision conflicts still guard settings apply');
-  await page.getByRole('button',{name:'BLE · R3',exact:true}).click();
+  await page.locator('[data-tab=ble]').click();
   fake.recording_state='RUNNING';await page.evaluate(()=>refresh());
   for(const id of ['ble-scan','ble-connect','ble-off','ble-peer','ble-pin','ble-save','ble-on','ble-forget','ble-allow-remote'])assert.equal(await page.locator('#'+id).isDisabled(),true,'STOP-only '+id);
   fake.recording_state='STARTING';await page.evaluate(()=>refresh());
@@ -103,7 +103,7 @@ const html=read('device_ui/index.template.html').replace('/*STYLE*/',()=>read('d
   await page.locator('#record-stop').click();await page.waitForFunction(()=>!busy&&state.recording_state==='STOPPING');
   assert.equal(commands.at(-1),'12345678 8 STOP','STARTING Stop uses latest owner revision');
   assert.match(await page.locator('#record-note').textContent(),/закриття|Збереження|Дописування/);
-  await page.getByRole('button',{name:'BLE · R3',exact:true}).click();
+  await page.locator('[data-tab=ble]').click();
   fake.recording_state='READY';ble.fresh=false;ble.state='RETRY';await page.evaluate(()=>refresh());
   assert.match(await page.locator('#ble-note').textContent(),/Зв’язок втрачено/);
   assert.equal(await page.locator('#ble-state').evaluate(node=>node.classList.contains('online')),false);
@@ -119,7 +119,7 @@ const html=read('device_ui/index.template.html').replace('/*STYLE*/',()=>read('d
   assert.equal(commands.at(-1),'12345678 8 BLE ON','Saved enrollment reconnect needs no PIN');
   const beforeReload=commands.length;await page.reload();await page.waitForFunction(()=>online);
   assert.equal(commands.length,beforeReload,'Reload only reads state; it does not replay any BLE or logging command');
-  await page.getByRole('button',{name:'BLE · R3',exact:true}).click();
+  await page.locator('[data-tab=ble]').click();
   assert.match(await page.locator('#ble-summary').textContent(),/Збережена/);
   assert.equal(await page.locator('#ble-pin').inputValue(),'','Saved trust never repopulates PIN');
   await page.locator('#ble-forget').click();await page.waitForFunction(()=>!busy&&!state.ble.enrolled);

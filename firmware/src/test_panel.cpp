@@ -12,6 +12,7 @@
 #include <Wire.h>
 #include "panel_assets.h"
 #include <WiFi.h>
+#include "wifi_station.h"
 #include <WebServer.h>
 #include <Preferences.h>
 #include <esp_system.h>
@@ -81,6 +82,9 @@ String execute(const char* text){
         settings::Bytes bytes;bytes.reserve(n/2);
         for(size_t i=0;i<n;i+=2){int a=nibble(arg[i]),b=nibble(arg[i+1]);if(a<0||b<0)return result(false,"Invalid payload hex");bytes.push_back(a*16+b);}
         ok=panelApplySettings(bytes,message);
+    }else if(!strcmp(verb,"WIFI")){
+        if(recorder::busy()||sd_files::active())return result(false,"Stop recording/download before changing Wi-Fi");
+        ok=wifiStationConfigure(arg,message);
     }else if(!strcmp(verb,"SAVE")&&!*arg){ok=panelSaveSettings(message);}
     else if(ownerAction){ok=ownerAction(verb,arg,message);}
     else message="Hardware owner unavailable";
@@ -170,8 +174,9 @@ void webTask(void*){
         if(event==ARDUINO_EVENT_WIFI_AP_STACONNECTED)networkJoins.fetch_add(1);
         if(event==ARDUINO_EVENT_WIFI_AP_STADISCONNECTED)networkLeaves.fetch_add(1);
     });
-    WiFi.mode(WIFI_AP);
+    WiFi.mode(WIFI_AP_STA);
     networkReady.store(WiFi.softAP(ssid,password,1,0,2));
+    wifiStationBegin();
     xTaskCreatePinnedToCore(downloadTask,"file-http",DOWNLOAD_STACK,nullptr,1,&downloadHandle,0);
     WebServer server(80);
     const char* headers[]={"X-R1-Panel","Origin"};server.collectHeaders(headers,2);
@@ -200,7 +205,7 @@ void webTask(void*){
         char path[sd_files::PATH_BYTES];
         if(!sd_files::decodePath(server.arg("path").c_str(),path)){server.send(400,"text/plain","Invalid file path");return;}
         server.sendHeader("Cache-Control","no-store");
-        server.sendHeader("Location",String("http://")+WiFi.softAPIP().toString()+":81/api/download?path="+sd_files::encodePath(path));
+        server.sendHeader("Location",String("http://")+server.client().localIP().toString()+":81/api/download?path="+sd_files::encodePath(path));
         server.send(302,"text/plain","");
     });
     server.on("/api/command",HTTP_POST,[&]{
@@ -215,6 +220,7 @@ void webTask(void*){
     for(;;){
         server.handleClient();
         webLoopAt.store(millis());
+        wifiStationTick();
         if(millis()-lastClients>=500){networkClients.store(WiFi.softAPgetStationNum());lastClients=millis();}
         vTaskDelay(pdMS_TO_TICKS(5));
     }
@@ -303,6 +309,7 @@ void serializePanel(const PanelSnapshot& p){
     s+=",\"watts\":"+(r.valid?String(r.busVolts*r.currentAmps,6):String("null"))+",\"temp_c\":"+(r.valid?String(r.temperatureC,3):String("null"));
     s+=",\"shunt_uv\":"+(r.valid?String(r.shuntMicrovolts,5):String("null"))+",\"shunt_raw\":"+String(r.shuntRaw)+",\"bus_raw\":"+String(r.busRaw)+",\"temp_raw\":"+String(r.tempRaw);
     s+=",\"sd\":"+quoted(h.sd)+",\"eeprom\":"+quoted(h.eeprom)+",\"rtc\":"+quoted(h.rtc)+",\"ina\":"+quoted(h.ina)+",\"oled\":"+(h.oled?"true":"false");
+    s+=",\"time_authority_available\":"+String(r3BleTimeAuthorityAvailable()?"true":"false");
     char utc[24];snprintf(utc,sizeof(utc),"%llu",p.utc);
     s+=",\"i2c_count\":"+String(h.i2cCount)+",\"i2c_errors\":"+String(h.i2cErrors)+",\"utc\":"+String(utc);
     s+=",\"psram_free\":"+String(ESP.getFreePsram())+",\"heap_free\":"+String(ESP.getFreeHeap())+",\"queue_bytes\":"+String(recording::allocatedQueueBytes());
@@ -318,6 +325,7 @@ void serializePanel(const PanelSnapshot& p){
     s+=",\"preview_drops\":"+String(liveHistoryDrops())+",\"oled_frames\":"+String(h.oledFrames)+",\"oled_chunk_us\":"+String(h.oledChunkUs);
     s+=",\"files_available\":"+String(recorder::busy()?"false":"true")+",\"file_transfer\":"+String(sd_files::active()?"true":"false");
     s+=",\"ap_ready\":"+(networkReady.load()?String("true"):String("false"))+",\"ap_clients\":"+String(networkClients.load())+",\"ssid\":"+quoted(ssid)+",\"ap_password\":"+quoted(password);
+    s+=",\"station\":"+wifiStationJson();
     s+=",\"network_diag\":{\"joins\":"+String(networkJoins.load())+",\"leaves\":"+String(networkLeaves.load());
     s+=",\"web_loop_age_ms\":"+String(uint32_t(millis()-webLoopAt.load()));
     s+=",\"internal_free\":"+String(heap_caps_get_free_size(MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT));
