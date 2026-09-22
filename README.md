@@ -2,7 +2,10 @@
 
 **English** | [Українська](README.uk.md)
 
-Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.35-ota-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.36-can-live-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
+
+CAN tab: shared live/CBX playback/finite transmit workspace, using CANBox USB or
+Wi-Fi directly. BLE remains service-only. [CAN guide](../GLL%20CANBox/docs/CAN_WORKSPACE.uk.md).
 
 
 INA228 averaging/conversion controls and 10/30/60 s chart navigation: [guide](docs/INA228_PANEL.md).

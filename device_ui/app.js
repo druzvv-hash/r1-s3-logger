@@ -585,7 +585,7 @@ $('ina-fields').addEventListener('input',editConfig);
 $('ina-apply').onclick=()=>$('apply').click();$('ina-save').onclick=()=>$('save').click();$('ina-reload').onclick=()=>$('reload-config').click();
 $('ina-fit').onclick=()=>{const current=values(),maximum=inaTiming(current,!!state?.benchmark).maximum;if(maximum)fill(inaWithTiming(current,maximum));controls();};
 $('ina-from-settings').onclick=()=>{document.querySelector('[data-tab="live"]').click();$('ina-panel').scrollIntoView({behavior:'smooth',block:'start'});};
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();draw();});
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!==b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));if(b.dataset.tab==='files'&&!fileLoaded)listFiles();if(b.dataset.tab==='can-workspace'&&!$('can-workspace-frame').getAttribute('src'))$('can-workspace-frame').src='/can'+location.search;draw();});
 document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>command(b.dataset.command));
 $('sync-time').onclick=async()=>{
   if(dirty){notice('Спочатку застосуй або скинь чернетку налаштувань.',true);return;}

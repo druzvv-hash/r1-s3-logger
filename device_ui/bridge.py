@@ -175,6 +175,8 @@ class Handler(BaseHTTPRequestHandler):
         path=urllib.parse.urlsplit(self.path).path
         if path=='/':
             self.respond(200,(ROOT/'device_ui/index.html').read_bytes(),'text/html; charset=utf-8')
+        elif path=='/can':
+            self.respond(200,(ROOT/'device_ui/can.html').read_bytes(),'text/html; charset=utf-8')
         elif path=='/api/live':
             after=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get('after',['0'])[0]
             if not after.isascii() or not after.isdecimal() or len(after)>16 or int(after)>9007199254740991:

@@ -1,5 +1,14 @@
 # Current memory entry point
 
+## 2026-09-22 — shared CAN workspace
+
+0.36-can-live-dev deployed via native COM9 to verified active app1 at 0x490000;
+READY, generation 6. CAN tab and `/can`, preserving 0.35 OTA/timezone. Canonical
+assets: ../GLL CANBox/workspace; contract: ../GLL CANBox/docs/CAN_WORKSPACE.md.
+BLE service-only; browser traffic directly over CANBox USB/Wi-Fi. 88 tests/build
+PASS; real R1-hosted CAN page + CANBox Wi-Fi 60 s, 12/12 concurrent BLE/time
+samples PASS while idle. No loaded CAN/TX qualification. Fallback mode enabled.
+
 ## Memory checkpoint — 2026-09-21
 
 ### Current state and evidence

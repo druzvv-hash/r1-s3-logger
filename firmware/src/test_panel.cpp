@@ -12,6 +12,7 @@
 #include "rate_benchmark.h"
 #include <Wire.h>
 #include "panel_assets.h"
+#include "can_workspace_assets.h"
 #include <WiFi.h>
 #include "wifi_station.h"
 #include <WebServer.h>
@@ -182,6 +183,7 @@ void webTask(void*){
     WebServer server(80);
     const char* headers[]={"X-R1-Panel","Origin","X-R1-Size"};server.collectHeaders(headers,3);
     otaRoutes(server,password);
+    server.on("/can",HTTP_GET,[&]{server.sendHeader("Cache-Control","no-store");server.send_P(200,"text/html; charset=utf-8",can_workspace_html);});
     server.on("/",HTTP_GET,[&]{
         server.sendHeader("Cache-Control","no-store");server.sendHeader("Content-Encoding","gzip");
         server.setContentLength(sizeof(PANEL_HTML));server.send(200,"text/html; charset=utf-8","");

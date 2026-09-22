@@ -1,5 +1,21 @@
 # r1-s3-logger — work reports
 
+## 2026-09-22 — shared CAN workspace
+
+Added CAN tab, embedded `/can`, PC bridge route and generated common assets from
+../GLL CANBox/workspace. BLE remains service/control/time only. Browser directly
+uses CANBox USB/Wi-Fi; no CAN payload relay through R1. Version 0.36-can-live-dev.
+Preserved OTA, timezone and linked-recording implementation.
+
+HOST TESTED: build and 88 Python tests PASS (PlatformIO Python with pyserial).
+BENCH TESTED: native COM9 flash/hash to verified active app1 0x490000; subsequent
+STATE 0.36/READY/generation 6. Real R1-hosted `/can` + CANBox Wi-Fi: rejected wrong
+token, 60 s live/status without stale UI, clean disconnect. Concurrent R1 BLE:
+12/12 connected/fresh/clock synced; fallback mode enabled. Zero CAN frames seen.
+No physical TX, loaded traffic or new analog accuracy qualification. No R3 flash.
+Canonical protocol, LED wiring and limits: sibling docs/CAN_WORKSPACE.md and
+CAN_WORKSPACE.uk.md. Evidence stays private in CANBox/local; secrets not committed.
+
 Append dated entries with scope, changes, validation, limitations, deployment and next steps. Do not include credentials or claim unperformed tests.
 
 ## 2026-09-21 — reporting established

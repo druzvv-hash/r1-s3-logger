@@ -18,7 +18,8 @@
 <article class="meter voltage"><label>НАПРУГА</label><div><strong id="volts">—</strong><span>V</span></div><small>VBUS · застосовані коефіцієнти</small></article>
 <article class="meter power"><label>ПОТУЖНІСТЬ</label><div><strong id="watts">—</strong><span>W</span></div><small id="temperature">Температура INA228: —</small></article>
 </section>
-<nav aria-label="Розділи"><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="wifi">Wi-Fi</button><button class="tab" data-tab="ble">Пристрої · CANBox / R3</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<nav aria-label="Розділи"><button class="tab" data-tab="can-workspace">CAN · Live / TX</button><button class="tab active" data-tab="live">Огляд</button><button class="tab" data-tab="files">Файли SD</button><button class="tab" data-tab="settings">Налаштування</button><button class="tab" data-tab="wifi">Wi-Fi</button><button class="tab" data-tab="ble">Пристрої · CANBox / R3</button><button class="tab" data-tab="diagnostics">Діагностика</button></nav>
+<section id="can-workspace" class="page" hidden><iframe id="can-workspace-frame" title="CAN — live, записи та передавання" allow="serial" style="width:100%;height:900px;border:0;border-radius:12px"></iframe></section>
 <section id="live" class="page">
 <div class="panel live-controls">
 <div class="rate-choices"><label>Частота вимірів, Гц<input id="quick-rate" type="number" min="1" max="300" step="1" inputmode="numeric" value="50" aria-describedby="rate-profile rate-note"></label><div id="rate-presets" role="group" aria-label="Швидкий вибір частоти"></div></div>
