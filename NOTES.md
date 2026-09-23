@@ -1,5 +1,12 @@
 # Current memory entry point
 
+## 2026-09-23 — CAN Live update deployed
+
+Shared CAN assets deployed by OTA alongside existing0.37 owner changes.
+88 tests/build PASS; real UI122722/0 live-ring losses, not hardware losslessness.
+R1↔R3 unchanged; CANBox UTC invalid/service adapter missing.
+See [deployment report](docs/CAN_LIVE_FIXES_2026-09-23.md).
+
 ## 2026-09-22 — shared CAN workspace
 
 0.36-can-live-dev deployed via native COM9 to verified active app1 at 0x490000;
