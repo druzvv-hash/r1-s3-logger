@@ -1,5 +1,12 @@
 # r1-s3-logger — work reports
 
+## 2026-09-23 — shared owner manual
+
+Created the Ukrainian ecosystem manual with topology, entry points, workflows,
+troubleshooting and evidence limits. Update it alongside user-visible changes.
+Documentation only; no new build, firmware deployment or hardware acceptance.
+[Manual](../lily-logger-r3/docs/manual/README.uk.md).
+
 ## 2026-09-23 — R3 primary CANBox integration verified
 
 R3 now controls R1 and CANBox together and provides coarse UTC. R1 firmware

@@ -8,3 +8,9 @@ private evidence, owner changes and existing documentation. General policy:
 C:/Projects/AGENTS.md. Owner instructions: existing Ukrainian docs/README links.
 
 Project-specific constraints and sibling dependencies: NOTES.md.
+
+## Owner manual
+
+For changes to user-visible behavior, connections, roles, clocks, files or OTA,
+update the relevant page in [the shared manual](../lily-logger-r3/docs/manual/README.uk.md) in the same work item.
+Follow its maintenance guide; date evidence and distinguish deployed from planned.

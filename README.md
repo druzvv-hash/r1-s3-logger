@@ -1,5 +1,7 @@
 # R1-S3 Logger
 
+**[Посібник екосистеми: схеми, підключення та інструкції](../lily-logger-r3/docs/manual/README.uk.md)** — актуальний спільний вхід для R3, R1, CANBox і Viewer.
+
 **English** | [Українська](README.uk.md)
 
 Rebuilding Logger R1 around **ESP32-S3 + INA228**. Current firmware: **PANEL v0.36-can-live-dev**, with USB/Wi-Fi Start/Stop controls, integer 1–300 Hz measurements with presets and manual input, a 30/60 FPS live chart and explicit draft/apply/save settings. Sessions flow through a PSRAM FIFO into checked block writes on microSD. The encoder remains a no-GPIO stub. [Recording guide](docs/P5_RECORDING.md).
