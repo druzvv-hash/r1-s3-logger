@@ -1,5 +1,12 @@
 # Current memory entry point
 
+## 2026-09-23 — R3 primary CANBox integration verified
+
+R3 now controls R1 and CANBox together and provides coarse UTC. R1 firmware
+unchanged. Group START/STOP, saved R1 fallback and return to R3 passed;
+25/25 post-return fresh/time samples, not precision acceptance. Canonical report:
+../lily-logger-r3/docs/CANBOX_CONTROL.md. Existing averaging owner edits preserved.
+
 ## 2026-09-23 — CAN Live update deployed
 
 Shared CAN assets deployed by OTA alongside existing0.37 owner changes.
