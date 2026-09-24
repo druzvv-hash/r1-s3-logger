@@ -266,6 +266,8 @@ void scanI2c() {
 
 bool runPanelAction(const char* verb, const char* argument, const char*& message) {
     if(!strcmp(verb,"LINK"))return ecosystemLinkedCommand(argument,message);
+    if(!strcmp(verb,"BLE")&&(!strcmp(argument,"OFF")||!strcmp(argument,"ON")||!strcmp(argument,"CAN ON")))
+        return r3BleCommand(argument,message);
     if(ecosystemLinkedActive()){
         if(!strcmp(verb,"STOP")&&!*argument)return ecosystemLinkedCommand("STOP",message);
         message="Shared recording active; use LINK STOP";return false;

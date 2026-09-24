@@ -1,5 +1,17 @@
 # Current memory entry point
 
+## 2026-09-24 — shared session files and BLE resilience
+
+R1 0.38 / CANBox 0.6.5 / R3 CC 0.2.1 deployed; STM32 CM7 LFN/UTC update
+ST-LINK verified. R1/CANBox share UTC/group basenames and continue through BLE
+loss; explicit offline STOP reconciles original session on reconnect. Hardware
+R1/R3-controller tests PASS with no CAN frames; R1 finalized file integrity PASS.
+Actual FatFs host test validates creation/modification fields and LFN. STM32
+recording awaits ADS131 development (owner clarified), not yet ECO1 group member.
+Earlier R1 HTTP outage cause unresolved; final short download PASS. No overnight
+or load qualification. Viewer reader updated; running server needs restart.
+[Contract, evidence, deployment and limits](../GLL%20CANBox/docs/SESSION_RESILIENCE_2026-09-24.md).
+
 ## 2026-09-23 — shared owner manual
 
 Created the Ukrainian ecosystem manual with topology, entry points, workflows,

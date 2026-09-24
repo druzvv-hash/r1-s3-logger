@@ -14,7 +14,7 @@ struct CanBoxSnapshot {
     uint8_t phase=0;
 };
 CanBoxSnapshot r3BleCanBoxSnapshot();
-bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group);
+bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group,uint64_t groupStartUtcUs=0);
 
 enum class R3BleOwnerState : uint8_t { Ready, Starting, Running, Stopping, Error };
 struct R3BleOwnerSnapshot {
@@ -25,13 +25,14 @@ struct R3BleOwnerSnapshot {
     bool ready = false, rtcValid = false, fileClosed = false, clockSynced = false;
     char file[160] = {}, error[96] = {};
     uint8_t linkedPhase=0;
+    bool linkedDegraded=false;
     uint64_t linkedGroup=0;
 };
 struct R3BleOwnerRequest {
     enum Kind : uint8_t { Start, Stop, SetTime } kind;
     uint64_t requestId = 0, sourceBoot = 0, targetBoot = 0;
     uint64_t sessionId = 0, groupId = 0, expiresLocalUs = 0, receivedLocalUs = 0;
-    uint64_t sourceCaptureUs = 0;
+    uint64_t sourceCaptureUs = 0, groupStartUtcUs = 0;
     uint32_t epoch = 0, unixS = 0, clockRevision = 0, startGeneration = 0;
     uint32_t sourceReadAgeMs = 0, roundtripUs = 0;
     uint8_t sourceDevice[6] = {};

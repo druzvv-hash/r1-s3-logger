@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <cerrno>
+#include "file_calendar.h"
 
 namespace recorder {
 namespace {
@@ -58,10 +59,12 @@ bool freeSpace(){
     budget=total-used-reserve;return true;
 }
 bool openPart(){
-    snprintf(partial,sizeof(partial),"/sd/records/%s_%04lu.part",session.id.c_str(),(unsigned long)part);
-    snprintf(complete,sizeof(complete),"/sd/records/%s_%04lu.csv",session.id.c_str(),(unsigned long)part);
+    snprintf(partial,sizeof(partial),"/sd/records/%s_P%04lu.part",session.id.c_str(),(unsigned long)part);
+    snprintf(complete,sizeof(complete),"/sd/records/%s_P%04lu.csv",session.id.c_str(),(unsigned long)part);
     if(access(complete,F_OK)==0)return false;
+    gll_file_calendar_begin(session.groupStartUtcUs);
     fd=::open(partial,O_WRONLY|O_CREAT|O_EXCL,0666);
+    gll_file_calendar_end();
     if(fd<0)return false;
     strlcpy(local.path,partial+3,sizeof(local.path));
     if(!writer.beginPart(part,previousSha)||!writer.checkpointAndSync())return false;

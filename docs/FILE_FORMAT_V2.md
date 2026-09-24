@@ -109,3 +109,12 @@ The existing v1 golden corpus is retained unchanged.
 Precise S2 clock mappings, raw synchronization observations and discontinuity
 records require their own qualified extension; this static provenance object
 does not implement those records. See [ecosystem time](ECOSYSTEM_TIME_SYNC.md).
+
+
+## 2026-09-24 additive session naming metadata
+
+Optional top-level `group_start_utc_us` is a UTC microsecond integer (zero means
+unavailable). New writers emit it; readers must still accept older schema 2
+without it. The existing `time` acquisition anchor is unchanged. Common filenames,
+FAT calendar semantics and deployment scope are defined in
+[the shared session contract](../../GLL%20CANBox/docs/SESSION_RESILIENCE_2026-09-24.md).

@@ -29,6 +29,7 @@ struct SessionInfo {
     bool dirty = false;
     // Schema 2 adds explicit ecosystem provenance. Schema 1 output stays exact.
     uint8_t schema = 1;
+    uint64_t groupStartUtcUs = 0;
     uint64_t controlSessionId = 0, groupId = 0, bootId = 0, coordinatorBoot = 0;
     std::string deviceId, coordinatorId;
     struct ClockCorrection {

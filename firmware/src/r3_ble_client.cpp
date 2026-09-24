@@ -31,7 +31,7 @@ struct Status {
     unsigned deviceCount;
     Device devices[kDevices];
 };
-struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget, CanConnect, CanOn, CanSave, CanStart, CanStop, CanQuery, CanForget } kind; char peer[18]; uint32_t pin; bool remote; uint64_t boot,session,group,expires; };
+struct Command { enum Kind { Scan, Connect, Off, On, Save, Forget, CanConnect, CanOn, CanSave, CanStart, CanStop, CanQuery, CanForget } kind; char peer[18]; uint32_t pin; bool remote; uint64_t boot,session,group,expires,groupStartUtcUs; };
 struct Packet { uint8_t bytes[r3_ble::kBeaconBytes]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct EcoPacket { uint8_t bytes[96]; size_t length; uint64_t receiveUs; uint32_t epoch; };
 struct Completion { R3BleOwnerRequest request; bool accepted; char message[80]; };
@@ -370,7 +370,7 @@ void commandReceived(const ecosystem::Frame& frame, uint64_t now) {
     R3BleOwnerRequest request;
     request.kind = frame.op == ecosystem::Op::Start ? R3BleOwnerRequest::Start : R3BleOwnerRequest::Stop;
     request.requestId = frame.request; request.sourceBoot = frame.sender_boot; request.targetBoot = ownBoot;
-    request.sessionId = frame.session; request.groupId = frame.group; request.epoch = epoch;
+    request.groupStartUtcUs = frame.value_us; request.sessionId = frame.session; request.groupId = frame.group; request.epoch = epoch;
     request.clockRevision = frame.revision; request.startGeneration = commandGeneration;
     request.receivedLocalUs = now; request.expiresLocalUs = frame.stamp_us + uint64_t(frame.ttl_ms) * 1000;
     memcpy(request.sourceDevice, frame.sender, 6);
@@ -652,10 +652,10 @@ CanBoxSnapshot r3BleCanBoxSnapshot(){
     s.ready=s.fresh&&v.saved&&v.authorized&&v.ready&&v.clockSynced;
     s.pending=v.pending;s.boot=v.boot;s.session=v.session;s.group=v.group;s.phase=v.phase;return s;
 }
-bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group){
+bool r3BleCanBoxRecord(bool start,uint64_t boot,uint64_t session,uint64_t group,uint64_t groupStartUtcUs){
     if(!workerHandle||!commands)return false;
     Command c={};c.kind=start?Command::CanStart:Command::CanStop;
-    c.boot=boot;c.session=session;c.group=group;c.expires=monoUs()+2000000;
+    c.groupStartUtcUs=groupStartUtcUs;c.boot=boot;c.session=session;c.group=group;c.expires=monoUs()+2000000;
     return xQueueSend(commands,&c,0)==pdTRUE;
 }
 

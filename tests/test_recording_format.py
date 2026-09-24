@@ -129,3 +129,14 @@ class RecordingFormat(unittest.TestCase):
                 self.assertTrue(raw.startswith(b'# R1S3_LOG schema=1\n'))
                 self.assertNotIn('ecosystem',meta)
                 self.assertEqual(meta['time']['uncertainty_us'],None if name=='unknown.csv' else 1100000)
+
+    def test_group_start_is_optional_for_existing_v2_files(self):
+        meta=self.read('v2-remote.csv')['metadata']
+        contracts.validate_meta(meta)
+        meta.pop('group_start_utc_us',None)
+        contracts.validate_meta(meta)
+        meta['group_start_utc_us']=1790227801000000
+        contracts.validate_meta(meta)
+        for invalid in [-1, True, '1790227801000000', 4102444800000000]:
+            meta['group_start_utc_us']=invalid
+            with self.assertRaises(ValueError): contracts.validate_meta(meta)

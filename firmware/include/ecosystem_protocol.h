@@ -42,6 +42,7 @@ struct Frame {
   // TimeRequest/Reply: requester's monotonic send time, echoed unchanged.
   uint64_t stamp_us = 0;
   // TimeReply: coarse calendar time at reply construction in microseconds.
+  // START: common group-start UTC us (0 = legacy local anchor); TimeReply: UTC.
   uint64_t value_us = 0;
   uint32_t revision = 0;
   uint32_t ttl_ms = 0;

@@ -271,7 +271,12 @@ void panelPoll(){
         const bool stop=parsed&&((!strcmp(verb,"STOP")&&command.text[consumed]==0)||
             (!strcmp(verb,"LINK")&&!strcmp(command.text+consumed," STOP"))||
             (!strcmp(verb,"BLE")&&!strcmp(command.text+consumed," CAN STOP")));
-        response=stop?execute(command.text):result(false,"STOP required before settings, time or diagnostic commands");
+        // Radio worker only: no settings/RTC/SD mutation or acquisition pause.
+        // Needed to recover the saved service link during autonomous recording.
+        const bool service=parsed&&!strcmp(verb,"BLE")&&
+            (!strcmp(command.text+consumed," OFF")||!strcmp(command.text+consumed," ON")||
+             !strcmp(command.text+consumed," CAN ON"));
+        response=(stop||service)?execute(command.text):result(false,"STOP required before settings, time or diagnostic commands");
     }
     else if(command.legacy){handleLegacyLine(command.text);response=result(true,"Legacy command completed");}
     else response=execute(command.text);

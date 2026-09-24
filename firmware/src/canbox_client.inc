@@ -34,7 +34,7 @@ String canJson() {
     const auto source=snapshot();const uint64_t now=monoUs();
     const uint64_t age=now>=source.snapshotUs?(now-source.snapshotUs)/1000:UINT64_MAX;
     String out(text);out.remove(out.length()-1);
-    char linked[160];snprintf(linked,sizeof(linked),",\"group\":\"%llu\",\"linked_phase\":%u,\"linked_group\":\"%llu\"",(unsigned long long)v.group,source.linkedPhase,(unsigned long long)source.linkedGroup);out+=linked;
+    char linked[160];snprintf(linked,sizeof(linked),",\"group\":\"%llu\",\"linked_phase\":%u,\"linked_group\":\"%llu\"",(unsigned long long)v.group,source.linkedPhase,(unsigned long long)source.linkedGroup);out+=linked;out+=",\"linked_degraded\":"+String(source.linkedDegraded?"true":"false");
     out+=",\"connections\":"+String(canConnections.load())+",\"read_errors\":"+String(canReadErrors.load());
     out+=",\"time_replies\":"+String(canTimeReplies.load())+",\"invalid_time_replies\":"+String(canInvalidTime.load());
     out+=",\"rtc_read_age_ms\":"+(source.rtcValid&&age<=UINT32_MAX&&source.rtcReadAgeMs<=UINT32_MAX-age?String(uint32_t(age+source.rtcReadAgeMs)):String("null"));
@@ -69,7 +69,8 @@ bool canSend(ecosystem::Frame f) {
 }
 void canReplyTime() {
     const auto s=snapshot();const uint64_t now=monoUs();
-    ecosystem::Frame f;f.kind=ecosystem::Kind::TimeReply;f.request=canObserved.request;f.stamp_us=canObserved.stamp_us;f.revision=s.rtcRevision;
+    ecosystem::Frame f;f.kind=ecosystem::Kind::TimeReply;f.request=canObserved.request;
+        f.stamp_us=canObserved.stamp_us;f.revision=s.rtcRevision;
     const uint64_t age=now>=s.snapshotUs?(now-s.snapshotUs)/1000:UINT64_MAX;
     if(s.rtcValid&&s.utcUs&&age<=1500&&s.rtcReadAgeMs<=12000&&age+s.rtcReadAgeMs<=12000) {
         f.value_us=s.utcUs+(now-s.snapshotUs);f.detail=uint32_t(age+s.rtcReadAgeMs);f.flags=ecosystem::RtcValid;
@@ -142,6 +143,7 @@ void canHandle(const Command& c) {
         f.session=f.op==ecosystem::Op::Start?((uint64_t(esp_random())<<32)|esp_random()):canObserved.session;
         if(f.op==ecosystem::Op::Start&&!uint32_t(f.session))f.session|=1;
         if(c.group){f.session=c.session;f.group=c.group;}
+        if(f.op==ecosystem::Op::Start){const auto s=snapshot();f.value_us=c.groupStartUtcUs?c.groupStartUtcUs:s.utcUs;if(!f.group)f.group=f.session;}
         f.stamp_us=canObserved.stamp_us;f.ttl_ms=ecosystem::kCommandTtlMs;
         if(canSend(f)) {canPending=f.request;canDeadline=monoUs()+12000000;setState("CANBOX","Command sent; waiting for actual CANBox result");}
         else setState("CANBOX","Command delivery unknown; inspect CANBox state");

@@ -102,6 +102,7 @@ bool LogWriter::beginPart(uint32_t part,const std::string& previousSha){
     const char* source=!info_.utcUs?"unknown":info_.schema==2&&info_.clockCorrection.applied?"DS3231/R3":"DS3231";
     meta+=",\"time\":{\"anchor_t_us\":0,\"sample_point\":\"conversion-ready-observed\",\"source\":"+jsonQuote(source)+",\"uncertainty_us\":"+(info_.utcUs&&info_.schema==1?"1100000":"null")+",\"utc_anchor\":"+(info_.utcUs?jsonQuote(utcText(info_.utcUs)):"null")+"}";
     if(info_.schema==2){
+        meta+=",\"group_start_utc_us\":"+integer(info_.groupStartUtcUs);
         meta+=",\"ecosystem\":{\"version\":1,\"device_id\":"+jsonQuote(info_.deviceId)+",\"boot_id\":"+identity(info_.bootId)+",\"recording_id\":"+identity(info_.controlSessionId)+",\"group_id\":"+(info_.groupId?identity(info_.groupId):"null")+",\"coordinator_id\":"+(info_.coordinatorId.empty()?"null":jsonQuote(info_.coordinatorId))+",\"coordinator_boot_id\":"+(info_.coordinatorBoot?identity(info_.coordinatorBoot):"null")+",\"rtc_correction\":";
         const auto& c=info_.clockCorrection;
         if(!c.applied)meta+="null";

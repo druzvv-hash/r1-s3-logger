@@ -193,6 +193,11 @@ def validate_meta(meta):
         raise ValueError('Metadata keys/schema mismatch')
     if meta['schema'] == 2:
         required.add('ecosystem')
+        if 'group_start_utc_us' in meta:
+            required.add('group_start_utc_us')
+            stamp = meta['group_start_utc_us']
+            if type(stamp) is not int or (stamp != 0 and not 946684800000000 <= stamp < 4102444800000000):
+                raise ValueError('Invalid group start UTC')
     if set(meta) != required:
         raise ValueError('Metadata keys/schema mismatch')
     if not isinstance(meta['session_id'], str) or not meta['session_id'] or not isinstance(meta['description'], str):

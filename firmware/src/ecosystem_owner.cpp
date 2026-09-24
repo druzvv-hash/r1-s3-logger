@@ -11,6 +11,7 @@
 #include <esp_system.h>
 #include <cstring>
 #include "linked_recording.h"
+#include "session_file.h"
 #include "ecosystem_protocol.h"
 
 namespace {
@@ -21,6 +22,7 @@ uint64_t sessionId=0;
 uint64_t sessionGroupId=0;
 uint32_t lastPublication=0;
 linked_recording::Coordinator linked;
+uint64_t linkedStartUtcUs=0;
 uint64_t linkedGroup=0,linkedCanSession=0,linkedCanBoot=0;
 
 uint64_t newSessionId(){
@@ -34,7 +36,7 @@ void publish(bool i2cReady,bool sdReady){
     out.state=static_cast<R3BleOwnerState>(phase);
     out.sessionId=sessionId;
     out.groupId=sessionGroupId;
-    out.linkedPhase=linked.phase;out.linkedGroup=linkedGroup;
+    out.linkedDegraded=linked.degraded;out.linkedPhase=linked.phase;out.linkedGroup=linkedGroup;
     out.utcUs=rtcUtcNowUs();out.snapshotUs=esp_timer_get_time();
     out.rtcReadAgeMs=rtcReadAgeMs();out.rtcRevision=rtcClockRevision();
     out.rtcValid=out.utcUs!=0;
@@ -94,6 +96,11 @@ bool ecosystemStartRecording(const R3BleOwnerRequest* remote,const char*& messag
         // Identity/RTC reads above may take time. Recheck just before admission.
         if(!r3BleOwnerActionCurrent(*remote)){message="Remote START expired before admission";return false;}
     }
+    info.groupStartUtcUs=remote?remote->groupStartUtcUs:localGroup?linkedStartUtcUs:info.utcUs;
+    if(!info.groupStartUtcUs)info.groupStartUtcUs=info.utcUs; // legacy coordinator
+    char stem[112];
+    if(!gll_session_stem(stem,sizeof(stem),info.groupStartUtcUs,info.groupId?info.groupId:info.controlSessionId,"R1",localId)){message="Session filename too long";return false;}
+    info.id=stem;
     if(!recorder::start(info,message))return false;
     sessionId=info.controlSessionId;
     sessionGroupId=info.groupId;
@@ -110,8 +117,8 @@ bool ecosystemLinkedCommand(const char* argument,const char*& message){
     const auto can=r3BleCanBoxSnapshot();
     if(linked.active()||recorder::busy()||sd_files::active()||!settingsReady()||!settingsGeneration()||!rtcUtcNowUs()||
        !can.ready||can.pending||!ecosystem::startable(ecosystem::Phase(can.phase))){message="Both recorders must be idle, ready and time synchronized";return false;}
-    linkedGroup=newSessionId();linkedCanSession=newSessionId()|1;linkedCanBoot=can.boot;
-    if(!r3BleCanBoxRecord(true,linkedCanBoot,linkedCanSession,linkedGroup)){message="CANBox command queue busy";return false;}
+    linkedStartUtcUs=rtcUtcNowUs();linkedGroup=newSessionId();linkedCanSession=newSessionId()|1;linkedCanBoot=can.boot;
+    if(!r3BleCanBoxRecord(true,linkedCanBoot,linkedCanSession,linkedGroup,linkedStartUtcUs)){message="CANBox command queue busy";return false;}
     linked.begin(esp_timer_get_time());message="Shared start queued; waiting for CANBox then R1";return true;
 }
 

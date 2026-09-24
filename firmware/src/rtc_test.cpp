@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <cstring>
+#include <sys/time.h>
 #include "rtc_test.h"
 
 namespace {
@@ -82,6 +83,7 @@ const char* pollRtc(bool verbose) {
     previousMillis = sampledAt;
     previousValid = true;
     trustedUtc = !osf && strcmp(result,"TICK FAIL")!=0;
+    if(trustedUtc){struct timeval tv={};tv.tv_sec=seconds+946684800ULL;settimeofday(&tv,nullptr);}
     return result;
 }
 
