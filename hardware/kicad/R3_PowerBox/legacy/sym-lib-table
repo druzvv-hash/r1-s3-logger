@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "R3_POWER")(type "Legacy")(uri "${KIPRJMOD}/R3_POWER.lib")(options "")(descr "R3 power-module project symbols"))
+)

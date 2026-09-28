@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "R3_Power")(type "KiCad")(uri "${KIPRJMOD}/footprints/R3_Power.pretty")(options "")(descr "R3 PowerBox project footprints - verify against purchased parts"))
+)

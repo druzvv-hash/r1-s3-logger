@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name "R3_POWER")(type "Legacy")(uri "${KIPRJMOD}/libraries/R3_POWER.lib")(options "")(descr "R3 PowerBox project symbols"))
+  (lib (name "R3_POWER_GEN")(type "KiCad")(uri "${KIPRJMOD}/libraries/R3_POWER_GEN.kicad_sym")(options "")(descr "Generated native R3 PowerBox symbols"))
+)

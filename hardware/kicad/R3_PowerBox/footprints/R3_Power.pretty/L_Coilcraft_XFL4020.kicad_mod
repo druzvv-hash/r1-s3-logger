@@ -1,0 +1,91 @@
+(footprint "L_Coilcraft_XFL4020"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Coilcraft XFL4020, preliminary land pattern; verify with ordered suffix")
+	(tags "inductor XFL4020")
+	(property "Reference" "REF**"
+		(at 0 -3 0)
+		(layer "F.SilkS")
+		(uuid "f3646089-daf6-49f6-869e-5e910bab9f1c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "L_Coilcraft_XFL4020"
+		(at 0 3 0)
+		(layer "F.Fab")
+		(uuid "ddaa235d-7d0e-4a12-ae24-f77f6d0db9fc")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6365ddab-54cf-478c-8ab9-6571fcdb524f")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f94930ae-4018-4f6e-8d3e-bb6967d3fa4b")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_rect
+		(start -2.1 -2.1)
+		(end 2.1 2.1)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "8771924b-06d2-41b6-bcc8-06a5f1fc2c0c")
+	)
+	(fp_rect
+		(start -2.25 -2.25)
+		(end 2.25 2.25)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "4b5f0fa6-14b6-4661-9510-7242a23429d4")
+	)
+	(pad "1" smd roundrect
+		(at -1.45 0)
+		(size 1.9 3.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.15)
+		(uuid "29432dd5-3164-400d-8fe4-5bc6ee060712")
+	)
+	(pad "2" smd roundrect
+		(at 1.45 0)
+		(size 1.9 3.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.15)
+		(uuid "c70ab780-a2c7-4070-9815-fa2c2ca4f855")
+	)
+	(embedded_fonts no)
+)

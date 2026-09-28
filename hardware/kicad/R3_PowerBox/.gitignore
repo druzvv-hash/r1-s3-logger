@@ -1,0 +1,11 @@
+# KiCad per-user and lock files
+*.kicad_prl
+*.lck
+
+# Generated working files and local caches
+tmp/
+tools/__pycache__/
+*.pyc
+.history/
+generate_hierarchical.log
+generate_hierarchical.erc
