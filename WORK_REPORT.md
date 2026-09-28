@@ -1,5 +1,14 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — Routing checkpoint B
+
+HOST CHECKED local U1/U2 routes: SW/VIN/output/feedback/SS/PG/BOOT plus ground
+stubs and U1 thermal vias. Local unrouted placements adjusted, A copper retained.
+420 segments / 123 vias. DRC: 319 unconnected, 57 dangling vias, 180 silk
+warnings, zero present electrical/geometric errors. Domain/net/mechanical
+audits pass; native plots inspected. No planes/complete return or bench
+validation. C/D/E/F follow automatically on the routing branch only.
+
 ## 2026-09-28 — Routing checkpoint A continuation
 
 IMPLEMENTED / HOST CHECKED ONLY. Started from owner-specified A0, not the

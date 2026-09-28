@@ -1,5 +1,20 @@
 # Rev.A prototype routing checkpoints
 
+## Checkpoint B: local primary converters
+
+Continued from A without deleting any A copper. U1/U2 rotated locally so their
+SW pins face the inductors; local bypass/output/feedback/BOOT parts compacted.
+Explicit SW, VIN, output, VOS/FB and SS/PG-local connections added. C10 and U2
+BOOT/feedback components are on the reverse side. No net/schematic changes.
+VSYS_MAIN distribution and output-to-connectors/filters remain for C/D;
+ground vias and thermal plane continuity remain for E. This is local converter
+routing, not a powered or accepted board.
+
+DRC: 319 unconnected, 57 dangling vias, 180 silk warnings; zero present
+electrical/geometric errors. 420 track segments / 123 vias. Independent domain
+audit and net/mechanical invariants PASS; all A corridor/mounting restrictions
+retained. Native plots inspected, reports/R3_power_B_*.png. Continue C immediately.
+
 ## Checkpoint A continuation (supersedes A0 status below)
 
 A0 `2b4bb5e9568fd3ed68e13147868de63d9654c6fa` was the starting board.

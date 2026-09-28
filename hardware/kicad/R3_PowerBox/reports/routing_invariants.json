@@ -132,8 +132,8 @@
       0.0
     ]
   },
-  "tracks": 343,
-  "vias": 101,
+  "tracks": 420,
+  "vias": 123,
   "via_holes_in_cap_lands": [],
   "critical_local_nets_without_unconnected_findings": {
     "CHG_SW1": true,

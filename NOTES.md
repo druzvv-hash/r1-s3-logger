@@ -1,5 +1,11 @@
 # Current memory entry point
 
+## 2026-09-28 — Routing checkpoint B
+
+Local primary buck routing added on top of A, preserving all A copper.
+319 unconnected, no planes; no present DRC electrical/geometric errors.
+Continue C/D/E/F, not a final board. See PowerBox docs/ROUTING_CHECKPOINTS.md.
+
 ## 2026-09-28 — Routing continuation, checkpoint A
 
 Continue on `routing/r3-powerbox-reva`, never main. A0 is retained in Git;

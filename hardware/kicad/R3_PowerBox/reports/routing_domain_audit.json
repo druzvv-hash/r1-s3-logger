@@ -1,7 +1,7 @@
 {
   "board": "R3_power.kicad_pcb",
   "footprints": 199,
-  "track_via_objects": 444,
+  "track_via_objects": 543,
   "issues": [],
   "scope": "Copper pad bounding boxes and tracks/vias; zones require separate filled-copper audit and DRC."
 }
