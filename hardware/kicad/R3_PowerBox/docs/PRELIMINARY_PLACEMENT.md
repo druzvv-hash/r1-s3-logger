@@ -3,6 +3,10 @@
 Status: final pre-routing placement checkpoint; **no tracks or production
 copper pours are present**.
 
+The board now also carries six M3 NPTH mounting holes, optional primary and
+isolated B2B headers, and a `Dwgs.User` future-R3 envelope. Exact coordinates
+and pinouts are in `R3_BOARD_TO_BOARD_INTERFACE.md`.
+
 ## Board and zones
 
 Rev.A remains 160 x 80 mm and four-layer. Placement follows the approved
@@ -55,9 +59,12 @@ comes from compact placement and uninterrupted local reference copper.
   Local CHG/RUN LED footprints are visible for bench work; J11 is kept on the
   primary/service edge for an external front-panel harness.
 - J3 and J6 are vertical at the clean edge. J1/J7/J8 remain on the dirty edge,
-  J2/J4 on the primary edge, and J10/J11 on the primary/service edge. Courtyards
+  J2/J4/J9 on the primary edge, and J10/J11 on the primary/service edge. Courtyards
   do not overlap; the board-edge side of each right-angle connector is left
   free for its mating housing, latch and cable bend.
+- J12 2x8 is at (106.0,28.0) entirely on PRIMARY. J13 2x5 is at
+  (154.0,24.0) entirely on CLEAN/ISOLATED. Both are generic 2.54 mm THT and
+  DNP in Rev.A; neither crosses or approaches the isolation corridor.
 
 Primary and dirty test points remain left of the isolation corridor. TP7-TP14
 form two dedicated isolated rows at the clean edge. Silkscreen explicitly says
@@ -84,6 +91,23 @@ mating housings are still required before routing release. J3, J10 and J11 are t
 highest-risk interfaces because their latch access and cable bend direction
 must be checked against the future enclosure.
 
+## Mounting and stacked-board reference
+
+- H1-H6 are 3.20 mm NPTH M3 holes with no net and no plating. Each includes an
+  8.0 x 8.0 mm F.Cu/In1.Cu/In2.Cu/B.Cu keepout and matching mechanical
+  courtyard. Coordinates are H1 (35.0,25.5), H2 (174.5,25.5), H3
+  (25.5,94.5), H4 (174.5,94.5), H5 (115.0,25.5), H6 (135.0,94.5).
+- H1 is intentionally moved inward for the USB-C plug. H5/H6 avoid both the
+  connector rows and x=121...124 mm isolation corridor. Insulating standoffs
+  are preferred; no mounting feature bonds either ground domain.
+- The future-board reference on `Dwgs.User` spans (22,22) to (178,98). It is
+  not a manufacturing outline. H1-H4 are the preferred common mounting set.
+- U3 and U6 are the height limit at 11.1 mm. A 12 mm board spacing leaves only
+  0.9 mm nominal and therefore requires an upper-board cutout/keepout. Use
+  15 mm for the baseline; it leaves about 3.9 mm nominal above the modules.
+- Side-entry cable connectors remain reachable in the reference envelope, but
+  J3/J10/J11 still require exact latch, housing, bend-radius and enclosure CAD.
+
 ## USER POWER AND INDICATION
 
 - Local SW1 is a maintained low-current ON switch; J11.3 provides the same
@@ -100,3 +124,11 @@ must be checked against the future enclosure.
 - J7 was shifted inward enough to provide at least 0.5 mm copper-to-edge
   clearance without changing the DIRTY -> PRIMARY -> ISOLATION -> CLEAN
   ordering.
+
+## Generated mechanical views
+
+- `reports/R3_power_preliminary_placement.png`: high-resolution KiCad top view;
+- `reports/R3_power_zone_isolation_annotated.png`: zones and barrier;
+- `reports/R3_power_mechanical_stack_top.png`: mounting/header coordinates and
+  upper-board envelope;
+- `reports/R3_power_mechanical_stack_side.png`: 12/15 mm height decision.

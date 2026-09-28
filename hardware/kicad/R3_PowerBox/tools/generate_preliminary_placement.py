@@ -63,12 +63,12 @@ ANCHORS = {
     # J7 is shifted 0.5 mm inward from the original nominal edge placement;
     # this keeps every signal and shield pad at least 0.5 mm from Edge.Cuts.
     "J7": (24.8, 33.0, 90), "J1": (27.0, 55.0, 90),
-    "J8": (29.0, 78.0, 90), "J9": (28.0, 92.0, 90),
+    "J8": (29.0, 78.0, 90), "J9": (52.0, 24.0, 0),
     "U10": (33.0, 33.0, 0), "D4": (33.0, 43.0, 0),
     "TP31": (38.0, 39.0, 0), "TP32": (38.0, 44.0, 0),
     "U7": (45.0, 33.0, 0), "C73": (48.5, 37.0, 0),
     "U8": (51.0, 51.0, 0), "L3": (51.0, 59.0, 90),
-    "SW2": (58.0, 27.0, 0),
+    "SW2": (72.0, 78.0, 0),
     "R104": (55.0, 40.0, 0), "D5": (59.0, 40.0, 0),
     "D7": (63.0, 40.0, 0), "R80": (67.0, 40.0, 0),
     "C74": (47.0, 46.0, 0), "C75": (55.0, 46.0, 0),
@@ -87,10 +87,13 @@ ANCHORS = {
     "TP40": (78.0, 70.0, 0),
     "U1": (76.0, 42.0, 0), "L1": (84.0, 42.0, 0),
     "U2": (96.0, 52.0, 0), "L2": (104.0, 52.0, 90),
-    "J2": (72.0, 24.0, 0), "J4": (98.0, 24.0, 0),
+    "J2": (72.0, 24.0, 0), "J4": (96.5, 24.0, 0),
     "D6": (82.0, 28.0, 0),
-    "J5": (108.0, 68.0, 90), "J10": (60.0, 92.0, 0),
-    "J11": (97.0, 92.0, 0),
+    "J5": (108.0, 68.0, 90), "J10": (55.0, 92.0, 0),
+    "J11": (91.0, 92.0, 0),
+    # Dimensioned optional stacking interfaces. J12 stays wholly on the
+    # primary side; J13 stays wholly on the isolated side.
+    "J12": (106.0, 28.0, 0), "J13": (154.0, 24.0, 0),
     # Isolation modules straddle the corridor; their local parts remain on
     # their respective sides. No unrelated footprint enters the keepout.
     # Pin 1/2/3 are on the primary (left) side; pin 5/6/7/8 are on the
@@ -106,18 +109,44 @@ ANCHORS = {
     "C51": (149.0, 67.0, 0),
     # Dedicated isolated-side probe rows; they stay physically separated from
     # every primary/dirty test point and use only the GND_ISO reference group.
-    "TP7": (137.5, 88.0, 0), "TP8": (143.0, 88.0, 0),
-    "TP9": (148.5, 88.0, 0), "TP10": (154.0, 88.0, 0),
-    "TP11": (137.5, 94.0, 0), "TP12": (143.0, 94.0, 0),
-    "TP13": (148.5, 94.0, 0), "TP14": (154.0, 94.0, 0),
-    "J3": (175.0, 88.0, 90), "J6": (175.0, 34.0, 90),
+    "TP7": (143.0, 88.0, 0), "TP8": (148.0, 88.0, 0),
+    "TP9": (153.0, 88.0, 0), "TP10": (158.0, 88.0, 0),
+    "TP11": (143.0, 94.0, 0), "TP12": (148.0, 94.0, 0),
+    "TP13": (153.0, 94.0, 0), "TP14": (158.0, 94.0, 0),
+    "J3": (175.0, 81.0, 90), "J6": (175.0, 42.0, 90),
 }
+
+
+# Board coordinates are millimetres in the KiCad board coordinate system.
+# H2-H4 are 5.5 mm from the board edges; H1 is shifted inward for USB-C
+# access. H5/H6 clear the x=121..124 mm isolation corridor and complete the
+# repeatable six-hole pattern. The local footprint provides an 8.0 mm
+# all-copper-layer keepout.
+MOUNTING_HOLES = {
+    # H1 is moved inward to x=35 mm so the USB-C shell/courtyard and mating
+    # plug remain unobstructed; the other three corner holes retain 5.5 mm
+    # edge offsets.
+    "H1": (35.0, 25.5),
+    "H2": (174.5, 25.5),
+    "H3": (25.5, 94.5),
+    "H4": (174.5, 94.5),
+    "H5": (115.0, 25.5),
+    # The bottom primary edge is occupied by J10/J11; H6 is moved to the
+    # isolated side, still well clear of the 3 mm barrier and J3 cable path.
+    "H6": (135.0, 94.5),
+}
+
+# Proposed future R3 board reference envelope on Dwgs.User. It deliberately
+# follows the PowerBox outline with 2 mm edge inset and is not a fabrication
+# outline. Connector/cable and tall-component keepouts are documented rather
+# than silently encoded as a final upper-board shape.
+UPPER_BOARD_ENVELOPE = (22.0, 22.0, 178.0, 98.0)
 
 
 REGIONS = {
     "input_protection1": (25.0, 55.0, 63.0, 98.0),
     "battery_management1": (25.0, 65.0, 63.0, 98.0),
-    "charger_powerpath1": (25.0, 22.0, 64.0, 68.0),
+    "charger_powerpath1": (25.0, 22.0, 72.0, 76.0),
     "system_power_control1": (65.0, 64.0, 110.0, 98.0),
     "digital_buck1": (66.0, 30.0, 88.0, 65.0),
     "preiso_buck1": (89.0, 30.0, 110.0, 82.0),
@@ -160,6 +189,16 @@ def add_text(board, text, x, y, layer, size=1.0, angle=0, thickness=0.18):
     board.Add(item)
 
 
+def add_line(board, x1, y1, x2, y2, layer, width=0.20):
+    item = pcbnew.PCB_SHAPE(board)
+    item.SetShape(pcbnew.SHAPE_T_SEGMENT)
+    item.SetStart(pcbnew.VECTOR2I(mm(x1), mm(y1)))
+    item.SetEnd(pcbnew.VECTOR2I(mm(x2), mm(y2)))
+    item.SetLayer(layer)
+    item.SetWidth(mm(width))
+    board.Add(item)
+
+
 def main() -> None:
     export_netlist()
     tree = ET.parse(NETLIST_PATH)
@@ -191,6 +230,18 @@ def main() -> None:
         components[ref] = fp
         sheets[ref] = component_sheet(comp)
 
+    # Mechanical mounting is PCB-only and therefore intentionally absent from
+    # the electrical schematic/BOM. Each footprint contains four copper-layer
+    # routing/pad/via/pour keepouts and an 8 mm mechanical courtyard.
+    for ref, (x, y) in MOUNTING_HOLES.items():
+        fp = footprint_from_id("R3_Power:MountingHole_M3_NPTH_3.2mm_Keepout8mm")
+        fp.SetReference(ref)
+        fp.SetValue("M3 NPTH 3.2mm / 8mm KEEPOUT")
+        board.Add(fp)
+        place_at(fp, x, y, 0)
+        components[ref] = fp
+        sheets[ref] = "mechanical"
+
     net_objects = {}
     for net_xml in root.findall("./nets/net"):
         name = net_xml.get("name", "")
@@ -208,8 +259,8 @@ def main() -> None:
                 if pad.GetNumber() == pin:
                     pad.SetNet(net)
 
-    placed_boxes = []
-    placed_labels = []
+    placed_boxes = [bbox_mm(components[ref]) for ref in MOUNTING_HOLES]
+    placed_labels = list(MOUNTING_HOLES)
     for ref, (x, y, rot) in ANCHORS.items():
         fp = components.get(ref)
         if fp is None:
@@ -223,7 +274,8 @@ def main() -> None:
         placed_labels.append(ref)
 
     # Place the remaining footprints largest-first onto a 1 mm search grid.
-    remaining = [fp for ref, fp in components.items() if ref not in ANCHORS]
+    remaining = [fp for ref, fp in components.items()
+                 if ref not in ANCHORS and ref not in MOUNTING_HOLES]
     remaining.sort(key=lambda fp: -(fp.GetBoundingBox().GetWidth() * fp.GetBoundingBox().GetHeight()))
     for fp in remaining:
         ref = fp.GetReference()
@@ -251,15 +303,31 @@ def main() -> None:
     for text_value, x, y, angle in (
         ("USB-C", 22.0, 27.0, 90), ("SERVICE IN 6-12V", 22.0, 54.0, 90),
         ("BAT+  CELL MID  BAT-", 22.0, 80.0, 90),
-        ("POWER ON/OFF", 88.0, 98.0, 0), ("QON SERVICE", 58.0, 23.0, 0),
+        ("POWER ON/OFF", 88.0, 98.0, 0), ("QON SERVICE", 72.0, 86.0, 0),
         ("CHG", 59.0, 37.0, 0), ("RUN", 82.0, 25.0, 0),
         ("PRIMARY / DGND", 88.0, 97.0, 0),
         ("ISOLATED / GND_ISO", 154.0, 97.0, 0),
         ("3V3 A ISO", 163.0, 60.0, 90), ("3V3 D ISO", 163.0, 70.0, 90),
         ("+5 INA", 163.0, 80.0, 90), ("-5 INA", 163.0, 90.0, 90),
         ("ISOLATION BOUNDARY - NO COPPER / VIA / PAD", 122.5, 60.0, 90),
+        ("J12 PRIMARY B2B", 104.0, 49.0, 90),
+        ("J13 ISOLATED B2B", 157.0, 37.5, 90),
     ):
         add_text(board, text_value, x, y, pcbnew.F_SilkS, 0.9, angle)
+
+    for ref, (x, y) in MOUNTING_HOLES.items():
+        label_y = y + 4.7 if y < 50.0 else y - 4.7
+        add_text(board, f"{ref} M3", x, label_y, pcbnew.F_SilkS, 0.8, 0, 0.12)
+
+    # Dimension-stable upper-board reference only; Edge.Cuts remains the
+    # existing 160 x 80 mm PowerBox outline.
+    ux0, uy0, ux1, uy1 = UPPER_BOARD_ENVELOPE
+    add_line(board, ux0, uy0, ux1, uy0, pcbnew.Dwgs_User)
+    add_line(board, ux1, uy0, ux1, uy1, pcbnew.Dwgs_User)
+    add_line(board, ux1, uy1, ux0, uy1, pcbnew.Dwgs_User)
+    add_line(board, ux0, uy1, ux0, uy0, pcbnew.Dwgs_User)
+    add_text(board, "FUTURE R3 UPPER BOARD REFERENCE / NOT EDGE.CUTS",
+             100.0, 96.5, pcbnew.Dwgs_User, 0.9, 0, 0.14)
 
     for text_value, x, y in (
         ("THERMAL COPPER + VIAS: BQ25798", 52.0, 69.0),

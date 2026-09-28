@@ -39,8 +39,9 @@ Open `R3_power.kicad_pro` in KiCad 10. The canonical schematic is
   chemistry/configuration, hot-current validation and PD NVM compliance remain
   open before ordering a PCB.
 - The PCB contains a 160 x 80 mm outline, four spatial zones, an isolation
-  keepout on all four copper layers and final pre-routing component placement.
-  It has no routing or vias.
+  keepout on all four copper layers, six NPTH M3 mounting holes, optional
+  primary/isolated B2B headers and final pre-routing component placement. It
+  has no routing or vias.
 - KiCad ERC has zero errors. Remaining generator-related warnings and the visual
   review limitations are recorded in `docs/VERIFICATION.md`.
 
@@ -49,4 +50,5 @@ Start with [the current power review](R3_POWER_REVIEW.md) and
 [design notes](docs/R3_power_module_design.md) and
 [verification status](docs/VERIFICATION.md). Placement images are in
 `reports/R3_power_preliminary_placement.png` and
-`reports/R3_power_zone_isolation_annotated.png`.
+`reports/R3_power_zone_isolation_annotated.png`; mechanical stack dimensions
+and views are in [the B2B interface note](docs/R3_BOARD_TO_BOARD_INTERFACE.md).

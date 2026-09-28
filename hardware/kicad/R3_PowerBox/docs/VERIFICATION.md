@@ -9,27 +9,36 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
 - Root plus ten child `.kicad_sch` files load and export through KiCad 10 CLI.
 - PDF export succeeds to `reports/R3_power_schematic.pdf`.
 - Grouped BOM export succeeds to `bom/R3_power_kicad_bom.csv`.
-- ERC: **0 errors, 408 warnings**.
-  - warnings are 204 `lib_symbol_mismatch` and 204 `endpoint_off_grid` from the SKiDL embedded-library/deterministic label-only drawing path;
+- ERC: **0 errors, 412 warnings**.
+  - warnings are 206 `lib_symbol_mismatch` and 206 `endpoint_off_grid` from the SKiDL embedded-library/deterministic label-only drawing path;
   - there are no power-pin, conflicting-driver or required-pin connectivity errors.
 - No power-pin, conflicting-driver, unconnected-required-pin or footprint-link ERC errors remain.
 - `tools/logical_nets.json` contains distinct `DGND` and `GND_ISO` nets.
-- J3/J6 contain isolated ground only. All other connectors are primary-side or raw-battery-side; no connector contains both `DGND` and `GND_ISO`.
+- J3/J6/J13 contain isolated ground only. J12 and all other connectors are
+  primary-side or raw-battery-side; no connector contains both `DGND` and
+  `GND_ISO`.
 - `VIN9_RAW`, `VIN9_PROT`, shared `+5V_PREISO_FILT` and connector-exposed `EN_5V_UVLO` are absent.
 - Q4 switches `VSYS_PROT` to `VSYS_MAIN`; U1 TPS62132 and U2 TPS54302 are fed only from `VSYS_MAIN`.
 - U3 and U6 retain independent `+5V_PREISO_ADS` and `+5V_PREISO_INA` inputs.
-- The PCB is 160 x 80 mm, has four copper layers, 191 footprints, one
-  all-copper-layer isolation rule area, and **0 tracks / 0 vias**.
+- The PCB is 160 x 80 mm, has four copper layers, 199 footprints (193
+  electrical plus 6 mounting), one full-height all-copper-layer isolation rule
+  area, 24 mounting-hole local copper-layer keepouts, and **0 tracks / 0 vias**.
 - The placement generator reports **0 courtyard overlaps**. PCB DRC has zero
-  clearance, copper-to-edge, drill-range and annular-width errors. Remaining
-  findings are 413 expected unrouted connections and 207 non-electrical
-  silkscreen items: 100 silk-over-copper, 94 silk overlaps and 13
-  silk-to-edge. There is no remaining net-conflict warning.
+  clearance, copper-to-edge, hole-to-hole, hole-to-copper, drill-range,
+  annular-width or courtyard-overlap errors. Remaining findings are 437
+  expected unrouted connections, 233 expected schematic-parity items (199
+  generated footprint/symbol mismatches, 28 field mismatches and 6 PCB-only M3
+  footprints), and 214 non-electrical silkscreen items: 107
+  silk-over-copper, 96 silk overlaps and 11 silk-to-edge warnings. There is no
+  text-height, net-conflict or isolation-corridor intrusion warning.
 - This is a placement checkpoint. Unrouted connections and silkscreen cleanup
   are intentionally not claimed as routing-release DRC closure.
 - `reports/R3_power_preliminary_placement.svg` and high-resolution `.png`
   capture the top-side placement. `reports/R3_power_zone_isolation_annotated.*`
-  shows the zone boundaries, all-layer isolation corridor and thermal notes.
+  shows the zone boundaries and all-layer isolation corridor.
+  `reports/R3_power_mechanical_stack_top.png` and
+  `reports/R3_power_mechanical_stack_side.png` capture the coordinate and
+  12/15 mm height reviews.
 
 ## Datasheet checks
 
@@ -85,13 +94,18 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
   service, isolated `CHARGE_STATUS`, PG, PM I2C, raw open-drain STAT and one
   spare. No GND_ISO or shared onboard LED-anode net is present.
 - USB and service input are muxed before the charger; J1 no longer defines the system voltage.
+- J12 matches `tools/logical_nets.json` pins 1-16 and contains primary nets
+  only. J13 pins 1-10 contain isolated rails and GND_ISO only. Both remain DNP.
+- H1-H6 are unplated/no-net mechanical holes. Their pad records contain no net;
+  their 8 mm courtyards and four-layer keepouts are outside the isolation
+  corridor.
 
 ## Visual review
 
-The eleven-page PDF was rendered after deterministic layout. Root hierarchy,
+The eleven-page PDF was rendered page-by-page after deterministic layout. Root hierarchy,
 revised BMS/FET network, USB-C PD controller/protection, charger-local bypass,
 system load switch, existing primary converters, isolation, clean LDOs and
-output connectors were inspected for clipping and component overlap. The dense
+output connectors including J12/J13 were inspected for clipping and component overlap. The dense
 battery sheet remains A3, charger/power-path remains A2 and outputs/J11 is A3.
 
 ## Required before PCB routing
@@ -108,5 +122,10 @@ battery sheet remains A3, charger/power-path remains A2 and outputs/J11 is A3.
 7. Decide whether the DNP BQ2945xx secondary-OV option is populated and complete its exact active circuit if so.
 8. Approve the 3.0 mm low-voltage functional-isolation rule; do not treat it as
    a mains/reinforced-insulation certification.
-9. Check J3/J10/J11 mating housing, latch, enclosure and bend-radius clearance in mechanical CAD.
-10. Resolve or formally waive the 408 generator/library/grid warnings.
+9. Check J3/J10/J11 mating housing, latch, enclosure and bend-radius clearance
+   in mechanical CAD; freeze the exact J12/J13 header/socket series and verify
+   its selected 15 mm stack engagement.
+10. Validate M3 screw/washer/standoff diameters against the present 8 mm
+    keepouts and confirm insulating vs floating-metal hardware.
+11. Resolve or formally waive the 412 generator/library/grid warnings and the
+    non-critical silkscreen cleanup items.

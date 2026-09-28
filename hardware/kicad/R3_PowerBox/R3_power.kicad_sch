@@ -2,7 +2,7 @@
   (version 20230409)
   (generator "skidl")
   (generator_version "2.3.0")
-  (uuid ed43c75e-de56-4b8e-bb37-9a897af3b629)
+  (uuid 9be6bff1-dc85-4a48-94a9-d7223c5e518f)
   (paper "A3")
   (title_block
     (title "R3 PowerBox — power tree")

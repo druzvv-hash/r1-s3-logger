@@ -618,6 +618,43 @@ def outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
     bq_stat_raw += j11[9]
     j11.circuit.NC += j11[10]
 
+    # Optional prototype board-to-board interfaces. These are deliberately
+    # generic 2.54 mm THT patterns so straight/stacking headers or female
+    # sockets can use the same holes. Cable/Micro-Fit connectors remain the
+    # primary Rev.A assembly; J12/J13 are DNP by default.
+    j12 = stdcomp(
+        "Connector_Generic", "Conn_02x08_Odd_Even", "J12",
+        "PRIMARY B2B 2x8 / DNP",
+        "Connector_PinHeader_2.54mm:PinHeader_2x08_P2.54mm_Vertical",
+    )
+    j12.dnp = True
+    v3d += j12[1, 2]
+    dgnd += j12[3, 4]
+    pm_scl += j12[5]
+    pm_sda += j12[6]
+    pg3d += j12[7]
+    charge_stat += j12[8]
+    charger_fault += j12[9]
+    input_status += j12[10]
+    pd_alert += j12[11]
+    pd_contract += j12[12]
+    power_ctrl += j12[13]
+    qon_service += j12[14]
+    j12.circuit.NC += j12[15, 16]
+
+    j13 = stdcomp(
+        "Connector_Generic", "Conn_02x05_Odd_Even", "J13",
+        "ISOLATED B2B 2x5 / DNP",
+        "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical",
+    )
+    j13.dnp = True
+    v5iso_raw += j13[1]
+    gndiso += j13[2, 4, 6, 8, 10]
+    v3a += j13[3]
+    v3di += j13[5]
+    v5ina += j13[7]
+    v5ina_n += j13[9]
+
     # RUN indicates the actual switched +3V3_D rail; it is necessarily dark
     # when SW1 has disconnected VSYS_MAIN.
     run_led_a = Net("RUN_LED_A")

@@ -239,8 +239,8 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
 
 ## ERC and files
 
-Final ERC result: **0 errors and 408 warnings**, limited to 204
-`endpoint_off_grid` and 204 `lib_symbol_mismatch` findings from the SKiDL
+Final ERC result: **0 errors and 412 warnings**, limited to 206
+`endpoint_off_grid` and 206 `lib_symbol_mismatch` findings from the SKiDL
 embedded-library/deterministic-grid generation path. The count is recorded in
 `reports/R3_power_erc.txt` and `docs/VERIFICATION.md`. Generated outputs are:
 
@@ -250,7 +250,34 @@ embedded-library/deterministic-grid generation path. The count is recorded in
 - logical pin/net map: `tools/logical_nets.json`.
 - high-resolution placement: `reports/R3_power_preliminary_placement.png`;
 - annotated zones/isolation: `reports/R3_power_zone_isolation_annotated.png`;
+- stacked-board top/side references:
+  `reports/R3_power_mechanical_stack_top.png` and
+  `reports/R3_power_mechanical_stack_side.png`;
 - unrouted placement DRC: `reports/R3_power_pcb_drc.txt`.
+
+## Mechanical and board-to-board interface
+
+Six electrically floating 3.20 mm NPTH M3 holes are present. Each has an
+8.0 x 8.0 mm four-copper-layer routing/pad/via/pour keepout and 8.0 mm
+courtyard. Coordinates are H1 (35.0,25.5), H2 (174.5,25.5), H3
+(25.5,94.5), H4 (174.5,94.5), H5 (115.0,25.5) and H6 (135.0,94.5). H1-H4
+are the preferred common mounting set for the future R3 board; H5/H6 stiffen
+the PowerBox without entering x=121...124 mm.
+
+J12 is a DNP generic 2x8/2.54 mm THT primary header at pin-1 origin
+(106.0,28.0). It duplicates +3V3_D/DGND contacts and exports PM I2C, PG,
+charger/input/PD status, POWER_CTRL and QON_SERVICE. J13 is a physically
+separate DNP 2x5/2.54 mm THT isolated header at (154.0,24.0), with one
+GND_ISO return adjacent to each clean rail. J12 has no GND_ISO and J13 has no
+DGND. Existing Micro-Fit cable connectors are unchanged and remain in parallel.
+
+The future-board reference envelope is on `Dwgs.User`, not `Edge.Cuts`.
+U3/U6 set the height limit at 11.1 mm. A 12 mm spacing leaves only 0.9 mm
+nominal and requires an upper-board cutout/keepout; **15 mm is recommended**
+and leaves about 3.9 mm nominal. Final header/socket MPNs, standoff tolerance,
+J3/J10/J11 latch access and enclosure cable bends remain a mechanical-CAD
+gate. Full dimensions and pin tables are in
+`docs/R3_BOARD_TO_BOARD_INTERFACE.md`.
 
 ## PCB recommendation and blockers
 
@@ -261,14 +288,14 @@ minimum board copper clearance/creepage is the maximum supported by the SIP8
 pad-3/pad-5 geometry (3.08 mm edge-to-edge) and is accepted here for
 low-voltage functional isolation only, not certified mains/reinforced safety.
 
-The unrouted PCB DRC has **zero** clearance, copper-to-edge, drill-range and
-annular-width errors. It retains 413 expected unconnected/ratsnest findings
-and 207 non-electrical silkscreen findings (100 silk-over-copper, 94
-silk-overlap, 13 silk-to-edge), to be cleaned as routing/final reference text
-settles.
+The unrouted PCB DRC has **zero** clearance, copper-to-edge, hole-to-hole,
+hole-to-copper, drill-range, annular-width and courtyard-overlap errors. It
+retains 437 expected unconnected/ratsnest findings, 233 expected
+schematic-parity findings and 214 non-electrical silkscreen findings.
+These do not authorize routing release; final reference-text cleanup remains.
 
 PCB routing is blocked by STUSB4500 NVM/compliance validation, BQ28Z610
 configuration thresholds, Q2/Q3 protection-event SOA, hot PPTC/current
-validation, enclosure/mating-connector clearance, measured power budget,
+validation, enclosure/mating-connector/B2B stack clearance, measured power budget,
 TPS54302 low-battery validation and the RS3 INA light-load decision. Secondary
 OV remains a documented DNP space reservation and is not active in Rev.A.

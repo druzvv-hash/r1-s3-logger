@@ -26,3 +26,11 @@ placement generator. Run it with KiCad 10's bundled Python after schematic
 regeneration. It exports a temporary XML netlist, reloads the assigned
 footprints, assigns nets and packs them into the documented four zones while
 preserving the outline and isolation keepout. It never creates tracks or vias.
+
+The placement generator also adds the six project-local M3 NPTH footprints,
+their four-layer keepouts and the `Dwgs.User` future-R3 envelope. These are
+mechanical PCB objects and intentionally do not appear in the schematic BOM.
+
+`generate_mechanical_views.py` regenerates the annotated zone/isolation,
+stack-top and stack-side PNG references (plus the annotated-zone PDF) from the
+dimensioned coordinates used by this pass.

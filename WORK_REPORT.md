@@ -1,5 +1,21 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — R3 PowerBox mechanical and B2B pass
+
+Added six electrically floating 3.20 mm NPTH M3 holes with project-local 8 mm
+all-copper-layer keepouts, DNP J12 primary 2x8 and J13 isolated 2x5 generic
+2.54 mm THT stacking interfaces, a dimensioned `Dwgs.User` upper-board
+envelope and reproducible top/side mechanical views. Existing Micro-Fit cable
+interfaces, user power controls, zones and 3 mm isolation corridor remain.
+
+The final placement has 193 electrical footprints plus six mechanical holes,
+0 tracks and 0 vias. KiCad checks report ERC 0 errors/412 known generator-grid
+warnings and zero clearance, copper-edge, hole, drill, annular or courtyard
+geometry errors. Visual review covered all 11 schematic PDF pages. U3/U6 are
+11.1 mm high, making 15 mm the recommended stack; 12 mm needs upper-board
+cutouts. Routing remains blocked by the pre-existing programming/bench/thermal
+gates plus final enclosure, M3 and header/socket mechanical selection.
+
 ## 2026-09-28 — R3 PowerBox KiCad capture
 
 Created and advanced `hardware/kicad/R3_PowerBox` to a final pre-routing

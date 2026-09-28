@@ -390,6 +390,23 @@ corridor. L3 charger, L1 TPS62132 and L2 TPS54302 are alternately oriented;
 U3/U6 are vertically separated from that magnetic group and from the clean
 LDOs. Board size remains 160 x 80 mm.
 
+## Mechanical mounting and future R3 stacking
+
+The PowerBox now has six 3.20 mm NPTH M3 holes with no electrical net or
+plating. Their coordinates are H1 (35.0,25.5), H2 (174.5,25.5), H3
+(25.5,94.5), H4 (174.5,94.5), H5 (115.0,25.5) and H6 (135.0,94.5). Every
+hole includes an 8 mm all-copper-layer keepout/courtyard. No hole or hardware
+enters the x=121...124 mm functional-isolation corridor; insulating standoffs
+are the prototype default.
+
+Cable assembly remains fully supported. Optional DNP J12 (primary 2x8) and J13
+(isolated 2x5) provide parallel generic 2.54 mm THT stacking interfaces without
+mixing DGND and GND_ISO. The future-R3 envelope is a `Dwgs.User` reference only.
+Use 15 mm standoffs as the baseline because U3/U6 are 11.1 mm high; 12 mm is
+conditional on an upper-board cutout/keepout. Exact dimensions, pinouts and
+header/socket guidance are maintained in
+`docs/R3_BOARD_TO_BOARD_INTERFACE.md`.
+
 ## Open technical decisions and blockers
 
 1. Program and compliance-test the provisional STUSB4500 5/9/12 V NVM profile and firmware current-limit policy.
@@ -405,6 +422,9 @@ LDOs. Board size remains 160 x 80 mm.
 9. Decide whether the reserved BQ2945xx secondary-OV footprint is populated; its active network is intentionally DNP/unconnected in Rev.A.
 10. Check J3/J10/J11 mating-housing, latch, enclosure and cable-bend clearances in
     mechanical CAD.
+11. Freeze J12/J13 long-post header/socket MPNs and verify engagement at the
+    selected 15 mm spacing; validate the M3 hardware diameter against the 8 mm
+    local keepouts.
 
 PCB routing and production outputs remain blocked until these decisions are closed.
 

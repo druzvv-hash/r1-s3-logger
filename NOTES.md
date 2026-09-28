@@ -1,5 +1,19 @@
 # Current memory entry point
 
+## 2026-09-28 — R3 PowerBox mechanical/interconnect baseline
+
+FINAL PRE-ROUTING / NOT ROUTED: PowerBox now has six 3.2 mm NPTH M3 holes
+with 8 mm four-layer keepouts, optional DNP J12 primary 2x8 and J13 isolated
+2x5 generic 2.54 mm THT interfaces, and a dimensioned future-R3 envelope.
+Exact coordinates/pinouts are in
+`hardware/kicad/R3_PowerBox/docs/R3_BOARD_TO_BOARD_INTERFACE.md`. Use 15 mm
+stack spacing: U3/U6 are 11.1 mm high, so 12 mm is conditional on upper-board
+cutouts. Latest validation: 199 footprints including 6 PCB-only holes, 0
+tracks/0 vias, ERC 0 errors/412 generator warnings, and zero clearance,
+copper-edge, drill, annular, hole or courtyard DRC errors. Do not route until
+the documented programming, thermal, enclosure, header/socket and bench gates
+are closed.
+
 ## 2026-09-28 — R3 PowerBox KiCad workspace
 
 FINAL PRE-ROUTING / NOT ROUTED: the canonical editable PowerBox source is
