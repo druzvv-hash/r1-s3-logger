@@ -1,1130 +1,506 @@
 (kicad_sch
-	(version 20260306)
-	(generator "eeschema")
-	(generator_version "10.0")
-	(uuid "a994e311-f0a8-5212-a57f-2a3da949fc7d")
-	(paper "A4")
-	(title_block
-		(title "R3 PowerBox — power tree")
-		(date "2026-09-28")
-		(comment 1 "Generated with SKiDL")
-	)
-	(lib_symbols
-		(symbol "R3_POWER_GEN:C"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "C"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "C"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "C_0_1"
-				(polyline
-					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "C_1_1"
-				(polyline
-					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 0 3.81 270)
-					(length 3.048)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 3.048)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:FERRITE"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "FB"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "FERRITE"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "FERRITE_0_1"
-				(rectangle
-					(start -2.794 1.27)
-					(end 2.794 -1.27)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -1.651) (xy 1.905 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.889 -1.651) (xy 2.921 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "FERRITE_1_1"
-				(rectangle
-					(start -2.794 1.27)
-					(end 2.794 -1.27)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -1.651) (xy 1.905 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.889 -1.651) (xy 2.921 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.334 0 0)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.334 0 180)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:RS3_DUAL"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "RS3_DUAL"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fc1hzCnZ/.t1305551dee110dff2189/Datasheet-28/RS3.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "RS3_DUAL_0_1"
-				(rectangle
-					(start -10.16 7.366)
-					(end 10.16 -7.366)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 7.112) (xy 0 -7.112)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "RS3_DUAL_1_1"
-				(rectangle
-					(start -10.16 7.366)
-					(end 10.16 -7.366)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 7.112) (xy 0 -7.112)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin power_in line
-					(at -15.24 -3.048 0)
-					(length 5.08)
-					(name "-VIN"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -15.24 3.048 0)
-					(length 5.08)
-					(name "+VIN"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -15.24 0 0)
-					(length 5.08)
-					(name "CTRL"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 15.24 -6.604 180)
-					(length 5.08)
-					(name "NC"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 15.24 4.064 180)
-					(length 5.08)
-					(name "+VOUT"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 15.24 0 180)
-					(length 5.08)
-					(name "COM"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 15.24 -4.064 180)
-					(length 5.08)
-					(name "-VOUT"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:TP"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "TP"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TP"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "TP_0_1"
-				(circle
-					(center 0 0)
-					(radius 1.143)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "TP_1_1"
-				(circle
-					(center 0 0)
-					(radius 1.143)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 2.667)
-					(name "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "power:PWR_FLAG"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "#FLG"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "PWR_FLAG"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Special symbol for telling ERC where power comes from"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "PWR_FLAG_0_1"
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "PWR_FLAG_1_1"
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin power_out line
-					(at 0 0 90)
-					(length 0)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-	)
-	(no_connect
-		(at 107.24 116.604)
-		(uuid "ae1a3ed3-5095-5689-b9e9-095df3bd9d72")
-	)
-	(no_connect
-		(at 76.76 110)
-		(uuid "e2cf2576-b71d-58b0-80e4-59050506e827")
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
-		(at 226.19 150 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "02daee6d-bf4c-5226-bba6-1ff30eb52c28")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 226.19 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "-5V_INA"
-		(shape bidirectional)
-		(at 160.334 145 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "1d79d970-872a-5ff1-9ff7-86c01d2db75b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 160.334 145 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA_RAW"
-		(shape bidirectional)
-		(at 107.24 105.936 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "26c3eb50-d022-5285-8c68-688c0b45f88f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 107.24 105.936 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA"
-		(shape bidirectional)
-		(at 149.666 78 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "2f9fa14e-a683-56f2-8a60-65483712f96f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 149.666 78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA"
-		(shape bidirectional)
-		(at 201.81 68 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "4155d6ce-2719-523c-acd6-27d316530099")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 201.81 68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "-5V_INA"
-		(shape bidirectional)
-		(at 233.81 150 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "48971031-d06c-56cc-a91d-ece45008001f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.81 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "-5V_INA"
-		(shape bidirectional)
-		(at 245 181.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "5bcec074-ced0-5026-9084-fe766ef616b3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 245 181.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA"
-		(shape bidirectional)
-		(at 226.19 68 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "6150616e-ff80-578a-9438-8601613b8683")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 226.19 68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA"
-		(shape bidirectional)
-		(at 245 45.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "6b32caff-fa16-5b8d-84f3-5da508792ed5")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 245 45.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "-5V_INA_RAW"
-		(shape bidirectional)
-		(at 149.666 145 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "87ab5458-a4d9-5306-bc55-c059425553ca")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 149.666 145 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
-		(at 194.19 68 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "9ea344e8-4d07-5aa2-8d47-d365a77130a4")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 194.19 68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid a994e311-f0a8-5212-a57f-2a3da949fc7d)
+  (paper "A4")
+  (title_block
+    (title "R3 PowerBox — power tree")
+    (date "2026-09-28")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols
+    (symbol "power:PWR_FLAG"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "#FLG"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "PWR_FLAG"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Description" "Special symbol for telling ERC where power comes from"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "PWR_FLAG_0_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 1.27)
+            (xy -1.016 1.905)
+            (xy 0 2.54)
+            (xy 1.016 1.905)
+            (xy 0 1.27))
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none))))
+      (symbol "PWR_FLAG_1_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 1.27)
+            (xy -1.016 1.905)
+            (xy 0 2.54)
+            (xy 1.016 1.905)
+            (xy 0 1.27))
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (pin power_out line
+          (at 0 0 90)
+          (length 0)
+          (name ""
+            (effects
+              (font
+                (size 1.27 1.27))))
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:RS3_DUAL"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "U"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "RS3_DUAL"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fc1hzCnZ/.t1305551dee110dff2189/Datasheet-28/RS3.pdf"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "RS3_DUAL_0_1"
+        (rectangle
+          (start -10.16 7.366)
+          (end 10.16 -7.366)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type background)))
+        (polyline
+          (pts
+            (xy 0 7.112)
+            (xy 0 -7.112))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "RS3_DUAL_1_1"
+        (rectangle
+          (start -10.16 7.366)
+          (end 10.16 -7.366)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type background)))
+        (polyline
+          (pts
+            (xy 0 7.112)
+            (xy 0 -7.112))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin power_in line
+          (at -15.24 -3.048 0)
+          (length 5.08)
+          (name "-VIN"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin power_in line
+          (at -15.24 3.048 0)
+          (length 5.08)
+          (name "+VIN"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin input line
+          (at -15.24 0 0)
+          (length 5.08)
+          (name "CTRL"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "3"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin no_connect line
+          (at 15.24 -6.604 180)
+          (length 5.08)
+          (name "NC"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "5"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin power_out line
+          (at 15.24 4.064 180)
+          (length 5.08)
+          (name "+VOUT"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "6"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 15.24 0 180)
+          (length 5.08)
+          (name "COM"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "7"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin power_out line
+          (at 15.24 -4.064 180)
+          (length 5.08)
+          (name "-VOUT"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "8"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:FERRITE"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "FB"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "FERRITE"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "FERRITE_0_1"
+        (rectangle
+          (start -2.794 1.27)
+          (end 2.794 -1.27)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.905 -1.651)
+            (xy 1.905 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 -1.651)
+            (xy 2.921 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "FERRITE_1_1"
+        (rectangle
+          (start -2.794 1.27)
+          (end 2.794 -1.27)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.905 -1.651)
+            (xy 1.905 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 -1.651)
+            (xy 2.921 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.334 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.334 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:C"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "C"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "C"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "C_0_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "C_1_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 3.81 270)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:TP"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "TP"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "TP"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "TP_0_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "TP_1_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 2.667)
+          (name "1"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no)))
 	(global_label "+5V_PREISO_INA"
 		(shape bidirectional)
-		(at 76.76 106.952 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "a2ecbd16-e0ce-5801-a233-dd4ea7b68e7b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.76 106.952 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_INA_RAW"
-		(shape bidirectional)
-		(at 160.334 78 0)
+		(at 48 50 0)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "ad777b99-380d-54ac-8f54-c9f982e250db")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 160.334 78 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
-		(at 201.81 150 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "b3427c53-e340-588e-9134-4318da3a6ca6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 201.81 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "e4fbc826-8bc9-591e-9f57-5fcec7c44903")
 	)
 	(global_label "DGND"
 		(shape bidirectional)
@@ -1136,83 +512,36 @@
 			(justify right)
 		)
 		(uuid "bc73ce4c-8184-5def-88fc-90be735454ba")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.76 113.048 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
-	(global_label "-5V_INA"
+	(global_label "+5V_PREISO_INA"
 		(shape bidirectional)
-		(at 194.19 150 180)
+		(at 76.76 106.952 180)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify right)
 		)
-		(uuid "dd57669e-c69e-5d70-92e1-8396155e462a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 194.19 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "a2ecbd16-e0ce-5801-a233-dd4ea7b68e7b")
 	)
-	(global_label "+5V_PREISO_INA"
+	(no_connect
+		(at 76.76 110)
+		(uuid "e2cf2576-b71d-58b0-80e4-59050506e827")
+	)
+	(no_connect
+		(at 107.24 116.604)
+		(uuid "ae1a3ed3-5095-5689-b9e9-095df3bd9d72")
+	)
+	(global_label "+5V_INA_RAW"
 		(shape bidirectional)
-		(at 48 50 0)
+		(at 107.24 105.936 0)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "e4fbc826-8bc9-591e-9f57-5fcec7c44903")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 48 50 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
-		(at 233.81 68 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "ef5b9aba-318a-51bb-bd23-fad40a07fb5c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.81 68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "26c3eb50-d022-5285-8c68-688c0b45f88f")
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
@@ -1224,17 +553,6 @@
 			(justify left)
 		)
 		(uuid "f71694c3-e651-5f83-9dc0-9382626a750b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 107.24 110 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
 	(global_label "-5V_INA_RAW"
 		(shape bidirectional)
@@ -1246,843 +564,668 @@
 			(justify left)
 		)
 		(uuid "fad15141-6009-59ba-81d7-514a20b3b749")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 107.24 114.064 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 198 150 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0a17d85e-e58c-53cd-88c6-fe1c5827077a")
-		(property "Reference" "C62"
-			(at 198 147.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "+5V_INA_RAW"
+		(shape bidirectional)
+		(at 160.334 78 0)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify left)
 		)
-		(property "Value" "10uF -5V bulk"
-			(at 198 152.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 198 150 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198 150 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 198 150 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "32dfab88-98d6-5834-b91c-8a2244b61e50")
-		)
-		(pin "2"
-			(uuid "6e278ea1-c737-5a2f-9f40-3554ee66df0b")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "C62")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "ad777b99-380d-54ac-8f54-c9f982e250db")
 	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 48 50 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "17f732b2-1472-5dd6-bcba-083cbb585c19")
-		(property "Reference" "#FLG0401"
-			(at 48 47.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "+5V_INA"
+		(shape bidirectional)
+		(at 149.666 78 180)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
-		(property "Value" "PWR_FLAG"
-			(at 48 52.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 48 50 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 48 50 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 48 50 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d89ef0bf-41b9-5f4b-85d9-888de068ed3b")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "#FLG0401")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "2f9fa14e-a683-56f2-8a60-65483712f96f")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 155 78 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1f62a497-56f9-5873-85e6-97f6f5703c46")
-		(property "Reference" "FB4"
-			(at 155 75.46 180)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "-5V_INA_RAW"
+		(shape bidirectional)
+		(at 149.666 145 180)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
-		(property "Value" "FB_INA_P / FB-or-0R"
-			(at 155 80.54 180)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 155 78 180)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 155 78 180)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 155 78 180)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b6f7431d-e9a4-54f0-a786-aef3f7808d93")
-		)
-		(pin "2"
-			(uuid "bac7e1ba-0516-596a-8120-f023e5f5b51d")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "FB4")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "87ab5458-a4d9-5306-bc55-c059425553ca")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 230 150 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "41d67bf3-53dd-598d-b50a-de0eb8082e0f")
-		(property "Reference" "C63"
-			(at 230 147.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "-5V_INA"
+		(shape bidirectional)
+		(at 160.334 145 0)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify left)
 		)
-		(property "Value" "100nF -5V"
-			(at 230 152.54 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 230 150 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 230 150 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 230 150 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9d849eba-922a-5e46-ab28-a1679ebe001f")
-		)
-		(pin "2"
-			(uuid "001fc06c-5db3-5265-b22f-f7d9015f94e3")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "C63")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "1d79d970-872a-5ff1-9ff7-86c01d2db75b")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 155 145 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9b0d12ce-0663-57e2-89fd-abe7ef9c95aa")
-		(property "Reference" "FB5"
-			(at 155 142.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "+5V_INA"
+		(shape bidirectional)
+		(at 201.81 68 0)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify left)
 		)
-		(property "Value" "FB_INA_N / FB-or-0R"
-			(at 155 147.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 155 145 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 155 145 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 155 145 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c6c961f8-ec46-5daa-a4ec-75a3cc7e43e0")
-		)
-		(pin "2"
-			(uuid "c8645728-e111-5336-93cf-19088b0ae898")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "FB5")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "4155d6ce-2719-523c-acd6-27d316530099")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:RS3_DUAL")
-		(at 92 110 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "be71651e-b8a9-5ebe-ac5e-1f4c8c787b2e")
-		(property "Reference" "U6"
-			(at 92 107.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 194.19 68 180)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
-		(property "Value" "RS3-0505D/H3"
-			(at 92 112.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "R3_Power:Converter_DCDC_RECOM_RS3_SIP8"
-			(at 92 110 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fc1hzCnZ/.t1305551dee110dff2189/Datasheet-28/RS3.pdf"
-			(at 92 110 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 92 110 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "56aee36a-a97e-5dde-9292-8a964738872d")
-		)
-		(pin "2"
-			(uuid "a5f0f651-c836-5368-ba2c-a29622be3659")
-		)
-		(pin "3"
-			(uuid "e3d674fc-8e49-5233-990c-41f2697318f9")
-		)
-		(pin "5"
-			(uuid "c48f8a67-1337-5da8-8a94-1000819f5762")
-		)
-		(pin "6"
-			(uuid "4d7e0a2f-20be-512c-86d2-80f75222053b")
-		)
-		(pin "7"
-			(uuid "7ad896be-3c59-5aee-ad95-76774a4d4d3c")
-		)
-		(pin "8"
-			(uuid "a2d1ecb2-181a-5848-a4d4-fef8b0816fc9")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "U6")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "9ea344e8-4d07-5aa2-8d47-d365a77130a4")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TP")
-		(at 245 178 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c31ac371-eb3a-5ae1-8076-394763298d82")
-		(property "Reference" "TP14"
-			(at 245 175.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "+5V_INA"
+		(shape bidirectional)
+		(at 226.19 68 180)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
-		(property "Value" "-5V_INA"
-			(at 245 180.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-			(at 245 178 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 245 178 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 245 178 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ecda8408-4638-5510-937a-7e3d9ccd121e")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "TP14")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "6150616e-ff80-578a-9438-8601613b8683")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TP")
-		(at 245 42 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d4727e8b-ea91-5b1c-ad47-c25acc608015")
-		(property "Reference" "TP13"
-			(at 245 39.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 233.81 68 0)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify left)
 		)
-		(property "Value" "+5V_INA"
-			(at 245 44.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-			(at 245 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 245 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 245 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6278353c-d1e1-5fbc-9bed-b3c2b64888c4")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "TP13")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "ef5b9aba-318a-51bb-bd23-fad40a07fb5c")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 230 68 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d4f7ad50-3177-5425-ae35-690b293c4095")
-		(property "Reference" "C61"
-			(at 230 65.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 201.81 150 0)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify left)
 		)
-		(property "Value" "100nF +5V"
-			(at 230 70.54 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 230 68 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 230 68 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 230 68 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "03247e3a-f6e7-55ed-9406-d5f533da4624")
-		)
-		(pin "2"
-			(uuid "8bb2c74e-3065-582a-a263-a58a281d6e58")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "C61")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "b3427c53-e340-588e-9134-4318da3a6ca6")
 	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 198 68 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f0b123a6-fd96-5e62-abe3-ace6ddf35549")
-		(property "Reference" "C60"
-			(at 198 65.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
+	(global_label "-5V_INA"
+		(shape bidirectional)
+		(at 194.19 150 180)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
-		(property "Value" "10uF +5V bulk"
-			(at 198 70.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 198 68 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198 68 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 198 68 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a3fb0be6-25b4-5052-9997-3fc42085d16d")
-		)
-		(pin "2"
-			(uuid "a0b8bb86-c9d5-5ac9-8837-18c2df6e8864")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/a994e311-f0a8-5212-a57f-2a3da949fc7d"
-					(reference "C60")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "dd57669e-c69e-5d70-92e1-8396155e462a")
 	)
-)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 226.19 150 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "02daee6d-bf4c-5226-bba6-1ff30eb52c28")
+	)
+	(global_label "-5V_INA"
+		(shape bidirectional)
+		(at 233.81 150 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "48971031-d06c-56cc-a91d-ece45008001f")
+	)
+	(global_label "+5V_INA"
+		(shape bidirectional)
+		(at 245 45.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "6b32caff-fa16-5b8d-84f3-5da508792ed5")
+	)
+	(global_label "-5V_INA"
+		(shape bidirectional)
+		(at 245 181.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "5bcec074-ced0-5026-9084-fe766ef616b3")
+	)
+(symbol
+    (lib_id "power:PWR_FLAG")
+    (at 48 50 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 17f732b2-1472-5dd6-bcba-083cbb585c19)
+    (property "Reference" "#FLG0401"
+      (at 48 47.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "PWR_FLAG"
+      (at 48 52.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" ""
+      (at 48 50 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 48 50 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" "Special symbol for telling ERC where power comes from"
+      (at 48 50 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid d89ef0bf-41b9-5f4b-85d9-888de068ed3b))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "#FLG0401")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:RS3_DUAL")
+    (at 92 110 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid be71651e-b8a9-5ebe-ac5e-1f4c8c787b2e)
+    (property "Reference" "U6"
+      (at 92 107.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "RS3-0505D/H3"
+      (at 92 112.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "R3_Power:Converter_DCDC_RECOM_RS3_SIP8"
+      (at 92 110 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fc1hzCnZ/.t1305551dee110dff2189/Datasheet-28/RS3.pdf"
+      (at 92 110 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 92 110 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 56aee36a-a97e-5dde-9292-8a964738872d))
+    (pin "2"
+      (uuid a5f0f651-c836-5368-ba2c-a29622be3659))
+    (pin "3"
+      (uuid e3d674fc-8e49-5233-990c-41f2697318f9))
+    (pin "5"
+      (uuid c48f8a67-1337-5da8-8a94-1000819f5762))
+    (pin "6"
+      (uuid 4d7e0a2f-20be-512c-86d2-80f75222053b))
+    (pin "7"
+      (uuid 7ad896be-3c59-5aee-ad95-76774a4d4d3c))
+    (pin "8"
+      (uuid a2d1ecb2-181a-5848-a4d4-fef8b0816fc9))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "U6")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:FERRITE")
+    (at 155 78 180)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 1f62a497-56f9-5873-85e6-97f6f5703c46)
+    (property "Reference" "FB4"
+      (at 155 75.46 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "FB_INA_P / FB-or-0R"
+      (at 155 80.54 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 155 78 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 155 78 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 155 78 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid b6f7431d-e9a4-54f0-a786-aef3f7808d93))
+    (pin "2"
+      (uuid bac7e1ba-0516-596a-8120-f023e5f5b51d))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "FB4")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:FERRITE")
+    (at 155 145 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 9b0d12ce-0663-57e2-89fd-abe7ef9c95aa)
+    (property "Reference" "FB5"
+      (at 155 142.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "FB_INA_N / FB-or-0R"
+      (at 155 147.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+      (at 155 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 155 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 155 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid c6c961f8-ec46-5daa-a4ec-75a3cc7e43e0))
+    (pin "2"
+      (uuid c8645728-e111-5336-93cf-19088b0ae898))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "FB5")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 198 68 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid f0b123a6-fd96-5e62-abe3-ace6ddf35549)
+    (property "Reference" "C60"
+      (at 198 65.46 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF +5V bulk"
+      (at 198 70.54 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 198 68 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 68 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 68 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid a3fb0be6-25b4-5052-9997-3fc42085d16d))
+    (pin "2"
+      (uuid a0b8bb86-c9d5-5ac9-8837-18c2df6e8864))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "C60")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 230 68 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d4f7ad50-3177-5425-ae35-690b293c4095)
+    (property "Reference" "C61"
+      (at 230 65.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF +5V"
+      (at 230 70.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 230 68 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 230 68 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 230 68 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 03247e3a-f6e7-55ed-9406-d5f533da4624))
+    (pin "2"
+      (uuid 8bb2c74e-3065-582a-a263-a58a281d6e58))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "C61")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 198 150 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 0a17d85e-e58c-53cd-88c6-fe1c5827077a)
+    (property "Reference" "C62"
+      (at 198 147.46 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF -5V bulk"
+      (at 198 152.54 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 198 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 32dfab88-98d6-5834-b91c-8a2244b61e50))
+    (pin "2"
+      (uuid 6e278ea1-c737-5a2f-9f40-3554ee66df0b))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "C62")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 230 150 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 41d67bf3-53dd-598d-b50a-de0eb8082e0f)
+    (property "Reference" "C63"
+      (at 230 147.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF -5V"
+      (at 230 152.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 230 150 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 230 150 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 230 150 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 9d849eba-922a-5e46-ab28-a1679ebe001f))
+    (pin "2"
+      (uuid 001fc06c-5db3-5265-b22f-f7d9015f94e3))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "C63")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 245 42 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d4727e8b-ea91-5b1c-ad47-c25acc608015)
+    (property "Reference" "TP13"
+      (at 245 39.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "+5V_INA"
+      (at 245 44.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 245 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 245 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 245 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 6278353c-d1e1-5fbc-9bed-b3c2b64888c4))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "TP13")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 245 178 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid c31ac371-eb3a-5ae1-8076-394763298d82)
+    (property "Reference" "TP14"
+      (at 245 175.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "-5V_INA"
+      (at 245 180.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 245 178 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 245 178 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 245 178 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid ecda8408-4638-5510-937a-7e3d9ccd121e))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/a994e311-f0a8-5212-a57f-2a3da949fc7d"
+          (reference "TP14")
+          (unit 1)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  )

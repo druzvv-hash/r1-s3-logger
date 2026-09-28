@@ -20,7 +20,7 @@ USB-C 5 V fallback + protected J1 service input
   -> external CHG/DSG FETs + Kelvin shunt
   -> BQ25798 BAT
 
-BQ25798 SYS -> VSYS_RAW -> F3 -> VSYS_PROT
+BQ25798 SYS -> VSYS_RAW -> F3 MF-MSMF250/16X-2 -> VSYS_PROT
   +-> TPS62132 -> +3V3_D
   +-> TPS54302 -> +5V_PREISO
        +-> separate ADS filter -> RS3E -> clean ADS rails
@@ -38,6 +38,12 @@ No 2S-to-9 V stage is used. `DGND` and `GND_ISO` remain galvanically separate. `
 - Keep charger SW1/SW2/L3 loop local. Do not route it under or toward the clean secondary zone.
 - Do not cluster the charger, TPS62132, TPS54302 and RECOM magnetics; vary orientation and spacing after mechanical review.
 - Use one controlled DGND plane rather than arbitrary split islands. Keep high-current and sense returns local, with Kelvin shunt and quiet cell/NTC traces.
+- Use four copper layers: L1 critical loops/components, L2 primary DGND, L3
+  power/quiet routing and L4 clean/secondary routing. The full-height 3.0 mm
+  isolation rule area blocks pads, vias, tracks and pours on every copper layer.
+- Rev.A protection parts are F1 `MF-R250-0-10`, F2 `MF-MSMF260/16X-2` and F3
+  `MF-MSMF250/16X-2`. NTC_BMS and NTC_CHG are separate `103AT-2` probes.
 - Four layers are recommended; no final stackup is approved yet.
 
-The current PCB file is a graphical floorplan/keepout draft only. It intentionally contains no routing.
+The current PCB file contains the floorplan/keepout and a preliminary
+component placement. It intentionally contains no routing or vias.

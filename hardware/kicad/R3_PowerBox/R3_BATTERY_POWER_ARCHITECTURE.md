@@ -1,7 +1,8 @@
 # R3 PowerBox 2S battery and power architecture
 
 Date: 2026-09-28
-Status: bounded PD/BMS correction pass complete; schematic implementation is provisional and not a procurement or PCB-routing release.
+Status: final pre-routing placement pass complete; electrical validation gates
+remain before a routing release.
 
 ## Fixed system decision
 
@@ -31,7 +32,7 @@ The old 511 kOhm / 105 kOhm external EN divider was copied from the 8-28 V refer
 ```text
 2S cells: BAT_POS_RAW / CELL_MID / BAT_NEG_RAW
   -> BQ28Z610 gauge + protection + cell balancing
-  -> TI-EVM-style common-drain high-side DSG/CHG N-FET pair (exact MPN open)
+  -> TI-EVM-style common-drain CSD17577Q3AT DSG/CHG N-FET pair
   -> PACK_POS
   -> 10 mOhm Kelvin shunt in negative path -> DGND
 
@@ -95,20 +96,27 @@ local bypass must be designed and reviewed before any future population.
 
 ### Q2/Q3 MOSFET study
 
-Losses below use the published **maximum** RDS(on) at 4.5 V and two series
-devices at 25 C. Hot resistance/PCB copper must be evaluated before selection.
+Losses below use published **maximum** RDS(on) at 10 V and two series devices
+at 25 C, matching the BQ28Z610 nominal 9.5 V drive more closely. Hot
+resistance/PCB copper must still be validated.
 
-| Candidate | VDS / package | Max RDS(on) @4.5 V | Pair loss @1 A | @3.3 A | @5 A | Comment |
+| Candidate | VDS / package | Max RDS(on) @10 V | Pair loss @1 A | @3.3 A | @5 A | Comment |
 |---|---|---:|---:|---:|---:|---|
-| TI CSD17577Q3A | 30 V, SON 3.3 x 3.3 mm | 6.4 mOhm | 12.8 mW | 139 mW | 320 mW | compact, low gate charge; needs adequate copper |
-| Vishay SiRA80DP | 30 V, PowerPAK SO-8 | 0.93 mOhm | 1.86 mW | 20.3 mW | 46.5 mW | best conduction result; larger gate charge, very strong thermal package |
-| Vishay SQJA26EP | 30 V, PowerPAK SO-8L | 1.28 mOhm | 2.56 mW | 27.9 mW | 64.0 mW | automotive-oriented package/candidate |
+| TI CSD17577Q3A | 30 V, SON 3.3 x 3.3 mm | 4.8 mOhm | 9.6 mW | 104.5 mW | 240 mW | **selected for Rev.A**; compact, 13 nC Qg |
+| Vishay SiRA80DP | 30 V, PowerPAK SO-8 | 0.62 mOhm | 1.24 mW | 13.5 mW | 31.0 mW | lowest conduction loss; about 60 nC Qg |
+| Vishay SQJA26EP | 30 V, PowerPAK SO-8L | 0.77 mOhm | 1.54 mW | 16.8 mW | 38.5 mW | AEC-Q101; larger package and gate charge |
 
-The schematic MPN and footprint remain explicitly TBD because these packages
-are not land-pattern compatible. Availability and SOA must be rechecked at the
-procurement freeze. A 1.5-1.8x hot-RDS(on) multiplier still keeps all three
-thermally plausible at 5 A, but the CSD17577Q3A pair then approaches roughly
-0.5 W and demands intentional copper spreading.
+`CSD17577Q3AT` is the fixed Rev.A pre-routing Q2/Q3 selection. The BQ28Z610 specifies
+8.75-10.25 V FET-on drive over the relevant stack range, so the device's
+4.8 mOhm maximum RDS(on) at 10 V is the correct nominal design point. Pair
+loss is 9.6 mW at 1 A, 104.5 mW at 3.3 A and 240 mW at 5 A at 25 C. Its
+13 nC typical gate charge is materially easier on the gauge's protected FET
+drive than the roughly 60 nC SiRA80DP. A project-local DQG/VSON footprint is
+assigned. Using 1.8x the 25 C maximum RDS(on) as a conservative hot estimate,
+pair loss is 17.3 mW at 1 A, 188 mW at 3.3 A and 432 mW at 5 A. Reserve at
+least 200 mm2 combined L1 spreading copper and 4-6 x 0.30 mm finished thermal
+vias per FET into primary copper. SOA/short-circuit interruption and assembly
+yield remain validation gates, not component-selection blockers.
 
 ## USB-C and PD implementation
 
@@ -134,7 +142,9 @@ programming and recovery procedure are in `docs/STUSB4500_PD_CONFIG.md`.
 Before any confirmed contract/source capability, the BQ25798 243 kOhm/100 kOhm
 ILIM_HIZ divider enforces about 0.50 A. Firmware may clear `EN_EXTILIM` and
 increase IINDPM only after reading the STUSB4500 state: 1.35 A for confirmed
-5 V/1.5 A, 2.70 A for confirmed 5 V/3 A, and 1.80 A for 9 V/2 A or 12 V/2 A.
+5 V/1.5 A, 2.25 A for confirmed 5 V/3 A, and 1.80 A for 9 V/2 A or 12 V/2 A.
+The 2.25 A cap deliberately stays below the approximately 2.5 A TPS2121 ILIM
+and current F2 design class; the 12 V/2 A policy is unchanged.
 
 ## Input and power-path behavior
 
@@ -154,9 +164,12 @@ BQ25798 NVDC power-path supplies R3:
 One NTC cannot be connected directly to both BQ28Z610 TS1 and BQ25798 TS because each IC biases its input. The schematic therefore provides:
 
 - J8 pin 4: `NTC_BMS` for BQ28Z610;
-- J9: optional separate `NTC_CHG` and `DGND` return for BQ25798. On PCB this conductor is named/treated as `DGND_CHG_SENSE`: a quiet Kelvin return to the charger ground area, never to `BAT_NEG_RAW` on the battery side of the shunt.
+- J9: separate `NTC_CHG` and `DGND` return for BQ25798. On PCB this conductor is named/treated as `DGND_CHG_SENSE`: a quiet Kelvin return to the charger ground area, never to `BAT_NEG_RAW` on the battery side of the shunt.
 
-This is deliberately visible rather than silently tying the pins together. Before PCB layout choose dual thermistors, an approved buffer/supervisor scheme, or a documented single-controller safety policy. Dual thermistors are the current recommendation.
+Rev.A therefore uses two separate SEMITEC `103AT-2` probes: 10.0 kOhm at
+25 C, B25/85=3435 K, both resistance and B-value tolerance 1%. The harness
+entries are recorded in `bom/R3_power_harness_bom.csv`; the probes are not
+shared or passively paralleled.
 
 ## Battery and MCU telemetry
 
@@ -232,8 +245,18 @@ Based on expected peak rather than only regulator nameplates:
 - shunt: 10 mOhm, 1 W, Kelvin connected; 0.25 W at 5 A;
 - battery/system copper: size for 5 A local path and temperature rise, not for average current only;
 - TPS2121 input mux: 2.5 A typical current-limit target in current draft;
-- F3 system protection: target at least 2.0 A hold at maximum enclosure temperature; exact PPTC/fuse remains open after thermal derating;
+- F1 service input: Bourns `MF-R250-0-10`, 30 V, 2.50 A hold/5.00 A trip at
+  23 C, 1.70 A hold at 60 C, radial 5.1 mm pitch;
+- F2 USB input: Bourns `MF-MSMF260/16X-2`, 16 V, 2.60 A hold/5.00 A trip at
+  23 C, 2.00 A hold at 60 C, 1812;
+- F3 system rail: Bourns `MF-MSMF250/16X-2`, 16 V, 2.50 A hold/5.00 A trip at
+  23 C, 1.85 A hold at 60 C, 1812;
 - charge/input connector and protection: minimum 3 A if 5 V fallback is used near its useful limit.
+
+The PPTCs are fixed for Rev.A placement/BOM, but hot sustained current is still
+a validation gate. In particular, the 2.25 A confirmed 5 V/3 A firmware policy
+exceeds F2's 60 C hold value; charger thermal/DPM derating or a separately
+reviewed fuse option is required if that combination must be continuous.
 
 ## Charge-current examples
 
@@ -254,7 +277,7 @@ At 9 V/2 A with a 1.80 A policy limit, only 16.2 W is available, so 2 A charge
 is not sustainable and even 1 A charge must be power-managed at peak load.
 Unknown 5 V starts at 0.50 A (2.5 W), which may require battery supplement and
 does not guarantee charging. Confirmed 5 V/1.5 A or 3 A may use the documented
-1.35 A or 2.70 A limits, respectively.
+1.35 A or 2.25 A limits, respectively.
 
 Charge current remains programmable and is not frozen until cell capacity, allowed C-rate, connector temperature and enclosure cooling are known.
 
@@ -286,7 +309,7 @@ Existing primary and isolated test points are retained. Dirty and clean points b
 
 ## PCB floorplan and layers
 
-The PCB draft is expanded to four explicit spatial zones:
+The PCB draft uses four explicit spatial zones:
 
 ```text
 DIRTY EDGE                     MIDDLE                    CLEAN EDGE
@@ -297,7 +320,13 @@ DIRTY EDGE                     MIDDLE                    CLEAN EDGE
 +----------------------+----------------+-----------+----------------------+
 ```
 
-Charger SW1/SW2 and L3 stay entirely inside Zone A. TPS62132/TPS54302 switching loops stay in Zone B. RS3E/RS3 sit at the isolation corridor, not in the clean LDO area. USB/battery and clean connectors are on opposite edges. The draft contains an explicit copper/via/pad keepout strip at the isolation barrier; no tracks or zones were routed.
+Charger SW1/SW2 and L3 stay entirely inside Zone A. TPS62132/TPS54302
+switching loops stay in Zone B. U3/U6 pins 1/2/3 face primary and pins
+5/6/7/8 face clean. The full-height x=121...124 mm rule area blocks pads,
+vias, tracks and pours on all four copper layers. The SIP8 geometry provides
+3.08 mm edge-to-edge between pad 3 and pad 5, so the adopted rule is 3.0 mm
+minimum copper clearance and board-surface creepage. This is a low-voltage
+functional-isolation rule, not a mains/reinforced certification claim.
 
 A four-layer board is recommended:
 
@@ -306,20 +335,27 @@ A four-layer board is recommended:
 - L3 power distribution/quiet routing with no copper under the barrier;
 - L4 secondary routing and clean ground/power areas.
 
-Four layers improve return-path control, EMI and heat spreading enough to justify the added cost. A two-layer board remains possible only with larger area and more difficult control of charger/switcher return currents; it is not recommended for the low-noise R3 objective.
+Four layers improve return-path control, EMI and heat spreading enough to
+justify the added cost. No thermal copper, plane or via may cross the isolation
+corridor. L3 charger, L1 TPS62132 and L2 TPS54302 are alternately oriented;
+U3/U6 are vertically separated from that magnetic group and from the clean
+LDOs. Board size remains 160 x 80 mm.
 
 ## Open technical decisions and blockers
 
 1. Program and compliance-test the provisional STUSB4500 5/9/12 V NVM profile and firmware current-limit policy.
-2. Select exact BMS CHG/DSG MOSFETs/footprint and verify the 5 A thermal path and BQ28Z610 gate-drive behavior.
-3. Decide dual-NTC versus buffered/supervised single-NTC architecture.
+2. Validate CSD17577Q3AT protection-event SOA/turn-off and the specified
+   thermal-copper implementation at 5 A/hot conditions.
+3. Validate both 103AT-2 harness locations and temperature thresholds.
 4. Freeze battery chemistry/capacity and program/validate BQ28Z610 protection, balancing, recovery and gauge parameters.
 5. Validate BQ25798/BQ28Z610/STUSB4500 shared-bus interoperability and the boot-safe 0.50 A charger default.
 6. Bench-test TPS54302 5 V regulation and transients at VSYS = 6.0 V.
 7. Resolve RS3-0505D/H3 light-load and rail-balance behavior for INA851.
-8. Freeze expected/peak measured loads, then choose F2/F3, connector contacts, MOSFETs and copper widths.
+8. Measure expected/peak loads and hot ambient, then validate the fixed
+   F1/F2/F3 choices, connector contacts and copper widths.
 9. Decide whether the reserved BQ2945xx secondary-OV footprint is populated; its active network is intentionally DNP/unconnected in Rev.A.
-10. Define formal creepage/clearance from working voltage and safety requirements.
+10. Check J3/J10 mating-housing, latch, enclosure and cable-bend clearances in
+    mechanical CAD.
 
 PCB routing and production outputs remain blocked until these decisions are closed.
 
@@ -335,6 +371,10 @@ PCB routing and production outputs remain blocked until these decisions are clos
 - ST STUSB4500: https://www.st.com/resource/en/datasheet/stusb4500.pdf
 - TI BQ28Z610EVM: https://www.ti.com/lit/ug/sluube3/sluube3.pdf
 - Bourns SMBJ series: https://www.bourns.com/data/global/pdfs/SMBJ.pdf
+- Bourns MF-R: https://www.bourns.com/docs/product-datasheets/mf-r.pdf
+- Bourns MF-MSMF: https://www.bourns.com/docs/product-datasheets/mf-msmf.pdf
+- SEMITEC 103AT-2: https://www.semitec-global.com/products/thermistor_at/
+- TI CSD17577Q3A: https://www.ti.com/lit/ds/symlink/csd17577q3a.pdf
 - ST ESDA25W: https://www.st.com/resource/en/datasheet/esdaxxxwx.pdf
 - TI TPS25750 candidate: https://www.ti.com/lit/ds/symlink/tps25750.pdf
 - Infineon CYPD3177 candidate product page: https://www.infineon.com/part/CYPD3177-24LQXQ

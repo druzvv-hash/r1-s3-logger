@@ -3,6 +3,8 @@
 - `R3_power_kicad_bom.csv` is generated directly from the current KiCad
   schematic and is the sole reference for schematic quantities, values,
   footprints and designators.
+- `R3_power_harness_bom.csv` records the two off-board SEMITEC 103AT-2
+  temperature probes that cannot appear as populated PCB footprints.
 - Sourcing status, package checks and unresolved selections are maintained in
   `../R3_POWER_REVIEW.md` so they cannot drift from the design review.
 

@@ -1,0 +1,3 @@
+Reference,Function,Manufacturer,MPN,Nominal,B25/85,Tolerance,Connection,Rev.A status
+NTC_BMS,Battery-pack protection temperature,SEMITEC,103AT-2,10.0 kOhm @25C,3435 K,1%,J8 pin 4 to BAT_NEG_RAW,Populate in battery harness
+NTC_CHG,Charger temperature qualification,SEMITEC,103AT-2,10.0 kOhm @25C,3435 K,1%,J9 pin 1 to quiet DGND_CHG_SENSE return,Populate as separate probe

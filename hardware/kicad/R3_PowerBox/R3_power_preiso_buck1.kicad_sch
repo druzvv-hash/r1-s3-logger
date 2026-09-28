@@ -1,1183 +1,567 @@
 (kicad_sch
-	(version 20260306)
-	(generator "eeschema")
-	(generator_version "10.0")
-	(uuid "018e28c5-ebaa-5a30-99ac-84554c21e989")
-	(paper "A4")
-	(title_block
-		(title "R3 PowerBox — power tree")
-		(date "2026-09-28")
-		(comment 1 "Generated with SKiDL")
-	)
-	(lib_symbols
-		(symbol "R3_POWER_GEN:C"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "C"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "C"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "C_0_1"
-				(polyline
-					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "C_1_1"
-				(polyline
-					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
-					)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 0 3.81 270)
-					(length 3.048)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 3.048)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:FERRITE"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "FB"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "FERRITE"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "FERRITE_0_1"
-				(rectangle
-					(start -2.794 1.27)
-					(end 2.794 -1.27)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -1.651) (xy 1.905 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.889 -1.651) (xy 2.921 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "FERRITE_1_1"
-				(rectangle
-					(start -2.794 1.27)
-					(end 2.794 -1.27)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -1.651) (xy 1.905 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.889 -1.651) (xy 2.921 1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.334 0 0)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.334 0 180)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:L"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "L"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "L"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "L_0_1"
-				(rectangle
-					(start -2.54 1.143)
-					(end 2.54 -1.143)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "L_1_1"
-				(rectangle
-					(start -2.54 1.143)
-					(end 2.54 -1.143)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 0 180)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:R"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "R"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "R_0_1"
-				(rectangle
-					(start -2.54 1.143)
-					(end 2.54 -1.143)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "R_1_1"
-				(rectangle
-					(start -2.54 1.143)
-					(end 2.54 -1.143)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 0 180)
-					(length 2.54)
-					(name ""
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:TP"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "TP"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TP"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "TP_0_1"
-				(circle
-					(center 0 0)
-					(radius 1.143)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "TP_1_1"
-				(circle
-					(center 0 0)
-					(radius 1.143)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 2.667)
-					(name "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "R3_POWER_GEN:TPS54302"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TPS54302"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "TPS54302_0_1"
-				(rectangle
-					(start -8.89 5.842)
-					(end 8.89 -5.842)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "TPS54302_1_1"
-				(rectangle
-					(start -8.89 5.842)
-					(end 8.89 -5.842)
-					(stroke
-						(width 0.3048)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin power_in line
-					(at 0 -10.922 90)
-					(length 5.08)
-					(name "GND"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 13.97 2.54 180)
-					(length 5.08)
-					(name "SW"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -13.97 2.54 0)
-					(length 5.08)
-					(name "VIN"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 13.97 -2.54 180)
-					(length 5.08)
-					(name "FB"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -13.97 -2.54 0)
-					(length 5.08)
-					(name "EN"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 0 180)
-					(length 5.08)
-					(name "BOOT"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 0.889 0.889)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 95 86.92 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "04e73787-3df4-5856-b249-94547cb1b669")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 95 86.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid 018e28c5-ebaa-5a30-99ac-84554c21e989)
+  (paper "A4")
+  (title_block
+    (title "R3 PowerBox — power tree")
+    (date "2026-09-28")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols
+    (symbol "R3_POWER_GEN:TPS54302"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "U"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "TPS54302"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "TPS54302_0_1"
+        (rectangle
+          (start -8.89 5.842)
+          (end 8.89 -5.842)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type background))))
+      (symbol "TPS54302_1_1"
+        (rectangle
+          (start -8.89 5.842)
+          (end 8.89 -5.842)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type background)))
+        (pin power_in line
+          (at 0 -10.922 90)
+          (length 5.08)
+          (name "GND"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin output line
+          (at 13.97 2.54 180)
+          (length 5.08)
+          (name "SW"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin power_in line
+          (at -13.97 2.54 0)
+          (length 5.08)
+          (name "VIN"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "3"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin input line
+          (at 13.97 -2.54 180)
+          (length 5.08)
+          (name "FB"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "4"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin input line
+          (at -13.97 -2.54 0)
+          (length 5.08)
+          (name "EN"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "5"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 13.97 0 180)
+          (length 5.08)
+          (name "BOOT"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "6"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:L"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "L"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "L"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "L_0_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "L_1_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.08 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.08 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:C"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "C"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "C"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "C_0_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "C_1_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 3.81 270)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:R"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "R"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "R"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "R_0_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "R_1_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.08 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.08 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:FERRITE"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "FB"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "FERRITE"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "FERRITE_0_1"
+        (rectangle
+          (start -2.794 1.27)
+          (end 2.794 -1.27)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.905 -1.651)
+            (xy 1.905 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 -1.651)
+            (xy 2.921 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "FERRITE_1_1"
+        (rectangle
+          (start -2.794 1.27)
+          (end 2.794 -1.27)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.905 -1.651)
+            (xy 1.905 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 -1.651)
+            (xy 2.921 1.651))
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.334 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.334 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:TP"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "TP"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "TP"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "TP_0_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "TP_1_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 2.667)
+          (name "1"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no)))
 	(global_label "DGND"
 		(shape bidirectional)
-		(at 228 58.19 270)
+		(at 94.078 122 180)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify right)
 		)
-		(uuid "062d49a0-cd82-5869-b8eb-d6ba883d89e6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228 58.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "FB_5V"
-		(shape bidirectional)
-		(at 145 97.08 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "0e5eda65-42a0-5fd5-bbf4-50598344ffc9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 145 97.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 170 88.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "0f61e088-0aa0-5ede-831d-5008e8a0d7f6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 170 88.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO_INA"
-		(shape bidirectional)
-		(at 198 137.334 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "0fa9a10b-9123-5c34-874b-cc2e7767d7eb")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198 137.334 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO_INA"
-		(shape bidirectional)
-		(at 252 131.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "1495afda-5c61-55cc-bd01-c5ff2f2462a9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 131.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "76160d10-b3a0-5538-946b-21ebb03ea895")
 	)
 	(global_label "SW_5V"
 		(shape bidirectional)
-		(at 68 101.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "173d8705-2d85-52aa-a752-018ac3a5777c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 68 101.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 125 68.81 90)
+		(at 107.54 135.97 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "1e0e7688-39a2-55d1-b0a9-5c6f8f2cc9b7")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 125 68.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 155 61.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "24a75aae-e0ee-59ce-aaaf-5264ee1184fd")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 155 61.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO_ADS"
-		(shape bidirectional)
-		(at 198 77.334 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "3654520d-eac7-5224-a3d8-8bc9bf718472")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198 77.334 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 228 131.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "402ee46a-3cbf-54e8-8c6d-21cd085eae39")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228 131.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "N$12"
-		(shape bidirectional)
-		(at 68 108.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "43f3f711-cd06-5004-97be-dc8191d365fd")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 68 108.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "b4acaf7d-2113-560e-a03f-5afd31491d57")
 	)
 	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 107.54 108.03 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "452376aa-c51b-5f70-8280-2f3afb310b84")
+	)
+	(global_label "FB_5V"
 		(shape bidirectional)
 		(at 102.46 135.97 90)
 		(effects
@@ -1186,40 +570,359 @@
 			)
 			(justify left)
 		)
-		(uuid "452376aa-c51b-5f70-8280-2f3afb310b84")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.46 135.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "fc922473-b22f-5cf1-9cb1-cf481e4a6210")
 	)
-	(global_label "+5V_PREISO_ADS"
+	(global_label "VSYS_PROT"
 		(shape bidirectional)
-		(at 265 45.81 90)
+		(at 102.46 108.03 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "69cac906-068a-52f5-bd07-781378ba7402")
+	)
+	(global_label "N$12"
+		(shape bidirectional)
+		(at 105 135.97 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "508e2561-48e2-5c9e-91bc-30333f79aa77")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 265 45.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+		(uuid "ad3b3fb6-4570-5eea-80a7-2a7986d8f6b9")
+	)
+	(global_label "SW_5V"
+		(shape bidirectional)
+		(at 95 86.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
 			)
+			(justify right)
 		)
+		(uuid "ce8b8f8b-68ea-54e4-805f-e865576e882b")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 95 97.08 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "04e73787-3df4-5856-b249-94547cb1b669")
+	)
+	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 55 151.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "fe875427-74f5-5b8b-96e8-1955d6e96d89")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 55 144.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "629724d8-3014-5acc-ab7c-6b723e32d2b9")
+	)
+	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 82 153.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "cd52a116-a117-5adb-90ea-321ac60b9117")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 82 146.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "d4c1cf7f-1156-522c-9764-4f8dfb95678c")
+	)
+	(global_label "N$12"
+		(shape bidirectional)
+		(at 68 101.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "43f3f711-cd06-5004-97be-dc8191d365fd")
+	)
+	(global_label "SW_5V"
+		(shape bidirectional)
+		(at 68 108.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "173d8705-2d85-52aa-a752-018ac3a5777c")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 125 61.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "1e0e7688-39a2-55d1-b0a9-5c6f8f2cc9b7")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 125 68.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "a69d7542-2573-59eb-9d39-07395db7a324")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 155 61.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "dd3ca223-7eca-5f10-a05a-b09f61b1b71e")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 155 68.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "24a75aae-e0ee-59ce-aaaf-5264ee1184fd")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 145 97.08 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "b66afe44-4db3-52f7-98d3-7fff7e86fb5c")
+	)
+	(global_label "FB_5V"
+		(shape bidirectional)
+		(at 145 86.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "0e5eda65-42a0-5fd5-bbf4-50598344ffc9")
+	)
+	(global_label "FB_5V"
+		(shape bidirectional)
+		(at 152 127.08 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "f38e8c81-30cf-5f9b-92cf-7767e1d9e906")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 152 116.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "eaf9a261-dad6-5b5b-8a47-1e3204048d42")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 170 95.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "0f61e088-0aa0-5ede-831d-5008e8a0d7f6")
+	)
+	(global_label "FB_5V"
+		(shape bidirectional)
+		(at 170 88.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "bcc4ba4c-f51e-5271-9982-9551b1854ea6")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 198 77.334 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "5e925953-fab4-5618-b4aa-3a0f3c53ce2f")
+	)
+	(global_label "+5V_PREISO_ADS"
+		(shape bidirectional)
+		(at 198 66.666 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "3654520d-eac7-5224-a3d8-8bc9bf718472")
+	)
+	(global_label "+5V_PREISO_ADS"
+		(shape bidirectional)
+		(at 228 58.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "89e92f49-5383-5c9e-b381-75c18426c2a0")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 228 65.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "062d49a0-cd82-5869-b8eb-d6ba883d89e6")
+	)
+	(global_label "+5V_PREISO_ADS"
+		(shape bidirectional)
+		(at 252 58.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "e8266a88-71e0-574b-9f32-67765c7ddf96")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 252 65.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "e96dbf41-ecdd-5a5a-b9fd-499b8c262bcd")
+	)
+	(global_label "+5V_PREISO"
+		(shape bidirectional)
+		(at 198 137.334 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "bf77fe39-89eb-574d-bb2c-1bf52173b27c")
+	)
+	(global_label "+5V_PREISO_INA"
+		(shape bidirectional)
+		(at 198 126.666 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "0fa9a10b-9123-5c34-874b-cc2e7767d7eb")
+	)
+	(global_label "+5V_PREISO_INA"
+		(shape bidirectional)
+		(at 228 131.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "c2602870-05ba-5d02-9b54-6482c6ed492d")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 228 124.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "402ee46a-3cbf-54e8-8c6d-21cd085eae39")
+	)
+	(global_label "+5V_PREISO_INA"
+		(shape bidirectional)
+		(at 252 124.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "1495afda-5c61-55cc-bd01-c5ff2f2462a9")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 252 131.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "7c4a1dfd-c31f-5db6-a7fe-330ae08461b2")
 	)
 	(global_label "+5V_PREISO"
 		(shape bidirectional)
@@ -1231,259 +934,17 @@
 			(justify left)
 		)
 		(uuid "5785bd7c-f4ee-555d-98c6-1c4632785910")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 145 45.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 198 66.666 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "5e925953-fab4-5618-b4aa-3a0f3c53ce2f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198 66.666 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 55 151.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "629724d8-3014-5acc-ab7c-6b723e32d2b9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 55 151.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "VSYS_PROT"
-		(shape bidirectional)
-		(at 107.54 135.97 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "69cac906-068a-52f5-bd07-781378ba7402")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 107.54 135.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 115.922 122 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "76160d10-b3a0-5538-946b-21ebb03ea895")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 115.922 122 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 252 124.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "7c4a1dfd-c31f-5db6-a7fe-330ae08461b2")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 124.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
 	(global_label "+5V_PREISO_ADS"
 		(shape bidirectional)
-		(at 228 65.81 90)
+		(at 265 45.81 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "89e92f49-5383-5c9e-b381-75c18426c2a0")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228 65.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 125 61.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "a69d7542-2573-59eb-9d39-07395db7a324")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 125 61.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "N$12"
-		(shape bidirectional)
-		(at 105 108.03 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "ad3b3fb6-4570-5eea-80a7-2a7986d8f6b9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 105 108.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SW_5V"
-		(shape bidirectional)
-		(at 102.46 108.03 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "b4acaf7d-2113-560e-a03f-5afd31491d57")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 102.46 108.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 145 86.92 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "b66afe44-4db3-52f7-98d3-7fff7e86fb5c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 145 86.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "FB_5V"
-		(shape bidirectional)
-		(at 170 95.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "bcc4ba4c-f51e-5271-9982-9551b1854ea6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 170 95.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+		(uuid "508e2561-48e2-5c9e-91bc-30333f79aa77")
 	)
 	(global_label "+5V_PREISO_INA"
 		(shape bidirectional)
@@ -1495,1847 +956,963 @@
 			(justify left)
 		)
 		(uuid "be9f601e-f402-5196-a7f3-7dd622b88467")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 265 158.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 198 126.666 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "bf77fe39-89eb-574d-bb2c-1bf52173b27c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198 126.666 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO_INA"
-		(shape bidirectional)
-		(at 228 124.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "c2602870-05ba-5d02-9b54-6482c6ed492d")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228 124.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "VSYS_PROT"
-		(shape bidirectional)
-		(at 82 146.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "cd52a116-a117-5adb-90ea-321ac60b9117")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 82 146.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SW_5V"
-		(shape bidirectional)
-		(at 95 97.08 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "ce8b8f8b-68ea-54e4-805f-e865576e882b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 95 97.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 82 153.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "d4c1cf7f-1156-522c-9764-4f8dfb95678c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 82 153.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO"
-		(shape bidirectional)
-		(at 155 68.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "dd3ca223-7eca-5f10-a05a-b09f61b1b71e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 155 68.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+5V_PREISO_ADS"
-		(shape bidirectional)
-		(at 252 65.81 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "e8266a88-71e0-574b-9f32-67765c7ddf96")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 65.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 252 58.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "e96dbf41-ecdd-5a5a-b9fd-499b8c262bcd")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 58.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "DGND"
-		(shape bidirectional)
-		(at 152 127.08 90)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "eaf9a261-dad6-5b5b-8a47-1e3204048d42")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 152 127.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "FB_5V"
-		(shape bidirectional)
-		(at 152 116.92 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "f38e8c81-30cf-5f9b-92cf-7767e1d9e906")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 152 116.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "FB_5V"
-		(shape bidirectional)
-		(at 107.54 108.03 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "fc922473-b22f-5cf1-9cb1-cf481e4a6210")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 107.54 108.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "VSYS_PROT"
-		(shape bidirectional)
-		(at 55 144.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "fe875427-74f5-5b8b-96e8-1955d6e96d89")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 55 144.19 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 198 132 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "13e4bc8f-770f-5a9e-a3b9-bc0da872d620")
-		(property "Reference" "FB7"
-			(at 198 129.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "BLM31KN601B family / 2A"
-			(at 198 134.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
-			(at 198 132 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198 132 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 198 132 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7e764179-988a-5d14-81c0-529042901992")
-		)
-		(pin "2"
-			(uuid "cfce7af6-f3b0-57fb-b98b-84e7cff7aa8d")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "FB7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 170 92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1e22ff79-e46d-5d46-8f74-c5672fc5429e")
-		(property "Reference" "C25"
-			(at 170 89.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "75pF C0G"
-			(at 170 94.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 170 92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 170 92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 170 92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d9972ea3-e447-5832-8052-79330fa84c90")
-		)
-		(pin "2"
-			(uuid "a24ea234-9ba2-5fa2-afb9-b4688e8edd53")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C25")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 68 105 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "25d1a050-e458-5551-9970-ad76246a2c81")
-		(property "Reference" "C22"
-			(at 68 102.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF BOOT"
-			(at 68 107.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 68 105 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 68 105 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 68 105 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6afe4d93-5811-5781-b187-129bb33c0ca4")
-		)
-		(pin "2"
-			(uuid "db16ad27-35b8-5aeb-84ab-6be7e20bb09e")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C22")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 55 148 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4b67d961-fe8d-5657-b05f-3fca288649e4")
-		(property "Reference" "C20"
-			(at 55 145.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF/25V"
-			(at 55 150.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
-			(at 55 148 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 55 148 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 55 148 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d503a2d1-ac04-5bc2-b74d-ee101404f42c")
-		)
-		(pin "2"
-			(uuid "d67093d5-49db-5e76-9107-caaf6652b906")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C20")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:R")
-		(at 152 122 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "5011f6af-2909-5806-84ff-ac7cc00dccb2")
-		(property "Reference" "R22"
-			(at 152 119.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "13.3k 1%"
-			(at 152 124.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 152 122 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 152 122 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 152 122 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bcf2dc10-7633-5715-9afc-be10d96b6501")
-		)
-		(pin "2"
-			(uuid "91d5a28a-acac-52e6-a60c-1bbdaac2315f")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "R22")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 252 128 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "59eadcd3-4f0e-5fc0-a214-8230c319ad52")
-		(property "Reference" "C29"
-			(at 252 125.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF INA IN"
-			(at 252 130.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 252 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 252 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 252 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7ba05c27-d8f5-5268-a705-6ac3fa56f5dd")
-		)
-		(pin "2"
-			(uuid "8f2bc8e0-abe1-5370-ba38-9dded3ca8e9a")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C29")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 228 62 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "60fc6b42-d527-5db9-9305-551f6b7d8aca")
-		(property "Reference" "C26"
-			(at 228 59.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF/10V ADS IN"
-			(at 228 64.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 228 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 228 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 228 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "861e7132-7b5a-5476-8d82-d0b5b29d61f4")
-		)
-		(pin "2"
-			(uuid "dbb2570f-05e2-597a-9164-5d73054bca1c")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C26")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TP")
-		(at 145 42 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6aa1ee2d-bb4f-5d14-834b-8707b695e2e9")
-		(property "Reference" "TP5"
-			(at 145 39.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "+5V_PREISO"
-			(at 145 44.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-			(at 145 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 145 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 145 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "652728b5-0299-5e29-91e5-633f2ead1cfa")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "TP5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 125 65 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "881c38d5-fe19-5eca-983f-4d7b0edb8965")
-		(property "Reference" "C23"
-			(at 125 62.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "22uF/10V"
-			(at 125 67.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 125 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 125 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9463d955-30e4-5e1d-b2c0-884b0da7287d")
-		)
-		(pin "2"
-			(uuid "319939e0-aa75-5e4f-af58-355f2929fcfd")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C23")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TPS54302")
-		(at 105 122 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "91f47076-85a3-522a-adb1-a8c835186fa3")
-		(property "Reference" "U2"
-			(at 105 119.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TPS54302DDCR"
-			(at 105 124.54 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
-			(at 105 122 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
-			(at 105 122 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 105 122 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d7f2c795-1662-5ca1-b205-be98c4f81793")
-		)
-		(pin "2"
-			(uuid "db3f2725-1fa9-5f31-aec0-7dc9e95271d9")
-		)
-		(pin "3"
-			(uuid "1b89fa45-bbce-5782-9046-4934d4dbacda")
-		)
-		(pin "4"
-			(uuid "4644b393-0c0d-5ac9-95ae-d974b426641b")
-		)
-		(pin "5"
-			(uuid "8868d1d2-bfa1-56a9-96cb-4f4bf297b370")
-		)
-		(pin "6"
-			(uuid "86e0e289-39b8-5be9-87b6-cdfbc155abd2")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "U2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:R")
-		(at 145 92 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "96540d44-5a9e-51d6-a445-bfc10561af13")
-		(property "Reference" "R21"
-			(at 145 89.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100k 1%"
-			(at 145 94.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 145 92 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 145 92 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 145 92 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5d7c98ed-8764-5594-bf15-c83358d8091d")
-		)
-		(pin "2"
-			(uuid "b9018c32-5d46-57e6-96d6-0273fc981404")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "R21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 198 72 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "afce2745-80b4-5eca-9d36-b9344af5999a")
-		(property "Reference" "FB6"
-			(at 198 69.46 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "BLM31KN601B family / 2A"
-			(at 198 74.54 270)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
-			(at 198 72 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198 72 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 198 72 270)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "34a835e0-3044-5146-9df8-8445bab8e497")
-		)
-		(pin "2"
-			(uuid "407e500e-ac85-58ca-b486-242b12a8d6c4")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "FB6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TP")
-		(at 265 42 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d047990e-6d05-58d6-b927-d4d1d7403877")
-		(property "Reference" "TP6"
-			(at 265 39.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "+5V_PREISO_ADS"
-			(at 265 44.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-			(at 265 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 265 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 265 42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7759e06d-b492-5def-88be-f843913b64b1")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "TP6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:TP")
-		(at 265 155 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d68b0fce-4c7d-5664-9f75-f67afec19741")
-		(property "Reference" "TP16"
-			(at 265 152.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "+5V_PREISO_INA"
-			(at 265 157.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-			(at 265 155 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 265 155 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 265 155 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7673eddb-3fdb-5f40-8633-8afb6c157848")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "TP16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 228 128 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e715b8a7-2517-55b4-9b1f-aaad2c76e738")
-		(property "Reference" "C28"
-			(at 228 125.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uF/10V INA IN"
-			(at 228 130.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 228 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 228 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 228 128 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "cc19330c-7f4b-52af-ba02-ce392734c0b5")
-		)
-		(pin "2"
-			(uuid "34072bb3-f9d3-535c-ad68-9d7c96b1634c")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C28")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 82 150 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e8bcb080-b29f-504d-8fa4-8ec3ef75cb39")
-		(property "Reference" "C21"
-			(at 82 147.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF/25V"
-			(at 82 152.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 82 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 82 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 82 150 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0581c4f6-1d4d-5978-b039-74f6e139bc05")
-		)
-		(pin "2"
-			(uuid "ff17285a-872a-5f42-b203-48ca80a40c73")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:L")
-		(at 95 92 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f0bf006c-75dd-58a5-bada-c3422357eaf9")
-		(property "Reference" "L2"
-			(at 95 89.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10uH SRP5030TA-100M"
-			(at 95 94.54 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_Bourns_SRP5030T"
-			(at 95 92 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 95 92 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 95 92 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6834da66-43b9-5d08-a6c1-d0ce2e49f860")
-		)
-		(pin "2"
-			(uuid "0e98358a-e48b-5af5-9449-fadc9e56daa9")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "L2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 155 65 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fce95c1a-76ff-565c-9d92-952d9b441c7a")
-		(property "Reference" "C24"
-			(at 155 62.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "22uF/10V"
-			(at 155 67.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 155 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 155 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 155 65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "87bf0f5e-940d-5a95-9229-3dcebfa97d8e")
-		)
-		(pin "2"
-			(uuid "ad9b06e8-9e57-5a55-b220-cd6d35951b6a")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C24")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "R3_POWER_GEN:C")
-		(at 252 62 0)
-		(mirror x)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fe20b9e7-04f8-541d-8496-029d677dc63f")
-		(property "Reference" "C27"
-			(at 252 59.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF ADS IN"
-			(at 252 64.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 252 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 252 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 252 62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 0.9 0.9)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "18720280-f4d5-55c1-8014-bed0f57dd702")
-		)
-		(pin "2"
-			(uuid "74fe77d2-1d78-5725-bf5b-4f24a9988528")
-		)
-		(instances
-			(project "SKiDL-Generated"
-				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
-					(reference "C27")
-					(unit 1)
-				)
-			)
-		)
-	)
-)
+(symbol
+    (lib_id "R3_POWER_GEN:TPS54302")
+    (at 105 122 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 91f47076-85a3-522a-adb1-a8c835186fa3)
+    (property "Reference" "U2"
+      (at 105 119.46 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "TPS54302DDCR"
+      (at 105 124.54 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+      (at 105 122 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
+      (at 105 122 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 105 122 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid d7f2c795-1662-5ca1-b205-be98c4f81793))
+    (pin "2"
+      (uuid db3f2725-1fa9-5f31-aec0-7dc9e95271d9))
+    (pin "3"
+      (uuid 1b89fa45-bbce-5782-9046-4934d4dbacda))
+    (pin "4"
+      (uuid 4644b393-0c0d-5ac9-95ae-d974b426641b))
+    (pin "5"
+      (uuid 8868d1d2-bfa1-56a9-96cb-4f4bf297b370))
+    (pin "6"
+      (uuid 86e0e289-39b8-5be9-87b6-cdfbc155abd2))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "U2")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:L")
+    (at 95 92 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid f0bf006c-75dd-58a5-bada-c3422357eaf9)
+    (property "Reference" "L2"
+      (at 95 89.46 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uH SRP5030TA-100M"
+      (at 95 94.54 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Inductor_SMD:L_Bourns_SRP5030T"
+      (at 95 92 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 95 92 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 95 92 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 6834da66-43b9-5d08-a6c1-d0ce2e49f860))
+    (pin "2"
+      (uuid 0e98358a-e48b-5af5-9449-fadc9e56daa9))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "L2")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 55 148 0)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 4b67d961-fe8d-5657-b05f-3fca288649e4)
+    (property "Reference" "C20"
+      (at 55 145.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF/25V"
+      (at 55 150.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+      (at 55 148 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 55 148 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 55 148 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid d503a2d1-ac04-5bc2-b74d-ee101404f42c))
+    (pin "2"
+      (uuid d67093d5-49db-5e76-9107-caaf6652b906))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C20")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 82 150 0)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid e8bcb080-b29f-504d-8fa4-8ec3ef75cb39)
+    (property "Reference" "C21"
+      (at 82 147.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF/25V"
+      (at 82 152.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 82 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 82 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 82 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 0581c4f6-1d4d-5978-b039-74f6e139bc05))
+    (pin "2"
+      (uuid ff17285a-872a-5f42-b203-48ca80a40c73))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C21")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 68 105 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 25d1a050-e458-5551-9970-ad76246a2c81)
+    (property "Reference" "C22"
+      (at 68 102.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF BOOT"
+      (at 68 107.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 68 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 68 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 68 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 6afe4d93-5811-5781-b187-129bb33c0ca4))
+    (pin "2"
+      (uuid db16ad27-35b8-5aeb-84ab-6be7e20bb09e))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C22")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 125 65 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 881c38d5-fe19-5eca-983f-4d7b0edb8965)
+    (property "Reference" "C23"
+      (at 125 62.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "22uF/10V"
+      (at 125 67.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 125 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 125 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 125 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 9463d955-30e4-5e1d-b2c0-884b0da7287d))
+    (pin "2"
+      (uuid 319939e0-aa75-5e4f-af58-355f2929fcfd))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C23")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 155 65 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid fce95c1a-76ff-565c-9d92-952d9b441c7a)
+    (property "Reference" "C24"
+      (at 155 62.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "22uF/10V"
+      (at 155 67.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 155 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 155 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 155 65 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 87bf0f5e-940d-5a95-9229-3dcebfa97d8e))
+    (pin "2"
+      (uuid ad9b06e8-9e57-5a55-b220-cd6d35951b6a))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C24")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 145 92 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 96540d44-5a9e-51d6-a445-bfc10561af13)
+    (property "Reference" "R21"
+      (at 145 89.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100k 1%"
+      (at 145 94.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 145 92 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 145 92 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 145 92 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 5d7c98ed-8764-5594-bf15-c83358d8091d))
+    (pin "2"
+      (uuid b9018c32-5d46-57e6-96d6-0273fc981404))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "R21")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 152 122 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 5011f6af-2909-5806-84ff-ac7cc00dccb2)
+    (property "Reference" "R22"
+      (at 152 119.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "13.3k 1%"
+      (at 152 124.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 152 122 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 152 122 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 152 122 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid bcf2dc10-7633-5715-9afc-be10d96b6501))
+    (pin "2"
+      (uuid 91d5a28a-acac-52e6-a60c-1bbdaac2315f))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "R22")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 170 92 0)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 1e22ff79-e46d-5d46-8f74-c5672fc5429e)
+    (property "Reference" "C25"
+      (at 170 89.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "75pF C0G"
+      (at 170 94.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 170 92 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 170 92 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 170 92 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid d9972ea3-e447-5832-8052-79330fa84c90))
+    (pin "2"
+      (uuid a24ea234-9ba2-5fa2-afb9-b4688e8edd53))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C25")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:FERRITE")
+    (at 198 72 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid afce2745-80b4-5eca-9d36-b9344af5999a)
+    (property "Reference" "FB6"
+      (at 198 69.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "BLM31KN601B family / 2A"
+      (at 198 74.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
+      (at 198 72 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 72 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 72 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 34a835e0-3044-5146-9df8-8445bab8e497))
+    (pin "2"
+      (uuid 407e500e-ac85-58ca-b486-242b12a8d6c4))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "FB6")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 228 62 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 60fc6b42-d527-5db9-9305-551f6b7d8aca)
+    (property "Reference" "C26"
+      (at 228 59.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF/10V ADS IN"
+      (at 228 64.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 228 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 228 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 228 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 861e7132-7b5a-5476-8d82-d0b5b29d61f4))
+    (pin "2"
+      (uuid dbb2570f-05e2-597a-9164-5d73054bca1c))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C26")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 252 62 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid fe20b9e7-04f8-541d-8496-029d677dc63f)
+    (property "Reference" "C27"
+      (at 252 59.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF ADS IN"
+      (at 252 64.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 252 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 252 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 252 62 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 18720280-f4d5-55c1-8014-bed0f57dd702))
+    (pin "2"
+      (uuid 74fe77d2-1d78-5725-bf5b-4f24a9988528))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C27")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:FERRITE")
+    (at 198 132 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 13e4bc8f-770f-5a9e-a3b9-bc0da872d620)
+    (property "Reference" "FB7"
+      (at 198 129.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "BLM31KN601B family / 2A"
+      (at 198 134.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
+      (at 198 132 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 132 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 132 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 7e764179-988a-5d14-81c0-529042901992))
+    (pin "2"
+      (uuid cfce7af6-f3b0-57fb-b98b-84e7cff7aa8d))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "FB7")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 228 128 0)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid e715b8a7-2517-55b4-9b1f-aaad2c76e738)
+    (property "Reference" "C28"
+      (at 228 125.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF/10V INA IN"
+      (at 228 130.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+      (at 228 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 228 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 228 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid cc19330c-7f4b-52af-ba02-ce392734c0b5))
+    (pin "2"
+      (uuid 34072bb3-f9d3-535c-ad68-9d7c96b1634c))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C28")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 252 128 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 59eadcd3-4f0e-5fc0-a214-8230c319ad52)
+    (property "Reference" "C29"
+      (at 252 125.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF INA IN"
+      (at 252 130.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 252 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 252 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 252 128 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 7ba05c27-d8f5-5268-a705-6ac3fa56f5dd))
+    (pin "2"
+      (uuid 8f2bc8e0-abe1-5370-ba38-9dded3ca8e9a))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "C29")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 145 42 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 6aa1ee2d-bb4f-5d14-834b-8707b695e2e9)
+    (property "Reference" "TP5"
+      (at 145 39.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "+5V_PREISO"
+      (at 145 44.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 145 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 145 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 145 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 652728b5-0299-5e29-91e5-633f2ead1cfa))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "TP5")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 265 42 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d047990e-6d05-58d6-b927-d4d1d7403877)
+    (property "Reference" "TP6"
+      (at 265 39.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "+5V_PREISO_ADS"
+      (at 265 44.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 265 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 265 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 265 42 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 7759e06d-b492-5def-88be-f843913b64b1))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "TP6")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 265 155 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d68b0fce-4c7d-5664-9f75-f67afec19741)
+    (property "Reference" "TP16"
+      (at 265 152.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "+5V_PREISO_INA"
+      (at 265 157.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 265 155 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 265 155 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 265 155 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 7673eddb-3fdb-5f40-8633-8afb6c157848))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/018e28c5-ebaa-5a30-99ac-84554c21e989"
+          (reference "TP16")
+          (unit 1)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  )

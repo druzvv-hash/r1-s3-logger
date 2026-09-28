@@ -29,18 +29,22 @@ Open `R3_power.kicad_pro` in KiCad 10. The canonical schematic is
 - The board is a unified 2S Li-ion power-management design. The preliminary
   system range is 6.0-8.4 V; there is no intermediate 2S-to-9 V converter.
 - J1 is retained as a protected service/bench charger input. USB-C is the
-  primary external input; the current schematic implements 5 V fallback while
-  the 12 V PD controller decision remains open.
+  primary external input; STUSB4500 implements 5/9/12 V negotiation with
+  12 V/2 A preferred and a boot-safe 0.50 A charger default.
 - `DGND` and `GND_ISO` are separate galvanic domains and must never be joined.
 - The present files are an engineering prototype, not a manufacturing release.
-- Exact BMS MOSFETs, PD controller, battery chemistry/configuration and final
-  protection parts must be selected before ordering a PCB.
-- The PCB currently contains a 160 x 80 mm floorplan-only outline, four spatial
-  zone annotations and an isolation keepout. It has no routing.
+- Q2/Q3, F1/F2/F3 and the dual-NTC strategy are selected for Rev.A. Battery
+  chemistry/configuration, hot-current validation and PD NVM compliance remain
+  open before ordering a PCB.
+- The PCB contains a 160 x 80 mm outline, four spatial zones, an isolation
+  keepout on all four copper layers and final pre-routing component placement.
+  It has no routing or vias.
 - KiCad ERC has zero errors. Remaining generator-related warnings and the visual
   review limitations are recorded in `docs/VERIFICATION.md`.
 
 Start with [the current power review](R3_POWER_REVIEW.md) and
 [battery architecture](R3_BATTERY_POWER_ARCHITECTURE.md), then see the compact
 [design notes](docs/R3_power_module_design.md) and
-[verification status](docs/VERIFICATION.md).
+[verification status](docs/VERIFICATION.md). Placement images are in
+`reports/R3_power_preliminary_placement.png` and
+`reports/R3_power_zone_isolation_annotated.png`.

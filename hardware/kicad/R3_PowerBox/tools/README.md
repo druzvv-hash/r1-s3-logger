@@ -20,3 +20,9 @@ may overlap in the initial automatic drawing.
 
 The project-local symbol source is `libraries/R3_POWER.lib`; the native KiCad
 library used by the editor is `libraries/R3_POWER.kicad_sym`.
+
+`generate_preliminary_placement.py` is a separate, explicitly unrouted PCB
+placement generator. Run it with KiCad 10's bundled Python after schematic
+regeneration. It exports a temporary XML netlist, reloads the assigned
+footprints, assigns nets and packs them into the documented four zones while
+preserving the outline and isolation keepout. It never creates tracks or vias.

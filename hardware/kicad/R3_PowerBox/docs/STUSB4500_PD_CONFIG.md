@@ -59,11 +59,13 @@ clear `EN_EXTILIM` and raise `IINDPM`:
 |---|---:|
 | unknown/default USB source | 0.50 A hardware clamp; do not override |
 | 5 V Type-C 1.5 A advertised | 1.35 A |
-| 5 V Type-C 3.0 A advertised or 5 V/3 A PD | 2.70 A |
+| 5 V Type-C 3.0 A advertised or 5 V/3 A PD | 2.25 A |
 | 9 V/2 A PD | 1.80 A |
 | 12 V/2 A PD | 1.80 A |
 
-The 10% margin covers cable/connector drop and contract tolerance. BQ25798
+The 5 V/3 A policy is deliberately capped at 2.25 A by firmware so it remains
+below the approximately 2.5 A TPS2121 ILIM setting and the present 2.5 A-class
+F2 design target. The 9 V and 12 V policies retain a 10% contract margin. BQ25798
 input-voltage/current DPM remains enabled. Insufficient adapter power must
 reduce charge current first; NVDC battery supplement may carry short system
 peaks.

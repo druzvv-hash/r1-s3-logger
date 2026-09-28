@@ -236,7 +236,7 @@
   "J7.B7": "__NOCONNECT",
   "J7.B8": "__NOCONNECT",
   "J7.B9": "USB_VBUS_RAW",
-  "J7.S1": "USB_SHIELD",
+  "J7.SH": "USB_SHIELD",
   "J8.1": "BAT_POS_RAW",
   "J8.2": "CELL_MID",
   "J8.3": "BAT_NEG_RAW",

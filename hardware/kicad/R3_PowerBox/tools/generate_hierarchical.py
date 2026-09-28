@@ -81,7 +81,7 @@ def input_protection(service_raw, service_prot, dgnd):
     j1 = comp("CONN2", "J1", "SERVICE / BENCH INPUT 6-12V", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal")
     service_raw += j1[1]
     dgnd += j1[2]
-    f1 = comp("FUSE", "F1", "PTC 1.5-1.85A HOLD / TBD", "R3_Power:Fuse_PTC_MF-R160_R185_Class")
+    f1 = comp("FUSE", "F1", "MF-R250-0-10 2.5A/30V PPTC", "R3_Power:Fuse_PTC_MF-R250", "https://www.bourns.com/docs/product-datasheets/mf-r.pdf")
     f1.datasheet = "https://www.bourns.com/docs/product-datasheets/mf-r.pdf"
     service_raw += f1[1]
     vin_fused += f1[2]
@@ -112,12 +112,12 @@ def input_protection(service_raw, service_prot, dgnd):
 def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
                        pm_scl, pm_sda, v3d, dgnd):
     """2S cell interface, gauge/protection, balancing and Kelvin shunt."""
-    j8 = comp("CONN4", "J8", "2S BATTERY / KEYED", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0400_1x04_P3.00mm_Horizontal")
+    j8 = comp("CONN4", "J8", "2S BATTERY / KEYED / NTC_BMS=103AT-2", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0400_1x04_P3.00mm_Horizontal")
     bat_pos += j8[1]
     cell_mid += j8[2]
     bat_neg += j8[3]
     ntc_bms += j8[4]
-    j9 = comp("CONN2", "J9", "CHARGER NTC / QUIET DGND RETURN", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal")
+    j9 = comp("CONN2", "J9", "NTC_CHG=103AT-2 / QUIET DGND RETURN", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal")
     ntc_chg += j9[1]
     dgnd += j9[2]
 
@@ -147,10 +147,12 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
 
     # TI BQ28Z610EVM Figure 20 high-side pair: PACK+ -> DSG FET -> common
     # drains -> CHG FET -> BAT+. Gate-drive references are the local sources.
-    # Exact MOSFET MPN stays open until the 5 A-class thermal/availability pass.
+    # Preliminary selection: TI CSD17577Q3AT, 30 V, 13 nC typical Qg and
+    # 4.8 mOhm maximum RDS(on) at the BQ28Z610's approximately 9.5 V drive.
+    # Project footprint maps the physical DQG pins onto this 3-pin symbol.
     fet_common = Net("BMS_FET_COMMON")
-    q2 = comp("NMOS_POWER", "Q2", "30V N-MOS DSG / MPN+FOOTPRINT TBD")
-    q3 = comp("NMOS_POWER", "Q3", "30V N-MOS CHG / MPN+FOOTPRINT TBD")
+    q2 = comp("NMOS_POWER", "Q2", "CSD17577Q3AT 30V NMOS DSG", "R3_Power:CSD17577Q3A_VSON-8_3.3x3.3mm", "https://www.ti.com/lit/ds/symlink/csd17577q3a.pdf")
+    q3 = comp("NMOS_POWER", "Q3", "CSD17577Q3AT 30V NMOS CHG", "R3_Power:CSD17577Q3A_VSON-8_3.3x3.3mm", "https://www.ti.com/lit/ds/symlink/csd17577q3a.pdf")
     pack_pos += q2["S"]
     fet_common += q2["D"], q3["D"]
     bat_pos += q3["S"]
@@ -215,7 +217,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     j7.circuit.NC += j7["D+", "D-", "SBU1", "SBU2"]
     r("R72", "1M SHIELD", shield, dgnd)
     c("C70", "4.7nF SHIELD", shield, dgnd)
-    f2 = comp("FUSE", "F2", "USB INPUT 2.5A PTC / TBD", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder")
+    f2 = comp("FUSE", "F2", "MF-MSMF260/16X-2 2.6A/16V PPTC", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder", "https://www.bourns.com/docs/product-datasheets/mf-msmf.pdf")
     usb_raw += f2[1]
     usb_prot += f2[2]
     d3 = comp("DIODE", "D3", "SMBJ13A / 13V VRWM USB VBUS", "Diode_SMD:D_SMB")
@@ -323,7 +325,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     r("R81", "10k INT PU", charger_fault, v3d)
     r("R82", "10k MUX ST PU", input_status, v3d)
 
-    f3 = comp("FUSE", "F3", "SYSTEM PTC 2.0A@60C TARGET / TBD", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder")
+    f3 = comp("FUSE", "F3", "MF-MSMF250/16X-2 2.5A/16V PPTC", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder", "https://www.bourns.com/docs/product-datasheets/mf-msmf.pdf")
     vsys_raw += f3[1]
     vsys_prot += f3[2]
     power_flag(pack_pos, "#FLG0501")

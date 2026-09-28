@@ -1,7 +1,7 @@
 # R3 PowerBox review
 
 Review date: 2026-09-28
-Status: bounded USB-C PD/BMS correction pass complete; **not ready for PCB routing or procurement**.
+Status: final pre-routing placement pass complete; **routing remains blocked by the validation items below**.
 
 The editable electrical source is `tools/generate_hierarchical.py`. Generated KiCad sheets, PDF and BOM are derived artifacts. The detailed battery decision record and budgets are in `R3_BATTERY_POWER_ARCHITECTURE.md`.
 
@@ -17,7 +17,8 @@ The editable electrical source is `tools/generate_hierarchical.py`. Generated Ki
   VC2-VC1 (Cell2).
 - Rebuilt Q2/Q3 as the TI-EVM common-drain pair: DSG FET on PACK side, CHG FET
   on cell side, 5.1 kOhm gate resistors, 10 MOhm gate-source bias and 100 nF
-  drain-source capacitors. Exact MOSFET/footprint stays open.
+  drain-source capacitors. Q2/Q3 are fixed as `CSD17577Q3AT` in the
+  project-local 3.3 x 3.3 mm DQG/VSON footprint.
 - Changed J9 pin 2 from `BAT_NEG_RAW` to `DGND`. Layout must implement the
   conductor as quiet `DGND_CHG_SENSE` direct to the BQ25798 ground area.
 - Added BQ25798-local VBUS bypass: 100 nF 0402 plus three 10 uF/25 V ceramics.
@@ -46,7 +47,15 @@ correction list.
 - Preserved the existing TPS62132, TPS54302, independent ADS/INA pre-isolation filters, RS3E, RS3 dual, ADM7150 and TPS7A20 architecture.
 - Removed the TPS54302 8-V reference-design EN divider because it blocked the 6-8.4 V 2S range; EN now follows `VSYS_PROT` and battery cutoff belongs to the BMS.
 - Added battery, cell, NTC, shunt, charger-input and VSYS test points.
-- Expanded the PCB outline into a floorplan-only draft with DIRTY -> PRIMARY -> ISOLATION -> CLEAN zones and an isolation copper/via/pad keepout. No routing was performed.
+- Added a reproducible preliminary placement inside the DIRTY -> PRIMARY ->
+  ISOLATION -> CLEAN floorplan and retained the isolation copper/via/pad
+  keepout. No routing, vias or copper pours were added.
+- Converted the board definition to four copper layers and extended the
+  3.0 mm isolation keepout across every copper layer and the entire board
+  height. U3/U6 primary pins face DGND and secondary pins face GND_ISO.
+- Fixed Rev.A protection/temperature choices: F1 `MF-R250-0-10`, F2
+  `MF-MSMF260/16X-2`, F3 `MF-MSMF250/16X-2`, and two independent SEMITEC
+  `103AT-2` NTC probes.
 
 ## Current power tree
 
@@ -58,7 +67,7 @@ J1 service 6-12 V -- existing protection --+
 2S cells -> BQ28Z610 / CHG+DSG FETs / shunt -> PACK_POS + DGND
 
 CHARGER_IN + PACK_POS -> BQ25798 NVDC charger/power-path
-                       -> VSYS_RAW -> F3 TBD -> VSYS_PROT
+                       -> VSYS_RAW -> F3 MF-MSMF250/16X-2 -> VSYS_PROT
 
 VSYS_PROT -> TPS62132 -> +3V3_D
 VSYS_PROT -> TPS54302 -> +5V_PREISO
@@ -87,7 +96,10 @@ STUSB4500 `RESET` is tied directly to `DGND`. The NVM definition uses PDO3 =
 12 V/2 A and `POWER_OK_CFG=10b`; consequently `PD_CONTRACT_12V_N` is low only
 after PDO3 is selected and the source completes the transition with PS_READY.
 
-Original TI datasheets are assigned in each symbol. The BQ28Z610 project footprint follows TI DRZ0012A land-pattern dimensions. The BMS power MOSFETs intentionally remain MPN/footprint TBD and block layout completion.
+Original TI datasheets are assigned in each symbol. The BQ28Z610 project
+footprint follows TI DRZ0012A dimensions. Q2/Q3 are fixed as
+`CSD17577Q3AT`; the project DQG footprint maps the physical gate, source and
+drain lands to the existing logical three-pin symbol.
 
 ## Connectors
 
@@ -119,7 +131,9 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
 - Expected battery current: 0.52 A at 8.4 V, 0.59 A at 7.4 V, 0.73 A at 6.0 V.
 - Plausible peak case: approximately 8 W, or 0.95/1.08/1.33 A at 8.4/7.4/6.0 V.
 - Converter-nameplate design worst case: approximately 19.8 W, or 2.36/2.68/3.30 A. This is a sizing bound, not the expected R3 operating load.
-- Proposed battery path target: 5 A connector/FET/shunt/copper class; F3 target at least 2.0 A hold at maximum ambient after derating, exact part open.
+- Proposed battery path target: 5 A connector/FET/shunt/copper class. F3 is
+  `MF-MSMF250/16X-2`: 2.50 A hold at 23 C and 1.85 A at 60 C, so the measured
+  peak current/temperature gate remains mandatory.
 - With 4.4 W system load and 90% conversion, 1 A charging needs 0.96/1.09/1.19 A from 12 V at BAT=6.0/7.4/8.4 V. A 2 A setting needs 1.52/1.78/1.96 A. The 12 V/2 A contract policy limits IINDPM to 1.80 A, so DPM must reduce charge near full battery and during system peaks.
 
 ### PD/source current policy
@@ -128,19 +142,38 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
 |---|---:|---:|---|
 | unknown 5 V / no PD | 0.50 A hardware | 2.5 W | system may need battery supplement; charging not guaranteed |
 | confirmed 5 V/1.5 A | 1.35 A | 6.75 W | slow charging only |
-| confirmed 5 V/3 A | 2.70 A | 13.5 W | about 1 A charge possible at lower/mid BAT, DPM near full |
+| confirmed 5 V/3 A | 2.25 A | 11.25 W policy cap | reduced charging; kept below TPS2121/F2 approximately 2.5 A hardware class |
 | 9 V/2 A PD | 1.80 A | 16.2 W | 1 A charge expected; 2 A not sustainable |
 | 12 V/2 A PD | 1.80 A | 21.6 W | 2 A possible at low/mid BAT; reduced near 8.4 V/peak load |
 
 ## Technical issues not silently hidden
 
 1. **PD configuration:** STUSB4500 is implemented, but its NVM must be programmed/read back and USB-PD behavior verified with an analyzer before higher IINDPM values are enabled.
-2. **Dual temperature inputs:** BQ28Z610 TS1 and BQ25798 TS cannot safely share one passively biased NTC. Separate connectors are shown; final dual-NTC or buffered strategy is open.
+2. **Dual temperature inputs:** Rev.A uses two independent SEMITEC `103AT-2`
+   probes (10.0 kOhm at 25 C, B25/85=3435 K, 1%). `NTC_BMS` terminates at
+   the pack/BQ28Z610 reference; `NTC_CHG` returns quietly to charger DGND.
 3. **BMS configuration:** BQ28Z610 safety and gauge data-flash values, chemistry profile, recovery and balancing require configuration and test.
-4. **MOSFETs:** BQ28Z610 CHG/DSG topology is corrected, but MPNs and footprints are not selected. Candidate pair loss at 5 A is 0.320 W for CSD17577Q3A, 0.0465 W for SiRA80DP and 0.064 W for SQJA26EP at published 4.5 V/25 C maximum RDS(on); hot/availability/SOA review remains.
+4. **MOSFETs:** Q2/Q3 use the final pre-routing `CSD17577Q3AT` selection and a
+   project-local DQG/VSON footprint. BQ28Z610 drives approximately 9.5 V, so
+   the relevant 10 V maximum RDS(on) is 4.8 mOhm: pair conduction loss is
+   9.6 mW at 1 A, 104.5 mW at 3.3 A and 240 mW at 5 A at 25 C. Using a
+   conservative 1.8x hot-resistance multiplier gives 17.3 mW, 188 mW and
+   432 mW for the pair. Reserve at least 200 mm2 combined L1 spreading copper
+   and 4-6 0.30 mm finished thermal vias per FET into primary copper. Protection
+   event SOA/turn-off and assembly yield still require validation.
+   Distributor check on 2026-09-28 found CSD17577Q3AT stocked at Mouser; the
+   part is active, but procurement must recheck stock at release time.
 5. **TPS54302 dropout:** verify 5 V regulation, startup and load steps at `VSYS=6.0 V`.
 6. **INA isolated supply:** RS3-0505D/H3 light-load regulation and rail balance remain unresolved.
 7. **BMS hardware fault signal:** BQ28Z610 has autonomous FET protection and I2C status but no general alert pin. Add an external supervisor only if the MCU requires a dedicated fault wire.
+8. **PPTC temperature:** F1/F2/F3 are fixed for Rev.A placement and BOM, but
+   their hold current derates with ambient. At 60 C F1 is 1.70 A, F2 is
+   2.00 A and F3 is 1.85 A. The 5 V/3 A firmware policy remains 2.25 A, so
+   sustained hot operation must invoke charger thermal/DPM derating or use a
+   separately reviewed non-resettable-fuse option.
+   MF-MSMF250/16X-2, MF-MSMF260/16X-2 and MF-R250-0-10 were stocked at
+   authorized distributors on 2026-09-28; purchasing must preserve the exact
+   F1 5.1 mm lead-style suffix.
 
 ## ERC and files
 
@@ -151,10 +184,23 @@ embedded-library/deterministic-grid generation path. The count is recorded in
 
 - schematic PDF: `reports/R3_power_schematic.pdf`;
 - BOM: `bom/R3_power_kicad_bom.csv`;
+- harness BOM: `bom/R3_power_harness_bom.csv`;
 - logical pin/net map: `tools/logical_nets.json`.
+- high-resolution placement: `reports/R3_power_preliminary_placement.png`;
+- annotated zones/isolation: `reports/R3_power_zone_isolation_annotated.png`;
+- unrouted placement DRC: `reports/R3_power_pcb_drc.txt`.
 
 ## PCB recommendation and blockers
 
-Use a four-layer board for return-path control, EMI and thermal spreading. Keep charger/BMS/high-current loops on the dirty edge, primary bucks in the middle, RECOM modules at the isolation corridor, and ADM7150/TPS7A20/clean connectors on the opposite edge. Inductors must not be clustered or placed beneath the clean analog section.
+The board is explicitly four-layer: L1 components/critical loops, L2 primary
+DGND, L3 power/quiet routing and L4 secondary/clean routing. Every layer is
+interrupted by the x=121...124 mm isolation rule area. The resulting 3.0 mm
+minimum board copper clearance/creepage is the maximum supported by the SIP8
+pad-3/pad-5 geometry (3.08 mm edge-to-edge) and is accepted here for
+low-voltage functional isolation only, not certified mains/reinforced safety.
 
-PCB routing is blocked by STUSB4500 NVM/compliance validation, temperature-sensing architecture, Q2/Q3 MPN/footprint selection, BQ28Z610 configuration thresholds, secondary-OV population decision, fuse/PTC selection, measured power budget, TPS54302 low-battery validation, RS3 light-load resolution and formal isolation clearance requirements.
+PCB routing is blocked by STUSB4500 NVM/compliance validation, BQ28Z610
+configuration thresholds, Q2/Q3 protection-event SOA, hot PPTC/current
+validation, enclosure/mating-connector clearance, measured power budget,
+TPS54302 low-battery validation and the RS3 INA light-load decision. Secondary
+OV remains a documented DNP space reservation and is not active in Rev.A.
