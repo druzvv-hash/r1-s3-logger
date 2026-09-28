@@ -1,5 +1,15 @@
 # Current memory entry point
 
+## 2026-09-28 — Routing continuation, checkpoint A
+
+Continue on `routing/r3-powerbox-reva`, never main. A0 is retained in Git;
+checkpoint A adds shunt force/Kelvin, BMS gate/cell/NTC and charger local routes.
+352 unconnected findings remain; no planes yet. This is NOT a finished board.
+Detailed scope/exceptions: PowerBox `docs/ROUTING_CHECKPOINTS.md`. Follow A with
+B/C/D/E/F in the same session. The A recipe refuses to run after leaving A0,
+so it cannot silently erase later routing. SW2 moved locally to (85,78) to
+free gauge fanout; connectors, mounting, isolation anchors remain unchanged.
+
 ## 2026-09-28 — PowerBox routing branch A0 (incomplete)
 
 Latest owner request authorizes prototype routing from `1ccbc857938f1d36dbe252c1533ed0361289e0a1`.

@@ -1,5 +1,21 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — Routing checkpoint A continuation
+
+IMPLEMENTED / HOST CHECKED ONLY. Started from owner-specified A0, not the
+pre-routing board. Added BAT_NEG force/shunt fanout, separate pad-origin
+SRP/SRN filters, gauge VSS/PBI/cell/NTC/gate paths, charger VAC/PROG/BATP/TS/
+ILIM/SDRV local routing. SW2 relocated locally; all J/H/module anchors retained.
+Only five A0 segments and one BTST2 via replaced to unblock charger fanout.
+Kelvin front-layer no-pour regions protect the shunt-side sense stubs.
+No source net changes; no routing on main. 343 tracks / 101 vias, 352 remaining
+unconnected findings, 42 dangling ground vias awaiting E, 181 silk warnings.
+No present clearance/short/edge/hole/drill/annular/courtyard violations.
+Independent isolation audit and mechanical/net invariant checks PASS with
+the explicitly documented SW2 exception. Native copper plots inspected.
+Remaining return/thermal/plane and complete connectivity checks are NOT passed.
+Continue B-F; current evidence is in PowerBox reports/routing_checkpoint_A_drc.json.
+
 ## 2026-09-28 — R3 PowerBox routing A0, partial checkpoint
 
 IMPLEMENTED / HOST CHECKED ONLY. Created isolated routing worktree/branch from

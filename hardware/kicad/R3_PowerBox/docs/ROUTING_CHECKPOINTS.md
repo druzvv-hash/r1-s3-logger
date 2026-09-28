@@ -1,5 +1,51 @@
 # Rev.A prototype routing checkpoints
 
+## Checkpoint A continuation (supersedes A0 status below)
+
+A0 `2b4bb5e9568fd3ed68e13147868de63d9654c6fa` was the starting board.
+Added 2.5 mm inner BAT_NEG force path and symmetric three-via shunt force
+fanouts. The sense traces originate within the shunt pads; no DGND sense via
+exists before R95. Two named front-layer no-pour regions prevent pour bypass.
+Local SRP/SRN differential filter/gauge paths, VC1/VC2 filters, VSS/PBI, CHG/DSG
+EVM network and battery NTC paths are routed. Filtered-net test-point stubs and
+I2C remain for D; ground force return closes with the planes at E.
+
+BQ25798 local VAC, BATP, PROG, SDRV, TS and ILIM routes are added. Controls,
+USB/input distribution and global SYS links follow in subsequent checkpoints.
+Five A0 segments and the BTST2 via were replaced because their original
+locations blocked legal PROG/BATP escapes. Other A0 copper is retained.
+The local BAT pin escape uses a short In1.Cu island (54,50 to 57.5,53); this
+is a documented local layer exception, NOT a split of the primary ground domain.
+Review ground continuity around it after fill at E.
+
+Unrouted local components were compacted; SW2 moved from (72,78) to (85,78)
+because its original pads blocked the gauge fanout. J1-J13, H1-H6, U3/U6,
+Q4/SW1, outline and stacking envelope have unchanged coordinates.
+Some local filters are now on B.Cu; assembly/rework access remains required.
+Cell sense lines use the lower quiet perimeter, not charger SW area; their
+length and coupling still require the filled-return-path review. The Kelvin
+pair is not yet claimed length matched or finally validated with planes.
+
+DRC: 352 unconnected; 42 dangling ground vias pending planes; 181 silk warnings.
+Zero present clearance, short, edge, hole, drill, annular or courtyard errors.
+Independent domain audit: zero issues. Net/mechanical invariants PASS with the
+explicit SW2 relocation. No filled planes, thermal or fabrication acceptance.
+PCB minimum width is 0.13 mm as authorized; routes use 0.20 mm except the
+0.15 mm BATP escape between bootstrap capacitor lands. Via rules unchanged.
+
+L3 candidate checked against original Bourns PDF: SRP7028A-1R0M, 1 uH,
+11 A Irms / 22 A Isat, 10 mOhm maximum DCR at 25 C. Package 7.3 x 6.6 mm,
+2.8 mm nominal height, matches the existing family footprint. This closes the
+package feasibility question; source/BOM freeze and switching/thermal budget
+are still to be recorded before final F. Datasheet PDF page 1 visually inspected
+using the PDF skill: https://www.bourns.com/data/global/pdfs/SRP7028A.pdf
+
+Reproduction: at A0 run tools/continue_routing.py with KiCad Python. It loads
+the A0 Git board, never the pre-routing baseline; it refuses later HEADs.
+Subsequent stage scripts must use the committed A board, not rerun A.
+Native plots: reports/R3_power_A_*.png. DRC: reports/routing_checkpoint_A_drc.json.
+Proceed directly to B, then C/D/E/F; this is an intermediate checkpoint.
+
 ## Current status: A0 / PARTIAL / NOT FOR FABRICATION
 
 Date: 2026-09-28. Baseline: `1ccbc857938f1d36dbe252c1533ed0361289e0a1`.

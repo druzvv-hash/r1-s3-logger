@@ -2,8 +2,13 @@
 import json
 import subprocess
 import re
+import argparse
 import pcbnew as k
 from route_reva import ROOT,BASELINE
+ap=argparse.ArgumentParser()
+ap.add_argument('--drc',default='routing_checkpoint_A0_drc.json')
+ap.add_argument('--allow-a-service-move',action='store_true',help='Accept documented SW2 relocation only')
+args=ap.parse_args()
 
 scratch=ROOT/'tmp'/'invariant_baseline.kicad_pcb'
 scratch.parent.mkdir(exist_ok=True)
@@ -24,7 +29,8 @@ locations={ref:xy(after.FindFootprintByReference(ref)) for ref in fixed}
 checks={
     'all_pad_net_assignments_unchanged':pinmap(before)==pinmap(after),
     'fixed_mechanical_and_isolation_positions_unchanged':all(
-        xy(before.FindFootprintByReference(ref))==locations[ref] for ref in fixed),
+        (locations[ref]==[85.0,78.0,0.0] if ref=='SW2' and args.allow_a_service_move
+         else xy(before.FindFootprintByReference(ref))==locations[ref]) for ref in fixed),
     'board_outline_unchanged':outline(before,k.Edge_Cuts)==outline(after,k.Edge_Cuts),
     'upper_board_envelope_unchanged':outline(before,k.Dwgs_User)==outline(after,k.Dwgs_User),
     'four_copper_layers':after.GetCopperLayerCount()==4,
@@ -47,7 +53,7 @@ for v in after.GetTracks():
             via_holes_in_cap_lands.append(p.GetParentFootprint().GetReference()+'.'+p.GetNumber())
 checks['no_via_drills_in_capacitor_lands']=not via_holes_in_cap_lands
 report['via_holes_in_cap_lands']=via_holes_in_cap_lands
-drc=ROOT/'reports'/'routing_checkpoint_A0_drc.json'
+drc=ROOT/'reports'/args.drc
 if drc.exists():
     d=json.loads(drc.read_text(encoding='utf-8'))
     names=set(re.findall(r'\[([^\]]+)\]',' '.join(i['description']

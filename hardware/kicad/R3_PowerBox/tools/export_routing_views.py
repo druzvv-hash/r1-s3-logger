@@ -2,10 +2,16 @@
 from pathlib import Path
 import subprocess
 import xml.etree.ElementTree as E
+import argparse,json
+args=argparse.ArgumentParser()
+args.add_argument('--checkpoint',default='A0')
+args.add_argument('--drc',default='routing_checkpoint_A0_drc.json')
+args=args.parse_args()
 ROOT=Path(__file__).resolve().parent.parent
 cli=Path.home()/'AppData/Local/Programs/KiCad/10.0/bin/kicad-cli.exe'
 sharp=Path.home()/'.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp'
 ns='http://www.w3.org/2000/svg'
+unrouted=len(json.loads((ROOT/'reports'/args.drc).read_text(encoding='utf-8'))['unconnected_items'])
 E.register_namespace('',ns)
 views={
     'top':('F.Cu,F.SilkS,Edge.Cuts',(18,0,164,107)),
@@ -14,7 +20,7 @@ views={
     'isolation':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(108,0,33,105)),
 }
 for name,(layers,box) in views.items():
-    out=ROOT/'reports'/f'R3_power_A0_{name}.svg'
+    out=ROOT/'reports'/f'R3_power_{args.checkpoint}_{name}.svg'
     subprocess.run([str(cli),'pcb','export','svg','--layers',layers,
         '--mode-single','--page-size-mode','1','--exclude-drawing-sheet',
         '--output',str(out),str(ROOT/'R3_power.kicad_pcb')],check=True)
@@ -29,12 +35,12 @@ for name,(layers,box) in views.items():
         fill='#c71b68',opacity='.30',stroke='#ff83ae',**{'stroke-width':'.18'}))
     title=E.SubElement(root,f'{{{ns}}}text',dict(x=str(x+1),y='4.5',fill='white',
         **{'font-size':'1.15','font-family':'Arial'}))
-    title.text=f'A0 INCOMPLETE - {name.upper()} - NOT FOR FABRICATION'
+    title.text=f'{args.checkpoint} INCOMPLETE - {name.upper()} - NOT FOR FABRICATION'
     sub=E.SubElement(root,f'{{{ns}}}text',dict(x=str(x+1),y='7.5',fill='#cddbe0',
         **{'font-size':'.85','font-family':'Arial'}))
-    sub.text='No planes yet. 403 unrouted connections. Corridor 121-124 mm: NO COPPER.'
+    sub.text=f'No planes yet. {unrouted} unrouted connections. Corridor 121-124 mm: NO COPPER.'
     if name=='isolation':
-        title.text='A0 / ISOLATION CHECK'
+        title.text=f'{args.checkpoint} / ISOLATION CHECK'
         sub.text='Pads/tracks only; no planes yet.'
     E.ElementTree(root).write(out,encoding='utf-8',xml_declaration=True)
     out.write_text('\n'.join(s.rstrip() for s in out.read_text(encoding='utf-8').splitlines())+'\n',encoding='utf-8')
