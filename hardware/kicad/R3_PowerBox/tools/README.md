@@ -1,7 +1,7 @@
 # Schematic regeneration
 
 `generate_hierarchical.py` is the reproducible electrical source for the root
-sheet and nine KiCad 10 child sheets. It requires Python and `skidl==2.3.0`.
+sheet and ten KiCad 10 child sheets. It requires Python and `skidl==2.3.0`.
 
 Set `KICAD10_SYMBOL_DIR` to KiCad's `share/kicad/symbols` directory, run the
 generator from the `R3_PowerBox` directory, and then open/save the result in

@@ -179,7 +179,7 @@
           (font
             (size 1.27 1.27))
           (hide yes)))
-      (property "Datasheet" "~"
+      (property "Datasheet" "https://www.diodes.com/part/view/DMP3007LSS"
         (at 0 0 0)
         (effects
           (font
@@ -1018,7 +1018,7 @@
       (uuid 081b1364-4df5-53d4-aaf7-e8a3b4787cca))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "J1")
           (unit 1)))))
   (symbol
@@ -1068,7 +1068,7 @@
       (uuid 97d2efa9-31a6-557d-8fea-3bc68ef1f54a))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "F1")
           (unit 1)))))
   (symbol
@@ -1087,19 +1087,19 @@
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Value" "DMP3010LSS-13"
+    (property "Value" "DMP3007LSS-13"
       (at 108 107.54 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Footprint" "Package_SO:SO-8_3.9x4.9mm_P1.27mm"
+    (property "Footprint" "R3_Power:DMP3007LSS_SO8_LOGICAL"
       (at 108 105 180)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
-    (property "Datasheet" "~"
+    (property "Datasheet" "https://www.diodes.com/part/view/DMP3007LSS"
       (at 108 105 180)
       (effects
         (font
@@ -1119,7 +1119,7 @@
       (uuid 397dec03-7d9f-57c9-817f-ccefb14ccdc7))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "Q1")
           (unit 1)))))
   (symbol
@@ -1168,7 +1168,7 @@
       (uuid 1d710602-d048-5466-aa18-e6a6f35f20ad))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "R1")
           (unit 1)))))
   (symbol
@@ -1217,7 +1217,7 @@
       (uuid 452a475e-2991-5a8d-8df3-0938c0c72626))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "D2")
           (unit 1)))))
   (symbol
@@ -1267,7 +1267,7 @@
       (uuid 8fed1432-f526-5621-8212-462632281c97))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "D1")
           (unit 1)))))
   (symbol
@@ -1316,7 +1316,7 @@
       (uuid 84127c69-5467-5f73-b44c-396f1c068869))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "C1")
           (unit 1)))))
   (symbol
@@ -1365,7 +1365,7 @@
       (uuid 17519a88-41d0-5f55-909e-3bf689abca7e))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "C2")
           (unit 1)))))
   (symbol
@@ -1415,7 +1415,7 @@
       (uuid 544fbf71-b0a0-5a6e-9c77-9dc587f7d56f))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "FB1")
           (unit 1)))))
   (symbol
@@ -1464,7 +1464,7 @@
       (uuid 7deb7bbb-f62c-52c8-8750-b4141d5efc24))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "C3")
           (unit 1)))))
   (symbol
@@ -1513,7 +1513,7 @@
       (uuid 175dd012-122e-5001-8c5b-5f282c914595))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "C4")
           (unit 1)))))
   (symbol
@@ -1560,7 +1560,7 @@
       (uuid 7a5e07ad-944c-505e-9b1d-10157ba1a8d2))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "TP1")
           (unit 1)))))
   (symbol
@@ -1607,7 +1607,7 @@
       (uuid 3ad628ff-409c-55a0-b279-17d4439b2d96))
     (instances
       (project "SKiDL-Generated"
-        (path "/a017fe2a-e7ec-4366-869f-7432dcfdc1ce/5da63eac-35bb-5462-8a73-576e5b60132e"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/5da63eac-35bb-5462-8a73-576e5b60132e"
           (reference "TP2")
           (unit 1)))))
 

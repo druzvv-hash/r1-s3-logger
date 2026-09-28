@@ -1,0 +1,973 @@
+(kicad_sch
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid a9caf0ad-ee07-5321-84f1-7681c239e759)
+  (paper "A4")
+  (title_block
+    (title "R3 PowerBox — power tree")
+    (date "2026-09-28")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols
+    (symbol "R3_POWER_GEN:PMOS"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "Q"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "PMOS"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "https://www.diodes.com/part/view/DMP3007LSS"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "PMOS_0_1"
+        (rectangle
+          (start -2.286 2.794)
+          (end 2.286 -2.794)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 1.778)
+            (xy -0.889 -1.778))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy 0.889 1.778)
+            (xy 0.889 -1.778))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "PMOS_1_1"
+        (rectangle
+          (start -2.286 2.794)
+          (end 2.286 -2.794)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -0.889 1.778)
+            (xy -0.889 -1.778))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy 0.889 1.778)
+            (xy 0.889 -1.778))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin input line
+          (at 0 -6.35 90)
+          (length 3.556)
+          (name "G"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 6.35 0 180)
+          (length 4.064)
+          (name "S"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at -6.35 0 0)
+          (length 4.064)
+          (name "D"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "3"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:R"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "R"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "R"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "R_0_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "R_1_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.08 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.08 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:C"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "C"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "C"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "C_0_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "C_1_1"
+        (polyline
+          (pts
+            (xy -2.032 0.762)
+            (xy 2.032 0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -2.032 -0.762)
+            (xy 2.032 -0.762))
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 3.81 270)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 3.048)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
+    (symbol "Switch:SW_SPST"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "SW"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "SW_SPST"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Description" "Single Pole Single Throw (SPST) switch"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "SW_SPST_0_1"
+        (circle
+          (center -2.032 0)
+          (radius 0.508)
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.524 0.254)
+            (xy 1.524 1.778))
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (circle
+          (center 2.032 0)
+          (radius 0.508)
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none))))
+      (symbol "SW_SPST_1_1"
+        (circle
+          (center -2.032 0)
+          (radius 0.508)
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (polyline
+          (pts
+            (xy -1.524 0.254)
+            (xy 1.524 1.778))
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (circle
+          (center 2.032 0)
+          (radius 0.508)
+          (stroke
+            (width 0)
+            (type default))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.08 0 0)
+          (length 2.54)
+          (name "A"
+            (effects
+              (font
+                (size 1.27 1.27))))
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)))))
+        (pin passive line
+          (at 5.08 0 180)
+          (length 2.54)
+          (name "B"
+            (effects
+              (font
+                (size 1.27 1.27))))
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27))))))
+      (embedded_fonts no))
+    (symbol "R3_POWER_GEN:TP"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "TP"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "TP"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "TP_0_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "TP_1_1"
+        (circle
+          (center 0 0)
+          (radius 1.143)
+          (stroke
+            (width 0.254)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at 0 -3.81 90)
+          (length 2.667)
+          (name "1"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no)))
+	(global_label "SYS_LOAD_GATE"
+		(shape bidirectional)
+		(at 135 111.35 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "760e29ed-92e3-5188-9257-3edad4051e80")
+	)
+	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 141.35 105 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "a9594d7e-7765-51fd-909a-8584569ebbab")
+	)
+	(global_label "VSYS_MAIN"
+		(shape bidirectional)
+		(at 128.65 105 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "656c1486-1390-500b-9c80-9227eaab6045")
+	)
+	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 99.92 145 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "55741478-7f1c-538c-bc4f-3b3e2592c164")
+	)
+	(global_label "SYS_LOAD_GATE"
+		(shape bidirectional)
+		(at 110.08 145 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "e21b568d-4b75-5430-9253-c214b0bff28a")
+	)
+	(global_label "VSYS_PROT"
+		(shape bidirectional)
+		(at 145 153.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "c8bb7a09-3d86-530f-bc1e-ec0cc4abcc71")
+	)
+	(global_label "SYS_LOAD_GATE"
+		(shape bidirectional)
+		(at 145 146.19 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "ccb502de-f159-5e3c-aa9d-162cdef8461d")
+	)
+	(global_label "SYS_LOAD_GATE"
+		(shape bidirectional)
+		(at 185 110.08 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "62fa1c9e-2231-58e2-989a-357a9f09ae97")
+	)
+	(global_label "POWER_CTRL"
+		(shape bidirectional)
+		(at 185 99.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "3c2022c3-ae00-533c-a079-ebb8c53188a6")
+	)
+	(global_label "POWER_CTRL"
+		(shape bidirectional)
+		(at 225 110.08 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "4ff4c694-ffe7-554d-a27c-ada43d355ee0")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 225 99.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "49b7c590-088f-5a3e-86db-9c5d87fa7fab")
+	)
+	(global_label "VSYS_MAIN"
+		(shape bidirectional)
+		(at 188.81 150 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "f8bf4b55-f21e-571e-9000-82adfc294049")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 181.19 150 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "cbd8dcc8-f33d-5d24-b336-968bdce3965c")
+	)
+	(global_label "VSYS_MAIN"
+		(shape bidirectional)
+		(at 245 58.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "04c78735-318f-5e93-87b2-b3763d23bcb8")
+	)
+(symbol
+    (lib_id "R3_POWER_GEN:PMOS")
+    (at 135 105 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d43c678f-fab3-5d98-9e6b-53f0596188a9)
+    (property "Reference" "Q4"
+      (at 135 102.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "DMP3007LSS-13 SYSTEM LOAD SWITCH"
+      (at 135 107.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "R3_Power:DMP3007LSS_SO8_LOGICAL"
+      (at 135 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "https://www.diodes.com/part/view/DMP3007LSS"
+      (at 135 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 135 105 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 383d5cb9-0f96-551e-baaf-1f57cadd3090))
+    (pin "2"
+      (uuid 5a19343e-39ff-5788-a059-d1ca053a7a1d))
+    (pin "3"
+      (uuid 53d8597f-171b-5f8a-96d8-66fc02ce1172))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "Q4")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 105 145 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid c49faaf0-4033-5e65-9089-281bc959b824)
+    (property "Reference" "R102"
+      (at 105 142.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100k G-S / DEFAULT OFF"
+      (at 105 147.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 105 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 105 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 105 145 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 9f456372-d07b-57e5-85bc-cf007387a68d))
+    (pin "2"
+      (uuid be7d3039-93d6-5fc9-b22a-463b39f99171))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "R102")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 145 150 0)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 2f9773c4-c9fb-5c9a-982e-b8ce3c5d10f4)
+    (property "Reference" "C107"
+      (at 145 147.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "100nF G-S / SOFT START"
+      (at 145 152.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+      (at 145 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 145 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 145 150 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 0404495a-1327-5dda-a33a-975437635f76))
+    (pin "2"
+      (uuid c7a52b5b-ac3a-59ae-9a3c-75f2a477765e))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "C107")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 185 105 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 389382a2-f4c9-5f89-be9c-f2af5b78dadb)
+    (property "Reference" "R103"
+      (at 185 102.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10k GATE SERIES"
+      (at 185 107.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+      (at 185 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 185 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 185 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid e2ed5f7d-d3a4-5e59-bdee-7857f4112b72))
+    (pin "2"
+      (uuid 82761de6-9795-58d5-8773-d9b211afcf57))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "R103")
+          (unit 1)))))
+  (symbol
+    (lib_id "Switch:SW_SPST")
+    (at 225 105 90)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid abc1bf4a-e18f-56ae-b6cd-688e84fd2782)
+    (property "Reference" "SW1"
+      (at 225 102.46 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "C&K RS282G05A3 / POWER ON"
+      (at 225 107.54 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Button_Switch_SMD:SW_SPST_CK_RS282G05A3"
+      (at 225 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 225 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" "Single Pole Single Throw (SPST) switch"
+      (at 225 105 90)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 80e347be-2dad-530e-8ff9-c5a40e0935c8))
+    (pin "2"
+      (uuid da5114d4-b076-54b1-bb7f-3fcacaf2b256))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "SW1")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:C")
+    (at 185 150 270)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid 1a5483fe-1646-50be-b17c-0e10d02e7e02)
+    (property "Reference" "C108"
+      (at 185 147.46 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "10uF/16V VSYS_MAIN"
+      (at 185 152.54 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+      (at 185 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 185 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 185 150 270)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid fab40713-2c6f-5825-aad0-4dc2d43015a3))
+    (pin "2"
+      (uuid 1a190fe3-6fda-5a6a-97a2-ede5659d78a1))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "C108")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:TP")
+    (at 245 55 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (uuid d3cc13c9-c315-55ff-8b1b-df118607ce96)
+    (property "Reference" "TP40"
+      (at 245 52.46 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "VSYS_MAIN"
+      (at 245 57.54 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
+      (at 245 55 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 245 55 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 245 55 0)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 9096a30e-1eda-555a-970c-a5312c4148b9))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/ed43c75e-de56-4b8e-bb37-9a897af3b629/a9caf0ad-ee07-5321-84f1-7681c239e759"
+          (reference "TP40")
+          (unit 1)))))
+
+
+
+
+
+
+
+
+  )

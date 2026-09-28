@@ -11,7 +11,7 @@ left-to-right order:
 1. DIRTY: USB-C, service input, TPS2121, BQ25798, battery connector,
    BQ28Z610, Q2/Q3 and the Kelvin shunt.
 2. PRIMARY: TPS62132, TPS54302, digital/control connectors and primary test
-   points.
+   points, Q4 system load switch, SW1 and J11 user panel.
 3. ISOLATION: RS3E-0505S/H3 and RS3-0505D/H3.
 4. CLEAN: ADM7150, TPS7A20, isolated filtering, isolated test points and J3.
 
@@ -50,8 +50,12 @@ comes from compact placement and uninterrupted local reference copper.
   magnetics away from the clean-edge LDOs.
 - C40-C44 surround U4 and C50/C51 flank U5. These parts are placement-locked
   for short stability/bypass connections during routing.
+- Q4, R102/R103, C107, C108 and TP40 form a compact primary-side
+  `VSYS_PROT -> VSYS_MAIN` group. SW1 carries gate-control current only.
+  Local CHG/RUN LED footprints are visible for bench work; J11 is kept on the
+  primary/service edge for an external front-panel harness.
 - J3 and J6 are vertical at the clean edge. J1/J7/J8 remain on the dirty edge,
-  J2/J4 on the primary edge, and J10 on the primary/service edge. Courtyards
+  J2/J4 on the primary edge, and J10/J11 on the primary/service edge. Courtyards
   do not overlap; the board-edge side of each right-angle connector is left
   free for its mating housing, latch and cable bend.
 
@@ -76,6 +80,23 @@ No thermal copper or via crosses the isolation corridor.
 ## Connector mechanical gate
 
 The footprints/courtyards are collision-free, but enclosure CAD and the exact
-mating housings are still required before routing release. J3 and J10 are the
+mating housings are still required before routing release. J3, J10 and J11 are the
 highest-risk interfaces because their latch access and cable bend direction
 must be checked against the future enclosure.
+
+## USER POWER AND INDICATION
+
+- Local SW1 is a maintained low-current ON switch; J11.3 provides the same
+  `POWER_CTRL` node for a panel-mounted contact to DGND.
+- Local SW2 is momentary QON service/wake; J11.4 provides remote access.
+- D5 CHG sits in the dirty/charger section and is fed from REGN, so it remains
+  active when the main system is off. D7/R80 sit beside it and separate
+  `BQ_STAT_RAW` from 3.3 V `CHARGE_STATUS`. D6 RUN is in the primary section
+  and is fed from +3V3_D.
+- J11.7/J11.8 expose the primary PM I2C bus for a future SOC display based on
+  BQ28Z610 data. J11.9 is `BQ_STAT_RAW`; panel LEDs use independent series
+  resistors. J11 contains no isolated rail or GND_ISO. J11.3 POWER_CTRL is a
+  latching contact-to-DGND input, while J11.4 QON_SERVICE is momentary-to-DGND.
+- J7 was shifted inward enough to provide at least 0.5 mm copper-to-edge
+  clearance without changing the DIRTY -> PRIMARY -> ISOLATION -> CLEAN
+  ordering.

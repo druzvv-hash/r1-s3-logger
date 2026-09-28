@@ -21,6 +21,7 @@ USB-C 5 V fallback + protected J1 service input
   -> BQ25798 BAT
 
 BQ25798 SYS -> VSYS_RAW -> F3 MF-MSMF250/16X-2 -> VSYS_PROT
+  -> Q4 DMP3007LSS / SW1 user control -> VSYS_MAIN
   +-> TPS62132 -> +3V3_D
   +-> TPS54302 -> +5V_PREISO
        +-> separate ADS filter -> RS3E -> clean ADS rails

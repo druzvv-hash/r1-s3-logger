@@ -66,14 +66,21 @@ LAYOUTS = {
         "C86": (545, 215), "C87": (455, 260), "C88": (520, 260),
         "C89": (320, 260), "R74": (370, 260), "R75": (420, 260),
         "R76": (250, 305), "R77": (310, 305), "R78": (370, 305),
-        "R79": (430, 305), "R80": (250, 350), "R81": (320, 350),
-        "R82": (390, 350), "F3": (520, 320),
+        "R79": (430, 305), "R80": (250, 350), "D7": (285, 350),
+        "R81": (335, 350), "R82": (395, 350), "F3": (520, 320),
+        "SW2": (545, 350), "R104": (455, 350), "D5": (500, 350),
         "#FLG0501": (380, 25), "#FLG0502": (450, 25),
         "#FLG0503": (520, 25), "#FLG0504": (205, 25),
         "TP20": (30, 25), "TP21": (75, 25), "TP22": (120, 25),
         "TP23": (165, 25), "TP31": (30, 285), "TP32": (70, 285),
         "TP33": (110, 285), "TP34": (150, 285), "TP35": (190, 285),
         "TP36": (30, 330), "TP37": (75, 330), "TP38": (120, 330),
+        "TP39": (165, 330),
+    },
+    "R3_power_system_power_control1.kicad_sch": {
+        "Q4": (135, 105), "R102": (105, 145), "C107": (145, 150),
+        "R103": (185, 105), "SW1": (225, 105), "C108": (185, 150),
+        "TP40": (245, 55),
     },
     "R3_power_digital_buck1.kicad_sch": {
         "#FLG0101": (62, 55), "#FLG0102": (62, 155),
@@ -119,25 +126,28 @@ LAYOUTS = {
     "R3_power_outputs1.kicad_sch": {
         "J2": (52, 72), "J4": (52, 145), "TP15": (105, 145),
         "J3": (145, 110), "J5": (245, 65), "J6": (245, 145),
-        "J10": (205, 110),
+        "J10": (205, 110), "J11": (320, 110),
+        "R105": (285, 175), "D6": (330, 175),
     },
 }
 
 PAPER_SIZES = {
     "R3_power_battery_management1.kicad_sch": "A3",
     "R3_power_charger_powerpath1.kicad_sch": "A2",
+    "R3_power_outputs1.kicad_sch": "A3",
 }
 
 ROOT_SHEETS = {
     "R3_power_input_protection1.kicad_sch": (25, 35),
     "R3_power_battery_management1.kicad_sch": (110, 35),
     "R3_power_charger_powerpath1.kicad_sch": (195, 35),
-    "R3_power_digital_buck1.kicad_sch": (25, 85),
-    "R3_power_preiso_buck1.kicad_sch": (110, 85),
-    "R3_power_isolation1.kicad_sch": (195, 85),
-    "R3_power_isolated_ldos1.kicad_sch": (25, 135),
-    "R3_power_ina_isolation1.kicad_sch": (110, 135),
-    "R3_power_outputs1.kicad_sch": (195, 135),
+    "R3_power_system_power_control1.kicad_sch": (25, 85),
+    "R3_power_digital_buck1.kicad_sch": (110, 85),
+    "R3_power_preiso_buck1.kicad_sch": (195, 85),
+    "R3_power_isolation1.kicad_sch": (25, 135),
+    "R3_power_isolated_ldos1.kicad_sch": (110, 135),
+    "R3_power_ina_isolation1.kicad_sch": (195, 135),
+    "R3_power_outputs1.kicad_sch": (110, 185),
 }
 
 NUMBER = r"-?\d+(?:\.\d+)?"

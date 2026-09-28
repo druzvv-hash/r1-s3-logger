@@ -1,7 +1,7 @@
 # R3 PowerBox 2S battery and power architecture
 
 Date: 2026-09-28
-Status: final pre-routing placement pass complete; electrical validation gates
+Status: final UI / power-control / DRC pass complete; electrical validation gates
 remain before a routing release.
 
 ## Fixed system decision
@@ -25,7 +25,7 @@ The official datasheet specifies 3-17 V input, 3 A output and 100% duty-cycle op
 
 The official datasheet specifies 4.5-28 V input, 3 A, 400 kHz operation and internal VIN UVLO of 4.1 V typical. At 6.0 V input, an ideal 5 V output requires 83.3% duty cycle. This is within a normal buck operating region, but TI's published reference design is characterized from 8 V and the datasheet does not give a guaranteed dropout curve at 5 V/3 A. Direct 2S operation is retained, with a required bench test at 6.0 V under load and transient conditions.
 
-The old 511 kOhm / 105 kOhm external EN divider was copied from the 8-28 V reference design and would block part of the required 2S range. It has been removed; EN follows `VSYS_PROT`. Battery undervoltage protection is owned by the BMS and TPS54302 retains internal UVLO.
+The old 511 kOhm / 105 kOhm external EN divider was copied from the 8-28 V reference design and would block part of the required 2S range. It has been removed; EN follows the switched `VSYS_MAIN` rail. Battery undervoltage protection is owned by the BMS and TPS54302 retains internal UVLO.
 
 ## Implemented architecture
 
@@ -43,14 +43,55 @@ J1 service/bench 6-12 V -> existing protection ---+
 CHARGER_IN -> BQ25798 buck-boost NVDC charger/power-path
 PACK_POS   -> BQ25798 BAT
 BQ25798 SYS -> VSYS_RAW -> F3 system protection -> VSYS_PROT
+             -> Q4 DMP3007LSS user load switch -> VSYS_MAIN
 
-VSYS_PROT -> TPS62132 -> +3V3_D
-VSYS_PROT -> TPS54302 -> +5V_PREISO
+VSYS_MAIN -> TPS62132 -> +3V3_D
+VSYS_MAIN -> TPS54302 -> +5V_PREISO
   -> independent +5V_PREISO_ADS filter -> RS3E -> ADS isolated rails
   -> independent +5V_PREISO_INA filter -> RS3 dual -> INA851 +/-5 V
 ```
 
 `DGND` and `GND_ISO` remain galvanically separate. `BAT_NEG_RAW` is in the primary domain but is not the same schematic net as `DGND` because the Kelvin current shunt lies between them.
+
+## USER POWER AND INDICATION
+
+Normal user power control is deliberately downstream of the charger. Q4
+`DMP3007LSS-13` is a 30 V P-channel SO-8 high-side switch between
+`VSYS_PROT` and `VSYS_MAIN`. R102 (100 kOhm) returns its gate to the source, so
+the default/unplugged state is OFF. Local maintained SW1 or a remote switch on
+J11 closes `POWER_CTRL` to DGND through R103 (10 kOhm); C107 (100 nF) controls
+the gate edge. The switch carries about 55-76 uA over 6.0-8.4 V, not load
+current.
+
+At a conservative hot RDS(on) of 15 mOhm, Q4 drop/loss is:
+
+| Main current | Voltage drop | Q4 dissipation |
+|---:|---:|---:|
+| 1.0 A | 15 mV | 15 mW |
+| 2.0 A | 30 mV | 60 mW |
+| 3.3 A | 49.5 mV | 163 mW |
+
+With SW1 OFF, BQ28Z610, STUSB4500 and BQ25798 remain operational and charging
+continues; only `VSYS_MAIN` and the downstream R3 electronics are removed.
+QON is separately connected to momentary SW2/J11.4 for ship exit, wake and the
+documented long-hold reset. It is not the normal user power switch, and no
+external ship FET is populated in Rev.A.
+
+The red CHG indicator is powered from BQ25798 REGN through 2.2 kOhm and sinks
+into raw open-drain `BQ_STAT_RAW`, so it works while `VSYS_MAIN` is off.
+`CHARGE_STATUS` has a separate 10 kOhm pull-up to +3V3_D and reaches raw STAT
+only through D7 `BAT54WS-7-F` (anode at logic, cathode at raw STAT). This
+prevents the REGN/LED circuit from back-powering the main 3.3 V rail. The green
+RUN indicator is powered from +3V3_D and therefore shows actual main-rail
+operation. Battery level is software-derived from BQ28Z610 SOC/capacity over
+PM I2C rather than an analog voltage LED bar.
+
+J11 USER PANEL is primary-only: 1 +3V3_D, 2 DGND, 3 POWER_CTRL,
+4 QON_SERVICE, 5 CHARGE_STATUS, 6 PG_3V3_D, 7 PM_I2C_SCL, 8 PM_I2C_SDA,
+9 BQ_STAT_RAW and 10 SPARE/NC. It never carries GND_ISO or shared onboard LED
+anode nets. Panel indicators require their own series resistors. POWER_CTRL is
+for a latching contact to DGND only; QON_SERVICE is for a momentary contact to
+DGND only.
 
 ## Charger and power-path comparison
 
@@ -188,6 +229,10 @@ J10 exports:
 9. `PD_ALERT_N`
 10. `PD_CONTRACT_12V_N`
 
+J11 exports the primary user-panel interface documented above. Pin 9 is the
+raw open-drain charger status, not a shared LED-anode feed, and J11 contains no
+GND_ISO.
+
 BQ28Z610 has no dedicated general fault interrupt pin. Critical faults autonomously control CHG/DSG FETs; detailed status is read over I2C. If the MCU requires a separate hardware BMS fault line, an additional supervisor or FET-state detector is still open.
 
 ## Power budget assumptions
@@ -199,6 +244,7 @@ The expected table is an engineering planning case, not a measured result. It as
 | Rail | Voltage | Worst current | Output power | Assumed efficiency | Upstream input/current | Thermal estimate |
 |---|---:|---:|---:|---:|---:|---:|
 | `VSYS_PROT` | 6.0-8.4 V | 3.30 A at 6 V equivalent | 19.8 W input demand | - | battery: 3.30 A at 6 V | wiring/FET/shunt case, not normal load |
+| `VSYS_MAIN` | 6.0-8.4 V minus Q4 drop | 3.30 A at 6 V equivalent | 19.8 W demand | Q4 >99% | from VSYS_PROT | about 0.163 W at 3.3 A using 15 mOhm hot estimate |
 | `+3V3_D` | 3.3 V | 3.00 A | 9.90 W | 90% planning | 11.0 W from VSYS | about 1.1 W converter loss |
 | `+5V_PREISO` | 5.0 V | 1.59 A | 7.95 W | 90% planning | 8.83 W from VSYS | about 0.88 W buck loss |
 | `+5V_PREISO_ADS` | 5.0 V | 0.80 A nominal / 0.889 A at U3 4.5 V limit | 4.0 W input | branch loss negligible | U3 limited to 3 W output | bead rated 2 A |
@@ -216,6 +262,7 @@ The expected table is an engineering planning case, not a measured result. It as
 | Rail | Expected current | Peak current | Expected power | Efficiency/input estimate | Approximate local loss |
 |---|---:|---:|---:|---:|---:|
 | `VSYS_PROT` | 0.59 A at 7.4 V | 1.08 A at 7.4 V | 4.4 W expected / 8.0 W peak | battery path | shunt 3.5 mW expected |
+| `VSYS_MAIN` | 0.59 A at 7.4 V | 1.08 A at 7.4 V | 4.4 W expected / 8.0 W peak | Q4 >99% | about 5.2 mW expected / 17.5 mW peak using 15 mOhm |
 | `+3V3_D` | 0.85 A | 1.50 A | 2.81 W | 90%; about 3.12 W input | about 0.31 W expected |
 | `+5V_PREISO` | 0.21 A | 0.44 A | 1.05 W | 90%; about 1.17 W input | about 0.12 W expected |
 | `+5V_PREISO_ADS` | 0.16 A | 0.35 A | 0.80 W | feeds U3 | bead loss negligible at expected load |
@@ -304,6 +351,8 @@ New dirty-side test points:
 - TP36 `PD_ALERT_N`
 - TP37 `PM_I2C_SCL`
 - TP38 `PM_I2C_SDA`
+- TP39 `QON_SERVICE`
+- TP40 `VSYS_MAIN`
 
 Existing primary and isolated test points are retained. Dirty and clean points belong on opposite physical areas.
 
@@ -316,7 +365,7 @@ DIRTY EDGE                     MIDDLE                    CLEAN EDGE
 +----------------------+----------------+-----------+----------------------+
 | USB-C / J1 / battery | TPS62132       | RS3E/RS3  | ADM7150 / TPS7A20    |
 | TPS2121 / BQ25798    | TPS54302       | isolation | clean filters        |
-| BQ28Z610 / FET/shunt | digital output | keep-out  | ADS/INA connectors   |
+| BQ28Z610 / FET/shunt | Q4 / J10 / J11 | keep-out  | ADS/INA connectors   |
 +----------------------+----------------+-----------+----------------------+
 ```
 
@@ -354,7 +403,7 @@ LDOs. Board size remains 160 x 80 mm.
 8. Measure expected/peak loads and hot ambient, then validate the fixed
    F1/F2/F3 choices, connector contacts and copper widths.
 9. Decide whether the reserved BQ2945xx secondary-OV footprint is populated; its active network is intentionally DNP/unconnected in Rev.A.
-10. Check J3/J10 mating-housing, latch, enclosure and cable-bend clearances in
+10. Check J3/J10/J11 mating-housing, latch, enclosure and cable-bend clearances in
     mechanical CAD.
 
 PCB routing and production outputs remain blocked until these decisions are closed.

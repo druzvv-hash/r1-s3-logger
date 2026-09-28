@@ -1,364 +1,275 @@
 (kicad_sch
-	(version 20260306)
-	(generator "eeschema")
-	(generator_version "10.0")
-	(uuid "a017fe2a-e7ec-4366-869f-7432dcfdc1ce")
-	(paper "A4")
-	(title_block
-		(title "R3 PowerBox — power tree")
-		(date "2026-09-28")
-		(comment 1 "Generated with SKiDL")
-	)
-	(lib_symbols)
-	(sheet
-		(at 110 85)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "018e28c5-ebaa-5a30-99ac-84554c21e989")
-		(property "Sheetname" "preiso_buck1"
-			(at 110 84.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_preiso_buck1.kicad_sch"
-			(at 110 103.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 25 85)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "123e2726-7283-5ed5-9d85-9da84b9c26f6")
-		(property "Sheetname" "digital_buck1"
-			(at 25 84.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_digital_buck1.kicad_sch"
-			(at 25 103.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 195 135)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "1be93b63-c24c-53ff-8b75-634009bbe10e")
-		(property "Sheetname" "outputs1"
-			(at 195 134.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_outputs1.kicad_sch"
-			(at 195 153.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 25 35)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "5da63eac-35bb-5462-8a73-576e5b60132e")
-		(property "Sheetname" "input_protection1"
-			(at 25 34.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_input_protection1.kicad_sch"
-			(at 25 53.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 110 135)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "a994e311-f0a8-5212-a57f-2a3da949fc7d")
-		(property "Sheetname" "ina_isolation1"
-			(at 110 134.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_ina_isolation1.kicad_sch"
-			(at 110 153.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 195 35)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "d2024c8a-62c9-59e8-9336-9b114d8290da")
-		(property "Sheetname" "charger_powerpath1"
-			(at 195 34.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_charger_powerpath1.kicad_sch"
-			(at 195 53.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 25 135)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "ece4f22d-ca0b-50a1-a432-b07e681537c7")
-		(property "Sheetname" "isolated_ldos1"
-			(at 25 134.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_isolated_ldos1.kicad_sch"
-			(at 25 153.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 110 35)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "f935632f-03bb-578c-85ab-c64713c9615a")
-		(property "Sheetname" "battery_management1"
-			(at 110 34.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_battery_management1.kicad_sch"
-			(at 110 53.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-	(sheet
-		(at 195 85)
-		(size 50 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "fb3e5c39-1130-5ca4-8b45-b49e33819ec6")
-		(property "Sheetname" "isolation1"
-			(at 195 84.288 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "R3_power_isolation1.kicad_sch"
-			(at 195 103.365 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-	)
-)
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid ed43c75e-de56-4b8e-bb37-9a897af3b629)
+  (paper "A3")
+  (title_block
+    (title "R3 PowerBox — power tree")
+    (date "2026-09-28")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols)
+  (sheet
+    (at 25 35)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 5da63eac-35bb-5462-8a73-576e5b60132e)
+    (property "Sheetname" "input_protection1"
+      (at 25 34.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_input_protection1.kicad_sch"
+      (at 25 53.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 110 35)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid f935632f-03bb-578c-85ab-c64713c9615a)
+    (property "Sheetname" "battery_management1"
+      (at 110 34.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_battery_management1.kicad_sch"
+      (at 110 53.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 195 35)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid d2024c8a-62c9-59e8-9336-9b114d8290da)
+    (property "Sheetname" "charger_powerpath1"
+      (at 195 34.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_charger_powerpath1.kicad_sch"
+      (at 195 53.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 25 85)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid a9caf0ad-ee07-5321-84f1-7681c239e759)
+    (property "Sheetname" "system_power_control1"
+      (at 25 84.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_system_power_control1.kicad_sch"
+      (at 25 103.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 110 85)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 690ee384-44a1-5a13-b84c-258c10c7482c)
+    (property "Sheetname" "digital_buck1"
+      (at 110 84.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_digital_buck1.kicad_sch"
+      (at 110 103.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 195 85)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 10a79bc1-5fff-5d5a-9873-ba1a5dc253c9)
+    (property "Sheetname" "preiso_buck1"
+      (at 195 84.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_preiso_buck1.kicad_sch"
+      (at 195 103.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 25 135)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid f18c9f55-94d9-5c3a-8b95-7d08857f12fd)
+    (property "Sheetname" "isolation1"
+      (at 25 134.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_isolation1.kicad_sch"
+      (at 25 153.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 110 135)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 851a1ce1-50e3-53b2-8137-9c4e81a721ef)
+    (property "Sheetname" "isolated_ldos1"
+      (at 110 134.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_isolated_ldos1.kicad_sch"
+      (at 110 153.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 195 135)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid d91cf1f0-873d-54fc-820a-13085f35721e)
+    (property "Sheetname" "ina_isolation1"
+      (at 195 134.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_ina_isolation1.kicad_sch"
+      (at 195 153.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 110 185)
+    (size 50 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 8a113b12-9d71-5245-be88-2275cf0b9c69)
+    (property "Sheetname" "outputs1"
+      (at 110 184.288 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "R3_power_outputs1.kicad_sch"
+      (at 110 203.365 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top)))))

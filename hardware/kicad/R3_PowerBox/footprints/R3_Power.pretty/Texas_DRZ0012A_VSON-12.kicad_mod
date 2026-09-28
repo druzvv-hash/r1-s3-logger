@@ -34,7 +34,7 @@
   (pad "10" smd roundrect (at 1.35 -0.2) (size 0.6 0.2) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25))
   (pad "11" smd roundrect (at 1.35 -0.6) (size 0.6 0.2) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25))
   (pad "12" smd roundrect (at 1.35 -1.0) (size 0.6 0.2) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25))
-  (pad "13" smd rect (at 0 0) (size 1.95 2.9) (layers "F.Cu" "F.Mask"))
+  (pad "13" smd rect (at 0 0) (size 1.80 2.9) (layers "F.Cu" "F.Mask"))
   (pad "13" smd rect (at -0.49 -0.73) (size 0.78 1.05) (layers "F.Paste"))
   (pad "13" smd rect (at 0.49 -0.73) (size 0.78 1.05) (layers "F.Paste"))
   (pad "13" smd rect (at -0.49 0.73) (size 0.78 1.05) (layers "F.Paste"))

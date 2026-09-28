@@ -1,0 +1,17 @@
+(version 1)
+
+# General project clearance is 0.13 mm. This is deliberately above the
+# selected 4-layer manufacturer's 0.09 mm standard capability while accepting
+# the 0.13-0.15 mm intrinsic spacing of the verified QFN/VSON land patterns.
+# Routing should still use 0.20 mm wherever density does not require less.
+(rule "R3 project copper clearance"
+  (constraint clearance (min 0.13mm)))
+
+# Standard fabrication geometry selected for all routing-added vias.
+(rule "Standard plated drill"
+  (condition "A.isPlated() && A.Type == 'Via'")
+  (constraint hole_size (min 0.30mm)))
+
+(rule "Standard via annular ring"
+  (condition "A.Type == 'Via'")
+  (constraint annular_width (min 0.20mm)))

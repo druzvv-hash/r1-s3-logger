@@ -85,7 +85,11 @@ def input_protection(service_raw, service_prot, dgnd):
     f1.datasheet = "https://www.bourns.com/docs/product-datasheets/mf-r.pdf"
     service_raw += f1[1]
     vin_fused += f1[2]
-    q1 = comp("PMOS", "Q1", "DMP3010LSS-13", "Package_SO:SO-8_3.9x4.9mm_P1.27mm")
+    # DMP3010LSS is not a valid P-channel choice (the similarly named
+    # DMN3010LSS is N-channel). Use the verified 30 V P-channel DMP3007LSS
+    # and the project footprint that maps its physical 1-3=S, 4=G, 5-8=D
+    # pins onto the three-pin logical PMOS symbol.
+    q1 = comp("PMOS", "Q1", "DMP3007LSS-13", "R3_Power:DMP3007LSS_SO8_LOGICAL", "https://www.diodes.com/part/view/DMP3007LSS")
     vin_fused += q1["D"]
     vin_rev += q1["S"]
     qgate += q1["G"]
@@ -203,7 +207,7 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
 @subcircuit
 def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
                       charge_stat, charger_fault, input_status, pd_alert,
-                      pd_contract,
+                      pd_contract, qon_service, bq_stat_raw, charge_led_a,
                       vsys_raw, vsys_prot, v3d, dgnd):
     """Autonomous USB-C PD sink, protected input mux and 2S NVDC charger."""
     usb_raw, usb_prot, charger_in = Net("USB_VBUS_RAW"), Net("USB_VBUS_PROT"), Net("CHARGER_IN")
@@ -262,7 +266,10 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     cc2 += d4[2]
     dgnd += d4[3]
 
-    u7 = comp("TPS2121", "U7", "TPS2121RUXR", "Package_DFN_QFN:Texas_VQFN-HR-12_2x2.5mm_P0.5mm_ThermalVias", "https://www.ti.com/lit/ds/symlink/tps2121.pdf")
+    # Use the manufacturer's non-via land pattern at placement stage. The
+    # KiCad *ThermalVias variant hard-codes 0.20 mm drills, below the selected
+    # standard 4-layer process. Add 0.30/0.70 mm thermal vias during routing.
+    u7 = comp("TPS2121", "U7", "TPS2121RUXR", "Package_DFN_QFN:Texas_VQFN-HR-12_2x2.5mm_P0.5mm", "https://www.ti.com/lit/ds/symlink/tps2121.pdf")
     usb_prot += u7["IN1"]
     service_prot += u7["IN2"]
     charger_in += u7["OUT"]
@@ -275,10 +282,11 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     u8 = comp("BQ25798", "U8", "BQ25798RQM", "Package_DFN_QFN:Texas_RQM0029A_VQFN-29_4x4mm_P0.4mm", "https://www.ti.com/lit/ds/symlink/bq25798.pdf")
     charger_in += u8["VBUS", "VAC1", "VAC2"]
     dgnd += u8["GND", "ACDRV1", "ACDRV2", "CE"]
-    u8.circuit.NC += u8["D+", "D-", "QON"]
+    u8.circuit.NC += u8["D+", "D-"]
+    qon_service += u8["QON"]
     pm_scl += u8["SCL"]
     pm_sda += u8["SDA"]
-    charge_stat += u8["STAT"]
+    bq_stat_raw += u8["STAT"]
     charger_fault += u8["INT"]
     pack_pos += u8["BAT"]
     r("R74", "100R BATP", pack_pos, u8["BATP"])
@@ -321,9 +329,34 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     ntc_chg += u8["TS"]
     r("R78", "5.24k TS TOP", regn, ntc_chg)
     r("R79", "30.31k TS BOT", ntc_chg, dgnd)
-    r("R80", "10k STAT PU", charge_stat, v3d)
+    # Keep the raw BQ25798 STAT drain separate from the MCU/panel logic net.
+    # D7 only permits CHARGE_STATUS to pull toward the raw open-drain node;
+    # REGN and the hardware LED cannot source current back into +3V3_D.
+    r("R80", "10k CHARGE_STATUS PU", charge_stat, v3d)
+    d7 = stdcomp("Device", "D_Schottky", "D7", "BAT54WS-7-F STAT ISOLATION",
+                 "Diode_SMD:D_SOD-323")
+    charge_stat += d7["A"]
+    bq_stat_raw += d7["K"]
     r("R81", "10k INT PU", charger_fault, v3d)
     r("R82", "10k MUX ST PU", input_status, v3d)
+
+    # QON is a service/wake input, not the normal user power switch. BQ25798
+    # Rev.C provides an internal ~200k pull-up; a momentary contact to DGND
+    # exits ship mode (1 s default, or 15 ms with WKUP_DLY=1). A ~10 s hold
+    # requests the documented system-power reset behavior.
+    sw2 = stdcomp("Switch", "SW_Push", "SW2", "QON SERVICE / TL3305AF160QG",
+                  "Button_Switch_SMD:SW_SPST_TL3305A")
+    qon_service += sw2[1]
+    dgnd += sw2[2]
+
+    # STAT is open-drain and remains usable while the switched main rails are
+    # off. REGN -> resistor -> LED -> BQ_STAT_RAW follows TI's hardware
+    # indication: LOW=charging, HIGH=complete/disabled, 1 Hz blink=fault.
+    r("R104", "2.2k CHG LED / ~1.3mA", regn, charge_led_a)
+    d5 = stdcomp("Device", "LED", "D5", "LTST-C190KRKT RED / CHG",
+                 "LED_SMD:LED_0603_1608Metric")
+    charge_led_a += d5["A"]
+    bq_stat_raw += d5["K"]
 
     f3 = comp("FUSE", "F3", "MF-MSMF250/16X-2 2.5A/16V PPTC", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder", "https://www.bourns.com/docs/product-datasheets/mf-msmf.pdf")
     vsys_raw += f3[1]
@@ -344,22 +377,51 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     tp("TP36", pd_alert)
     tp("TP37", pm_scl)
     tp("TP38", pm_sda)
+    tp("TP39", qon_service)
 
 
 @subcircuit
-def digital_buck(vsys_prot, v3d, pg3d, dgnd):
-    power_flag(vsys_prot, "#FLG0101")
+def system_power_control(vsys_prot, vsys_main, power_ctrl, dgnd):
+    """Low-loss user load switch; charging/BMS/PD stay upstream and alive."""
+    sys_gate = Net("SYS_LOAD_GATE")
+    # 30 V P-channel SO-8, max 10 mOhm at VGS=-4.5 V. A conservative hot
+    # design value of 15 mOhm gives 15/30/49.5 mV drop and 15/60/163 mW at
+    # 1/2/3.3 A. Source is upstream so the body diode blocks VSYS_PROT ->
+    # VSYS_MAIN while off.
+    q4 = comp("PMOS", "Q4", "DMP3007LSS-13 SYSTEM LOAD SWITCH",
+              "R3_Power:DMP3007LSS_SO8_LOGICAL",
+              "https://www.diodes.com/part/view/DMP3007LSS")
+    vsys_prot += q4["S"]
+    vsys_main += q4["D"]
+    sys_gate += q4["G"]
+    r("R102", "100k G-S / DEFAULT OFF", vsys_prot, sys_gate)
+    c("C107", "100nF G-S / SOFT START", vsys_prot, sys_gate)
+    r("R103", "10k GATE SERIES", sys_gate, power_ctrl)
+    sw1 = stdcomp("Switch", "SW_SPST", "SW1", "C&K RS282G05A3 / POWER ON",
+                  "Button_Switch_SMD:SW_SPST_CK_RS282G05A3")
+    power_ctrl += sw1[1]
+    dgnd += sw1[2]
+    c("C108", "10uF/16V VSYS_MAIN", vsys_main, dgnd,
+      "Capacitor_SMD:C_1206_3216Metric")
+    tp("TP40", vsys_main)
+
+
+@subcircuit
+def digital_buck(vsys_main, v3d, pg3d, dgnd):
+    power_flag(vsys_main, "#FLG0101")
     power_flag(dgnd, "#FLG0102")
-    u = comp("TPS62132", "U1", "TPS62132RGTR", "Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.45x1.45mm_ThermalVias", "https://www.ti.com/lit/ds/symlink/tps62132.pdf")
-    vsys_prot += u["AVIN", "PVIN", "EN"]
+    # Thermal vias are deliberately deferred to routing and must use the
+    # approved 0.30 mm drill / 0.70 mm pad geometry.
+    u = comp("TPS62132", "U1", "TPS62132RGTR", "Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.45x1.45mm", "https://www.ti.com/lit/ds/symlink/tps62132.pdf")
+    vsys_main += u["AVIN", "PVIN", "EN"]
     sw = Net("SW_3V3")
     sw += u["SW"]
     l = comp("L", "L1", "2.2uH XFL4020-222ME", "R3_Power:L_Coilcraft_XFL4020")
     sw += l[1]
     v3d += l[2], u["VOS"]
     dgnd += u["AGND", "PGND", "EP", "FSW", "DEF", "FB"]
-    c("C10", "10uF/25V", vsys_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
-    c("C11", "100nF/25V", vsys_prot, dgnd)
+    c("C10", "10uF/25V", vsys_main, dgnd, "Capacitor_SMD:C_1206_3216Metric")
+    c("C11", "100nF/25V", vsys_main, dgnd)
     c("C12", "22uF/10V", v3d, dgnd, "Capacitor_SMD:C_0805_2012Metric")
     c("C13", "22uF/10V", v3d, dgnd, "Capacitor_SMD:C_0805_2012Metric")
     c("C14", "3.3nF", u["SS/TR"], dgnd)
@@ -370,17 +432,17 @@ def digital_buck(vsys_prot, v3d, pg3d, dgnd):
 
 
 @subcircuit
-def preiso_buck(vsys_prot, v5pre, v5pre_ads, v5pre_ina, dgnd):
+def preiso_buck(vsys_main, v5pre, v5pre_ads, v5pre_ina, dgnd):
     u = comp("TPS54302", "U2", "TPS54302DDCR", "Package_TO_SOT_SMD:SOT-23-6", "https://www.ti.com/lit/ds/symlink/tps54302.pdf")
-    vsys_prot += u["VIN", "EN"]
+    vsys_main += u["VIN", "EN"]
     dgnd += u["GND"]
     sw, fb = Net("SW_5V"), Net("FB_5V")
     sw += u["SW"]
     l = comp("L", "L2", "10uH SRP5030TA-100M", "Inductor_SMD:L_Bourns_SRP5030T")
     sw += l[1]
     v5pre += l[2]
-    c("C20", "10uF/25V", vsys_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
-    c("C21", "100nF/25V", vsys_prot, dgnd)
+    c("C20", "10uF/25V", vsys_main, dgnd, "Capacitor_SMD:C_1206_3216Metric")
+    c("C21", "100nF/25V", vsys_main, dgnd)
     c("C22", "100nF BOOT", u["BOOT"], sw)
     c("C23", "22uF/10V", v5pre, dgnd, "Capacitor_SMD:C_0805_2012Metric")
     c("C24", "22uF/10V", v5pre, dgnd, "Capacitor_SMD:C_0805_2012Metric")
@@ -501,7 +563,8 @@ def ina_isolation(v5pre_ina, v5ina, v5ina_n, dgnd, gndiso):
 @subcircuit
 def outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
             ctrl_rs3e_pri, pm_scl, pm_sda, charge_stat, charger_fault,
-            input_status, pd_alert, pd_contract, dgnd, gndiso):
+            input_status, pd_alert, pd_contract, power_ctrl, qon_service,
+            bq_stat_raw, dgnd, gndiso):
     j2 = comp("CONN6", "J2", "DIGITAL POWER OUT", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0600_1x06_P3.00mm_Horizontal")
     v3d += j2[1, 2]
     dgnd += j2[3, 4]
@@ -542,17 +605,41 @@ def outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
     input_status += j10[8]
     pd_alert += j10[9]
     pd_contract += j10[10]
+    j11 = comp("CONN10", "J11", "USER PANEL / PRIMARY ONLY",
+               "Connector_Molex:Molex_Micro-Fit_3.0_43650-1000_1x10_P3.00mm_Horizontal")
+    v3d += j11[1]
+    dgnd += j11[2]
+    power_ctrl += j11[3]
+    qon_service += j11[4]
+    charge_stat += j11[5]
+    pg3d += j11[6]
+    pm_scl += j11[7]
+    pm_sda += j11[8]
+    bq_stat_raw += j11[9]
+    j11.circuit.NC += j11[10]
+
+    # RUN indicates the actual switched +3V3_D rail; it is necessarily dark
+    # when SW1 has disconnected VSYS_MAIN.
+    run_led_a = Net("RUN_LED_A")
+    r("R105", "2.2k RUN LED / ~0.7mA", v3d, run_led_a)
+    d6 = stdcomp("Device", "LED", "D6", "LTST-C190KGKT GREEN / RUN",
+                 "LED_SMD:LED_0603_1608Metric")
+    run_led_a += d6["A"]
+    dgnd += d6["K"]
     tp("TP15", dgnd)
 
 
 service_raw, service_prot, dgnd = Net("SERVICE_IN_RAW"), Net("SERVICE_IN_PROT"), Net("DGND")
 bat_pos, cell_mid, bat_neg = Net("BAT_POS_RAW"), Net("CELL_MID"), Net("BAT_NEG_RAW")
 pack_pos, ntc_bms, ntc_chg = Net("PACK_POS"), Net("NTC_BMS"), Net("NTC_CHG")
-vsys_raw, vsys_prot = Net("VSYS_RAW"), Net("VSYS_PROT")
+vsys_raw, vsys_prot, vsys_main = Net("VSYS_RAW"), Net("VSYS_PROT"), Net("VSYS_MAIN")
 pm_scl, pm_sda = Net("PM_I2C_SCL"), Net("PM_I2C_SDA")
-charge_stat, charger_fault = Net("CHARGE_STATUS"), Net("CHARGER_INT_FAULT")
+charge_stat, bq_stat_raw = Net("CHARGE_STATUS"), Net("BQ_STAT_RAW")
+charger_fault = Net("CHARGER_INT_FAULT")
 input_status = Net("INPUT_SOURCE_STATUS")
 pd_alert, pd_contract = Net("PD_ALERT_N"), Net("PD_CONTRACT_12V_N")
+qon_service, power_ctrl = Net("QON_SERVICE"), Net("POWER_CTRL")
+charge_led_a = Net("CHARGE_LED_A")
 v3d, pg3d, v5pre = Net("+3V3_D"), Net("PG_3V3_D"), Net("+5V_PREISO")
 v5pre_ads, v5pre_ina = Net("+5V_PREISO_ADS"), Net("+5V_PREISO_INA")
 v5iso_raw, v5iso_a, v5iso_d, gndiso = Net("+5V_ISO_RAW"), Net("+5V_ISO_A"), Net("+5V_ISO_D"), Net("GND_ISO")
@@ -564,16 +651,18 @@ battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
                    pm_scl, pm_sda, v3d, dgnd)
 charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
                   charge_stat, charger_fault, input_status, pd_alert,
-                  pd_contract,
+                  pd_contract, qon_service, bq_stat_raw, charge_led_a,
                   vsys_raw, vsys_prot, v3d, dgnd)
-digital_buck(vsys_prot, v3d, pg3d, dgnd)
-preiso_buck(vsys_prot, v5pre, v5pre_ads, v5pre_ina, dgnd)
+system_power_control(vsys_prot, vsys_main, power_ctrl, dgnd)
+digital_buck(vsys_main, v3d, pg3d, dgnd)
+preiso_buck(vsys_main, v5pre, v5pre_ads, v5pre_ina, dgnd)
 isolation(v5pre_ads, v5iso_raw, v5iso_a, v5iso_d, ctrl_rs3e_pri, dgnd, gndiso)
 isolated_ldos(v5iso_a, v5iso_d, v3a, v3di, gndiso)
 ina_isolation(v5pre_ina, v5ina, v5ina_n, dgnd, gndiso)
 outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
         ctrl_rs3e_pri, pm_scl, pm_sda, charge_stat, charger_fault,
-        input_status, pd_alert, pd_contract, dgnd, gndiso)
+        input_status, pd_alert, pd_contract, power_ctrl, qon_service,
+        bq_stat_raw, dgnd, gndiso)
 
 generate_schematic(
     filepath=str(ROOT),

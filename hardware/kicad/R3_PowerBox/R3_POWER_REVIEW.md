@@ -1,11 +1,33 @@
 # R3 PowerBox review
 
 Review date: 2026-09-28
-Status: final pre-routing placement pass complete; **routing remains blocked by the validation items below**.
+Status: final UI / power-control / DRC pass complete; **routing remains blocked by the validation items below**.
 
 The editable electrical source is `tools/generate_hierarchical.py`. Generated KiCad sheets, PDF and BOM are derived artifacts. The detailed battery decision record and budgets are in `R3_BATTERY_POWER_ARCHITECTURE.md`.
 
 ## Implemented in this pass
+
+- Added a normal user load switch after F3: `VSYS_PROT -> Q4 -> VSYS_MAIN`.
+  Q4 is `DMP3007LSS-13`, a 30 V P-channel SO-8 MOSFET. Its 100 kOhm
+  gate-source resistor makes the default state OFF; SW1 closes only the
+  low-current gate-control path through 10 kOhm, and C107 provides controlled
+  turn-on. BMS, STUSB4500 and BQ25798 stay upstream, so charging continues
+  while R3 main electronics are off.
+- Corrected the invalid/ambiguous old `DMP3010LSS` reverse-polarity MPN to the
+  verified P-channel `DMP3007LSS-13` for Q1 and added a project-local SO-8
+  footprint with the physical 1-3=S, 4=G, 5-8=D mapping.
+- Connected BQ25798 QON to local momentary SW2 and `QON_SERVICE`; QON remains a
+  ship/wake/service input and is not used as normal ON/OFF.
+- Added `LED_CHARGE` from REGN through 2.2 kOhm to raw open-drain
+  `BQ_STAT_RAW`, and `LED_RUN` from switched `+3V3_D`. `CHARGE_STATUS` is now
+  a separate 3.3 V logic net isolated from raw STAT by D7. Added ten-pin
+  primary-only J11 for the user panel and SOC/I2C expansion.
+- Cleared all 18 copper-to-edge, 8 drill-range, 4 annular-width and 20
+  footprint-internal-clearance DRC findings. USB-C moved 1.8 mm inward from
+  its original provisional origin; U1/U7 use non-via land patterns, with
+  0.30/0.70 mm thermal vias reserved for routing. The project fine-pitch
+  minimum is 0.13 mm versus the selected 4-layer process capability of
+  0.09 mm; use 0.20 mm wherever density permits.
 
 - Replaced service-input D1 and USB VBUS D3 with `SMBJ13A` (13 V VRWM,
   14.4-15.9 V VBR, 21.5 V clamp at 28 A/10-1000 us). At the 10 A design surge
@@ -68,9 +90,10 @@ J1 service 6-12 V -- existing protection --+
 
 CHARGER_IN + PACK_POS -> BQ25798 NVDC charger/power-path
                        -> VSYS_RAW -> F3 MF-MSMF250/16X-2 -> VSYS_PROT
+                       -> Q4 DMP3007LSS / SW1 -> VSYS_MAIN
 
-VSYS_PROT -> TPS62132 -> +3V3_D
-VSYS_PROT -> TPS54302 -> +5V_PREISO
+VSYS_MAIN -> TPS62132 -> +3V3_D
+VSYS_MAIN -> TPS54302 -> +5V_PREISO
   -> FB6/C26/C27 -> +5V_PREISO_ADS -> RS3E -> isolated ADS rails
   -> FB7/C28/C29 -> +5V_PREISO_INA -> RS3 dual -> isolated INA rails
 
@@ -91,6 +114,7 @@ DGND || galvanic isolation || GND_ISO
 | BQ25798RQM | RQM VQFN-29 4x4 mm: exact pins 1-29 captured from TI Table 5-1; 3.6-24 V, 1-4S, 5 A charge, integrated buck-boost and NVDC BATFET power path |
 | BQ28Z610DRZR | DRZ VSON-12+EP: VSS 1, SRN 2, SRP 3, TS1 4, SCL 5, SDA 6, DSG 7, PACK 8, CHG 9, PBI 10, VC2 11, VC1 12, EP 13; 1-2S gauge/protection/balancing |
 | STUSB4500QTR | QFN-24 EP: official KiCad/ST pin mapping verified; VDD 4.1-22 V, VSYS 3.0-5.5 V, VBUS pins 28 V tolerant, CC short-to-VBUS protection to 22 V, 3 NVM PDOs and dead-battery operation |
+| DMP3007LSS-13 | 30 V P-channel SO-8; 10 mOhm maximum RDS(on) at VGS=-4.5 V; project footprint maps physical 1-3=S, 4=G, 5-8=D to the logical PMOS symbol |
 
 STUSB4500 `RESET` is tied directly to `DGND`. The NVM definition uses PDO3 =
 12 V/2 A and `POWER_OK_CFG=10b`; consequently `PD_CONTRACT_12V_N` is low only
@@ -114,6 +138,7 @@ drain lands to the existing logical three-pin symbol.
 | J8 | keyed 2S battery: `BAT_POS_RAW`, `CELL_MID`, `BAT_NEG_RAW`, `NTC_BMS` |
 | J9 | optional separate `NTC_CHG`, `DGND` quiet/Kelvin charger return |
 | J10 | `+3V3_D`, `DGND`, PM I2C, charge status, `PG_3V3_D`, charger fault/interrupt, input-source status, `PD_ALERT_N`, `PD_CONTRACT_12V_N` |
+| J11 | user panel: 1 `+3V3_D`, 2 `DGND`, 3 `POWER_CTRL`, 4 `QON_SERVICE`, 5 `CHARGE_STATUS`, 6 `PG_3V3_D`, 7/8 PM I2C SCL/SDA, 9 `BQ_STAT_RAW`, 10 SPARE/NC |
 
 No connector contains both `DGND` and `GND_ISO`.
 
@@ -175,10 +200,47 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
    authorized distributors on 2026-09-28; purchasing must preserve the exact
    F1 5.1 mm lead-style suffix.
 
+## USER POWER AND INDICATION
+
+- **Normal OFF:** SW1 open lets R102 pull Q4 gate to `VSYS_PROT`; Q4 is off,
+  `VSYS_MAIN`, TPS62132, TPS54302 and all R3 main loads are de-energized.
+  BQ28Z610, STUSB4500 and BQ25798 remain connected to their upstream rails.
+- **Normal ON:** SW1 closes `POWER_CTRL` to DGND through R103. At 8.4 V the
+  control current is about 76 uA; no 3-5 A load current crosses SW1. C107/R103
+  controls the gate edge. Q4 logical pin 2/physical pins 1-3 are the source on
+  `VSYS_PROT`; logical pin 3/physical pins 5-8 are the drain on `VSYS_MAIN`.
+- **Loss:** using a conservative hot 15 mOhm Q4 resistance gives 15/30/49.5 mV
+  drop and 15/60/163 mW at 1/2/3.3 A. Even the 3.3 A design-worst case is
+  modest for SO-8 with local top copper; verify temperature on the prototype.
+- **Charge while OFF:** BQ25798 SYS/charger and STAT are upstream of Q4, so
+  charging and LED_CHARGE remain functional with `VSYS_MAIN` off.
+- **QON/ship mode:** SW2 or J11.4 momentarily pulls the internally biased QON
+  pin low. Rev.C uses the programmed 1 s default or 15 ms `WKUP_DLY` interval
+  to exit ship mode; an approximately 10 s low requests system-power reset.
+  No external ship FET is fitted in Rev.A.
+- **CHARGE LED:** REGN -> R104 2.2 kOhm -> red D5 -> `BQ_STAT_RAW`. Expected current is
+  about 1.3 mA. Charging=ON, complete/disabled/battery-only=OFF, fault=1 Hz
+  blink. R80 pulls the separate `CHARGE_STATUS` net to switched +3V3_D, while
+  D7 `BAT54WS-7-F` connects anode=`CHARGE_STATUS`, cathode=`BQ_STAT_RAW`.
+  Therefore STAT LOW propagates to logic but REGN/D5 cannot back-power
+  +3V3_D. At the combined approximately 1.6 mA STAT sink, the TI maximum
+  `VOL_STAT` specification is 0.4 V; adding the BAT54WS maximum 0.32 V at
+  1 mA gives a conservative logic LOW no greater than 0.72 V. This is below
+  the ESP32-S3 0.25*VDD = 0.825 V and STM32H755 0.3*VDD = 0.99 V limits at
+  3.3 V.
+- **RUN LED:** +3V3_D -> R105 2.2 kOhm -> green D6 -> DGND, about 0.6-0.8 mA.
+  It indicates the actual main digital rail and is dark in normal OFF.
+- **SOC:** no analog LED gauge is added. BQ28Z610 supplies SOC, voltage,
+  current/state and capacity over PM I2C to the R3 display/UI.
+- **J11:** primary-only user-panel connector; it never exposes GND_ISO or the
+  onboard LED anode nets. J11.9 is raw open-drain `BQ_STAT_RAW`; every panel
+  LED must have its own series resistor. `POWER_CTRL` accepts only a latching
+  contact to DGND; `QON_SERVICE` accepts only a momentary contact to DGND.
+
 ## ERC and files
 
-Final ERC result: **0 errors and 378 warnings**, limited to
-`lib_symbol_mismatch` and `endpoint_off_grid` from the SKiDL
+Final ERC result: **0 errors and 408 warnings**, limited to 204
+`endpoint_off_grid` and 204 `lib_symbol_mismatch` findings from the SKiDL
 embedded-library/deterministic-grid generation path. The count is recorded in
 `reports/R3_power_erc.txt` and `docs/VERIFICATION.md`. Generated outputs are:
 
@@ -198,6 +260,12 @@ interrupted by the x=121...124 mm isolation rule area. The resulting 3.0 mm
 minimum board copper clearance/creepage is the maximum supported by the SIP8
 pad-3/pad-5 geometry (3.08 mm edge-to-edge) and is accepted here for
 low-voltage functional isolation only, not certified mains/reinforced safety.
+
+The unrouted PCB DRC has **zero** clearance, copper-to-edge, drill-range and
+annular-width errors. It retains 413 expected unconnected/ratsnest findings
+and 207 non-electrical silkscreen findings (100 silk-over-copper, 94
+silk-overlap, 13 silk-to-edge), to be cleaned as routing/final reference text
+settles.
 
 PCB routing is blocked by STUSB4500 NVM/compliance validation, BQ28Z610
 configuration thresholds, Q2/Q3 protection-event SOA, hot PPTC/current

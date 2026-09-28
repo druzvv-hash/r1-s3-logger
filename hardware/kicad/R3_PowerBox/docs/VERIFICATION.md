@@ -6,27 +6,25 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
 
 ## Automated checks
 
-- Root plus nine child `.kicad_sch` files load and save through `kicad-cli sch upgrade --force`.
+- Root plus ten child `.kicad_sch` files load and export through KiCad 10 CLI.
 - PDF export succeeds to `reports/R3_power_schematic.pdf`.
 - Grouped BOM export succeeds to `bom/R3_power_kicad_bom.csv`.
-- ERC: **0 errors, 378 warnings**.
-  - warnings remain limited to `lib_symbol_mismatch` and `endpoint_off_grid` from the SKiDL embedded-library/deterministic label-only drawing path;
+- ERC: **0 errors, 408 warnings**.
+  - warnings are 204 `lib_symbol_mismatch` and 204 `endpoint_off_grid` from the SKiDL embedded-library/deterministic label-only drawing path;
   - there are no power-pin, conflicting-driver or required-pin connectivity errors.
 - No power-pin, conflicting-driver, unconnected-required-pin or footprint-link ERC errors remain.
 - `tools/logical_nets.json` contains distinct `DGND` and `GND_ISO` nets.
 - J3/J6 contain isolated ground only. All other connectors are primary-side or raw-battery-side; no connector contains both `DGND` and `GND_ISO`.
 - `VIN9_RAW`, `VIN9_PROT`, shared `+5V_PREISO_FILT` and connector-exposed `EN_5V_UVLO` are absent.
-- U1 TPS62132 and U2 TPS54302 are fed from `VSYS_PROT`.
+- Q4 switches `VSYS_PROT` to `VSYS_MAIN`; U1 TPS62132 and U2 TPS54302 are fed only from `VSYS_MAIN`.
 - U3 and U6 retain independent `+5V_PREISO_ADS` and `+5V_PREISO_INA` inputs.
-- The PCB is 160 x 80 mm, has four copper layers, 176 footprints, one
+- The PCB is 160 x 80 mm, has four copper layers, 191 footprints, one
   all-copper-layer isolation rule area, and **0 tracks / 0 vias**.
-- The placement generator reports **0 courtyard overlaps**. PCB DRC reports
-  256 ordinary placement/footprint findings, 371 expected unrouted
-  connections, and 218 schematic-parity warnings caused mainly by the
-  generated/local footprint representation. The 256 consist of 104
-  silk-over-copper, 89 silk overlaps, 20 footprint-internal clearance, 18
-  connector copper-to-edge, 13 silk-to-edge, 8 drill-range and 4 annular-width
-  findings. There is no remaining net-conflict warning.
+- The placement generator reports **0 courtyard overlaps**. PCB DRC has zero
+  clearance, copper-to-edge, drill-range and annular-width errors. Remaining
+  findings are 413 expected unrouted connections and 207 non-electrical
+  silkscreen items: 100 silk-over-copper, 94 silk overlaps and 13
+  silk-to-edge. There is no remaining net-conflict warning.
 - This is a placement checkpoint. Unrouted connections and silkscreen cleanup
   are intentionally not claimed as routing-release DRC closure.
 - `reports/R3_power_preliminary_placement.svg` and high-resolution `.png`
@@ -47,6 +45,17 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
   remain as reviewed against the EVM.
 - STUSB4500QTR: verified QFN-24 pinout, 4.1-22 V VDD, 3.0-5.5 V VSYS, CC1DB/CC2DB dead-battery connections, 1 uF regulator bypass and autonomous three-PDO operation.
 - BQ25798 Rev.C: charger-local VBUS bypass is 100 nF plus three 10 uF ceramics; ILIM_HIZ default is approximately 0.50 A using 243 kOhm/100 kOhm.
+- BQ25798 QON is connected to momentary SW2 and J11.4. The internal pull-up is
+  retained; the service contact only pulls QON to DGND.
+- BQ25798 STAT is `BQ_STAT_RAW`. D5/R104 remain entirely on REGN/raw STAT.
+  D7 `BAT54WS-7-F` has anode at 3.3 V `CHARGE_STATUS` and cathode at raw STAT.
+  With `VOL_STAT` <=0.4 V at 5 mA and BAT54WS `VF` <=0.32 V at 1 mA, the
+  conservative logic LOW is <=0.72 V, below ESP32-S3 0.825 V and STM32H755
+  0.99 V input-low limits at 3.3 V.
+- DMP3007LSS-13: verified 30 V P-channel SO-8, 10 mOhm maximum at
+  VGS=-4.5 V. Q1 and Q4 use a local footprint mapping physical pins
+  1-3=S, 4=G and 5-8=D. Q4 source is `VSYS_PROT` and drain is `VSYS_MAIN`;
+  conservative 15 mOhm hot resistance gives 15/60/163 mW at 1/2/3.3 A.
 - Bourns SMBJ13A: 13 V VRWM, 14.4-15.9 V breakdown and 21.5 V clamp at 28 A (10/1000 us); applied to service and 12 V USB-PD inputs.
 - Previously verified TPS62132, TPS54302, RS3E-0505S/H3, RS3-0505D/H3, ADM7150 and TPS7A2033 mappings remain unchanged except TPS54302 EN strategy.
 - CSD17577Q3AT: 30 V; 4.8 mOhm maximum RDS(on) at 10 V and 13 nC typical
@@ -71,12 +80,19 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
 - J10 pins 9/10 are `PD_ALERT_N` and `PD_CONTRACT_12V_N`.
 - BQ28Z610 shunt inputs are connected through separate 100-ohm Kelvin filters and a differential 100 nF capacitor.
 - Charger/status/BMS I2C remain in the primary domain.
-- BQ25798 SYS creates `VSYS_RAW`; F3 produces `VSYS_PROT` for the existing primary converters.
+- BQ25798 SYS creates `VSYS_RAW`; F3 produces `VSYS_PROT`; Q4 produces switched `VSYS_MAIN` for both existing primary converters.
+- J11 is primary-only and exports +3V3_D, DGND, user power control, QON
+  service, isolated `CHARGE_STATUS`, PG, PM I2C, raw open-drain STAT and one
+  spare. No GND_ISO or shared onboard LED-anode net is present.
 - USB and service input are muxed before the charger; J1 no longer defines the system voltage.
 
 ## Visual review
 
-The ten-page PDF was rendered page-by-page after deterministic layout. Root hierarchy, revised BMS/FET network, USB-C PD controller/protection, charger-local bypass, existing primary converters, isolation, clean LDOs and output connectors were inspected for clipping and component overlap. The dense battery sheet remains A3 and the charger/power-path sheet remains A2.
+The eleven-page PDF was rendered after deterministic layout. Root hierarchy,
+revised BMS/FET network, USB-C PD controller/protection, charger-local bypass,
+system load switch, existing primary converters, isolation, clean LDOs and
+output connectors were inspected for clipping and component overlap. The dense
+battery sheet remains A3, charger/power-path remains A2 and outputs/J11 is A3.
 
 ## Required before PCB routing
 
@@ -92,5 +108,5 @@ The ten-page PDF was rendered page-by-page after deterministic layout. Root hier
 7. Decide whether the DNP BQ2945xx secondary-OV option is populated and complete its exact active circuit if so.
 8. Approve the 3.0 mm low-voltage functional-isolation rule; do not treat it as
    a mains/reinforced-insulation certification.
-9. Check J3/J10 mating housing, latch, enclosure and bend-radius clearance in mechanical CAD.
-10. Resolve or formally waive the 378 generator/library/grid warnings.
+9. Check J3/J10/J11 mating housing, latch, enclosure and bend-radius clearance in mechanical CAD.
+10. Resolve or formally waive the 408 generator/library/grid warnings.

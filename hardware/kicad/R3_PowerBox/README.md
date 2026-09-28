@@ -1,8 +1,8 @@
 # R3 PowerBox
 
 Editable KiCad 10 project for the R3 power module. The schematic uses one root
-page and nine functional child sheets so battery/BMS, charger/power-path,
-primary converters, isolation, LDOs, INA bipolar power and connectors can be
+page and ten functional child sheets so battery/BMS, charger/power-path,
+user system-power control, primary converters, isolation, LDOs, INA bipolar power and connectors can be
 reviewed independently.
 
 ## Open
@@ -32,6 +32,8 @@ Open `R3_power.kicad_pro` in KiCad 10. The canonical schematic is
   primary external input; STUSB4500 implements 5/9/12 V negotiation with
   12 V/2 A preferred and a boot-safe 0.50 A charger default.
 - `DGND` and `GND_ISO` are separate galvanic domains and must never be joined.
+- SW1/Q4 disconnect only `VSYS_MAIN`; BMS, PD and charging remain active while
+  R3 is off. SW2 is the separate QON ship/wake/service control.
 - The present files are an engineering prototype, not a manufacturing release.
 - Q2/Q3, F1/F2/F3 and the dual-NTC strategy are selected for Rev.A. Battery
   chemistry/configuration, hot-current validation and PD NVM compliance remain
