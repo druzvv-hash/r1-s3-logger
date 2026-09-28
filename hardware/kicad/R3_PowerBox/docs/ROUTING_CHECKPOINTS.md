@@ -1,5 +1,24 @@
 # Rev.A prototype routing checkpoints
 
+## Current status: F routed prototype, not production-ready
+
+D/E were committed and pushed before F at `b42e73f52d1e8538079f944b93870e21eaef7fe8`.
+F continues that exact copper. No earlier routing recipe or PCB generator was
+rerun. Final evidence/limitations are in `ROUTING_F.md`; historical checkpoint
+counts below describe their respective commits, not the current board.
+
+| Checkpoint | Commit / result |
+| --- | --- |
+| A0 | `2b4bb5e9568fd3ed68e13147868de63d9654c6fa`, starting intermediate board |
+| A | `4fed7b328fe3f52b9201013b1988913a9c660c6d`, battery/BMS/charger locals |
+| B | `e28cc551cb03bcb958b2d4dc5e7dc65117e721fd`, primary bucks |
+| C | `543b85faf09133c03d7adfbf37dc448e01271e6b`, isolation/clean locals |
+| D | `24a4931`, interconnect; all non-ground networks connected |
+| E | `b42e73f`, planes/thermal; zero unconnected |
+| F | Commit containing this record: final cleanup, audits, derived files |
+
+Branch remains `routing/r3-powerbox-reva`; main unchanged.
+
 ## Checkpoint C: independent pre-isolation and clean rails
 
 Continued from B without removing prior copper. Independent ADS/INA input

@@ -20,8 +20,8 @@ views={
     'isolation':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(108,0,33,105)),
 }
 if args.checkpoint in ('E','F'):
-    views['inner1']=('In1.Cu,F.Fab,Edge.Cuts',(18,0,164,107))
-    views['inner2']=('In2.Cu,F.Fab,Edge.Cuts',(18,0,164,107))
+    views['inner1']=('In1.Cu,Edge.Cuts',(18,0,164,107))
+    views['inner2']=('In2.Cu,Edge.Cuts',(18,0,164,107))
 for name,(layers,box) in views.items():
     out=ROOT/'reports'/f'R3_power_{args.checkpoint}_{name}.svg'
     subprocess.run([str(cli),'pcb','export','svg','--layers',layers,

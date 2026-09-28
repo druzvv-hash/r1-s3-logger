@@ -300,7 +300,9 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     sw2 += u8["SW2"]
     regn += u8["REGN"]
     pmid += u8["PMID"]
-    l3 = comp("L", "L3", "1.0uH >=6A / MPN TBD", "Inductor_SMD:L_Bourns_SRP7028A_7.3x6.6mm")
+    # TI BQ25798 Rev.C 8.2.2.2 requires 1uH at 1.5MHz; R75=6.04k
+    # selects that frequency and 2S at POR. Do not select 750kHz in firmware.
+    l3 = comp("L", "L3", "SRP7028A-1R0M 1uH", "Inductor_SMD:L_Bourns_SRP7028A_7.3x6.6mm", "https://www.bourns.com/data/global/pdfs/SRP7028A.pdf")
     sw1 += l3[1]
     sw2 += l3[2]
     c("C74", "47nF BTST1", u8["BTST1"], sw1)

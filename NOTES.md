@@ -1,5 +1,22 @@
 # Current memory entry point
 
+## 2026-09-28 — Routing F complete, prototype only
+
+Active worktree `C:/Projects/r3-powerbox-routing`, branch
+`routing/r3-powerbox-reva`. D/E were pushed at `b42e73f` before final cleanup.
+F: all nets connected; DRC 0 errors, 43 explicit library-copy warnings,
+0 schematic parity issues; ERC 0 errors/412 existing generator warnings.
+1343 segments/337 vias. Actual filled isolation/mounting audit and exact
+schematic pin/net parity PASS. Main remains untouched. Final F commit is the
+commit containing this entry; use git log rather than an invented self-SHA.
+Canonical scope/limitations: `hardware/kicad/R3_PowerBox/docs/ROUTING_F.md`.
+Do not rerun earlier routing/placement generators: routed PCB is authoritative.
+C75 alone moved during F to fix SW2 bootstrap projection below I2C/NTC;
+zone outlines, holes, B2B and other E placement/routes preserved, aside from
+six redundant dangling objects and audited local bootstrap/PROG escapes.
+L3 fixed SRP7028A-1R0M; firmware must keep 1.5 MHz. U11 remains DNP reservation.
+No bench, enclosure, thermal or EMC acceptance; no production Gerbers/order.
+
 ## 2026-09-28 — Routing checkpoint E
 
 All nets connected after domain planes and thermal copper. DRC 0 errors,

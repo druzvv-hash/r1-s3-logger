@@ -2,7 +2,7 @@
 
 2026-09-28. Builds on D (`24a4931`); main unchanged.
 
-- 0 unconnected items; 0 DRC errors. 156 warnings: 148 silk/text warnings,
+- 0 unconnected items; 0 DRC errors. 156 warnings: 150 silk/text warnings,
   5 dangling vias and 1 dangling track for cleanup in F.
 - Separate DGND and GND_ISO fills on all four copper layers, with 0.2 mm
   extra setback from the x=121..124 exclusion corridor. Actual polygon

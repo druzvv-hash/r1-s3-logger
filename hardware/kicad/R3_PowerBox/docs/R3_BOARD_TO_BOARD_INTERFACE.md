@@ -1,14 +1,15 @@
 # R3 PowerBox board-to-board and mounting interface
 
-Status: **mechanical reference preserved during A0 partial routing; not a
-released mechanical drawing or completed routed PCB**.
+Status: **mounting/B2B reference preserved through F prototype routing**.
 
-`reports/routing_invariants.json` verifies J1-J13, all six mounting-hole
-positions, board outline and future-R3 envelope against the approved baseline.
-The coordinates and pinouts below are unchanged. C74/C75 are now underside
-bootstrap capacitors near U8; reserve underside component/service clearance
-in the enclosure. The 15 mm upper-board stack baseline is unchanged. See
-`ROUTING_CHECKPOINTS.md` for incomplete electrical/thermal work.
+`reports/routing_invariants.json` verifies J12/J13, all six mounting holes,
+board outline and future-R3 envelope against the approved baseline. Their
+coordinates/pinouts below are unchanged. J7 has a documented outward-facing
+correction: (23.675,33), 270 degrees. SW2 is (85,78). C74/C75 and several local
+filters are underneath; reserve underside service/standoff clearance.
+15 mm stack baseline and connector access envelopes remain unchanged.
+Mechanical mating and enclosure acceptance still require real parts/CAD;
+the prototype routing is not a released enclosure drawing. See `ROUTING_F.md`.
 
 ## Coordinate system
 

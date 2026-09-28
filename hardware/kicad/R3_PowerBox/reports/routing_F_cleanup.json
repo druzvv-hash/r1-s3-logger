@@ -1,0 +1,13 @@
+{
+  "removed_this_invocation": [],
+  "legends_moved_this_invocation": [],
+  "scope": "Last idempotent cleanup invocation. Six removed objects are listed below; complete E-to-F changes are in routing_F_verification.json.",
+  "audited_redundant_uuids": [
+    "1b972f8d-cc1c-44b9-84a2-53a6984c74e3",
+    "40c80985-40ee-40b8-8ecd-afcefce54af3",
+    "4d757a27-0b09-4043-8d1f-fe513eea768a",
+    "86be6c96-dfe8-4437-8333-0159c9d93902",
+    "b163afd4-6105-492c-8ec6-237bc9e24a63",
+    "f390aadd-fcbf-4172-a1b4-52a79f296208"
+  ]
+}

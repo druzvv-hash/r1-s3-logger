@@ -888,23 +888,23 @@
 	)
 	(global_label "+3V3_D_ISO"
 		(shape bidirectional)
-		(at 191.19 68 180)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "fb211974-e9fc-5d52-a768-b35342efd7e4")
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
 		(at 198.81 68 0)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
+		)
+		(uuid "fb211974-e9fc-5d52-a768-b35342efd7e4")
+	)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 191.19 68 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
 		)
 		(uuid "46d52693-7d02-5085-b4e9-4351f16fe224")
 	)
@@ -974,7 +974,7 @@
       (uuid 3c19aeb9-ef4c-5769-80e4-419d1d841c83))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "#FLG0301")
           (unit 1)))))
   (symbol
@@ -1021,7 +1021,7 @@
       (uuid ffad87f2-a5ea-536a-891e-d3d820936539))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "#FLG0302")
           (unit 1)))))
   (symbol
@@ -1084,7 +1084,7 @@
       (uuid 11810ecd-2a10-510d-8c4a-53524d18d7a3))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "U4")
           (unit 1)))))
   (symbol
@@ -1133,7 +1133,7 @@
       (uuid af057daf-e7ec-5980-b23d-50dff65961ec))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "R40")
           (unit 1)))))
   (symbol
@@ -1182,7 +1182,7 @@
       (uuid 13f264f0-da6c-5a41-aff9-0acd556f9457))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C40")
           (unit 1)))))
   (symbol
@@ -1231,7 +1231,7 @@
       (uuid 1e10be2d-5c3d-5761-a33d-337919d78660))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C41")
           (unit 1)))))
   (symbol
@@ -1280,7 +1280,7 @@
       (uuid 8dc9585b-44a4-5ccc-9947-5c0898328c77))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C42")
           (unit 1)))))
   (symbol
@@ -1330,7 +1330,7 @@
       (uuid a6c50689-d6eb-5813-b0ae-8a4ba0e4eac1))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C43")
           (unit 1)))))
   (symbol
@@ -1379,7 +1379,7 @@
       (uuid 8241777d-76e3-554a-bab1-673db259b08a))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C44")
           (unit 1)))))
   (symbol
@@ -1434,7 +1434,7 @@
       (uuid 3ccb64c1-f365-53a8-b965-a33dacf80710))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "U5")
           (unit 1)))))
   (symbol
@@ -1483,12 +1483,12 @@
       (uuid 451d4869-97fc-5702-bc40-fd66ed4e26fc))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C50")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 195 68 90)
+    (at 195 68 270)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1497,31 +1497,31 @@
     (fields_autoplaced yes)
     (uuid cb4a44e3-0bd6-541f-82df-b269031f8d94)
     (property "Reference" "C51"
-      (at 195 65.46 90)
+      (at 195 65.46 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "4.7uF OUT"
-      (at 195 70.54 90)
+      (at 195 70.54 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 195 68 90)
+      (at 195 68 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 195 68 90)
+      (at 195 68 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 195 68 90)
+      (at 195 68 270)
       (effects
         (font
           (size 0.9 0.9))
@@ -1532,7 +1532,7 @@
       (uuid 135a5e33-9480-55ca-b506-ad52582491bd))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C51")
           (unit 1)))))
   (symbol
@@ -1579,7 +1579,7 @@
       (uuid 388eeb00-bf63-52f7-9700-fae25a490ce7))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "TP11")
           (unit 1)))))
   (symbol
@@ -1626,7 +1626,7 @@
       (uuid 022b3850-df46-5426-9e06-6953b7226e82))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "TP12")
           (unit 1)))))
 

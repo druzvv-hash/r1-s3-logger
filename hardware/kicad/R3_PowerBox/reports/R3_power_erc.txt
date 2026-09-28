@@ -1,5 +1,5 @@
-ERC report (2026-09-28T20:18:51, Encoding UTF8)
-Report includes: Errors, Warnings, Exclusions
+ERC report (2026-09-28T23:46:52, Encoding UTF8)
+Report includes: Errors, Warnings
 
 ***** Sheet /
 [lib_symbol_mismatch]: Символ 'TP' не відповідає копії в бібліотеці 'R3_POWER_GEN'
@@ -128,63 +128,60 @@ Report includes: Errors, Warnings, Exclusions
 [lib_symbol_mismatch]: Символ 'PWR_FLAG' не відповідає копії в бібліотеці 'power'
     ; warning
     @(48.00 mm, 50.00 mm): Symbol #FLG0201 [PWR_FLAG]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(66.76 mm, 114.54 mm): Symbol U3 Pin 1 [-VIN, Power input, Line]
 [lib_symbol_mismatch]: Символ 'RS3E' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(82.00 mm, 112.00 mm): Symbol U3 [RS3E]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(97.24 mm, 109.46 mm): Symbol U3 Pin 1 [-VIN, Power input, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(125.00 mm, 78.19 mm): Symbol C30 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(125.00 mm, 82.00 mm): Symbol C30 [C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(125.00 mm, 85.81 mm): Symbol C30 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'TP' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(145.00 mm, 48.00 mm): Symbol TP7 [TP]
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(145.00 mm, 51.81 mm): Symbol TP7 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(159.666 mm, 82.00 mm): Symbol FB2 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'FERRITE' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(165.00 mm, 82.00 mm): Symbol FB2 [FERRITE]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(125.00 mm, 136.19 mm): Symbol C31 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(125.00 mm, 140.00 mm): Symbol C31 [C]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(170.334 mm, 82.00 mm): Symbol FB2 Pin 1 [Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(125.00 mm, 143.81 mm): Symbol C31 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'TP' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(200.00 mm, 48.00 mm): Symbol TP8 [TP]
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(200.00 mm, 51.81 mm): Symbol TP8 Pin 1 [1, Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(202.00 mm, 68.19 mm): Symbol C32 Pin 1 [Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(159.666 mm, 142.00 mm): Symbol FB3 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(202.00 mm, 72.00 mm): Symbol C32 [C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(202.00 mm, 75.81 mm): Symbol C32 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'FERRITE' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(165.00 mm, 142.00 mm): Symbol FB3 [FERRITE]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(170.334 mm, 142.00 mm): Symbol FB3 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(230.00 mm, 68.19 mm): Symbol C33 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(230.00 mm, 72.00 mm): Symbol C33 [C]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(230.00 mm, 75.81 mm): Symbol C33 Pin 1 [Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(202.00 mm, 141.19 mm): Symbol C34 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(202.00 mm, 145.00 mm): Symbol C34 [C]
@@ -194,12 +191,15 @@ Report includes: Errors, Warnings, Exclusions
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(245.00 mm, 51.81 mm): Symbol TP9 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(202.00 mm, 148.81 mm): Symbol C34 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(230.00 mm, 141.19 mm): Symbol C35 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(230.00 mm, 145.00 mm): Symbol C35 [C]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(230.00 mm, 148.81 mm): Symbol C35 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'TP' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(260.00 mm, 172.00 mm): Symbol TP10 [TP]
@@ -317,15 +317,15 @@ Report includes: Errors, Warnings, Exclusions
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(269.92 mm, 135.00 mm): Symbol R98 Pin 1 [Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(301.19 mm, 50.00 mm): Symbol C95 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'R' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(275.00 mm, 135.00 mm): Symbol R98 [R]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(305.00 mm, 50.00 mm): Symbol C95 [C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(308.81 mm, 50.00 mm): Symbol C95 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'R' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(280.00 mm, 155.00 mm): Symbol R96 [R]
@@ -529,9 +529,6 @@ Report includes: Errors, Warnings, Exclusions
     @(140.00 mm, 142.00 mm): Symbol U4 [ADM7150]
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
-    @(191.19 mm, 68.00 mm): Symbol C51 Pin 1 [Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
     @(104.19 mm, 178.00 mm): Symbol C41 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
@@ -539,6 +536,9 @@ Report includes: Errors, Warnings, Exclusions
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(108.00 mm, 178.00 mm): Symbol C41 [C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(198.81 mm, 68.00 mm): Symbol C51 Pin 1 [Passive, Line]
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(155.24 mm, 144.54 mm): Symbol U4 Pin 1 [VREG, Passive, Line]
@@ -1166,12 +1166,12 @@ Report includes: Errors, Warnings, Exclusions
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(265.00 mm, 45.81 mm): Symbol TP6 Pin 1 [1, Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(252.00 mm, 124.19 mm): Symbol C29 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'C' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(252.00 mm, 128.00 mm): Symbol C29 [C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(252.00 mm, 131.81 mm): Symbol C29 Pin 1 [Passive, Line]
 [lib_symbol_mismatch]: Символ 'TP' не відповідає копії в бібліотеці 'R3_POWER_GEN'
     ; warning
     @(265.00 mm, 155.00 mm): Symbol TP16 [TP]

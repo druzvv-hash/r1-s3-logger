@@ -2131,7 +2131,7 @@
       (uuid 7fd73fca-67aa-508b-b989-f77862c241f8))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J2")
           (unit 1)))))
   (symbol
@@ -2196,7 +2196,7 @@
       (uuid b69ddde1-28df-5aa4-9ae8-d4f9b00e35db))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J3")
           (unit 1)))))
   (symbol
@@ -2249,7 +2249,7 @@
       (uuid 939de9b4-7412-5437-9b63-27f87b061975))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J4")
           (unit 1)))))
   (symbol
@@ -2259,7 +2259,7 @@
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
-    (dnp no)
+    (dnp yes)
     (fields_autoplaced yes)
     (uuid 6e50c3c9-8705-536d-9618-70380505c9d0)
     (property "Reference" "J5"
@@ -2302,7 +2302,7 @@
       (uuid 3273e584-7c9a-57c1-ba61-f0097cb158fc))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J5")
           (unit 1)))))
   (symbol
@@ -2312,7 +2312,7 @@
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
-    (dnp no)
+    (dnp yes)
     (fields_autoplaced yes)
     (uuid 10ce83a5-c2ac-5671-abc0-d15bde2b6e89)
     (property "Reference" "J6"
@@ -2355,7 +2355,7 @@
       (uuid b5d1e448-068b-50aa-89db-cad0561d38f7))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J6")
           (unit 1)))))
   (symbol
@@ -2420,7 +2420,7 @@
       (uuid a1585ac9-dd6b-5467-8a6f-46325748f159))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J10")
           (unit 1)))))
   (symbol
@@ -2485,7 +2485,7 @@
       (uuid 56391f43-5762-50ab-9353-54f553e7de72))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J11")
           (unit 1)))))
   (symbol
@@ -2495,7 +2495,7 @@
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
-    (dnp no)
+    (dnp yes)
     (fields_autoplaced yes)
     (uuid 30cc572f-9ad8-5eac-8807-31645623f54b)
     (property "Reference" "J12"
@@ -2562,7 +2562,7 @@
       (uuid b03ee963-7fdc-5a0b-8390-65afb9786e9e))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J12")
           (unit 1)))))
   (symbol
@@ -2572,7 +2572,7 @@
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
-    (dnp no)
+    (dnp yes)
     (fields_autoplaced yes)
     (uuid e2e351a5-a601-5c6c-a8e3-1d67ab6ea0c4)
     (property "Reference" "J13"
@@ -2627,7 +2627,7 @@
       (uuid 9ebf7f1f-50a4-5460-a220-9501c67cf571))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "J13")
           (unit 1)))))
   (symbol
@@ -2676,7 +2676,7 @@
       (uuid fe7a3b81-35fb-5bed-9996-13c260fe8869))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "R105")
           (unit 1)))))
   (symbol
@@ -2725,7 +2725,7 @@
       (uuid 1478323b-2998-51df-a447-d888789b81a6))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "D6")
           (unit 1)))))
   (symbol
@@ -2772,7 +2772,7 @@
       (uuid 2c017f94-1e41-5bd0-9548-a577410582cf))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/8a113b12-9d71-5245-be88-2275cf0b9c69"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/8a113b12-9d71-5245-be88-2275cf0b9c69"
           (reference "TP15")
           (unit 1)))))
 

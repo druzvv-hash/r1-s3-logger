@@ -300,6 +300,10 @@ def arrange_child(path: Path, target_positions, connectivity):
         moved_symbol = shift_at_fields(raw, *delta).replace(
             "(size 1.27 1.27)", "(size 0.9 0.9)"
         )
+        # SKiDL 2.3 does not serialize Part.dnp into the KiCad instance flag.
+        # Preserve the approved Rev.A assembly options in PDF/BOM/parity checks.
+        if ref in {"U11", "J5", "J6", "J12", "J13"}:
+            moved_symbol = moved_symbol.replace("(dnp no)", "(dnp yes)")
         symbol_replacements.append((start, end, moved_symbol))
 
     missing = set(target_positions) - seen

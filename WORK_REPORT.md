@@ -1,5 +1,35 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — Routing D/E preservation and F completion
+
+IMPLEMENTED / HOST CHECKED only. D/E commits were pushed to
+`routing/r3-powerbox-reva` at `b42e73f` before the requested final cleanup.
+Continued that PCB without regeneration/reset or rerunning A-E. Finished F:
+0 unconnected, 0 DRC errors, 43 visible library-copy warnings, 0 schematic
+parity findings; ERC 0 errors/412 known generator warnings. 1343 track segments,
+337 vias. Main/canonical dirty worktree not modified.
+
+Removed six redundant dangling objects, cleaned silk and library metadata,
+corrected a verified SW2-bootstrap projection under I2C/TS with C75 local move
+and branch/PROG-escape changes. All other E placement, zone boundaries and
+routes retained. Exact change/net/mechanical/Kelvin/domain audits saved.
+Filled-copper isolation/mounting audits and intentional isolation-negative
+control pass. Kelvin pickup is separate from force copper, not length matched.
+Regenerated schematic/PDF/BOM/ERC; fixed omitted DNP flags in the SKiDL drawing
+pipeline; L3 exact MPN SRP7028A-1R0M recorded with 1.5 MHz firmware constraint.
+Native top/bottom/inner/isolation images and 11-page PDF reviewed.
+
+Failures/recovery: KiCad SWIG track-container lifetime caused a process crash
+before saving; keeping the container alive fixed it. First local bootstrap
+candidate failed DRC near PACK_POS and was corrected before acceptance.
+An arranger-only rerun on already-arranged sheets is not supported (J1 key
+lookup failed); ran the schematic-only generator then arranger successfully.
+No PCB generator was invoked. Final DRC has no short/clearance/hole/silk findings.
+
+Evidence and open hardware gates: `hardware/kicad/R3_PowerBox/docs/ROUTING_F.md`.
+This is Rev.A prototype routing, not production-ready or powered acceptance.
+Final branch commit/push contains this record; no main merge or PCB/BOM order.
+
 ## 2026-09-28 — Routing checkpoint C
 
 HOST CHECKED: independent ADS/INA filters, RS3 secondary splits, INA bipolar

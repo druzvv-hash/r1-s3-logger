@@ -9,3 +9,4 @@ tools/__pycache__/
 .history/
 generate_hierarchical.log
 generate_hierarchical.erc
+skidl_REPL.erc

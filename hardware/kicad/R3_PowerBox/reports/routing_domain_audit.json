@@ -1,35 +1,35 @@
 {
   "board": "R3_power.kicad_pcb",
   "footprints": 199,
-  "track_via_objects": 1684,
+  "track_via_objects": 1680,
   "filled_zones": [
     {
       "name": "DGND_F.Cu_RETURN",
       "net": "DGND",
       "layer": "F.Cu",
-      "outlines": 5,
-      "area_mm2": 5771.596
+      "outlines": 2,
+      "area_mm2": 6179.331
     },
     {
       "name": "GND_ISO_F.Cu_RETURN",
       "net": "GND_ISO",
       "layer": "F.Cu",
       "outlines": 1,
-      "area_mm2": 3668.71
+      "area_mm2": 3757.247
     },
     {
       "name": "VSYS_PROT_F.Cu_RETURN",
       "net": "VSYS_PROT",
       "layer": "F.Cu",
       "outlines": 1,
-      "area_mm2": 13.149
+      "area_mm2": 13.242
     },
     {
       "name": "BMS_FET_COMMON_F.Cu_RETURN",
       "net": "BMS_FET_COMMON",
       "layer": "F.Cu",
       "outlines": 1,
-      "area_mm2": 33.07
+      "area_mm2": 33.249
     },
     {
       "name": "VSYS_MAIN_F.Cu_RETURN",
@@ -43,63 +43,63 @@
       "net": "GND_ISO",
       "layer": "B.Cu",
       "outlines": 2,
-      "area_mm2": 3517.684
+      "area_mm2": 3600.9
     },
     {
       "name": "VSYS_PROT_B.Cu_RETURN",
       "net": "VSYS_PROT",
       "layer": "B.Cu",
       "outlines": 1,
-      "area_mm2": 13.171
+      "area_mm2": 13.256
     },
     {
       "name": "DGND_B.Cu_RETURN",
       "net": "DGND",
       "layer": "B.Cu",
-      "outlines": 3,
-      "area_mm2": 5765.322
+      "outlines": 2,
+      "area_mm2": 6159.531
     },
     {
       "name": "BMS_FET_COMMON_B.Cu_RETURN",
       "net": "BMS_FET_COMMON",
       "layer": "B.Cu",
       "outlines": 1,
-      "area_mm2": 33.258
+      "area_mm2": 33.38
     },
     {
       "name": "VSYS_MAIN_B.Cu_RETURN",
       "net": "VSYS_MAIN",
       "layer": "B.Cu",
       "outlines": 1,
-      "area_mm2": 14.863
+      "area_mm2": 15.283
     },
     {
       "name": "GND_ISO_In1.Cu_RETURN",
       "net": "GND_ISO",
       "layer": "In1.Cu",
       "outlines": 1,
-      "area_mm2": 3940.338
+      "area_mm2": 3973.857
     },
     {
       "name": "DGND_In1.Cu_RETURN",
       "net": "DGND",
       "layer": "In1.Cu",
-      "outlines": 8,
-      "area_mm2": 5930.058
+      "outlines": 3,
+      "area_mm2": 6258.454
     },
     {
       "name": "DGND_In2.Cu_RETURN",
       "net": "DGND",
       "layer": "In2.Cu",
-      "outlines": 4,
-      "area_mm2": 5887.375
+      "outlines": 2,
+      "area_mm2": 6338.659
     },
     {
       "name": "GND_ISO_In2.Cu_RETURN",
       "net": "GND_ISO",
       "layer": "In2.Cu",
       "outlines": 1,
-      "area_mm2": 3563.119
+      "area_mm2": 3730.313
     }
   ],
   "issues": [],

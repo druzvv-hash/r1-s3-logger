@@ -1,5 +1,21 @@
 # Schematic regeneration
 
+## Routed F preservation
+
+The active PCB is routed. Do not invoke placement or A-E routing recipes on it.
+`finalize_routing.py` is incremental silk/redundancy cleanup; the separate
+`fix_bootstrap_projection.py` records the audited F local C75 repair.
+`verify_final_routing.py` compares current copper/placement to the preserved E
+commit and checks the explicit exceptions, Kelvin pickups and SW projections.
+`sync_routed_metadata.py` consumes a freshly exported `tmp/F_netlist.xml`, checks
+pin/net parity and updates identifiers/fields only, never footprint geometry.
+Do not bulk-update edited embedded footprints from stock libraries.
+
+Run the schematic generator before its arranger: the arranger expects fresh
+SKiDL blocks, not an already normalized KiCad save. It also serializes the
+approved DNP flags that SKiDL 2.3 otherwise omits. This does not route/regenerate
+the PCB. Do not use schematic regeneration as a substitute for routing.
+
 `generate_hierarchical.py` is the reproducible electrical source for the root
 sheet and ten KiCad 10 child sheets. It requires Python and `skidl==2.3.0`.
 

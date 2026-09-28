@@ -1,5 +1,10 @@
 # STUSB4500 PD configuration record
 
+Routing F firmware constraint: preserve BQ25798 PWM_FREQ=0 (1.5 MHz).
+R75=6.04 kOhm selects this at POR and L3=SRP7028A-1R0M is 1 uH.
+750 kHz requires a different 2.2 uH inductor and is not allowed by this BOM.
+The existing 0.50 / 1.35 / 2.25 / 1.80 / 1.80 A source policies are unchanged.
+
 Status: Rev.A provisional NVM definition; program and verify on the assembled
 board before enabling charge currents above the hardware-default input limit.
 

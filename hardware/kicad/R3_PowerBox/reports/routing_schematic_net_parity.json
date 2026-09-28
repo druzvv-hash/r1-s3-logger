@@ -1,0 +1,6 @@
+{
+  "all_exported_schematic_nodes_match_PCB_pads": true,
+  "issues": [],
+  "electrical_components": 193,
+  "scope": "Exact reference/pin/net comparison. Fields/library nicknames synchronized without replacing footprint geometry."
+}

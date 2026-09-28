@@ -1,14 +1,15 @@
 # R3 PowerBox preliminary placement
 
-Status: **A0 partial prototype routing; no copper pours yet**.
+Status: **F prototype routing complete; domain planes filled**.
 
-Current details and exceptions are in `ROUTING_CHECKPOINTS.md`. Charger
-bypasses/bulk were locally regrouped; C74/C75 moved to B.Cu per TI layout
-guidance. Secondary filters were moved out of the isolation corridor and
-wrong-domain R105/TP15 were returned to primary. The functional zones,
-J1-J13, H1-H6, U3/U6 and upper-board envelope remain unchanged. The original
-coordinates described below are historical where superseded by the explicit
-`tools/route_reva.py` placement table. Use current PCB coordinates for work.
+Current details/exceptions: `ROUTING_F.md`, `ROUTING_D.md`, and
+`reports/routing_invariants.json`. Six mounting holes, J12/J13, isolation
+module anchors and upper-board envelope are preserved. J7 faces outward at
+(23.675,33), 270 degrees; SW2 is (85,78). Local bypass/sense/filter placements
+were compacted during A-D. F moved only C75 to B.Cu (54.8,51.8) to eliminate
+SW2 bootstrap copper below I2C/TS. All other E placements are unchanged.
+Use the routed PCB, not the historical placement recipe, as the active source.
+Do not run any earlier routing or placement generator over it.
 
 The board now also carries six M3 NPTH mounting holes, optional primary and
 isolated B2B headers, and a `Dwgs.User` future-R3 envelope. Exact coordinates

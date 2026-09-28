@@ -1,0 +1,682 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-28T23:47:00",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.0",
+    "schematic_parity": [],
+    "source": "R3_power.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Слід 'Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal' не відповідає копії в бібліотеці 'Connector_Molex'",
+            "items": [
+                {
+                    "description": "Посадкове місце J9",
+                    "pos": {
+                        "x": 52.0,
+                        "y": 24.0
+                    },
+                    "uuid": "07a89914-3705-42da-a6ba-0ba616f39e61"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'DMP3007LSS_SO8_LOGICAL' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце Q4",
+                    "pos": {
+                        "x": 72.0,
+                        "y": 70.0
+                    },
+                    "uuid": "189c3c40-1cc5-4029-b1bf-c5e9423d5f3e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C82",
+                    "pos": {
+                        "x": 61.0,
+                        "y": 43.5
+                    },
+                    "uuid": "1e457b05-c2c7-4f1d-9843-adaf4df04359"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal' не відповідає копії в бібліотеці 'Connector_Molex'",
+            "items": [
+                {
+                    "description": "Посадкове місце J1",
+                    "pos": {
+                        "x": 27.0,
+                        "y": 55.0
+                    },
+                    "uuid": "27b00623-e6c3-4564-9f15-f0de152f88ee"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'R_0603_1608Metric' не відповідає копії в бібліотеці 'Resistor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце R1",
+                    "pos": {
+                        "x": 25.0,
+                        "y": 89.0
+                    },
+                    "uuid": "29e12769-14b9-4688-b4bd-1e2d21b11429"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'VQFN-16-1EP_3x3mm_P0.5mm_EP1.45x1.45mm' не відповідає копії в бібліотеці 'Package_DFN_QFN'",
+            "items": [
+                {
+                    "description": "Посадкове місце U1",
+                    "pos": {
+                        "x": 76.0,
+                        "y": 42.0
+                    },
+                    "uuid": "3b2d90d9-7df8-42f0-b6ad-888e9da0cf8f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C79",
+                    "pos": {
+                        "x": 38.0,
+                        "y": 43.5
+                    },
+                    "uuid": "3c68c2e3-d04a-4f07-bbff-b4b3d867537c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Molex_Micro-Fit_3.0_43650-0400_1x04_P3.00mm_Horizontal' не відповідає копії в бібліотеці 'Connector_Molex'",
+            "items": [
+                {
+                    "description": "Посадкове місце J8",
+                    "pos": {
+                        "x": 29.0,
+                        "y": 78.0
+                    },
+                    "uuid": "4875300f-0326-4476-b950-d1e134a3360f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C83",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 43.5
+                    },
+                    "uuid": "489aa44f-2ccb-4849-b9c0-e1b0d3a2baad"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C81",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 43.5
+                    },
+                    "uuid": "4b0edb03-699c-4465-96a6-d4b0cc0acf7c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'DMP3007LSS_SO8_LOGICAL' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце Q1",
+                    "pos": {
+                        "x": 29.0,
+                        "y": 85.0
+                    },
+                    "uuid": "4ccc907e-24bd-421c-b3cf-aeda9e949924"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'R_0603_1608Metric' не відповідає копії в бібліотеці 'Resistor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце R95",
+                    "pos": {
+                        "x": 63.5,
+                        "y": 67.95
+                    },
+                    "uuid": "50bf3e2a-61f7-4257-bcd7-bb8092da7eaf"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0603_1608Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C80",
+                    "pos": {
+                        "x": 50.1,
+                        "y": 47.05
+                    },
+                    "uuid": "5f1988e3-890e-4c58-a732-51fe61c4bd8f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0805_2012Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C23",
+                    "pos": {
+                        "x": 108.8,
+                        "y": 51.0
+                    },
+                    "uuid": "62e9b337-4acc-4664-b53f-0ebadc470eec"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C78",
+                    "pos": {
+                        "x": 41.0,
+                        "y": 43.5
+                    },
+                    "uuid": "65a36811-07f4-46fb-ae05-45735e86ca69"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C103",
+                    "pos": {
+                        "x": 37.5,
+                        "y": 49.4
+                    },
+                    "uuid": "7783cd08-b041-4390-86fe-f8ee22a551ae"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'TestPoint_Plated_Hole_D2.0mm' не відповідає копії в бібліотеці 'TestPoint'",
+            "items": [
+                {
+                    "description": "Посадкове місце TP26",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 70.5
+                    },
+                    "uuid": "77bd7ad9-6666-4060-ba41-702964b12c4c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'L_Coilcraft_XFL4020' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце L1",
+                    "pos": {
+                        "x": 80.5,
+                        "y": 42.3
+                    },
+                    "uuid": "7866ee38-b116-44e4-8698-efbc9811c88c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'L_Bourns_SRP5030T' не відповідає копії в бібліотеці 'Inductor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце L2",
+                    "pos": {
+                        "x": 102.0,
+                        "y": 52.0
+                    },
+                    "uuid": "7db54381-a187-4e75-a677-1e30b788f415"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Converter_DCDC_RECOM_RS3_SIP8' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце U6",
+                    "pos": {
+                        "x": 114.9,
+                        "y": 73.0
+                    },
+                    "uuid": "86b2abe0-7d05-45af-abbd-27d61ca664a0"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C87",
+                    "pos": {
+                        "x": 56.5,
+                        "y": 49.4
+                    },
+                    "uuid": "8b5ca0d0-4bbf-4590-a874-76551bf1130d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C85",
+                    "pos": {
+                        "x": 70.0,
+                        "y": 43.5
+                    },
+                    "uuid": "904d29ad-c2e9-4f3f-aec3-d531276a863d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Molex_Micro-Fit_3.0_43650-0600_1x06_P3.00mm_Horizontal' не відповідає копії в бібліотеці 'Connector_Molex'",
+            "items": [
+                {
+                    "description": "Посадкове місце J2",
+                    "pos": {
+                        "x": 72.0,
+                        "y": 24.0
+                    },
+                    "uuid": "9fb8922b-b892-4abf-aae7-81672141d786"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'LFCSP-8-1EP_3x3mm_P0.5mm_EP1.74x1.45mm' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце U4",
+                    "pos": {
+                        "x": 145.0,
+                        "y": 42.0
+                    },
+                    "uuid": "a00039e3-992f-4a62-9cef-8ae1ffbba710"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0805_2012Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C12",
+                    "pos": {
+                        "x": 85.0,
+                        "y": 42.3
+                    },
+                    "uuid": "a0a9787d-066e-421d-9fb7-b7e71606d0ab"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'TestPoint_Plated_Hole_D2.0mm' не відповідає копії в бібліотеці 'TestPoint'",
+            "items": [
+                {
+                    "description": "Посадкове місце TP38",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 33.0
+                    },
+                    "uuid": "a5b5b620-769b-47b6-a922-d58d57c637a2"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'D_SOD-123' не відповідає копії в бібліотеці 'Diode_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце D2",
+                    "pos": {
+                        "x": 29.0,
+                        "y": 89.0
+                    },
+                    "uuid": "a66c25bf-72f8-4428-b949-02890a7883b4"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Converter_DCDC_RECOM_RS3E_SIP8' не відповідає копії в бібліотеці 'R3_Power'",
+            "items": [
+                {
+                    "description": "Посадкове місце U3",
+                    "pos": {
+                        "x": 114.9,
+                        "y": 40.0
+                    },
+                    "uuid": "ac48a177-8b24-4183-bb72-31d3efc6a193"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'TestPoint_Plated_Hole_D2.0mm' не відповідає копії в бібліотеці 'TestPoint'",
+            "items": [
+                {
+                    "description": "Посадкове місце TP33",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 28.0
+                    },
+                    "uuid": "bd540fd9-903b-47d5-8dcf-cf204d564b44"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder' не відповідає копії в бібліотеці 'Fuse'",
+            "items": [
+                {
+                    "description": "Посадкове місце F3",
+                    "pos": {
+                        "x": 70.0,
+                        "y": 61.5
+                    },
+                    "uuid": "be39b8fb-aad2-4373-8f22-3d70a900154d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C84",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 43.5
+                    },
+                    "uuid": "c1c8ce47-51cc-413a-9655-e9fd0c69bee9"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C108",
+                    "pos": {
+                        "x": 79.0,
+                        "y": 66.0
+                    },
+                    "uuid": "d15f5fd7-77ac-43bf-aeb8-7206ca9d229c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'Molex_Micro-Fit_3.0_43650-0400_1x04_P3.00mm_Horizontal' не відповідає копії в бібліотеці 'Connector_Molex'",
+            "items": [
+                {
+                    "description": "Посадкове місце J4",
+                    "pos": {
+                        "x": 96.5,
+                        "y": 24.0
+                    },
+                    "uuid": "d19d7a29-8132-4c97-a141-b28ce0196cac"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0805_2012Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C41",
+                    "pos": {
+                        "x": 141.5,
+                        "y": 44.5
+                    },
+                    "uuid": "d7a0ad87-af39-460f-8115-b9e600ce1ff6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_1206_3216Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C102",
+                    "pos": {
+                        "x": 40.5,
+                        "y": 49.4
+                    },
+                    "uuid": "e05f8fbd-feb9-4098-b4ab-ae0bcef31c59"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'PinHeader_2x05_P2.54mm_Vertical' не відповідає копії в бібліотеці 'Connector_PinHeader_2.54mm'",
+            "items": [
+                {
+                    "description": "Посадкове місце J13",
+                    "pos": {
+                        "x": 154.0,
+                        "y": 24.0
+                    },
+                    "uuid": "f9d452e1-b799-4d6b-a5b1-4d686db242f5"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0603_1608Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C75",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 51.8
+                    },
+                    "uuid": "10474132-d333-4a7a-9478-e9e5d2c9423a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0603_1608Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C29",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 71.0
+                    },
+                    "uuid": "123d6bda-d9d1-4dbd-bb03-5114b8d23e8c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'R_0603_1608Metric' не відповідає копії в бібліотеці 'Resistor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце R78",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 56.0
+                    },
+                    "uuid": "34c9b9e0-457f-44f8-91c2-656ae188a4a3"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'R_0603_1608Metric' не відповідає копії в бібліотеці 'Resistor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце R21",
+                    "pos": {
+                        "x": 94.5,
+                        "y": 49.2
+                    },
+                    "uuid": "3c1ed5be-2a44-453c-b34d-6f2b3ff3d507"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0603_1608Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C70",
+                    "pos": {
+                        "x": 24.0,
+                        "y": 42.5
+                    },
+                    "uuid": "3d9f3f4d-fc85-4071-99c0-a0a3f36dba76"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'C_0603_1608Metric' не відповідає копії в бібліотеці 'Capacitor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце C27",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 46.5
+                    },
+                    "uuid": "f9c4bfca-7de8-4caf-ad37-3aaedaf47970"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Слід 'R_0603_1608Metric' не відповідає копії в бібліотеці 'Resistor_SMD'",
+            "items": [
+                {
+                    "description": "Посадкове місце R79",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 58.0
+                    },
+                    "uuid": "ff1bebc8-6905-4aef-aa27-fc3fa8875a23"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        }
+    ]
+}

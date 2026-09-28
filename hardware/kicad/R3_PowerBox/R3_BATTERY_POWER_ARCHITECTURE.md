@@ -1,8 +1,13 @@
 # R3 PowerBox 2S battery and power architecture
 
 Date: 2026-09-28
-Status: final UI / power-control / DRC pass complete; electrical validation gates
-remain before a routing release.
+Status: checkpoint F prototype routing complete on `routing/r3-powerbox-reva`.
+Architecture and current-limit policies unchanged. Bench validation is still
+required; this is not a production release. Current evidence: `docs/ROUTING_F.md`.
+
+L3 selection: Bourns SRP7028A-1R0M, 1 uH, 11 A Irms / 22 A Isat,
+10 mOhm maximum DCR at 25 C. Existing 6.04 kOhm PROG selects 2S / 1.5 MHz.
+Do not select 750 kHz in firmware: TI requires 2.2 uH for that frequency.
 
 ## Fixed system decision
 

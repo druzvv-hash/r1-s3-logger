@@ -1,14 +1,19 @@
 # R3 PowerBox review
 
 Review date: 2026-09-28
-Status: **prototype routing started, A0 incomplete; NOT FOR FABRICATION**.
+Status: **checkpoint F routed Rev.A prototype; NOT production-ready**.
 
-The current routing branch supersedes the historical no-routing status below.
-See `docs/ROUTING_CHECKPOINTS.md` for the exact implemented copper, baseline
-isolation placement defects corrected, 403 remaining unconnected findings,
-and required continuation. Electrical architecture and all connector/mounting
-coordinates are unchanged. There is no completed routed board or thermal/
-Kelvin acceptance yet; no main-branch routing release is claimed.
+Current acceptance and limitations: `docs/ROUTING_F.md` and
+`docs/VERIFICATION.md`. D/E were pushed at `b42e73f` before F modifications.
+F continues that board, not a regenerated PCB. All nets are connected; the
+3 mm isolation corridor and mounting/B2B geometry are preserved. Main is not
+modified. Historical design-pass sections below are not current routing status.
+The documented D-stage USB-C orientation repair and F-stage C75 bootstrap
+relocation are the explicit local exceptions, not a floorplan redesign.
+
+L3 is now **Bourns SRP7028A-1R0M**, with the existing 1 uH footprint.
+R75=6.04 kOhm selects 2S/1.5 MHz; firmware must retain 1.5 MHz.
+There is no powered thermal, EMC, charger or protection acceptance yet.
 
 The editable electrical source is `tools/generate_hierarchical.py`. Generated KiCad sheets, PDF and BOM are derived artifacts. The detailed battery decision record and budgets are in `R3_BATTERY_POWER_ARCHITECTURE.md`.
 

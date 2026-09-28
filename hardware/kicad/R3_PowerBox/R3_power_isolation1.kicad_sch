@@ -504,43 +504,6 @@
 	)
 	(global_label "DGND"
 		(shape bidirectional)
-		(at 97.24 109.46 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "8c71d6b3-f5d9-55bb-9e57-fffced3da8f5")
-	)
-	(global_label "+5V_PREISO_ADS"
-		(shape bidirectional)
-		(at 97.24 114.54 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "84bb3f6b-0106-5add-9414-b1ccb8f6c76b")
-	)
-	(global_label "CTRL_RS3E_PRI"
-		(shape bidirectional)
-		(at 97.24 112 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "c0c693e1-5994-52e7-9b44-62216e19fff1")
-	)
-	(no_connect
-		(at 66.76 106.92)
-		(uuid "10f1dd61-5f8d-5075-a2e7-fc4766b6be10")
-	)
-	(global_label "+5V_ISO_RAW"
-		(shape bidirectional)
 		(at 66.76 114.54 180)
 		(effects
 			(font
@@ -548,9 +511,9 @@
 			)
 			(justify right)
 		)
-		(uuid "6475cde5-96d2-57a6-8b29-62edc8e4b74f")
+		(uuid "8c71d6b3-f5d9-55bb-9e57-fffced3da8f5")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_PREISO_ADS"
 		(shape bidirectional)
 		(at 66.76 109.46 180)
 		(effects
@@ -559,24 +522,50 @@
 			)
 			(justify right)
 		)
-		(uuid "b00fc5cc-1fd2-5e19-88e7-d67d230f21d1")
+		(uuid "84bb3f6b-0106-5add-9414-b1ccb8f6c76b")
 	)
-	(no_connect
-		(at 66.76 117.08)
-		(uuid "83ec4d8e-9e0f-5e98-b931-be0da06b260d")
-	)
-	(global_label "+5V_ISO_RAW"
+	(global_label "CTRL_RS3E_PRI"
 		(shape bidirectional)
-		(at 125 78.19 270)
+		(at 66.76 112 180)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify right)
 		)
-		(uuid "f4584e44-c634-54c5-97bd-e12a7126ad71")
+		(uuid "c0c693e1-5994-52e7-9b44-62216e19fff1")
+	)
+	(no_connect
+		(at 97.24 117.08)
+		(uuid "10f1dd61-5f8d-5075-a2e7-fc4766b6be10")
+	)
+	(global_label "+5V_ISO_RAW"
+		(shape bidirectional)
+		(at 97.24 109.46 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "6475cde5-96d2-57a6-8b29-62edc8e4b74f")
 	)
 	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 97.24 114.54 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "b00fc5cc-1fd2-5e19-88e7-d67d230f21d1")
+	)
+	(no_connect
+		(at 97.24 106.92)
+		(uuid "83ec4d8e-9e0f-5e98-b931-be0da06b260d")
+	)
+	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
 		(at 125 85.81 90)
 		(effects
@@ -585,20 +574,20 @@
 			)
 			(justify left)
 		)
-		(uuid "97dbb22f-a061-5def-83d4-dbea58a79462")
+		(uuid "f4584e44-c634-54c5-97bd-e12a7126ad71")
 	)
-	(global_label "+5V_ISO_RAW"
+	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 125 143.81 90)
+		(at 125 78.19 270)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "1de221c9-70a6-58d8-8dca-ccfbc29da002")
+		(uuid "97dbb22f-a061-5def-83d4-dbea58a79462")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
 		(at 125 136.19 270)
 		(effects
@@ -607,20 +596,20 @@
 			)
 			(justify right)
 		)
-		(uuid "2b83bf7d-8bb9-5caf-b1d7-82d7c40ef032")
+		(uuid "1de221c9-70a6-58d8-8dca-ccfbc29da002")
 	)
-	(global_label "+5V_ISO_RAW"
+	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 170.334 82 0)
+		(at 125 143.81 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
-		(uuid "cec2767b-1446-5d45-b8fe-987d1fde54c0")
+		(uuid "2b83bf7d-8bb9-5caf-b1d7-82d7c40ef032")
 	)
-	(global_label "+5V_ISO_A"
+	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
 		(at 159.666 82 180)
 		(effects
@@ -629,20 +618,20 @@
 			)
 			(justify right)
 		)
-		(uuid "dd189e0e-bb5f-572e-bd90-12da9d450e55")
+		(uuid "cec2767b-1446-5d45-b8fe-987d1fde54c0")
 	)
-	(global_label "+5V_ISO_RAW"
+	(global_label "+5V_ISO_A"
 		(shape bidirectional)
-		(at 159.666 142 180)
+		(at 170.334 82 0)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "0bf78aeb-86db-5fc2-b74f-89effa00a8a2")
+		(uuid "dd189e0e-bb5f-572e-bd90-12da9d450e55")
 	)
-	(global_label "+5V_ISO_D"
+	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
 		(at 170.334 142 0)
 		(effects
@@ -651,20 +640,20 @@
 			)
 			(justify left)
 		)
-		(uuid "b388a7bf-848a-5fec-bd7f-a8ab952cad0e")
+		(uuid "0bf78aeb-86db-5fc2-b74f-89effa00a8a2")
 	)
-	(global_label "+5V_ISO_A"
+	(global_label "+5V_ISO_D"
 		(shape bidirectional)
-		(at 202 68.19 270)
+		(at 159.666 142 180)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify right)
 		)
-		(uuid "836d25d3-b14a-5a9a-bf75-0e525dd297f3")
+		(uuid "b388a7bf-848a-5fec-bd7f-a8ab952cad0e")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_ISO_A"
 		(shape bidirectional)
 		(at 202 75.81 90)
 		(effects
@@ -673,20 +662,20 @@
 			)
 			(justify left)
 		)
-		(uuid "15572e10-ea5d-5e06-90f5-d41ce1da9ea5")
+		(uuid "836d25d3-b14a-5a9a-bf75-0e525dd297f3")
 	)
-	(global_label "+5V_ISO_A"
+	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 230 75.81 90)
+		(at 202 68.19 270)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "7eb400a4-8eba-5649-bfd2-1ea8ce02956b")
+		(uuid "15572e10-ea5d-5e06-90f5-d41ce1da9ea5")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_ISO_A"
 		(shape bidirectional)
 		(at 230 68.19 270)
 		(effects
@@ -695,20 +684,20 @@
 			)
 			(justify right)
 		)
-		(uuid "b3f9d6d5-f016-5d9d-8040-bd0d59cc129d")
+		(uuid "7eb400a4-8eba-5649-bfd2-1ea8ce02956b")
 	)
-	(global_label "+5V_ISO_D"
+	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 202 141.19 270)
+		(at 230 75.81 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "bc1ef8da-c43e-5775-ae34-e96409f491b3")
+		(uuid "b3f9d6d5-f016-5d9d-8040-bd0d59cc129d")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_ISO_D"
 		(shape bidirectional)
 		(at 202 148.81 90)
 		(effects
@@ -717,20 +706,20 @@
 			)
 			(justify left)
 		)
-		(uuid "38295036-ff20-5b87-a7b1-2bb4b2e4a522")
+		(uuid "bc1ef8da-c43e-5775-ae34-e96409f491b3")
 	)
-	(global_label "+5V_ISO_D"
+	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 230 148.81 90)
+		(at 202 141.19 270)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "b40e75f6-74a6-54ee-8644-9e7c6360cb37")
+		(uuid "38295036-ff20-5b87-a7b1-2bb4b2e4a522")
 	)
-	(global_label "GND_ISO"
+	(global_label "+5V_ISO_D"
 		(shape bidirectional)
 		(at 230 141.19 270)
 		(effects
@@ -738,6 +727,17 @@
 				(size 0.8 0.8)
 			)
 			(justify right)
+		)
+		(uuid "b40e75f6-74a6-54ee-8644-9e7c6360cb37")
+	)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 230 148.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
 		)
 		(uuid "7810ad91-9a88-5ec1-9a29-e440b697c978")
 	)
@@ -829,12 +829,12 @@
       (uuid bbbf00df-8dfc-52da-87d2-30ca53761ba1))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "#FLG0201")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:RS3E")
-    (at 82 112 180)
+    (at 82 112 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -843,31 +843,31 @@
     (fields_autoplaced yes)
     (uuid 7770d356-72db-5ad8-a47d-14c5435862ff)
     (property "Reference" "U3"
-      (at 82 109.46 180)
+      (at 82 109.46 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "RS3E-0505S/H3"
-      (at 82 114.54 180)
+      (at 82 114.54 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "R3_Power:Converter_DCDC_RECOM_RS3E_SIP8"
-      (at 82 112 180)
+      (at 82 112 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fgOwPLnX/.ta93ececc9aa80a1b412c/Datasheet-447/RS3E.pdf"
-      (at 82 112 180)
+      (at 82 112 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 82 112 180)
+      (at 82 112 0)
       (effects
         (font
           (size 0.9 0.9))
@@ -888,12 +888,13 @@
       (uuid fd992194-a9b7-5c3f-b2ae-74ff6b85f11f))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "U3")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 125 82 0)
+    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -937,13 +938,12 @@
       (uuid 9572f90b-fd41-595c-990c-7606e1a1785f))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C30")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 125 140 0)
-    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -987,13 +987,12 @@
       (uuid 7c774d1e-58f0-5a30-b027-fef9f325c2dc))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C31")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:FERRITE")
-    (at 165 82 180)
-    (mirror x)
+    (at 165 82 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1002,31 +1001,31 @@
     (fields_autoplaced yes)
     (uuid d6cb36e3-3461-538e-bd40-40577881e181)
     (property "Reference" "FB2"
-      (at 165 79.46 180)
+      (at 165 79.46 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "FB_A / FB-or-0R"
-      (at 165 84.54 180)
+      (at 165 84.54 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-      (at 165 82 180)
+      (at 165 82 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 165 82 180)
+      (at 165 82 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 165 82 180)
+      (at 165 82 0)
       (effects
         (font
           (size 0.9 0.9))
@@ -1037,12 +1036,13 @@
       (uuid 25caf0a5-4d5e-508b-80bb-3d9237cdaf6e))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "FB2")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:FERRITE")
-    (at 165 142 0)
+    (at 165 142 180)
+    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1051,31 +1051,31 @@
     (fields_autoplaced yes)
     (uuid b8e7bc70-6232-58d2-9c8d-43ec4c89717e)
     (property "Reference" "FB3"
-      (at 165 139.46 0)
+      (at 165 139.46 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "FB_D / FB-or-0R"
-      (at 165 144.54 0)
+      (at 165 144.54 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-      (at 165 142 0)
+      (at 165 142 180)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 165 142 0)
+      (at 165 142 180)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 165 142 0)
+      (at 165 142 180)
       (effects
         (font
           (size 0.9 0.9))
@@ -1086,12 +1086,13 @@
       (uuid dc00540f-2c6d-5622-87f7-c720e482054a))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "FB3")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 202 72 0)
+    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1135,13 +1136,12 @@
       (uuid 7555f7ef-c0d8-5979-bbf9-98cebe346f6f))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C32")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 230 72 0)
-    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1185,12 +1185,13 @@
       (uuid d4c543fa-6075-5958-a416-19962a98eade))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C33")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 202 145 0)
+    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1234,13 +1235,12 @@
       (uuid b88d40ab-0709-5aaa-8da8-97425408f5d9))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C34")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
     (at 230 145 0)
-    (mirror x)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1284,7 +1284,7 @@
       (uuid 604bb839-6a62-5f01-991d-7fea3b06b867))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "C35")
           (unit 1)))))
   (symbol
@@ -1331,7 +1331,7 @@
       (uuid 2ae2ff3b-df4e-53d3-8958-36303e3f7d82))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "TP7")
           (unit 1)))))
   (symbol
@@ -1378,7 +1378,7 @@
       (uuid d802775a-b162-5188-b616-afcdeb92728a))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "TP8")
           (unit 1)))))
   (symbol
@@ -1425,7 +1425,7 @@
       (uuid 48c9fffa-bf44-521a-949e-b03bdd6ef3d6))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "TP9")
           (unit 1)))))
   (symbol
@@ -1472,7 +1472,7 @@
       (uuid 15f1596e-fa18-584c-89d8-ab9a1b1762e7))
     (instances
       (project "SKiDL-Generated"
-        (path "/9be6bff1-dc85-4a48-94a9-d7223c5e518f/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
+        (path "/c950aac3-a7f8-40a1-8854-63ca2e6194cc/f18c9f55-94d9-5c3a-8b95-7d08857f12fd"
           (reference "TP10")
           (unit 1)))))
 

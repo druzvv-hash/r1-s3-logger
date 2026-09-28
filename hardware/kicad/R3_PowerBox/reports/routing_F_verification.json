@@ -1,0 +1,338 @@
+{
+  "preserved_checkpoint": "b42e73f52d1e8538079f944b93870e21eaef7fe8",
+  "checks": {
+    "all_other_E_routes_preserved": true,
+    "all_other_E_footprint_positions_orientations_sides_preserved": true,
+    "C75_local_correction_position": true,
+    "zone_and_keepout_boundaries_preserved": true,
+    "R93_1_sense_root_inside_pad": true,
+    "R94_dedicated_0p2mm_FCu_pickup": true,
+    "R93_1_three_force_vias": true,
+    "R93_2_sense_root_inside_pad": true,
+    "R95_dedicated_0p2mm_FCu_pickup": true,
+    "R93_2_three_force_vias": true,
+    "both_Kelvin_no_pour_rules_present": true,
+    "no_selected_quiet_trace_projection_over_SW_tracks": true
+  },
+  "trace_length_mm_including_branches": {
+    "CHG_SW1": 19.883,
+    "BMS_SRP_FILT": 16.121,
+    "BMS_SRN_FILT": 19.697,
+    "SW_3V3": 2.613,
+    "SW_5V": 9.188,
+    "CHG_SW2": 17.788
+  },
+  "audited_local_route_changes": {
+    "86be6c96-dfe8-4437-8333-0159c9d93902": [
+      [
+        "+5V_INA",
+        [
+          131.0,
+          77.5
+        ],
+        [
+          131.0,
+          77.5
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "4d757a27-0b09-4043-8d1f-fe513eea768a": [
+      [
+        "PACK_POS",
+        [
+          47.225,
+          71.8
+        ],
+        [
+          47.225,
+          71.8
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "b163afd4-6105-492c-8ec6-237bc9e24a63": [
+      [
+        "+3V3_D",
+        [
+          49.825,
+          31.5
+        ],
+        [
+          49.825,
+          31.5
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "1b972f8d-cc1c-44b9-84a2-53a6984c74e3": [
+      [
+        "POWER_CTRL",
+        [
+          85.1,
+          74.0
+        ],
+        [
+          85.1,
+          70.0
+        ],
+        6,
+        200000
+      ],
+      null
+    ],
+    "40c80985-40ee-40b8-8ecd-afcefce54af3": [
+      [
+        "PM_I2C_SCL",
+        [
+          64.8,
+          79.6
+        ],
+        [
+          64.8,
+          79.6
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "f390aadd-fcbf-4172-a1b4-52a79f296208": [
+      [
+        "PM_I2C_SDA",
+        [
+          66.0,
+          79.1
+        ],
+        [
+          66.0,
+          79.1
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "36fffd62-fc32-4a07-9d3c-5665f449016a": [
+      [
+        "N$6",
+        [
+          54.4,
+          52.7
+        ],
+        [
+          54.4,
+          52.8
+        ],
+        0,
+        200000
+      ],
+      [
+        "N$6",
+        [
+          54.4,
+          52.7
+        ],
+        [
+          54.4,
+          53.1
+        ],
+        0,
+        200000
+      ]
+    ],
+    "e44773b4-ce4e-481b-baca-606d3f73c73b": [
+      [
+        "N$6",
+        [
+          54.4,
+          52.8
+        ],
+        [
+          54.4,
+          52.8
+        ],
+        0,
+        700000
+      ],
+      [
+        "N$6",
+        [
+          54.4,
+          53.1
+        ],
+        [
+          54.4,
+          53.1
+        ],
+        0,
+        700000
+      ]
+    ],
+    "37b68f8d-98fc-42fa-80dc-cfcb849ca838": [
+      [
+        "N$6",
+        [
+          54.4,
+          52.8
+        ],
+        [
+          54.0,
+          53.2
+        ],
+        2,
+        150000
+      ],
+      [
+        "N$6",
+        [
+          54.4,
+          53.1
+        ],
+        [
+          54.0,
+          53.2
+        ],
+        2,
+        150000
+      ]
+    ],
+    "03ee483d-867b-4fe0-b81f-4a4a26d99b2d": [
+      [
+        "N$8",
+        [
+          54.2,
+          51.4
+        ],
+        [
+          55.0,
+          52.2
+        ],
+        0,
+        200000
+      ],
+      null
+    ],
+    "db097bf5-9e7f-4431-a4b0-c7122b7487a0": [
+      [
+        "N$8",
+        [
+          52.8625,
+          51.4
+        ],
+        [
+          54.2,
+          51.4
+        ],
+        0,
+        200000
+      ],
+      null
+    ],
+    "8ef9684e-cc10-4150-941c-adb3bc903665": [
+      [
+        "N$8",
+        [
+          55.0,
+          52.2
+        ],
+        [
+          55.0,
+          52.2
+        ],
+        0,
+        700000
+      ],
+      null
+    ],
+    "2f475b68-cd49-49e6-95e1-5f18a571bf89": [
+      [
+        "N$8",
+        [
+          55.0,
+          52.2
+        ],
+        [
+          55.8,
+          53.0
+        ],
+        2,
+        200000
+      ],
+      null
+    ],
+    "85e5441f-e3f3-4ee9-b319-b402c1c942a2": [
+      [
+        "N$8",
+        [
+          55.8,
+          53.8
+        ],
+        [
+          54.775,
+          53.8
+        ],
+        2,
+        200000
+      ],
+      null
+    ],
+    "95107455-0c8a-44dd-b856-af888871babb": [
+      [
+        "N$8",
+        [
+          55.8,
+          53.0
+        ],
+        [
+          55.8,
+          53.8
+        ],
+        2,
+        200000
+      ],
+      null
+    ],
+    "1deab3a7-5e7f-4af3-b785-25a58dad8758": [
+      [
+        "CHG_SW2",
+        [
+          51.7,
+          53.8
+        ],
+        [
+          53.225,
+          53.8
+        ],
+        2,
+        200000
+      ],
+      null
+    ],
+    "24916ae9-7615-4fca-8a10-908e9fbae25a": [
+      [
+        "CHG_SW2",
+        [
+          51.7,
+          51.5
+        ],
+        [
+          51.7,
+          53.8
+        ],
+        2,
+        200000
+      ],
+      null
+    ]
+  },
+  "unexpected_route_changes": {},
+  "quiet_SW_projection_overlaps": [],
+  "limitations": "Geometrical checks, not impedance/EMC/thermal qualification. Kelvin traces are not length-matched. No powered hardware test."
+}

@@ -1,21 +1,41 @@
 # Verification status
 
-Status: **PARTIAL ROUTING A0 / NOT FOR FABRICATION / 403 UNCONNECTED FINDINGS**.
+Status: **CHECKPOINT F / ROUTED REV.A PROTOTYPE / NOT PRODUCTION-READY**.
 
 ## Current routing-branch evidence (2026-09-28)
 
-See `ROUTING_CHECKPOINTS.md`. The current PCB has 126 track segments and 54
-vias, not zero tracks. A0 DRC reports zero electrical clearance/short,
-copper-edge, hole, drill, annular and courtyard errors, but 403 unconnected
-findings and 246 other warnings remain. ERC is still 0 errors / 412 warnings.
-No copper planes are filled, and Kelvin/complete return-path review is OPEN.
+See `ROUTING_F.md` for the final scope and limitations. The current board has
+1343 segments, 337 vias, 14 filled domain/thermal zones and 199 footprints.
+DRC with all-track-errors and schematic parity: **0 errors, 0 unconnected,
+0 schematic-parity findings**. There are **43 library-footprint mismatch
+warnings**, reflecting intentionally edited embedded land patterns/legends;
+they are not clearance waivers and remain visible in the report. No remaining
+silk, dangling, copper-edge, hole, drill, annular or courtyard findings.
+ERC: **0 errors / 412 warnings** (206 library-symbol mismatches and 206
+off-grid label endpoints from the existing SKiDL drawing process).
+
+Evidence: `reports/routing_checkpoint_F_drc.json`,
+`reports/routing_checkpoint_F_erc.json`, `reports/routing_F_verification.json`,
+`reports/routing_schematic_net_parity.json`, `reports/routing_domain_audit.json`,
+and `reports/routing_invariants.json`. Exact exported schematic pin/net parity
+passes. Independent actual-filled-polygon checks pass for isolation and all
+six mounting envelopes. Scratch-only isolation track/via/pad negative control
+still detects all three forbidden objects. No production Gerbers generated.
+
+F preserves E copper/zone boundaries and all E placements except the audited
+local C75 bootstrap correction. Dedicated shunt-pad pickups and no-pour rules
+pass; three force vias per shunt terminal remain. SRP/SRN are not length matched.
+Filled-layer return review is geometric/visual, not EMC or powered validation.
+11-page PDF re-exported and visually reviewed; schematic label-only style and
+its historical ERC warnings remain, not claimed to be a newly redrawn schematic.
 
 Independent audit found eight baseline pads intersecting the isolation
 corridor, plus parts assigned to the wrong physical domain. Those placement
 defects are corrected. The old "no isolation intrusion" statement below must
 not be treated as proven acceptance. The current named disallow rule passes
 a deliberate track/via/pad negative-control test. Net and fixed-mechanical
-invariants pass against `1ccbc857938f1d36dbe252c1533ed0361289e0a1`.
+invariants pass against `1ccbc857938f1d36dbe252c1533ed0361289e0a1`, with the
+explicit SW2 and outward-facing J7 corrections documented in A/D.
 
 ## Historical pre-routing evidence (not current routing acceptance)
 
