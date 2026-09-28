@@ -1,5 +1,20 @@
 # Current memory entry point
 
+## 2026-09-28 — PowerBox routing branch A0 (incomplete)
+
+Latest owner request authorizes prototype routing from `1ccbc857938f1d36dbe252c1533ed0361289e0a1`.
+Work is isolated in `C:/Projects/r3-powerbox-routing`, branch
+`routing/r3-powerbox-reva`; canonical main and its unrelated dirty files are
+not modified. Baseline branch: `baseline/r3-powerbox-pre-routing-1ccbc85`.
+Only A0 partial charger/positive battery routing exists: 126 segments / 54
+vias, 403 unconnected DRC findings, no ground pours, Kelvin/shunt NOT routed.
+Eight pre-existing barrier pad intrusions and wrong-domain filter/TP/RUN
+placement were corrected. Never repeat the older "isolation verified" claim
+without the independent domain audit and negative-control DRC test.
+Continuation and evidence: `hardware/kicad/R3_PowerBox/docs/ROUTING_CHECKPOINTS.md`.
+This is NOT a routed release, not completed checkpoint A, and not suitable
+for fabrication. Placement generator now refuses to erase existing tracks.
+
 ## 2026-09-28 — R3 PowerBox mechanical/interconnect baseline
 
 FINAL PRE-ROUTING / NOT ROUTED: PowerBox now has six 3.2 mm NPTH M3 holes

@@ -1,0 +1,53 @@
+{
+  "test": "deliberate track + via + TP15 pad in isolation corridor",
+  "expected_minimum_items_not_allowed": 3,
+  "actual": 3,
+  "pass": true,
+  "violations": [
+    {
+      "description": "Елементи заборонені (правило 'R3 all-layer isolation - no conductive objects')",
+      "items": [
+        {
+          "description": "Доріжка [DGND] на F.Cu, довжина 4,0000 mm",
+          "pos": {
+            "x": 120.5,
+            "y": 60.0
+          },
+          "uuid": "f3181dc2-63cf-4224-bbc2-7fe45d31fcb4"
+        }
+      ],
+      "severity": "error",
+      "type": "items_not_allowed"
+    },
+    {
+      "description": "Елементи заборонені (правило 'R3 all-layer isolation - no conductive objects')",
+      "items": [
+        {
+          "description": "Перехідний отвір [DGND] на F.Cu - B.Cu",
+          "pos": {
+            "x": 122.5,
+            "y": 63.0
+          },
+          "uuid": "d66494fc-cc92-46fb-a8ed-2fe538d26a44"
+        }
+      ],
+      "severity": "error",
+      "type": "items_not_allowed"
+    },
+    {
+      "description": "Елементи заборонені (правило 'R3 all-layer isolation - no conductive objects')",
+      "items": [
+        {
+          "description": "PTH конт. площадка 1 [DGND] на TP15",
+          "pos": {
+            "x": 122.5,
+            "y": 67.0
+          },
+          "uuid": "df76616d-4b4f-40e4-b238-8e764e7c04b2"
+        }
+      ],
+      "severity": "error",
+      "type": "items_not_allowed"
+    }
+  ]
+}

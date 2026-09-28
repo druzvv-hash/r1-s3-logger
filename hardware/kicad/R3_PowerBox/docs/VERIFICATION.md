@@ -1,6 +1,23 @@
 # Verification status
 
-Status: **FINAL PRE-ROUTING PLACEMENT CAPTURED / ERC PASSED WITH WARNINGS / NO ROUTING**.
+Status: **PARTIAL ROUTING A0 / NOT FOR FABRICATION / 403 UNCONNECTED FINDINGS**.
+
+## Current routing-branch evidence (2026-09-28)
+
+See `ROUTING_CHECKPOINTS.md`. The current PCB has 126 track segments and 54
+vias, not zero tracks. A0 DRC reports zero electrical clearance/short,
+copper-edge, hole, drill, annular and courtyard errors, but 403 unconnected
+findings and 246 other warnings remain. ERC is still 0 errors / 412 warnings.
+No copper planes are filled, and Kelvin/complete return-path review is OPEN.
+
+Independent audit found eight baseline pads intersecting the isolation
+corridor, plus parts assigned to the wrong physical domain. Those placement
+defects are corrected. The old "no isolation intrusion" statement below must
+not be treated as proven acceptance. The current named disallow rule passes
+a deliberate track/via/pad negative-control test. Net and fixed-mechanical
+invariants pass against `1ccbc857938f1d36dbe252c1533ed0361289e0a1`.
+
+## Historical pre-routing evidence (not current routing acceptance)
 
 Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
 

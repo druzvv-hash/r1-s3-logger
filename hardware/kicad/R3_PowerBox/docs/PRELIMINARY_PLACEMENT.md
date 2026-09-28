@@ -1,7 +1,14 @@
 # R3 PowerBox preliminary placement
 
-Status: final pre-routing placement checkpoint; **no tracks or production
-copper pours are present**.
+Status: **A0 partial prototype routing; no copper pours yet**.
+
+Current details and exceptions are in `ROUTING_CHECKPOINTS.md`. Charger
+bypasses/bulk were locally regrouped; C74/C75 moved to B.Cu per TI layout
+guidance. Secondary filters were moved out of the isolation corridor and
+wrong-domain R105/TP15 were returned to primary. The functional zones,
+J1-J13, H1-H6, U3/U6 and upper-board envelope remain unchanged. The original
+coordinates described below are historical where superseded by the explicit
+`tools/route_reva.py` placement table. Use current PCB coordinates for work.
 
 The board now also carries six M3 NPTH mounting holes, optional primary and
 isolated B2B headers, and a `Dwgs.User` future-R3 envelope. Exact coordinates

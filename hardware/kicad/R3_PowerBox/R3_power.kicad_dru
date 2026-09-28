@@ -1,4 +1,7 @@
 (version 1)
+(rule "R3 all-layer isolation - no conductive objects"
+  (condition "A.intersectsArea('ISOLATION_CORRIDOR')")
+  (constraint disallow track via pad zone))
 
 # General project clearance is 0.13 mm. This is deliberately above the
 # selected 4-layer manufacturer's 0.09 mm standard capability while accepting

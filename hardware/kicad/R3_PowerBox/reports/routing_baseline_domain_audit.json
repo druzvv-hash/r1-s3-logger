@@ -1,0 +1,170 @@
+{
+  "board": "routing_baseline.kicad_pcb",
+  "footprints": 199,
+  "track_via_objects": 0,
+  "issues": [
+    {
+      "kind": "primary_pad_on_isolated",
+      "item": "TP15.1",
+      "net": "DGND"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB5.1",
+      "net": "-5V_INA_RAW"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB5.2",
+      "net": "-5V_INA"
+    },
+    {
+      "kind": "primary_pad_on_isolated",
+      "item": "R105.1",
+      "net": "+3V3_D"
+    },
+    {
+      "kind": "primary_pad_on_isolated",
+      "item": "R105.2",
+      "net": "RUN_LED_A"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C35.1",
+      "net": "+5V_ISO_D"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C35.2",
+      "net": "GND_ISO",
+      "x": [
+        121.325,
+        122.225
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C35.2",
+      "net": "GND_ISO"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C60.1",
+      "net": "+5V_INA",
+      "x": [
+        120.55,
+        121.55
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C60.1",
+      "net": "+5V_INA"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C60.2",
+      "net": "GND_ISO",
+      "x": [
+        122.45,
+        123.45
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C60.2",
+      "net": "GND_ISO"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB4.1",
+      "net": "+5V_INA_RAW"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB4.2",
+      "net": "+5V_INA"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C61.1",
+      "net": "+5V_INA"
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C61.2",
+      "net": "GND_ISO"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C34.1",
+      "net": "+5V_ISO_D",
+      "x": [
+        120.55,
+        121.55
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C34.1",
+      "net": "+5V_ISO_D"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C34.2",
+      "net": "GND_ISO",
+      "x": [
+        122.45,
+        123.45
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C34.2",
+      "net": "GND_ISO"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "FB3.1",
+      "net": "+5V_ISO_RAW",
+      "x": [
+        120.575,
+        121.6
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB3.1",
+      "net": "+5V_ISO_RAW"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "FB3.2",
+      "net": "+5V_ISO_D",
+      "x": [
+        122.4,
+        123.425
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "FB3.2",
+      "net": "+5V_ISO_D"
+    },
+    {
+      "kind": "barrier_pad",
+      "item": "C33.1",
+      "net": "+5V_ISO_A",
+      "x": [
+        123.775,
+        124.675
+      ]
+    },
+    {
+      "kind": "isolated_pad_on_primary",
+      "item": "C33.1",
+      "net": "+5V_ISO_A"
+    }
+  ],
+  "scope": "Copper pad bounding boxes and tracks/vias; zones require separate filled-copper audit and DRC."
+}

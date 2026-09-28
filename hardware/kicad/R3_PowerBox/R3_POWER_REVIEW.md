@@ -1,7 +1,14 @@
 # R3 PowerBox review
 
 Review date: 2026-09-28
-Status: final UI / power-control / DRC pass complete; **routing remains blocked by the validation items below**.
+Status: **prototype routing started, A0 incomplete; NOT FOR FABRICATION**.
+
+The current routing branch supersedes the historical no-routing status below.
+See `docs/ROUTING_CHECKPOINTS.md` for the exact implemented copper, baseline
+isolation placement defects corrected, 403 remaining unconnected findings,
+and required continuation. Electrical architecture and all connector/mounting
+coordinates are unchanged. There is no completed routed board or thermal/
+Kelvin acceptance yet; no main-branch routing release is claimed.
 
 The editable electrical source is `tools/generate_hierarchical.py`. Generated KiCad sheets, PDF and BOM are derived artifacts. The detailed battery decision record and budgets are in `R3_BATTERY_POWER_ARCHITECTURE.md`.
 

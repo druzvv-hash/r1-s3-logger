@@ -200,6 +200,11 @@ def add_line(board, x1, y1, x2, y2, layer, width=0.20):
 
 
 def main() -> None:
+    if BOARD_PATH.exists():
+        current = pcbnew.LoadBoard(str(BOARD_PATH))
+        if len(current.GetTracks()):
+            raise RuntimeError('Refusing to replace a routed PCB with preliminary placement. '
+                               'Use a separate checkout of the pre-routing baseline.')
     export_netlist()
     tree = ET.parse(NETLIST_PATH)
     root = tree.getroot()
@@ -211,6 +216,7 @@ def main() -> None:
     for zone in board.Zones():
         if zone.GetIsRuleArea():
             zone.SetLayerSet(barrier_layers)
+            zone.SetZoneName('ISOLATION_CORRIDOR')
     # This placement generator is intentionally never a router. The tracked
     # floorplan board starts with no tracks, and this script does not add any.
 

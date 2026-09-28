@@ -1,5 +1,32 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — R3 PowerBox routing A0, partial checkpoint
+
+IMPLEMENTED / HOST CHECKED ONLY. Created isolated routing worktree/branch from
+the owner-specified main SHA and a baseline branch. Canonical main's unrelated
+dirty work was not touched. No electrical schematic/net assignment changed.
+
+Independent audit disproved the prior isolation-clear assertion: eight pad
+boxes intruded into x=121..124 and additional primary/secondary components
+were placed in the wrong domain. Corrected those positions while preserving
+all connector/mounting/module anchors and upper-board envelope. Added a named
+disallow rule plus a scratch-only deliberately bad track/via/pad test; all
+three failures are detected. Original rule-area-only miss: cause unresolved.
+
+Explicit non-autorouter recipes add initial BQ25798 switching/bypass/bulk and
+Q2/Q3 positive-force paths: 126 segments / 54 through vias. C74/C75 are on
+the underside per TI's layout example. Intermediate DRC found local overlaps,
+power-bus/ground-via conflicts and a J10 NPTH conflict; these were fixed before
+the checkpoint. Remaining: 403 unconnected findings, 35 dangling vias and
+211 silk warnings; zero present clearance/short/edge/hole/drill/annular/
+courtyard errors. ERC: 0 errors, 412 inherited symbol/grid warnings.
+
+This is A0, not completion of requested checkpoints A-F. Shunt force/Kelvin,
+cell/gate networks, remaining power/control/B2B routing, planes, thermal and
+final cleanup are still open. No production Gerbers or acceptance claim.
+See `hardware/kicad/R3_PowerBox/docs/ROUTING_CHECKPOINTS.md` for reproduction,
+exact next work and evidence; new copper views are explicitly marked incomplete.
+
 ## 2026-09-28 — R3 PowerBox mechanical and B2B pass
 
 Added six electrically floating 3.20 mm NPTH M3 holes with project-local 8 mm

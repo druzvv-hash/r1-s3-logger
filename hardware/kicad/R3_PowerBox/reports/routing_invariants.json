@@ -1,0 +1,145 @@
+{
+  "baseline": "1ccbc857938f1d36dbe252c1533ed0361289e0a1",
+  "checks": {
+    "all_pad_net_assignments_unchanged": true,
+    "fixed_mechanical_and_isolation_positions_unchanged": true,
+    "board_outline_unchanged": true,
+    "upper_board_envelope_unchanged": true,
+    "four_copper_layers": true,
+    "ground_nets_distinct": true,
+    "no_copper_zones_yet": true,
+    "no_via_drills_in_capacitor_lands": true
+  },
+  "fixed_locations_mm": {
+    "J1": [
+      27.0,
+      55.0,
+      90.0
+    ],
+    "J2": [
+      72.0,
+      24.0,
+      0.0
+    ],
+    "J3": [
+      175.0,
+      81.0,
+      90.0
+    ],
+    "J4": [
+      96.5,
+      24.0,
+      0.0
+    ],
+    "J5": [
+      108.0,
+      68.0,
+      90.0
+    ],
+    "J6": [
+      175.0,
+      42.0,
+      90.0
+    ],
+    "J7": [
+      24.8,
+      33.0,
+      90.0
+    ],
+    "J8": [
+      29.0,
+      78.0,
+      90.0
+    ],
+    "J9": [
+      52.0,
+      24.0,
+      0.0
+    ],
+    "J10": [
+      55.0,
+      92.0,
+      0.0
+    ],
+    "J11": [
+      91.0,
+      92.0,
+      0.0
+    ],
+    "J12": [
+      106.0,
+      28.0,
+      0.0
+    ],
+    "J13": [
+      154.0,
+      24.0,
+      0.0
+    ],
+    "H1": [
+      35.0,
+      25.5,
+      0.0
+    ],
+    "H2": [
+      174.5,
+      25.5,
+      0.0
+    ],
+    "H3": [
+      25.5,
+      94.5,
+      0.0
+    ],
+    "H4": [
+      174.5,
+      94.5,
+      0.0
+    ],
+    "H5": [
+      115.0,
+      25.5,
+      0.0
+    ],
+    "H6": [
+      135.0,
+      94.5,
+      0.0
+    ],
+    "U3": [
+      114.9,
+      40.0,
+      0.0
+    ],
+    "U6": [
+      114.9,
+      73.0,
+      0.0
+    ],
+    "SW1": [
+      89.0,
+      70.0,
+      0.0
+    ],
+    "SW2": [
+      72.0,
+      78.0,
+      0.0
+    ],
+    "Q4": [
+      72.0,
+      70.0,
+      0.0
+    ]
+  },
+  "tracks": 126,
+  "vias": 54,
+  "via_holes_in_cap_lands": [],
+  "critical_local_nets_without_unconnected_findings": {
+    "CHG_SW1": true,
+    "CHG_SW2": true,
+    "CHG_PMID": true,
+    "N$7": true,
+    "N$8": true
+  }
+}
