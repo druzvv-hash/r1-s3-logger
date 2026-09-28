@@ -766,10 +766,6 @@
 		(uuid "1f8700bf-fa5d-5573-b7d0-6ca0cdea162d")
 	)
 	(no_connect
-		(at 211.604 118.89)
-		(uuid "53d46860-acaa-52b1-8682-0f7da9563e41")
-	)
-	(no_connect
 		(at 251.604 66.27)
 		(uuid "5e70e4b1-1416-542f-b926-dfeacc251f49")
 	)
@@ -785,16 +781,34 @@
 		(at 58.604 148.81)
 		(uuid "e40cc515-ff5c-5c43-865c-affccf2be74a")
 	)
-	(no_connect
-		(at 211.604 121.43)
-		(uuid "efeded73-6a8d-5620-a360-b7dac2c1f700")
+	(global_label "PD_CONTRACT_12V_N"
+		(shape bidirectional)
+		(at 211.604 121.43 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "058fc7ca-8e5b-5040-b792-c53b55a19e5a")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 211.604 121.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
 		(at 151.604 111.27 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -816,7 +830,7 @@
 		(at 151.604 98.57 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -838,7 +852,7 @@
 		(at 151.604 121.43 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -860,7 +874,7 @@
 		(at 58.604 75.81 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -882,7 +896,7 @@
 		(at 251.604 143.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -904,7 +918,7 @@
 		(at 151.604 101.11 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -926,7 +940,7 @@
 		(at 251.604 63.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -948,7 +962,7 @@
 		(at 58.604 65.65 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -970,7 +984,7 @@
 		(at 211.604 103.65 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -992,7 +1006,7 @@
 		(at 211.604 108.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1014,7 +1028,7 @@
 		(at 58.604 146.27 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1031,12 +1045,34 @@
 			)
 		)
 	)
+	(global_label "PD_ALERT_N"
+		(shape bidirectional)
+		(at 211.604 118.89 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "7ad26cc3-19f6-5620-a144-4852b36124de")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 211.604 118.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "-5V_INA"
 		(shape bidirectional)
 		(at 151.604 118.89 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1058,7 +1094,7 @@
 		(at 58.604 143.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1080,7 +1116,7 @@
 		(at 151.604 113.81 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1102,7 +1138,7 @@
 		(at 151.604 103.65 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1124,7 +1160,7 @@
 		(at 151.604 108.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1146,7 +1182,7 @@
 		(at 211.604 111.27 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1168,7 +1204,7 @@
 		(at 151.604 106.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1190,7 +1226,7 @@
 		(at 251.604 146.27 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1212,7 +1248,7 @@
 		(at 151.604 116.35 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1234,7 +1270,7 @@
 		(at 211.604 113.81 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1256,7 +1292,7 @@
 		(at 105 148.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1278,7 +1314,7 @@
 		(at 58.604 141.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1300,7 +1336,7 @@
 		(at 58.604 68.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1322,7 +1358,7 @@
 		(at 211.604 116.35 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1344,7 +1380,7 @@
 		(at 251.604 61.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1366,7 +1402,7 @@
 		(at 211.604 106.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1388,7 +1424,7 @@
 		(at 211.604 101.11 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1410,7 +1446,7 @@
 		(at 251.604 141.19 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1432,7 +1468,7 @@
 		(at 211.604 98.57 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1454,7 +1490,7 @@
 		(at 58.604 73.27 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1476,7 +1512,7 @@
 		(at 58.604 70.73 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1511,7 +1547,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1522,7 +1558,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1534,7 +1570,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1545,7 +1581,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1556,7 +1592,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1592,7 +1628,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J10")
 					(unit 1)
 				)
@@ -1617,7 +1653,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1628,7 +1664,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1640,7 +1676,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1651,7 +1687,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1662,7 +1698,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1680,7 +1716,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J6")
 					(unit 1)
 				)
@@ -1705,7 +1741,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1716,7 +1752,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1728,7 +1764,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1739,7 +1775,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1750,7 +1786,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1774,7 +1810,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J2")
 					(unit 1)
 				)
@@ -1799,7 +1835,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1810,7 +1846,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1822,7 +1858,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1833,7 +1869,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1844,7 +1880,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1862,7 +1898,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J5")
 					(unit 1)
 				)
@@ -1887,7 +1923,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1898,7 +1934,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1910,7 +1946,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1921,7 +1957,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1932,7 +1968,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1968,7 +2004,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J3")
 					(unit 1)
 				)
@@ -1993,7 +2029,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2004,7 +2040,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2016,7 +2052,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2027,7 +2063,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2038,7 +2074,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2056,7 +2092,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "J4")
 					(unit 1)
 				)
@@ -2081,7 +2117,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2092,7 +2128,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2104,7 +2140,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2115,7 +2151,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2126,7 +2162,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2135,7 +2171,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/1be93b63-c24c-53ff-8b75-634009bbe10e"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/1be93b63-c24c-53ff-8b75-634009bbe10e"
 					(reference "TP15")
 					(unit 1)
 				)

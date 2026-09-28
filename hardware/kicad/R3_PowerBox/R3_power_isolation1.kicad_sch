@@ -546,7 +546,7 @@
 						)
 					)
 				)
-				(pin passive line
+				(pin power_out line
 					(at 15.24 -2.54 180)
 					(length 5.08)
 					(name "-VOUT"
@@ -811,25 +811,25 @@
 		)
 	)
 	(no_connect
-		(at 87.08 96.76)
+		(at 97.24 117.08)
 		(uuid "10f1dd61-5f8d-5075-a2e7-fc4766b6be10")
 	)
 	(no_connect
-		(at 76.92 96.76)
+		(at 97.24 106.92)
 		(uuid "83ec4d8e-9e0f-5e98-b931-be0da06b260d")
 	)
 	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
-		(at 165 136.666 270)
+		(at 170.334 142 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "0bf78aeb-86db-5fc2-b74f-89effa00a8a2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 165 136.666 0)
+			(at 170.334 142 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -842,16 +842,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 198.19 72 180)
+		(at 202 68.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "15572e10-ea5d-5e06-90f5-d41ce1da9ea5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198.19 72 0)
+			(at 202 68.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -864,16 +864,16 @@
 	)
 	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
-		(at 121.19 140 180)
+		(at 125 136.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "1de221c9-70a6-58d8-8dca-ccfbc29da002")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 121.19 140 0)
+			(at 125 136.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -886,16 +886,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 128.81 140 0)
+		(at 125 143.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "2b83bf7d-8bb9-5caf-b1d7-82d7c40ef032")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 128.81 140 0)
+			(at 125 143.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -908,16 +908,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 198.19 145 180)
+		(at 202 141.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "38295036-ff20-5b87-a7b1-2bb4b2e4a522")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198.19 145 0)
+			(at 202 141.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -933,7 +933,7 @@
 		(at 260 175.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -952,16 +952,16 @@
 	)
 	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
-		(at 79.46 96.76 270)
+		(at 97.24 109.46 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "6475cde5-96d2-57a6-8b29-62edc8e4b74f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 79.46 96.76 0)
+			(at 97.24 109.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -974,16 +974,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 233.81 145 0)
+		(at 230 148.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "7810ad91-9a88-5ec1-9a29-e440b697c978")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.81 145 0)
+			(at 230 148.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -999,7 +999,7 @@
 		(at 245 51.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1018,16 +1018,16 @@
 	)
 	(global_label "+5V_ISO_A"
 		(shape bidirectional)
-		(at 226.19 72 180)
+		(at 230 68.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "7eb400a4-8eba-5649-bfd2-1ea8ce02956b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 226.19 72 0)
+			(at 230 68.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1043,7 +1043,7 @@
 		(at 200 51.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1062,16 +1062,16 @@
 	)
 	(global_label "+5V_ISO_A"
 		(shape bidirectional)
-		(at 205.81 72 0)
+		(at 202 75.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "836d25d3-b14a-5a9a-bf75-0e525dd297f3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 205.81 72 0)
+			(at 202 75.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1084,16 +1084,16 @@
 	)
 	(global_label "+5V_PREISO_ADS"
 		(shape bidirectional)
-		(at 79.46 127.24 90)
+		(at 66.76 109.46 180)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "84bb3f6b-0106-5add-9414-b1ccb8f6c76b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 79.46 127.24 0)
+			(at 66.76 109.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1106,16 +1106,16 @@
 	)
 	(global_label "DGND"
 		(shape bidirectional)
-		(at 84.54 127.24 90)
+		(at 66.76 114.54 180)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "8c71d6b3-f5d9-55bb-9e57-fffced3da8f5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 84.54 127.24 0)
+			(at 66.76 114.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1128,16 +1128,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 121.19 82 180)
+		(at 125 78.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "97dbb22f-a061-5def-83d4-dbea58a79462")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 121.19 82 0)
+			(at 125 78.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1150,16 +1150,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 84.54 96.76 270)
+		(at 97.24 114.54 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "b00fc5cc-1fd2-5e19-88e7-d67d230f21d1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 84.54 96.76 0)
+			(at 97.24 114.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1175,7 +1175,7 @@
 		(at 48 50 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1194,16 +1194,16 @@
 	)
 	(global_label "+5V_ISO_D"
 		(shape bidirectional)
-		(at 165 147.334 90)
+		(at 159.666 142 180)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "b388a7bf-848a-5fec-bd7f-a8ab952cad0e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 165 147.334 0)
+			(at 159.666 142 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1216,16 +1216,16 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 233.81 72 0)
+		(at 230 75.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "b3f9d6d5-f016-5d9d-8040-bd0d59cc129d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 233.81 72 0)
+			(at 230 75.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1238,16 +1238,16 @@
 	)
 	(global_label "+5V_ISO_D"
 		(shape bidirectional)
-		(at 226.19 145 180)
+		(at 230 141.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
 		(uuid "b40e75f6-74a6-54ee-8644-9e7c6360cb37")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 226.19 145 0)
+			(at 230 141.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1260,16 +1260,16 @@
 	)
 	(global_label "+5V_ISO_D"
 		(shape bidirectional)
-		(at 205.81 145 0)
+		(at 202 148.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "bc1ef8da-c43e-5775-ae34-e96409f491b3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 205.81 145 0)
+			(at 202 148.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1282,16 +1282,16 @@
 	)
 	(global_label "CTRL_RS3E_PRI"
 		(shape bidirectional)
-		(at 82 127.24 90)
+		(at 66.76 112 180)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "c0c693e1-5994-52e7-9b44-62216e19fff1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 82 127.24 0)
+			(at 66.76 112 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1304,16 +1304,16 @@
 	)
 	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
-		(at 165 87.334 90)
+		(at 159.666 82 180)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "cec2767b-1446-5d45-b8fe-987d1fde54c0")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 165 87.334 0)
+			(at 159.666 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1329,7 +1329,7 @@
 		(at 145 51.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1348,16 +1348,16 @@
 	)
 	(global_label "+5V_ISO_A"
 		(shape bidirectional)
-		(at 165 76.666 270)
+		(at 170.334 82 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "dd189e0e-bb5f-572e-bd90-12da9d450e55")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 165 76.666 0)
+			(at 170.334 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1370,16 +1370,16 @@
 	)
 	(global_label "+5V_ISO_RAW"
 		(shape bidirectional)
-		(at 128.81 82 0)
+		(at 125 85.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
 		(uuid "f4584e44-c634-54c5-97bd-e12a7126ad71")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 128.81 82 0)
+			(at 125 85.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1392,7 +1392,8 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 125 82 270)
+		(at 125 82 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1403,57 +1404,57 @@
 		(fields_autoplaced yes)
 		(uuid "20d2f70e-ea4e-5b46-a6e8-903cdb68a5c2")
 		(property "Reference" "C30"
-			(at 125 79.46 270)
+			(at 125 79.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "10uF/10V RAW"
-			(at 125 84.54 270)
+			(at 125 84.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 125 82 270)
+			(at 125 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 125 82 270)
+			(at 125 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 125 82 270)
+			(at 125 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1465,7 +1466,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C30")
 					(unit 1)
 				)
@@ -1474,7 +1475,7 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 230 72 90)
+		(at 230 72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1485,57 +1486,57 @@
 		(fields_autoplaced yes)
 		(uuid "595614af-b58f-56ba-812f-0a0ef2699d5b")
 		(property "Reference" "C33"
-			(at 230 69.46 90)
+			(at 230 69.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "100nF A"
-			(at 230 74.54 90)
+			(at 230 74.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 230 72 90)
+			(at 230 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 230 72 90)
+			(at 230 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 230 72 90)
+			(at 230 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1547,7 +1548,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C33")
 					(unit 1)
 				)
@@ -1572,7 +1573,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1583,7 +1584,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1595,7 +1596,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1606,7 +1607,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1617,7 +1618,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1626,7 +1627,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "TP7")
 					(unit 1)
 				)
@@ -1635,7 +1636,7 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:RS3E")
-		(at 82 112 90)
+		(at 82 112 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1646,57 +1647,57 @@
 		(fields_autoplaced yes)
 		(uuid "7770d356-72db-5ad8-a47d-14c5435862ff")
 		(property "Reference" "U3"
-			(at 82 109.46 90)
+			(at 82 109.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "RS3E-0505S/H3"
-			(at 82 114.54 90)
+			(at 82 114.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "R3_Power:Converter_DCDC_RECOM_RS3E_SIP8"
-			(at 82 112 90)
+			(at 82 112 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" "https://g.recomcdn.com/media/Datasheet/pdf/.fgOwPLnX/.ta93ececc9aa80a1b412c/Datasheet-447/RS3E.pdf"
-			(at 82 112 90)
+			(at 82 112 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 82 112 90)
+			(at 82 112 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1723,7 +1724,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "U3")
 					(unit 1)
 				)
@@ -1732,7 +1733,8 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 202 145 270)
+		(at 202 145 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1743,57 +1745,57 @@
 		(fields_autoplaced yes)
 		(uuid "9b94565d-ab54-5140-89f0-c542598a8ce1")
 		(property "Reference" "C34"
-			(at 202 142.46 270)
+			(at 202 142.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "10uF D bulk"
-			(at 202 147.54 270)
+			(at 202 147.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 202 145 270)
+			(at 202 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 202 145 270)
+			(at 202 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 202 145 270)
+			(at 202 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1805,7 +1807,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C34")
 					(unit 1)
 				)
@@ -1830,7 +1832,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1841,7 +1843,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1853,7 +1855,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1864,7 +1866,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1875,7 +1877,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1884,7 +1886,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "TP8")
 					(unit 1)
 				)
@@ -1909,7 +1911,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1920,7 +1922,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1932,7 +1934,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1943,7 +1945,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1954,7 +1956,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1963,7 +1965,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "TP10")
 					(unit 1)
 				)
@@ -1972,7 +1974,8 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 202 72 270)
+		(at 202 72 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1983,57 +1986,57 @@
 		(fields_autoplaced yes)
 		(uuid "b1eadcf7-8a39-5069-b41e-cc1d7ff55a0a")
 		(property "Reference" "C32"
-			(at 202 69.46 270)
+			(at 202 69.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "10uF A bulk"
-			(at 202 74.54 270)
+			(at 202 74.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 202 72 270)
+			(at 202 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 202 72 270)
+			(at 202 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 202 72 270)
+			(at 202 72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2045,7 +2048,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C32")
 					(unit 1)
 				)
@@ -2054,7 +2057,8 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 165 142 270)
+		(at 165 142 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2065,57 +2069,57 @@
 		(fields_autoplaced yes)
 		(uuid "b8e7bc70-6232-58d2-9c8d-43ec4c89717e")
 		(property "Reference" "FB3"
-			(at 165 139.46 270)
+			(at 165 139.46 180)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "FB_D / FB-or-0R"
-			(at 165 144.54 270)
+			(at 165 144.54 180)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 165 142 270)
+			(at 165 142 180)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 165 142 270)
+			(at 165 142 180)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 165 142 270)
+			(at 165 142 180)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2127,7 +2131,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "FB3")
 					(unit 1)
 				)
@@ -2152,7 +2156,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2163,7 +2167,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2175,7 +2179,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2186,7 +2190,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2197,7 +2201,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2206,7 +2210,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "#FLG0201")
 					(unit 1)
 				)
@@ -2215,7 +2219,7 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 125 140 90)
+		(at 125 140 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2226,57 +2230,57 @@
 		(fields_autoplaced yes)
 		(uuid "c42f135b-4e99-5602-8fe1-66e80ac71b11")
 		(property "Reference" "C31"
-			(at 125 137.46 90)
+			(at 125 137.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "100nF RAW"
-			(at 125 142.54 90)
+			(at 125 142.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 125 140 90)
+			(at 125 140 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 125 140 90)
+			(at 125 140 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 125 140 90)
+			(at 125 140 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2288,7 +2292,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C31")
 					(unit 1)
 				)
@@ -2297,7 +2301,7 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:FERRITE")
-		(at 165 82 90)
+		(at 165 82 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2308,57 +2312,57 @@
 		(fields_autoplaced yes)
 		(uuid "d6cb36e3-3461-538e-bd40-40577881e181")
 		(property "Reference" "FB2"
-			(at 165 79.46 90)
+			(at 165 79.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "FB_A / FB-or-0R"
-			(at 165 84.54 90)
+			(at 165 84.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 165 82 90)
+			(at 165 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 165 82 90)
+			(at 165 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 165 82 90)
+			(at 165 82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2370,7 +2374,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "FB2")
 					(unit 1)
 				)
@@ -2379,7 +2383,7 @@
 	)
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
-		(at 230 145 90)
+		(at 230 145 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2390,57 +2394,57 @@
 		(fields_autoplaced yes)
 		(uuid "e7b09d99-9199-59a5-be50-cb386a002e64")
 		(property "Reference" "C35"
-			(at 230 142.46 90)
+			(at 230 142.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Value" "100nF D"
-			(at 230 147.54 90)
+			(at 230 147.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 230 145 90)
+			(at 230 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Datasheet" ""
-			(at 230 145 90)
+			(at 230 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
 		(property "Description" ""
-			(at 230 145 90)
+			(at 230 145 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2452,7 +2456,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "C35")
 					(unit 1)
 				)
@@ -2477,7 +2481,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2488,7 +2492,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2500,7 +2504,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2511,7 +2515,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2522,7 +2526,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2531,7 +2535,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/fb3e5c39-1130-5ca4-8b45-b49e33819ec6"
 					(reference "TP9")
 					(unit 1)
 				)

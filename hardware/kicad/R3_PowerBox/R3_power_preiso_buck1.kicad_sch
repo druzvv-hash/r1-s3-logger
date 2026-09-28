@@ -918,7 +918,7 @@
 		(at 95 86.92 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -940,7 +940,7 @@
 		(at 228 58.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -962,7 +962,7 @@
 		(at 145 97.08 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -984,7 +984,7 @@
 		(at 170 88.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1006,7 +1006,7 @@
 		(at 198 137.334 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1025,16 +1025,16 @@
 	)
 	(global_label "+5V_PREISO_INA"
 		(shape bidirectional)
-		(at 252 124.19 270)
+		(at 252 131.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "1495afda-5c61-55cc-bd01-c5ff2f2462a9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 124.19 0)
+			(at 252 131.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1050,7 +1050,7 @@
 		(at 68 101.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1067,34 +1067,12 @@
 			)
 		)
 	)
-	(global_label "N$13"
-		(shape bidirectional)
-		(at 68 108.81 90)
-		(effects
-			(font
-				(size 0.9 0.9)
-			)
-			(justify left)
-		)
-		(uuid "1da1e301-bad5-5572-a8b6-bc6f829fd706")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 68 108.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(global_label "+5V_PREISO"
 		(shape bidirectional)
 		(at 125 68.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1116,7 +1094,7 @@
 		(at 155 61.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1138,7 +1116,7 @@
 		(at 198 77.334 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1160,7 +1138,7 @@
 		(at 228 131.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1177,12 +1155,34 @@
 			)
 		)
 	)
+	(global_label "N$12"
+		(shape bidirectional)
+		(at 68 108.81 90)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "43f3f711-cd06-5004-97be-dc8191d365fd")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 68 108.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "VSYS_PROT"
 		(shape bidirectional)
 		(at 102.46 135.97 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1204,7 +1204,7 @@
 		(at 265 45.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1226,7 +1226,7 @@
 		(at 145 45.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1248,7 +1248,7 @@
 		(at 198 66.666 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1270,7 +1270,7 @@
 		(at 55 151.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1292,7 +1292,7 @@
 		(at 107.54 135.97 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1314,7 +1314,7 @@
 		(at 115.922 122 0)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1333,16 +1333,16 @@
 	)
 	(global_label "DGND"
 		(shape bidirectional)
-		(at 252 131.81 90)
+		(at 252 124.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "7c4a1dfd-c31f-5db6-a7fe-330ae08461b2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252 131.81 0)
+			(at 252 124.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1358,7 +1358,7 @@
 		(at 228 65.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1375,34 +1375,12 @@
 			)
 		)
 	)
-	(global_label "N$13"
-		(shape bidirectional)
-		(at 105 108.03 270)
-		(effects
-			(font
-				(size 0.9 0.9)
-			)
-			(justify right)
-		)
-		(uuid "99f45086-ef3b-546a-a49d-6b2c87cf2bbe")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 105 108.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(global_label "DGND"
 		(shape bidirectional)
 		(at 125 61.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1419,12 +1397,34 @@
 			)
 		)
 	)
+	(global_label "N$12"
+		(shape bidirectional)
+		(at 105 108.03 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "ad3b3fb6-4570-5eea-80a7-2a7986d8f6b9")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 105 108.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "SW_5V"
 		(shape bidirectional)
 		(at 102.46 108.03 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1446,7 +1446,7 @@
 		(at 145 86.92 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1468,7 +1468,7 @@
 		(at 170 95.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1490,7 +1490,7 @@
 		(at 265 158.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1512,7 +1512,7 @@
 		(at 198 126.666 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1534,7 +1534,7 @@
 		(at 228 124.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1556,7 +1556,7 @@
 		(at 82 146.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1578,7 +1578,7 @@
 		(at 95 97.08 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1600,7 +1600,7 @@
 		(at 82 153.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1622,7 +1622,7 @@
 		(at 155 68.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1644,7 +1644,7 @@
 		(at 252 65.81 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1666,7 +1666,7 @@
 		(at 252 58.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1688,7 +1688,7 @@
 		(at 152 127.08 90)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify left)
 		)
@@ -1710,7 +1710,7 @@
 		(at 152 116.92 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1732,7 +1732,7 @@
 		(at 107.54 108.03 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1754,7 +1754,7 @@
 		(at 55 144.19 270)
 		(effects
 			(font
-				(size 0.9 0.9)
+				(size 0.8 0.8)
 			)
 			(justify right)
 		)
@@ -1789,7 +1789,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1800,7 +1800,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1812,7 +1812,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1823,7 +1823,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1834,7 +1834,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1846,7 +1846,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "FB7")
 					(unit 1)
 				)
@@ -1871,7 +1871,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1882,7 +1882,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1894,7 +1894,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1905,7 +1905,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1916,7 +1916,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1928,7 +1928,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C25")
 					(unit 1)
 				)
@@ -1954,7 +1954,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1965,7 +1965,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -1977,7 +1977,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1988,7 +1988,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -1999,7 +1999,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2011,7 +2011,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C22")
 					(unit 1)
 				)
@@ -2036,7 +2036,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2047,7 +2047,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2059,7 +2059,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2070,7 +2070,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2081,7 +2081,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2093,7 +2093,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C20")
 					(unit 1)
 				)
@@ -2118,7 +2118,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2129,7 +2129,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2141,7 +2141,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2152,7 +2152,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2163,7 +2163,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2175,7 +2175,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "R22")
 					(unit 1)
 				)
@@ -2185,6 +2185,7 @@
 	(symbol
 		(lib_id "R3_POWER_GEN:C")
 		(at 252 128 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2200,7 +2201,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2211,7 +2212,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2223,7 +2224,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2234,7 +2235,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2245,7 +2246,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2257,7 +2258,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C29")
 					(unit 1)
 				)
@@ -2283,7 +2284,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2294,7 +2295,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2306,7 +2307,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2317,7 +2318,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2328,7 +2329,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2340,7 +2341,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C26")
 					(unit 1)
 				)
@@ -2365,7 +2366,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2376,7 +2377,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2388,7 +2389,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2399,7 +2400,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2410,7 +2411,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2419,7 +2420,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "TP5")
 					(unit 1)
 				)
@@ -2445,7 +2446,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2456,7 +2457,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2468,7 +2469,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2479,7 +2480,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2490,7 +2491,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2502,7 +2503,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C23")
 					(unit 1)
 				)
@@ -2527,7 +2528,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2538,7 +2539,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2550,7 +2551,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2561,7 +2562,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2572,7 +2573,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2596,7 +2597,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "U2")
 					(unit 1)
 				)
@@ -2621,7 +2622,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2632,7 +2633,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2644,7 +2645,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2655,7 +2656,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2666,7 +2667,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2678,7 +2679,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "R21")
 					(unit 1)
 				)
@@ -2703,7 +2704,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2714,7 +2715,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2726,7 +2727,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2737,7 +2738,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2748,7 +2749,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2760,7 +2761,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "FB6")
 					(unit 1)
 				)
@@ -2785,7 +2786,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2796,7 +2797,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2808,7 +2809,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2819,7 +2820,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2830,7 +2831,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2839,7 +2840,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "TP6")
 					(unit 1)
 				)
@@ -2864,7 +2865,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2875,7 +2876,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2887,7 +2888,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2898,7 +2899,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2909,7 +2910,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2918,7 +2919,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "TP16")
 					(unit 1)
 				)
@@ -2943,7 +2944,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2954,7 +2955,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -2966,7 +2967,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2977,7 +2978,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -2988,7 +2989,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3000,7 +3001,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C28")
 					(unit 1)
 				)
@@ -3025,7 +3026,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3036,7 +3037,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3048,7 +3049,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3059,7 +3060,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3070,7 +3071,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3082,7 +3083,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C21")
 					(unit 1)
 				)
@@ -3107,7 +3108,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3118,7 +3119,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3130,7 +3131,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3141,7 +3142,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3152,7 +3153,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3164,7 +3165,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "L2")
 					(unit 1)
 				)
@@ -3190,7 +3191,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3201,7 +3202,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3213,7 +3214,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3224,7 +3225,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3235,7 +3236,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3247,7 +3248,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C24")
 					(unit 1)
 				)
@@ -3273,7 +3274,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3284,7 +3285,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 				(justify left)
 			)
@@ -3296,7 +3297,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3307,7 +3308,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3318,7 +3319,7 @@
 			(do_not_autoplace no)
 			(effects
 				(font
-					(size 1 1)
+					(size 0.9 0.9)
 				)
 			)
 		)
@@ -3330,7 +3331,7 @@
 		)
 		(instances
 			(project "SKiDL-Generated"
-				(path "/e0c59e8a-2b02-4fe0-acab-40da4bcadbfd/018e28c5-ebaa-5a30-99ac-84554c21e989"
+				(path "/2356381d-7142-492e-bbf9-b0589f766201/018e28c5-ebaa-5a30-99ac-84554c21e989"
 					(reference "C27")
 					(unit 1)
 				)

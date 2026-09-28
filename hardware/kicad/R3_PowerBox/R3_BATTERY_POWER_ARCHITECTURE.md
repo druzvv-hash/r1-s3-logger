@@ -1,7 +1,7 @@
 # R3 PowerBox 2S battery and power architecture
 
 Date: 2026-09-28
-Status: architecture pass; schematic implementation is provisional and not a procurement or PCB-routing release.
+Status: bounded PD/BMS correction pass complete; schematic implementation is provisional and not a procurement or PCB-routing release.
 
 ## Fixed system decision
 
@@ -31,11 +31,11 @@ The old 511 kOhm / 105 kOhm external EN divider was copied from the 8-28 V refer
 ```text
 2S cells: BAT_POS_RAW / CELL_MID / BAT_NEG_RAW
   -> BQ28Z610 gauge + protection + cell balancing
-  -> high-side CHG/DSG N-FET pair (exact MPN open)
+  -> TI-EVM-style common-drain high-side DSG/CHG N-FET pair (exact MPN open)
   -> PACK_POS
   -> 10 mOhm Kelvin shunt in negative path -> DGND
 
-USB-C 5 V fallback -> F2 / TVS ---+
+USB-C -> F2 / SMBJ13A / STUSB4500 (5/9/12 V PD) ---+
                                      -> TPS2121 input mux -> CHARGER_IN
 J1 service/bench 6-12 V -> existing protection ---+
 
@@ -71,27 +71,76 @@ The BQ25798 is not treated as the BMS. Its charger protections do not replace in
 
 The BQ28Z610 requires data-flash configuration and validation of OV, UV, overcurrent, short-circuit, temperature, recovery, balancing and FET behavior before it is safety-relevant.
 
-## USB-C and PD decision
+### BQ28Z610 reference-network correction
 
-The schematic currently implements a standards-recognizable **5 V sink fallback** using independent 5.1 kOhm Rd resistors on CC1/CC2. No USB data path is used. A PD controller is intentionally not fixed in this pass.
+The schematic now follows BQ28Z610EVM Figure 20 for the requested functions:
 
-For 2S, 12 V PD is recommended if 2 A charging is required:
+- `VC2` senses `BAT_POS_RAW`; `VC1` senses `CELL_MID`; VSS senses
+  `BAT_NEG_RAW`;
+- the retained 100 ohm Kelvin resistors feed the two VC pins;
+- 100 nF is connected VC1-to-VSS for Cell1 and another 100 nF VC2-to-VC1
+  for Cell2;
+- the high-side N-FETs are common-drain: `PACK_POS -> Q2 DSG source`, common
+  drains, then `Q3 CHG source -> BAT_POS_RAW`;
+- each gate has the EVM-class 5.1 kOhm series resistor and 10 MOhm
+  gate-to-local-source bias; each FET has 100 nF drain-source capacitance;
+- the 10 mOhm Kelvin shunt, 100 ohm SRP/SRN resistors and 100 nF differential
+  capacitor are retained.
 
-- 5 V avoids a PD controller but forces boost-mode charging and high cable/input current;
-- 12 V PD lets BQ25798 operate mainly in buck mode, lowers cable current and usually reduces thermal stress;
-- 9 V PD has limited headroom near an 8.4 V battery and is less attractive than 12 V.
+U11 is only an unconnected DNP DRV0006A footprint-space reservation for a
+possible future `BQ294502DRVR`/BQ2945xx secondary-overvoltage circuit. It is
+not a populate-able or functional protection circuit and must not be fitted in
+Rev.A. The exact threshold variant, cell RC network, OUT/fuse interface and
+local bypass must be designed and reviewed before any future population.
 
-PD sink candidates for the next decision:
+### Q2/Q3 MOSFET study
 
-- STUSB4500: standalone sink with nonvolatile PDO configuration; simple host-independent operation;
-- Infineon CYPD3177: resistor-configured standalone sink, good repairability and no application firmware;
-- TI TPS25750: highly integrated PD policy engine and charger-oriented ecosystem, but more configuration complexity.
+Losses below use the published **maximum** RDS(on) at 4.5 V and two series
+devices at 25 C. Hot resistance/PCB copper must be evaluated before selection.
 
-If PD is added, R70/R71 are removed from the direct CC path and the chosen controller owns CC1/CC2. Undocumented trigger modules are not acceptable.
+| Candidate | VDS / package | Max RDS(on) @4.5 V | Pair loss @1 A | @3.3 A | @5 A | Comment |
+|---|---|---:|---:|---:|---:|---|
+| TI CSD17577Q3A | 30 V, SON 3.3 x 3.3 mm | 6.4 mOhm | 12.8 mW | 139 mW | 320 mW | compact, low gate charge; needs adequate copper |
+| Vishay SiRA80DP | 30 V, PowerPAK SO-8 | 0.93 mOhm | 1.86 mW | 20.3 mW | 46.5 mW | best conduction result; larger gate charge, very strong thermal package |
+| Vishay SQJA26EP | 30 V, PowerPAK SO-8L | 1.28 mOhm | 2.56 mW | 27.9 mW | 64.0 mW | automotive-oriented package/candidate |
+
+The schematic MPN and footprint remain explicitly TBD because these packages
+are not land-pattern compatible. Availability and SOA must be rechecked at the
+procurement freeze. A 1.5-1.8x hot-RDS(on) multiplier still keeps all three
+thermally plausible at 5 A, but the CSD17577Q3A pair then approaches roughly
+0.5 W and demands intentional copper spreading.
+
+## USB-C and PD implementation
+
+`STUSB4500QTR` is now the provisional standalone PD sink. It negotiates without
+the MCU, is powered from protected connector-side VBUS, and uses the documented
+`CC1DB->CC1` / `CC2DB->CC2` dead-battery wiring. Legacy R70/R71 standalone Rd
+resistors are removed. USB data remains unused.
+
+The programmed logical NVM profile is:
+
+| PDO | Voltage/current | Use |
+|---|---|---|
+| PDO1 | 5 V / 3 A maximum capability | Type-C/PD fallback; actual draw remains source-capability limited |
+| PDO2 | 9 V / 2 A | secondary PD fallback |
+| PDO3 | 12 V / 2 A | preferred R3 contract |
+
+No 15 V or 20 V PDO is advertised. `RESET` is tied directly to `DGND`.
+`POWER_OK_CFG=10b` selects ST power-OK configuration 2: `POWER_OK3` is
+active-low only after a successful PDO3 contract and PS_READY, so it is valid
+as `PD_CONTRACT_12V_N`; `ALERT` is exported as `PD_ALERT_N`. The exact NVM record,
+programming and recovery procedure are in `docs/STUSB4500_PD_CONFIG.md`.
+
+Before any confirmed contract/source capability, the BQ25798 243 kOhm/100 kOhm
+ILIM_HIZ divider enforces about 0.50 A. Firmware may clear `EN_EXTILIM` and
+increase IINDPM only after reading the STUSB4500 state: 1.35 A for confirmed
+5 V/1.5 A, 2.70 A for confirmed 5 V/3 A, and 1.80 A for 9 V/2 A or 12 V/2 A.
 
 ## Input and power-path behavior
 
-TPS2121 combines the USB input and the retained J1 service/bench input. It supports 2.8-22 V, reverse-current blocking, seamless switchover and programmable current limiting. R73 currently targets about 2.5 A typical. J1 keeps its PTC, reverse-polarity PMOS, TVS and filter, but is now explicitly an alternate charger input rather than a fixed 9 V system rail.
+TPS2121 combines the USB input and the retained J1 service/bench input. It supports 2.8-22 V, reverse-current blocking, seamless switchover and programmable current limiting. R73 currently targets about 2.5 A typical. J1 keeps its PTC, reverse-polarity PMOS, TVS and filter, but is now explicitly an alternate charger input rather than a fixed 9 V system rail. D1 and USB D3 are Bourns-class SMBJ13A: 13 V VRWM, 14.4-15.9 V breakdown and 21.5 V maximum clamp at 28 A for a 10/1000 us pulse. At the documented 10 A design surge assumption, linear interpolation gives about 17.9 V, leaving about 4.1 V to the TPS2121 22 V recommended maximum; even the TVS-rated 28 A clamp remains 0.5 V below that recommended maximum and 2.5 V below the 24 V absolute maximum.
+
+BQ25798 has a distinct local VBUS bypass bank of 100 nF plus three 10 uF/25 V ceramics. The 100 nF part is a 0402 intended directly at the VBUS/GND pins; C73 remains TPS2121 output bulk and is not counted as this bypass.
 
 BQ25798 NVDC power-path supplies R3:
 
@@ -105,7 +154,7 @@ BQ25798 NVDC power-path supplies R3:
 One NTC cannot be connected directly to both BQ28Z610 TS1 and BQ25798 TS because each IC biases its input. The schematic therefore provides:
 
 - J8 pin 4: `NTC_BMS` for BQ28Z610;
-- J9: optional separate `NTC_CHG` and `BAT_NEG_RAW` return for BQ25798.
+- J9: optional separate `NTC_CHG` and `DGND` return for BQ25798. On PCB this conductor is named/treated as `DGND_CHG_SENSE`: a quiet Kelvin return to the charger ground area, never to `BAT_NEG_RAW` on the battery side of the shunt.
 
 This is deliberately visible rather than silently tying the pins together. Before PCB layout choose dual thermistors, an approved buffer/supervisor scheme, or a documented single-controller safety policy. Dual thermistors are the current recommendation.
 
@@ -123,8 +172,8 @@ J10 exports:
 6. `PG_3V3_D` as system power-good
 7. `CHARGER_INT_FAULT`
 8. `INPUT_SOURCE_STATUS`
-9. NC
-10. NC
+9. `PD_ALERT_N`
+10. `PD_CONTRACT_12V_N`
 
 BQ28Z610 has no dedicated general fault interrupt pin. Critical faults autonomously control CHG/DSG FETs; detailed status is read over I2C. If the MCU requires a separate hardware BMS fault line, an additional supervisor or FET-state detector is still open.
 
@@ -188,12 +237,24 @@ Based on expected peak rather than only regulator nameplates:
 
 ## Charge-current examples
 
-Assuming 90% charger efficiency and 4.4 W simultaneous system load:
+Assuming 90% conversion efficiency and 4.4 W simultaneous expected system
+load, required adapter input is `(VBAT * ICHG + 4.4 W) / 0.90`:
 
-| Charge setting | Battery charge power at 8.4 V | Total input power | 5 V input current | 12 V input current | Consequence |
-|---:|---:|---:|---:|---:|---|
-| 1 A | 8.4 W | about 14.2 W | about 2.84 A | about 1.18 A | feasible only from a known 5 V/3 A source; 12 V preferred thermally |
-| 2 A | 16.8 W | about 23.6 W | about 4.71 A | about 1.96 A | not valid from standard 5 V USB-C; requires PD/high-power source and thermal validation |
+| VBAT | 1 A charge input power / current at 12 V | 2 A charge input power / current at 12 V |
+|---:|---:|---:|
+| 6.0 V | 11.56 W / 0.96 A | 18.22 W / 1.52 A |
+| 7.4 V | 13.11 W / 1.09 A | 21.33 W / 1.78 A |
+| 8.4 V | 14.22 W / 1.19 A | 23.56 W / 1.96 A |
+
+The 12 V/2 A contract is limited in firmware to 1.80 A (21.6 W) for margin.
+It supports 2 A charging at low/mid state of charge with expected system load,
+but cannot maintain a full 2 A near 8.4 V or during the 8 W system peak. Input
+DPM must reduce charge current; battery supplement may carry brief system peaks.
+At 9 V/2 A with a 1.80 A policy limit, only 16.2 W is available, so 2 A charge
+is not sustainable and even 1 A charge must be power-managed at peak load.
+Unknown 5 V starts at 0.50 A (2.5 W), which may require battery supplement and
+does not guarantee charging. Confirmed 5 V/1.5 A or 3 A may use the documented
+1.35 A or 2.70 A limits, respectively.
 
 Charge current remains programmable and is not frozen until cell capacity, allowed C-rate, connector temperature and enclosure cooling are known.
 
@@ -212,6 +273,14 @@ New dirty-side test points:
 - TP28 `BMS_SRN_FILT`
 - TP29 `NTC_BMS`
 - TP30 `NTC_CHG`
+- TP31 `USB_CC1`
+- TP32 `USB_CC2`
+- TP33 `USB_VBUS_PROT`
+- TP34 `PD_VDD` (fed from protected VBUS through the 0 ohm R85 link)
+- TP35 `PD_VREG_2V7`
+- TP36 `PD_ALERT_N`
+- TP37 `PM_I2C_SCL`
+- TP38 `PM_I2C_SDA`
 
 Existing primary and isolated test points are retained. Dirty and clean points belong on opposite physical areas.
 
@@ -241,15 +310,16 @@ Four layers improve return-path control, EMI and heat spreading enough to justif
 
 ## Open technical decisions and blockers
 
-1. Select PD strategy/controller. Current hardware is 5 V fallback only; 12 V PD is recommended for 2 A charge.
-2. Select exact BMS CHG/DSG MOSFETs and verify the 5 A thermal path and BQ28Z610 gate-drive behavior.
+1. Program and compliance-test the provisional STUSB4500 5/9/12 V NVM profile and firmware current-limit policy.
+2. Select exact BMS CHG/DSG MOSFETs/footprint and verify the 5 A thermal path and BQ28Z610 gate-drive behavior.
 3. Decide dual-NTC versus buffered/supervised single-NTC architecture.
 4. Freeze battery chemistry/capacity and program/validate BQ28Z610 protection, balancing, recovery and gauge parameters.
-5. Validate BQ25798/BQ28Z610 host/master-mode interoperability and define boot-safe charger register defaults.
+5. Validate BQ25798/BQ28Z610/STUSB4500 shared-bus interoperability and the boot-safe 0.50 A charger default.
 6. Bench-test TPS54302 5 V regulation and transients at VSYS = 6.0 V.
 7. Resolve RS3-0505D/H3 light-load and rail-balance behavior for INA851.
 8. Freeze expected/peak measured loads, then choose F2/F3, connector contacts, MOSFETs and copper widths.
-9. Define formal creepage/clearance from working voltage and safety requirements.
+9. Decide whether the reserved BQ2945xx secondary-OV footprint is populated; its active network is intentionally DNP/unconnected in Rev.A.
+10. Define formal creepage/clearance from working voltage and safety requirements.
 
 PCB routing and production outputs remain blocked until these decisions are closed.
 
@@ -262,6 +332,9 @@ PCB routing and production outputs remain blocked until these decisions are clos
 - TI BQ28Z610: https://www.ti.com/lit/ds/symlink/bq28z610.pdf
 - TI BQ25713 candidate: https://www.ti.com/lit/ds/symlink/bq25713.pdf
 - TI BQ24780S candidate: https://www.ti.com/lit/ds/symlink/bq24780s.pdf
-- ST STUSB4500 candidate: https://www.st.com/resource/en/datasheet/stusb4500.pdf
+- ST STUSB4500: https://www.st.com/resource/en/datasheet/stusb4500.pdf
+- TI BQ28Z610EVM: https://www.ti.com/lit/ug/sluube3/sluube3.pdf
+- Bourns SMBJ series: https://www.bourns.com/data/global/pdfs/SMBJ.pdf
+- ST ESDA25W: https://www.st.com/resource/en/datasheet/esdaxxxwx.pdf
 - TI TPS25750 candidate: https://www.ti.com/lit/ds/symlink/tps25750.pdf
 - Infineon CYPD3177 candidate product page: https://www.infineon.com/part/CYPD3177-24LQXQ

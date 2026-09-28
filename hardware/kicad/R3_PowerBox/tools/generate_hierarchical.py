@@ -36,6 +36,18 @@ def comp(symbol, ref, value, footprint="", datasheet=""):
     return p
 
 
+def stdcomp(library, symbol, ref, value=None, footprint="", datasheet=""):
+    """Instantiate a verified KiCad standard-library symbol."""
+    p = Part(library, symbol, ref=ref, tool=KICAD10)
+    if value:
+        p.value = value
+    if footprint:
+        p.footprint = footprint
+    if datasheet:
+        p.datasheet = datasheet
+    return p
+
+
 def across(p, a, b):
     a += p[1]
     b += p[2]
@@ -81,7 +93,8 @@ def input_protection(service_raw, service_prot, dgnd):
     d2 = comp("DIODE", "D2", "BZT52C10", "Diode_SMD:D_SOD-123")
     qgate += d2["A"]
     vin_rev += d2["K"]
-    d1 = comp("DIODE", "D1", "SMBJ10A", "Diode_SMD:D_SMB")
+    d1 = comp("DIODE", "D1", "SMBJ13A / 13V VRWM", "Diode_SMD:D_SMB")
+    d1.datasheet = "https://www.bourns.com/data/global/pdfs/SMBJ.pdf"
     dgnd += d1["A"]
     vin_rev += d1["K"]
     c("C1", "47uF/25V low-ESR", vin_rev, dgnd, "Capacitor_SMD:CP_Elec_6.3x5.8")
@@ -104,37 +117,52 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
     cell_mid += j8[2]
     bat_neg += j8[3]
     ntc_bms += j8[4]
-    j9 = comp("CONN2", "J9", "CHARGER NTC / OPTIONAL", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal")
+    j9 = comp("CONN2", "J9", "CHARGER NTC / QUIET DGND RETURN", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal")
     ntc_chg += j9[1]
-    bat_neg += j9[2]
+    dgnd += j9[2]
 
     u = comp("BQ28Z610", "U9", "BQ28Z610DRZR", "R3_Power:Texas_DRZ0012A_VSON-12", "https://www.ti.com/lit/ds/symlink/bq28z610.pdf")
     bat_neg += u["VSS", "EP"]
     pack_pos += u["PACK"]
     pm_scl += u["SCL"]
     pm_sda += u["SDA"]
-    vc2_f = Net("BMS_VC2_FILT")
-    r("R90", "100R VC2", bat_pos, vc2_f)
+    # TI BQ28Z610 typical 2S connection: VC2 is the most-positive cell input,
+    # VC1 is the least-positive cell input, and VSS is the stack negative.
+    # Therefore Cell1 is VC1-VSS and Cell2 is VC2-VC1.
+    vc1_f, vc2_f = Net("BMS_VC1_FILT"), Net("BMS_VC2_FILT")
+    r("R90", "100R VC2 / KELVIN", bat_pos, vc2_f)
     vc2_f += u["VC2"]
-    r("R91", "100R VC1", cell_mid, u["VC1"])
+    r("R91", "100R VC1 / KELVIN", cell_mid, vc1_f)
+    vc1_f += u["VC1"]
+    c("C97", "100nF VC2-VC1 / CELL2", vc2_f, vc1_f)
+    c("C98", "100nF VC1-VSS / CELL1", vc1_f, bat_neg)
     r("R92", "100R TS", ntc_bms, u["TS1"])
     pbi = Net("BMS_PBI")
     pbi += u["PBI"]
     c("C93", "2.2uF PBI", pbi, bat_neg)
     power_flag(bat_neg, "#FLG0601")
-    power_flag(vc2_f, "#FLG0602")
+    power_flag(vc1_f, "#FLG0602")
     power_flag(pbi, "#FLG0603")
+    power_flag(vc2_f, "#FLG0604")
 
-    # High-side back-to-back N-FETs are required by BQ28Z610. Exact MOSFET MPN
-    # and land pattern stay open until the 5 A-class battery-path thermal pass.
+    # TI BQ28Z610EVM Figure 20 high-side pair: PACK+ -> DSG FET -> common
+    # drains -> CHG FET -> BAT+. Gate-drive references are the local sources.
+    # Exact MOSFET MPN stays open until the 5 A-class thermal/availability pass.
     fet_common = Net("BMS_FET_COMMON")
-    q2 = comp("NMOS_POWER", "Q2", "20V N-MOS LOW-RDS / MPN TBD")
-    q3 = comp("NMOS_POWER", "Q3", "20V N-MOS LOW-RDS / MPN TBD")
-    bat_pos += q2["D"]
-    fet_common += q2["S"], q3["S"]
-    pack_pos += q3["D"]
-    u["CHG"] += q2["G"]
-    u["DSG"] += q3["G"]
+    q2 = comp("NMOS_POWER", "Q2", "30V N-MOS DSG / MPN+FOOTPRINT TBD")
+    q3 = comp("NMOS_POWER", "Q3", "30V N-MOS CHG / MPN+FOOTPRINT TBD")
+    pack_pos += q2["S"]
+    fet_common += q2["D"], q3["D"]
+    bat_pos += q3["S"]
+    dsg_gate, chg_gate = Net("BMS_DSG_GATE"), Net("BMS_CHG_GATE")
+    dsg_gate += q2["G"]
+    chg_gate += q3["G"]
+    r("R98", "5.1k DSG GATE / TI EVM", u["DSG"], dsg_gate)
+    r("R99", "10M DSG G-S / TI EVM", dsg_gate, pack_pos)
+    r("R100", "5.1k CHG GATE / TI EVM", u["CHG"], chg_gate)
+    r("R101", "10M CHG G-S / TI EVM", chg_gate, bat_pos)
+    c("C95", "100nF DSG D-S / TI EVM", pack_pos, fet_common)
+    c("C96", "100nF CHG D-S / TI EVM", fet_common, bat_pos)
 
     # 10 mOhm, 1 W Kelvin shunt: 0.25 W at 5 A, 0.11 W at the 3.3 A
     # design-worst system current. SRP/SRN filter traces are Kelvin routed.
@@ -150,6 +178,17 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
     r("R96", "10k I2C", pm_scl, v3d)
     r("R97", "10k I2C", pm_sda, v3d)
 
+    # FOOTPRINT-SPACE RESERVATION ONLY. This unconnected DNP land pattern is
+    # not a functional secondary-OV circuit and must never be populated as-is.
+    u11 = stdcomp(
+        "Connector_Generic", "Conn_01x07", "U11",
+        "BQ294502 SPACE ONLY / NC / DNP",
+        "Package_SON:WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm",
+        "https://www.ti.com/lit/ds/symlink/bq2945.pdf",
+    )
+    u11.dnp = True
+    u11.circuit.NC += u11[1, 2, 3, 4, 5, 6, 7]
+
     tp("TP24", bat_pos)
     tp("TP25", cell_mid)
     tp("TP26", bat_neg)
@@ -161,9 +200,10 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
 
 @subcircuit
 def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
-                      charge_stat, charger_fault, input_status,
+                      charge_stat, charger_fault, input_status, pd_alert,
+                      pd_contract,
                       vsys_raw, vsys_prot, v3d, dgnd):
-    """USB-C 5 V fallback, protected bench-input mux and 2S NVDC charger."""
+    """Autonomous USB-C PD sink, protected input mux and 2S NVDC charger."""
     usb_raw, usb_prot, charger_in = Net("USB_VBUS_RAW"), Net("USB_VBUS_PROT"), Net("CHARGER_IN")
     cc1, cc2, shield = Net("USB_CC1"), Net("USB_CC2"), Net("USB_SHIELD")
     j7 = comp("USB_C_PWR", "J7", "USB-C POWER INPUT", "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal")
@@ -173,17 +213,52 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     cc2 += j7["CC2"]
     shield += j7["SHIELD"]
     j7.circuit.NC += j7["D+", "D-", "SBU1", "SBU2"]
-    r("R70", "5.1k Rd / 5V FALLBACK", cc1, dgnd)
-    r("R71", "5.1k Rd / 5V FALLBACK", cc2, dgnd)
     r("R72", "1M SHIELD", shield, dgnd)
     c("C70", "4.7nF SHIELD", shield, dgnd)
     f2 = comp("FUSE", "F2", "USB INPUT 2.5A PTC / TBD", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder")
     usb_raw += f2[1]
     usb_prot += f2[2]
-    d3 = comp("DIODE", "D3", "SMBJ15A VBUS TVS", "Diode_SMD:D_SMB")
+    d3 = comp("DIODE", "D3", "SMBJ13A / 13V VRWM USB VBUS", "Diode_SMD:D_SMB")
+    d3.datasheet = "https://www.bourns.com/data/global/pdfs/SMBJ.pdf"
     dgnd += d3["A"]
     usb_prot += d3["K"]
     c("C71", "10uF/25V USB", usb_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
+
+    # STUSB4500QTR autonomous sink. CCxDB-to-CCx enables documented dead-
+    # battery Rd presentation; VDD is supplied from connector-side VBUS.
+    # VSYS is grounded when unused, preventing back-power into +3V3_D.
+    u10 = stdcomp("Interface_USB", "STUSB4500QTR", "U10", "STUSB4500QTR")
+    cc1 += u10["CC1", "CC1DB"]
+    cc2 += u10["CC2", "CC2DB"]
+    pd_vdd = Net("PD_VDD")
+    usb_prot += u10["VBUS_VS_DISCH"]
+    r("R85", "0R PD VDD FEED", usb_prot, pd_vdd)
+    pd_vdd += u10["VDD"]
+    # RESET is active high; hold it directly at DGND for autonomous operation.
+    dgnd += u10["GND", "VSYS", "RESET", "ADDR0", "ADDR1"]
+    pm_scl += u10["SCL"]
+    pm_sda += u10["SDA"]
+    pd_alert += u10["ALERT"]
+    pd_contract += u10["POWER_OK3"]
+    pd_v12, pd_v27 = Net("PD_VREG_1V2"), Net("PD_VREG_2V7")
+    pd_v12 += u10["VREG_1V2"]
+    pd_v27 += u10["VREG_2V7"]
+    c("C104", "1uF VREG_1V2", pd_v12, dgnd)
+    c("C105", "1uF VREG_2V7", pd_v27, dgnd)
+    c("C106", "4.7uF/25V PD VDD", pd_vdd, dgnd)
+    r("R83", "10k ALERT PU", pd_alert, v3d)
+    r("R84", "10k PDO3 OK PU", pd_contract, v3d)
+    u10.circuit.NC += u10["NC", "DISCH", "ATTACH", "POWER_OK2", "GPIO", "VBUS_EN_SNK", "A_B_SIDE"]
+
+    # ST's reference design uses ESDA25W on the CC pins. It is a two-line,
+    # 25V-min breakdown SOT-323 array; its 65pF typical line capacitance is
+    # compatible with the USB-PD CC receiver capacitance budget.
+    d4 = stdcomp("Device", "D_TVS_Dual_AAC", "D4", "ESDA25W CC ESD / P1,P2=CC P3=GND",
+                 "Package_TO_SOT_SMD:SOT-323_SC-70",
+                 "https://www.st.com/resource/en/datasheet/esdaxxxwx.pdf")
+    cc1 += d4[1]
+    cc2 += d4[2]
+    dgnd += d4[3]
 
     u7 = comp("TPS2121", "U7", "TPS2121RUXR", "Package_DFN_QFN:Texas_VQFN-HR-12_2x2.5mm_P0.5mm_ThermalVias", "https://www.ti.com/lit/ds/symlink/tps2121.pdf")
     usb_prot += u7["IN1"]
@@ -227,10 +302,19 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     c("C87", "10uF/16V BAT", pack_pos, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     c("C88", "10uF/16V BAT", pack_pos, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     c("C89", "1nF SDRV", u8["SDRV"], dgnd)
+    # BQ25798 Rev.C Figure 10-1 / layout guidance: 100nF immediately at VBUS,
+    # plus three 10uF ceramics. C73 remains TPS2121 output bulk and is not
+    # counted as charger-local bypass.
+    c("C100", "100nF/25V VBUS LOCAL", charger_in, dgnd, "Capacitor_SMD:C_0402_1005Metric")
+    for ref in ("C101", "C102", "C103"):
+        c(ref, "10uF/25V VBUS LOCAL", charger_in, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     r("R75", "6.04k PROG / 2S PROFILE", u8["PROG"], dgnd)
     ilim = Net("BQ25798_ILIM")
     ilim += u8["ILIM_HIZ"]
-    r("R76", "127k ILIM TOP", regn, ilim)
+    # REGN ~=4.8V, VILIM = 1V + 0.8ohm*IIN. 243k/100k produces about
+    # 1.40V, so the hardware/default clamp is approximately 0.50A until the
+    # host confirms Type-C/PD capability and clears EN_EXTILIM via I2C.
+    r("R76", "243k ILIM TOP / DEFAULT 0.50A", regn, ilim)
     r("R77", "100k ILIM BOT", ilim, dgnd)
     ntc_chg += u8["TS"]
     r("R78", "5.24k TS TOP", regn, ntc_chg)
@@ -245,10 +329,19 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     power_flag(pack_pos, "#FLG0501")
     power_flag(usb_prot, "#FLG0502")
     power_flag(service_prot, "#FLG0503")
+    power_flag(pd_vdd, "#FLG0504")
     tp("TP20", usb_raw)
     tp("TP21", charger_in)
     tp("TP22", vsys_raw)
     tp("TP23", vsys_prot)
+    tp("TP31", cc1)
+    tp("TP32", cc2)
+    tp("TP33", usb_prot)
+    tp("TP34", pd_vdd)
+    tp("TP35", pd_v27)
+    tp("TP36", pd_alert)
+    tp("TP37", pm_scl)
+    tp("TP38", pm_sda)
 
 
 @subcircuit
@@ -352,7 +445,8 @@ def isolation(v5pre_ads, v5iso_raw, v5iso_a, v5iso_d, ctrl_rs3e_pri, dgnd, gndis
 def isolated_ldos(v5iso_a, v5iso_d, v3a, v3di, gndiso):
     power_flag(v5iso_a, "#FLG0301")
     power_flag(v5iso_d, "#FLG0302")
-    power_flag(gndiso, "#FLG0303")
+    # GND_ISO is already driven by the isolated converter secondary. A
+    # PWR_FLAG here creates a false power-output-to-power-output ERC error.
     u4 = comp("ADM7150", "U4", "ADM7150ACPZ-3.3-R7", "R3_Power:LFCSP-8-1EP_3x3mm_P0.5mm_EP1.74x1.45mm", "https://www.analog.com/media/en/technical-documentation/data-sheets/adm7150.pdf")
     v5iso_a += u4["VIN"]
     ena, ref = Net("EN_3V3_A_ISO"), Net("ADM7150_REF")
@@ -405,7 +499,7 @@ def ina_isolation(v5pre_ina, v5ina, v5ina_n, dgnd, gndiso):
 @subcircuit
 def outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
             ctrl_rs3e_pri, pm_scl, pm_sda, charge_stat, charger_fault,
-            input_status, dgnd, gndiso):
+            input_status, pd_alert, pd_contract, dgnd, gndiso):
     j2 = comp("CONN6", "J2", "DIGITAL POWER OUT", "Connector_Molex:Molex_Micro-Fit_3.0_43650-0600_1x06_P3.00mm_Horizontal")
     v3d += j2[1, 2]
     dgnd += j2[3, 4]
@@ -444,7 +538,8 @@ def outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
     pg3d += j10[6]  # system POWER_GOOD exported as the existing 3V3 power-good
     charger_fault += j10[7]
     input_status += j10[8]
-    j10.circuit.NC += j10[9, 10]
+    pd_alert += j10[9]
+    pd_contract += j10[10]
     tp("TP15", dgnd)
 
 
@@ -455,6 +550,7 @@ vsys_raw, vsys_prot = Net("VSYS_RAW"), Net("VSYS_PROT")
 pm_scl, pm_sda = Net("PM_I2C_SCL"), Net("PM_I2C_SDA")
 charge_stat, charger_fault = Net("CHARGE_STATUS"), Net("CHARGER_INT_FAULT")
 input_status = Net("INPUT_SOURCE_STATUS")
+pd_alert, pd_contract = Net("PD_ALERT_N"), Net("PD_CONTRACT_12V_N")
 v3d, pg3d, v5pre = Net("+3V3_D"), Net("PG_3V3_D"), Net("+5V_PREISO")
 v5pre_ads, v5pre_ina = Net("+5V_PREISO_ADS"), Net("+5V_PREISO_INA")
 v5iso_raw, v5iso_a, v5iso_d, gndiso = Net("+5V_ISO_RAW"), Net("+5V_ISO_A"), Net("+5V_ISO_D"), Net("GND_ISO")
@@ -465,7 +561,8 @@ input_protection(service_raw, service_prot, dgnd)
 battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
                    pm_scl, pm_sda, v3d, dgnd)
 charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
-                  charge_stat, charger_fault, input_status,
+                  charge_stat, charger_fault, input_status, pd_alert,
+                  pd_contract,
                   vsys_raw, vsys_prot, v3d, dgnd)
 digital_buck(vsys_prot, v3d, pg3d, dgnd)
 preiso_buck(vsys_prot, v5pre, v5pre_ads, v5pre_ina, dgnd)
@@ -474,7 +571,7 @@ isolated_ldos(v5iso_a, v5iso_d, v3a, v3di, gndiso)
 ina_isolation(v5pre_ina, v5ina, v5ina_n, dgnd, gndiso)
 outputs(v3d, pg3d, v5iso_raw, v3a, v3di, v5ina, v5ina_n,
         ctrl_rs3e_pri, pm_scl, pm_sda, charge_stat, charger_fault,
-        input_status, dgnd, gndiso)
+        input_status, pd_alert, pd_contract, dgnd, gndiso)
 
 generate_schematic(
     filepath=str(ROOT),

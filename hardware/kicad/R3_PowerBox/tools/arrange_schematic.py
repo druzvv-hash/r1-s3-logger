@@ -20,8 +20,9 @@ from simp_sexp import Sexp
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Coordinates are KiCad millimetres on an A4 landscape sheet. Existing symbol
-# rotations are preserved; only origins and attached graphics are translated.
+# Coordinates are KiCad millimetres on each sheet's configured landscape paper.
+# Existing symbol rotations are preserved; only origins and attached graphics
+# are translated.
 LAYOUTS = {
     "R3_power_input_protection1.kicad_sch": {
         "J1": (45, 105), "F1": (72, 105), "Q1": (108, 105),
@@ -31,37 +32,48 @@ LAYOUTS = {
         "TP1": (50, 58), "TP2": (245, 55),
     },
     "R3_power_battery_management1.kicad_sch": {
-        "J8": (42, 92), "J9": (42, 150),
-        "TP24": (42, 48), "TP25": (72, 48), "TP26": (102, 48),
-        "TP29": (132, 48), "TP30": (162, 48),
-        "U9": (148, 105), "Q2": (205, 78), "Q3": (260, 78),
-        "R90": (185, 62), "R91": (185, 95), "R92": (100, 122),
-        "C93": (148, 145), "R93": (120, 165),
-        "R94": (80, 125), "R95": (190, 150), "C94": (145, 130),
-        "R96": (215, 115), "R97": (250, 115),
-        "TP27": (202, 48), "TP28": (232, 48),
-        "#FLG0601": (220, 155), "#FLG0602": (242, 155),
-        "#FLG0603": (264, 155),
+        "J8": (45, 120), "J9": (45, 210),
+        "TP24": (45, 35), "TP25": (95, 35), "TP26": (145, 35),
+        "TP29": (195, 35), "TP30": (245, 35),
+        "U9": (200, 140), "Q2": (285, 90), "Q3": (365, 90),
+        "R90": (145, 75), "R91": (145, 105), "R92": (115, 155),
+        "R98": (275, 135), "R99": (315, 165),
+        "R100": (355, 135), "R101": (395, 165),
+        "C95": (305, 50), "C96": (385, 50),
+        "C97": (235, 185), "C98": (265, 185),
+        "C93": (200, 210), "R93": (135, 240),
+        "R94": (100, 190), "R95": (270, 215), "C94": (200, 185),
+        "R96": (280, 155), "R97": (350, 155),
+        "U11": (345, 235),
+        "TP27": (295, 35), "TP28": (345, 35),
+        "#FLG0601": (285, 245), "#FLG0602": (335, 215),
+        "#FLG0603": (375, 215), "#FLG0604": (415, 215),
     },
     "R3_power_charger_powerpath1.kicad_sch": {
-        "J7": (35, 105), "F2": (65, 72), "D3": (65, 122),
-        "R70": (55, 150), "R71": (82, 150), "R72": (38, 170),
-        "C70": (65, 170), "C71": (90, 120),
-        "U7": (112, 88), "R73": (132, 135), "C72": (105, 135),
-        "C73": (145, 70), "U8": (190, 108), "L3": (190, 48),
-        "C74": (160, 48), "C75": (220, 48), "C76": (150, 105),
-        "C77": (242, 58), "C78": (258, 58), "C79": (274, 58),
-        "C80": (258, 78), "C81": (230, 105), "C82": (245, 105),
-        "C83": (260, 105), "C84": (230, 125), "C85": (245, 125),
-        "C86": (260, 125), "C87": (235, 150), "C88": (258, 150),
-        "C89": (220, 170), "R74": (245, 170), "R75": (175, 175),
-        "R76": (145, 155), "R77": (165, 155), "R78": (185, 155),
-        "R79": (205, 155), "R80": (110, 175), "R81": (130, 175),
-        "R82": (150, 175), "F3": (275, 145),
-        "#FLG0501": (225, 188), "#FLG0502": (250, 188),
-        "#FLG0503": (275, 188),
-        "TP20": (45, 42), "TP21": (115, 42), "TP22": (235, 42),
-        "TP23": (275, 42),
+        "J7": (35, 145), "F2": (82, 62), "D3": (120, 62),
+        "R72": (35, 245), "C70": (75, 245), "C71": (155, 62),
+        "U10": (115, 150), "D4": (65, 205),
+        "C104": (105, 230), "C105": (140, 230), "C106": (175, 230),
+        "R83": (185, 155), "R84": (185, 190), "R85": (185, 120),
+        "U7": (245, 135), "R73": (245, 215), "C72": (215, 215),
+        "C73": (300, 75), "U8": (395, 155), "L3": (395, 55),
+        "C100": (325, 105), "C101": (330, 75),
+        "C102": (360, 75), "C103": (390, 90),
+        "C74": (345, 55), "C75": (445, 55), "C76": (325, 155),
+        "C77": (455, 90), "C78": (495, 90), "C79": (535, 90),
+        "C80": (495, 130), "C81": (455, 170), "C82": (500, 170),
+        "C83": (545, 170), "C84": (455, 215), "C85": (500, 215),
+        "C86": (545, 215), "C87": (455, 260), "C88": (520, 260),
+        "C89": (320, 260), "R74": (370, 260), "R75": (420, 260),
+        "R76": (250, 305), "R77": (310, 305), "R78": (370, 305),
+        "R79": (430, 305), "R80": (250, 350), "R81": (320, 350),
+        "R82": (390, 350), "F3": (520, 320),
+        "#FLG0501": (380, 25), "#FLG0502": (450, 25),
+        "#FLG0503": (520, 25), "#FLG0504": (205, 25),
+        "TP20": (30, 25), "TP21": (75, 25), "TP22": (120, 25),
+        "TP23": (165, 25), "TP31": (30, 285), "TP32": (70, 285),
+        "TP33": (110, 285), "TP34": (150, 285), "TP35": (190, 285),
+        "TP36": (30, 330), "TP37": (75, 330), "TP38": (120, 330),
     },
     "R3_power_digital_buck1.kicad_sch": {
         "#FLG0101": (62, 55), "#FLG0102": (62, 155),
@@ -90,7 +102,7 @@ LAYOUTS = {
         "TP10": (260, 172),
     },
     "R3_power_isolated_ldos1.kicad_sch": {
-        "#FLG0301": (48, 115), "#FLG0302": (48, 55), "#FLG0303": (255, 178),
+        "#FLG0301": (48, 115), "#FLG0302": (48, 55),
         "U5": (140, 68), "C50": (90, 68), "C51": (195, 68),
         "TP12": (238, 48),
         "U4": (140, 142), "C40": (72, 125), "R40": (72, 163),
@@ -109,6 +121,11 @@ LAYOUTS = {
         "J3": (145, 110), "J5": (245, 65), "J6": (245, 145),
         "J10": (205, 110),
     },
+}
+
+PAPER_SIZES = {
+    "R3_power_battery_management1.kicad_sch": "A3",
+    "R3_power_charger_powerpath1.kicad_sch": "A2",
 }
 
 ROOT_SHEETS = {
@@ -193,10 +210,18 @@ def replace_blocks(text: str, replacements):
 def read_schematic(path: Path) -> str:
     data = path.read_bytes()
     try:
-        return data.decode("utf-8")
+        text = data.decode("utf-8")
     except UnicodeDecodeError:
         # SKiDL on Windows may emit the title-block em dash using cp1252.
-        return data.decode("cp1252")
+        text = data.decode("cp1252")
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
+def clean_output(text: str) -> str:
+    """Normalize generator whitespace for stable, reviewable Git diffs."""
+    text = re.sub(r"(?m)^ +\t", "\t", text)
+    text = re.sub(r"(?m)^[ \t]+$", "", text)
+    return text.rstrip() + "\n"
 
 
 def net_map() -> dict[tuple[str, str], str]:
@@ -218,6 +243,13 @@ def pin_position(origin, rotation, mirror, local):
 
 def arrange_child(path: Path, target_positions, connectivity):
     text = read_schematic(path)
+    if path.name in PAPER_SIZES:
+        text = re.sub(
+            r'\(paper\s+"[^"]+"\)',
+            f'(paper "{PAPER_SIZES[path.name]}")',
+            text,
+            count=1,
+        )
     parsed = Sexp(text)
     library_pins = {}
     for lib in parsed.search("/kicad_sch/lib_symbols/symbol"):
@@ -255,7 +287,7 @@ def arrange_child(path: Path, target_positions, connectivity):
             arranged_pins.append((ref, number, net, new_pin, new))
         start, end, raw = raw_symbols[ref]
         moved_symbol = shift_at_fields(raw, *delta).replace(
-            "(size 1.27 1.27)", "(size 1 1)"
+            "(size 1.27 1.27)", "(size 0.9 0.9)"
         )
         symbol_replacements.append((start, end, moved_symbol))
 
@@ -265,8 +297,9 @@ def arrange_child(path: Path, target_positions, connectivity):
     text = replace_blocks(text, symbol_replacements)
 
     # Replace the auto-router's coincident pins and short wire fragments with an
-    # explicit label on every connected pin. This keeps the drawing readable and
-    # makes geometry independent of connectivity.
+    # explicit label on every connected pin. Labels stay directly on the pin:
+    # generated symbols can contain stacked/off-grid pins, and adding graphical
+    # wire stubs to those pins can accidentally merge unrelated nets.
     remove = []
     for kind in ("global_label", "wire", "no_connect"):
         remove.extend((start, end, "") for start, end, _ in blocks(text, kind))
@@ -292,13 +325,13 @@ def arrange_child(path: Path, target_positions, connectivity):
             f'\t(global_label "{net}"\n'
             f'\t\t(shape bidirectional)\n'
             f'\t\t(at {fmt(point[0])} {fmt(point[1])} {angle})\n'
-            f'\t\t(effects\n\t\t\t(font\n\t\t\t\t(size 0.9 0.9)\n\t\t\t)\n'
+            f'\t\t(effects\n\t\t\t(font\n\t\t\t\t(size 0.8 0.8)\n\t\t\t)\n'
             f'\t\t\t(justify {justify})\n\t\t)\n'
             f'\t\t(uuid "{item_uuid}")\n\t)\n'
         )
     insertion = blocks(text, "symbol")[0][0]
     text = text[:insertion] + "".join(generated) + text[insertion:]
-    path.write_text(text, encoding="utf-8")
+    path.write_text(clean_output(text), encoding="utf-8", newline="\n")
 
 
 def arrange_root():
@@ -315,7 +348,11 @@ def arrange_root():
         moved = shift_at_fields(raw, new[0] - old[0], new[1] - old[1])
         moved = re.sub(r"\(size\s+[^\s)]+\s+[^\s)]+\)", "(size 50 25)", moved, count=1)
         replacements.append((start, end, moved))
-    path.write_text(replace_blocks(text, replacements), encoding="utf-8")
+    path.write_text(
+        clean_output(replace_blocks(text, replacements)),
+        encoding="utf-8",
+        newline="\n",
+    )
 
 
 def main():
