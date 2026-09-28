@@ -42,9 +42,9 @@
       90.0
     ],
     "J7": [
-      24.8,
+      23.675,
       33.0,
-      90.0
+      -90.0
     ],
     "J8": [
       29.0,
@@ -132,8 +132,8 @@
       0.0
     ]
   },
-  "tracks": 523,
-  "vias": 162,
+  "tracks": 1335,
+  "vias": 310,
   "via_holes_in_cap_lands": [],
   "critical_local_nets_without_unconnected_findings": {
     "CHG_SW1": true,

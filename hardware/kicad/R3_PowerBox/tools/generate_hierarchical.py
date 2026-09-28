@@ -66,7 +66,10 @@ def c(ref, value, a, b, fp="Capacitor_SMD:C_0603_1608Metric"):
 
 
 def tp(ref, net):
-    p = comp("TP", ref, net.name, "TestPoint:TestPoint_Plated_Hole_D2.0mm")
+    fp = ("R3_Power:TestPoint_CC_D0.6mm" if ref in ("TP31", "TP32") else
+          "TestPoint:TestPoint_Pad_D1.0mm" if ref in ("TP27", "TP28") else
+          "TestPoint:TestPoint_Plated_Hole_D2.0mm")
+    p = comp("TP", ref, net.name, fp)
     net += p[1]
 
 

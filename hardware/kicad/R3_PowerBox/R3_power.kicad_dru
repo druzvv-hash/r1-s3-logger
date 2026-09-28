@@ -1,4 +1,7 @@
 (version 1)
+(rule "M3 hardware envelope - explicit copper check"
+  (condition "A.intersectsArea('M3_H1') || A.intersectsArea('M3_H2') || A.intersectsArea('M3_H3') || A.intersectsArea('M3_H4') || A.intersectsArea('M3_H5') || A.intersectsArea('M3_H6')")
+  (constraint disallow track via zone))
 (rule "R3 all-layer isolation - no conductive objects"
   (condition "A.intersectsArea('ISOLATION_CORRIDOR')")
   (constraint disallow track via pad zone))

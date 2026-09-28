@@ -60,9 +60,9 @@ def component_sheet(comp: ET.Element) -> str:
 
 ANCHORS = {
     # Dirty-edge connectors and the two principal high-current paths.
-    # J7 is shifted 0.5 mm inward from the original nominal edge placement;
-    # this keeps every signal and shield pad at least 0.5 mm from Edge.Cuts.
-    "J7": (24.8, 33.0, 90), "J1": (27.0, 55.0, 90),
+    # GCT USB4105 local +Y mating edge is 3.675 mm from origin.
+    # At 270 degrees its mouth faces outward and coincides with x=20 edge.
+    "J7": (23.675, 33.0, 270), "J1": (27.0, 55.0, 90),
     "J8": (29.0, 78.0, 90), "J9": (52.0, 24.0, 0),
     "U10": (33.0, 33.0, 0), "D4": (33.0, 43.0, 0),
     "TP31": (38.0, 39.0, 0), "TP32": (38.0, 44.0, 0),

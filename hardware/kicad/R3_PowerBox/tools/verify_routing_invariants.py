@@ -8,6 +8,7 @@ from route_reva import ROOT,BASELINE
 ap=argparse.ArgumentParser()
 ap.add_argument('--drc',default='routing_checkpoint_A0_drc.json')
 ap.add_argument('--allow-a-service-move',action='store_true',help='Accept documented SW2 relocation only')
+ap.add_argument('--allow-d-usb-correction',action='store_true',help='Accept GCT drawing-corrected outward J7 only')
 args=ap.parse_args()
 
 scratch=ROOT/'tmp'/'invariant_baseline.kicad_pcb'
@@ -30,6 +31,7 @@ checks={
     'all_pad_net_assignments_unchanged':pinmap(before)==pinmap(after),
     'fixed_mechanical_and_isolation_positions_unchanged':all(
         (locations[ref]==[85.0,78.0,0.0] if ref=='SW2' and args.allow_a_service_move
+         else locations[ref]==[23.675,33.0,-90.0] if ref=='J7' and args.allow_d_usb_correction
          else xy(before.FindFootprintByReference(ref))==locations[ref]) for ref in fixed),
     'board_outline_unchanged':outline(before,k.Edge_Cuts)==outline(after,k.Edge_Cuts),
     'upper_board_envelope_unchanged':outline(before,k.Dwgs_User)==outline(after,k.Dwgs_User),

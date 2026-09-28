@@ -1,5 +1,11 @@
 # Current memory entry point
 
+## 2026-09-28 — Routing checkpoint D
+
+All non-ground interconnects connected; 112 ground findings remain for E.
+No DRC error-severity findings; no planes yet. Continue E/F automatically.
+See PowerBox docs/ROUTING_D.md for exact local corrections and pending return review.
+
 ## 2026-09-28 — Routing checkpoint C
 
 Independent pre-isolation feeds and secondary/LDO local rails routed on top of B.
