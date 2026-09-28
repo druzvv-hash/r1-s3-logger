@@ -1,5 +1,25 @@
 # Current memory entry point
 
+## 2026-09-28 — R3 PowerBox KiCad workspace
+
+FINAL PRE-ROUTING / NOT ROUTED: the canonical editable PowerBox source is
+`hardware/kicad/R3_PowerBox/tools/generate_hierarchical.py`; generated KiCad,
+PDF, BOM and reports are committed under the same project. The approved board
+is 160 x 80 mm with 191 placed footprints, four copper layers, DIRTY -> PRIMARY
+-> ISOLATION -> CLEAN zoning and a 3.0 mm all-layer functional-isolation
+corridor. The architecture is 2S Li-ion -> BQ28Z610 -> BQ25798/STUSB4500 ->
+switched `VSYS_MAIN` -> existing digital and isolated ADS/INA supplies.
+
+Normal user power uses Q4 `DMP3007LSS-13`; BMS, PD and charging remain alive
+when R3 is off. QON is a separate service/ship wake input. Raw BQ25798 STAT and
+3.3 V `CHARGE_STATUS` are isolated by BAT54WS; J11 is the primary-only panel
+interface. Latest checks: schematic PDF 11 pages, ERC 0 errors / 408 generated
+library-grid warnings; critical PCB DRC geometry categories are zero; PCB has
+0 tracks and 0 vias. Do not begin routing or order hardware until the blockers
+in `docs/VERIFICATION.md` are closed: PD/BMS programming, Q2/Q3 and PPTC thermal
+validation, TPS54302 at 6 V, RS3/INA light-load behavior, enclosure connector
+clearance and approval of the functional-isolation rule.
+
 ## 2026-09-24 — shared session files and BLE resilience
 
 R1 0.38 / CANBox 0.6.5 / R3 CC 0.2.1 deployed; STM32 CM7 LFN/UTC update

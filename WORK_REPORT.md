@@ -1,5 +1,31 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — R3 PowerBox KiCad capture
+
+Created and advanced `hardware/kicad/R3_PowerBox` to a final pre-routing
+checkpoint. The editable SKiDL source now generates a root plus ten functional
+sheets covering 2S battery/BQ28Z610 protection, BQ25798 NVDC charging,
+STUSB4500 USB-C PD, service-input muxing, user load switching, TPS62132/TPS54302,
+separate ADS and INA primary filters, RS3E/RS3 isolation, ADM7150/TPS7A20 clean
+rails, connectors and test points. `DGND` and `GND_ISO` remain distinct.
+
+Closed the final UI/control correction: Q4 `DMP3007LSS-13` switches
+`VSYS_PROT` to `VSYS_MAIN` while BMS/PD/charging remain upstream; SW1 is normal
+latching power and SW2 is separate QON service. D5 remains on REGN/raw
+`BQ_STAT_RAW`; BAT54WS isolates the 3.3 V `CHARGE_STATUS` logic. J11 exports
+panel power/control/I2C/status without shared onboard LED-anode nets or GND_ISO.
+The conservative status LOW is <=0.72 V, below STM32H755 and ESP32-S3 limits.
+
+Validation with KiCad 10.0.0 and SKiDL 2.3.0: PDF export PASS and all 11 pages
+visually inspected; ERC 0 errors / 408 generated library-grid warnings. BOM and
+logical net map regenerated. The 160 x 80 mm four-layer preliminary placement
+contains 191 footprints, no courtyard overlap, 0 tracks and 0 vias. DRC has zero
+clearance, copper-to-edge, drill-range and annular-width findings; remaining
+items are expected unrouted connections and silkscreen cleanup. No Gerbers,
+routing, procurement, assembly, power-up, thermal, ripple, EMC, isolation or
+load acceptance was performed. Exact routing blockers remain recorded in
+`hardware/kicad/R3_PowerBox/docs/VERIFICATION.md`.
+
 ## 2026-09-24 — shared session files and BLE resilience
 
 R1 0.38 / CANBox 0.6.5 / R3 CC 0.2.1 deployed; STM32 CM7 LFN/UTC update
