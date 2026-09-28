@@ -1,5 +1,15 @@
 # r1-s3-logger — work reports
 
+## 2026-09-28 — Routing checkpoint C
+
+HOST CHECKED: independent ADS/INA filters, RS3 secondary splits, INA bipolar
+filters and clean LDO local loops. Source net mapping unchanged, prior copper
+retained. Some SIP-local bypass/filter parts moved to B.Cu to avoid module-body
+courtyard conflicts. 523 segments / 162 vias; 283 unconnected, 83 dangling vias,
+175 silk warnings. No present electrical/geometric DRC errors; independent
+isolation and mechanical/net audits pass. Native copper plots inspected.
+Planes/thermal/final return and bench acceptance remain open. Continue D/E/F.
+
 ## 2026-09-28 — Routing checkpoint B
 
 HOST CHECKED local U1/U2 routes: SW/VIN/output/feedback/SS/PG/BOOT plus ground

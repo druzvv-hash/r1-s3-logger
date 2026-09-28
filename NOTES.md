@@ -1,5 +1,11 @@
 # Current memory entry point
 
+## 2026-09-28 — Routing checkpoint C
+
+Independent pre-isolation feeds and secondary/LDO local rails routed on top of B.
+283 unconnected, no planes; no DRC electrical/geometric errors. Continue D/E/F.
+Canonical continuation details: PowerBox docs/ROUTING_CHECKPOINTS.md.
+
 ## 2026-09-28 — Routing checkpoint B
 
 Local primary buck routing added on top of A, preserving all A copper.

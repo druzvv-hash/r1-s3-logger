@@ -1,5 +1,21 @@
 # Rev.A prototype routing checkpoints
 
+## Checkpoint C: independent pre-isolation and clean rails
+
+Continued from B without removing prior copper. Independent ADS/INA input
+filters are connected with paired feed vias. Their capacitors/FBs are on the
+underside to fit adjacent to the SIP terminals without occupying module-body
+courtyards. No common post-filter rail was introduced. Raw secondary splits,
+INA positive/negative filtering and local ADM7150/TPS7A20 loops are routed.
+U4 capacitors were placed by actual pin function; short local REF/REF_SENSE,
+BYP/VREG and input/output links remain in the clean domain. R40 is on B.Cu.
+
+523 segments / 162 vias. DRC: 283 unconnected, 83 dangling vias awaiting
+planes, 175 silk warnings. No electrical/geometric errors; independent
+barrier/domain audit and pin/mechanical invariants PASS. No copper objects in
+x=121..124. Native C plots inspected. Ground planes/thermal/complete return
+verification are deferred to E, not claimed complete. Continue D automatically.
+
 ## Checkpoint B: local primary converters
 
 Continued from A without deleting any A copper. U1/U2 rotated locally so their
