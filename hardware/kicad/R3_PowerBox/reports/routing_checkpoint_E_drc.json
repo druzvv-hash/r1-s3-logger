@@ -1,0 +1,3561 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-28T23:11:31",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.0",
+    "schematic_parity": [],
+    "source": "R3_power.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Перехідний отвір [+5V_INA] на F.Cu - B.Cu",
+                    "pos": {
+                        "x": 131.0,
+                        "y": 77.5
+                    },
+                    "uuid": "86be6c96-dfe8-4437-8333-0159c9d93902"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Перехідний отвір [PACK_POS] на F.Cu - B.Cu",
+                    "pos": {
+                        "x": 47.225,
+                        "y": 71.8
+                    },
+                    "uuid": "4d757a27-0b09-4043-8d1f-fe513eea768a"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Перехідний отвір [+3V3_D] на F.Cu - B.Cu",
+                    "pos": {
+                        "x": 49.825,
+                        "y": 31.5
+                    },
+                    "uuid": "b163afd4-6105-492c-8ec6-237bc9e24a63"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Track has unconnected end",
+            "items": [
+                {
+                    "description": "Доріжка [POWER_CTRL] на In2.Cu, довжина 4,0000 mm",
+                    "pos": {
+                        "x": 85.1,
+                        "y": 74.0
+                    },
+                    "uuid": "1b972f8d-cc1c-44b9-84a2-53a6984c74e3"
+                }
+            ],
+            "severity": "warning",
+            "type": "track_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Перехідний отвір [PM_I2C_SCL] на F.Cu - B.Cu",
+                    "pos": {
+                        "x": 64.8,
+                        "y": 79.6
+                    },
+                    "uuid": "40c80985-40ee-40b8-8ecd-afcefce54af3"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Via is not connected or connected on only one layer",
+            "items": [
+                {
+                    "description": "Перехідний отвір [PM_I2C_SDA] на F.Cu - B.Cu",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 79.1
+                    },
+                    "uuid": "f390aadd-fcbf-4172-a1b4-52a79f296208"
+                }
+            ],
+            "severity": "warning",
+            "type": "via_dangling"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J9 на F.Silkscreen",
+                    "pos": {
+                        "x": 48.565,
+                        "y": 25.09
+                    },
+                    "uuid": "b61be5eb-9b4b-4e07-a7bc-aba2452ecd43"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J9 на F.Silkscreen",
+                    "pos": {
+                        "x": 58.435,
+                        "y": 15.97
+                    },
+                    "uuid": "3c3892d9-4a86-4d14-9914-1b065f331f36"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J1 на F.Silkscreen",
+                    "pos": {
+                        "x": 18.97,
+                        "y": 48.565
+                    },
+                    "uuid": "68dbd118-28e3-4f2c-a519-0b60c376ef7b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J1 на F.Silkscreen",
+                    "pos": {
+                        "x": 28.09,
+                        "y": 58.435
+                    },
+                    "uuid": "caa4a8ba-04a2-48b1-9a94-58cb816fa022"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J8 на F.Silkscreen",
+                    "pos": {
+                        "x": 19.97,
+                        "y": 66.565
+                    },
+                    "uuid": "af2a04ca-7030-4f3f-b2c2-edb8d067da96"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J8 на F.Silkscreen",
+                    "pos": {
+                        "x": 19.97,
+                        "y": 80.435
+                    },
+                    "uuid": "5f783b9e-1339-4211-ad1e-74599c18b723"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J8 на F.Silkscreen",
+                    "pos": {
+                        "x": 20.97,
+                        "y": 81.435
+                    },
+                    "uuid": "b6940f72-fd4a-446f-a3bb-edcf5cb42842"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Поле посилання TP20",
+                    "pos": {
+                        "x": 28.0,
+                        "y": 20.502
+                    },
+                    "uuid": "c4d4d487-279e-48e5-adc9-534b15dc6720"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J2 на F.Silkscreen",
+                    "pos": {
+                        "x": 68.565,
+                        "y": 25.09
+                    },
+                    "uuid": "00003792-d699-4233-a74b-f6c7ac31827d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J2 на F.Silkscreen",
+                    "pos": {
+                        "x": 90.435,
+                        "y": 15.97
+                    },
+                    "uuid": "e6781161-dac8-4d69-bce3-5a6ba953724b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J4 на F.Silkscreen",
+                    "pos": {
+                        "x": 93.065,
+                        "y": 25.09
+                    },
+                    "uuid": "611cf7a4-dcbc-47ba-9142-dbabe5779dfb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Прямокутник на Edge.Cuts",
+                    "pos": {
+                        "x": 20.0,
+                        "y": 20.0
+                    },
+                    "uuid": "8c562953-0a08-4d60-b381-b4363dcc49b5"
+                },
+                {
+                    "description": "Сегмент з J4 на F.Silkscreen",
+                    "pos": {
+                        "x": 108.935,
+                        "y": 15.97
+                    },
+                    "uuid": "d7d60b28-1652-47bd-a11d-8a29f68f933b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Висота тексту за межами діапазону (обмеження налаштування дошки висота тексту на шару шовкографії мінімальна висота 0,8000 mm; актуальна 0,6000 mm)",
+            "items": [
+                {
+                    "description": "Поле посилання TP31",
+                    "pos": {
+                        "x": 29.2,
+                        "y": 30.65
+                    },
+                    "uuid": "46ad1cf6-7be1-4d30-9d28-cbaff9fc851a"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Висота тексту за межами діапазону (обмеження налаштування дошки висота тексту на шару шовкографії мінімальна висота 0,8000 mm; актуальна 0,6000 mm)",
+            "items": [
+                {
+                    "description": "Поле посилання TP32",
+                    "pos": {
+                        "x": 29.2,
+                        "y": 33.65
+                    },
+                    "uuid": "b36bea3d-b0aa-446c-8335-352adc248c96"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J1 на F.Silkscreen",
+                    "pos": {
+                        "x": 28.09,
+                        "y": 58.435
+                    },
+                    "uuid": "caa4a8ba-04a2-48b1-9a94-58cb816fa022"
+                },
+                {
+                    "description": "PCB текст 'SERVICE IN 6-12V' на F.Silkscreen",
+                    "pos": {
+                        "x": 22.0,
+                        "y": 54.0
+                    },
+                    "uuid": "ed68e57e-d347-43de-ac8c-3851e4505c21"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J1 на F.Silkscreen",
+                    "pos": {
+                        "x": 18.97,
+                        "y": 48.565
+                    },
+                    "uuid": "68dbd118-28e3-4f2c-a519-0b60c376ef7b"
+                },
+                {
+                    "description": "PCB текст 'SERVICE IN 6-12V' на F.Silkscreen",
+                    "pos": {
+                        "x": 22.0,
+                        "y": 54.0
+                    },
+                    "uuid": "ed68e57e-d347-43de-ac8c-3851e4505c21"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C103 на F.Silkscreen",
+                    "pos": {
+                        "x": 38.41,
+                        "y": 50.111252
+                    },
+                    "uuid": "36ccfd94-531e-46ce-b30b-46a63046c5f2"
+                },
+                {
+                    "description": "Поле посилання C102",
+                    "pos": {
+                        "x": 38.65,
+                        "y": 49.4
+                    },
+                    "uuid": "8ee0996f-8b9b-4b25-93bc-5fe4f14bbbc9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з D2 на F.Silkscreen",
+                    "pos": {
+                        "x": 26.64,
+                        "y": 90.0
+                    },
+                    "uuid": "6b32139d-9ef7-4240-96f9-72809d4face6"
+                },
+                {
+                    "description": "PCB текст 'H3 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 25.5,
+                        "y": 89.8
+                    },
+                    "uuid": "e41fada8-0c88-4515-a931-25c98bb01a47"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J8 на F.Silkscreen",
+                    "pos": {
+                        "x": 30.09,
+                        "y": 81.435
+                    },
+                    "uuid": "44f13bb9-d46f-4899-8820-e78e744c2ec3"
+                },
+                {
+                    "description": "PCB текст 'BAT+  CELL MID  BAT-' на F.Silkscreen",
+                    "pos": {
+                        "x": 22.0,
+                        "y": 80.0
+                    },
+                    "uuid": "f3beca1c-4679-4701-8703-165563bde888"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з R1 на F.Silkscreen",
+                    "pos": {
+                        "x": 24.762742,
+                        "y": 89.5225
+                    },
+                    "uuid": "4ffc5976-b537-4835-a340-c7acba9ca4d7"
+                },
+                {
+                    "description": "PCB текст 'H3 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 25.5,
+                        "y": 89.8
+                    },
+                    "uuid": "e41fada8-0c88-4515-a931-25c98bb01a47"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання D2",
+                    "pos": {
+                        "x": 29.0,
+                        "y": 87.0
+                    },
+                    "uuid": "3ed41bc5-6169-4bef-97c7-9e5d7ae5743d"
+                },
+                {
+                    "description": "Сегмент з Q1 на F.Silkscreen",
+                    "pos": {
+                        "x": 26.95,
+                        "y": 87.55
+                    },
+                    "uuid": "966e85b2-a259-40ce-a63f-7d28b2b2af52"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з R95 на F.Silkscreen",
+                    "pos": {
+                        "x": 63.262742,
+                        "y": 67.4275
+                    },
+                    "uuid": "5ecbc71c-891d-4c67-8906-b5848834c0f2"
+                },
+                {
+                    "description": "Поле посилання TP26",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.002
+                    },
+                    "uuid": "a28f5dbc-15e2-4d00-95d1-c72da0eb3622"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з R95 на F.Silkscreen",
+                    "pos": {
+                        "x": 63.262742,
+                        "y": 68.4725
+                    },
+                    "uuid": "0329661d-910d-4388-89cb-e764e382fc21"
+                },
+                {
+                    "description": "Поле посилання TP26",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.002
+                    },
+                    "uuid": "a28f5dbc-15e2-4d00-95d1-c72da0eb3622"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C107",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 63.57
+                    },
+                    "uuid": "085966be-dea2-4fd3-9362-b6a64cb3583d"
+                },
+                {
+                    "description": "Сегмент з F3 на F.Silkscreen",
+                    "pos": {
+                        "x": 68.613748,
+                        "y": 63.21
+                    },
+                    "uuid": "6c6ea0d8-f26d-44c0-8208-00f331caeefd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання R94",
+                    "pos": {
+                        "x": 63.5,
+                        "y": 72.62
+                    },
+                    "uuid": "142ea566-a452-4838-bfe8-254fb5124239"
+                },
+                {
+                    "description": "Коло з TP26 на F.Silkscreen",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 70.5
+                    },
+                    "uuid": "32dfdbb2-979e-4444-b793-8777dfa00104"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J8 на F.Silkscreen",
+                    "pos": {
+                        "x": 30.09,
+                        "y": 81.435
+                    },
+                    "uuid": "44f13bb9-d46f-4899-8820-e78e744c2ec3"
+                },
+                {
+                    "description": "Поле посилання Q1",
+                    "pos": {
+                        "x": 29.0,
+                        "y": 81.5
+                    },
+                    "uuid": "4edd6204-cc73-4b77-9ccb-cd73fa0be09d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C87 на F.Silkscreen",
+                    "pos": {
+                        "x": 57.41,
+                        "y": 50.111252
+                    },
+                    "uuid": "26494593-872e-477e-b528-f399d0409ba5"
+                },
+                {
+                    "description": "Поле посилання C88",
+                    "pos": {
+                        "x": 57.65,
+                        "y": 49.4
+                    },
+                    "uuid": "b9510d9b-10be-4ee3-a790-ee6f33e0eb47"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U3 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 35.4
+                    },
+                    "uuid": "5c1ce30b-c6b9-4ee8-b4c3-f42617b51200"
+                },
+                {
+                    "description": "PCB текст 'ISOLATION BOUNDARY - NO COPPER / VIA / PAD' на F.Silkscreen",
+                    "pos": {
+                        "x": 122.5,
+                        "y": 60.0
+                    },
+                    "uuid": "dfad448b-6636-46f1-ba0c-060bdc1b427b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U3 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 35.4
+                    },
+                    "uuid": "5c1ce30b-c6b9-4ee8-b4c3-f42617b51200"
+                },
+                {
+                    "description": "Поле посилання FB2",
+                    "pos": {
+                        "x": 128.0,
+                        "y": 44.35
+                    },
+                    "uuid": "a6ed70b3-442e-4a89-a329-4dab62272d83"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U3 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 35.4
+                    },
+                    "uuid": "5c1ce30b-c6b9-4ee8-b4c3-f42617b51200"
+                },
+                {
+                    "description": "Поле посилання U3",
+                    "pos": {
+                        "x": 123.79,
+                        "y": 36.0
+                    },
+                    "uuid": "77058edf-78d3-4c51-a548-43497cfefc80"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C32",
+                    "pos": {
+                        "x": 133.0,
+                        "y": 44.32
+                    },
+                    "uuid": "23691902-0f94-42f6-bbf1-6ef2a345136e"
+                },
+                {
+                    "description": "Прямокутник з U3 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 35.4
+                    },
+                    "uuid": "5c1ce30b-c6b9-4ee8-b4c3-f42617b51200"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U6 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 68.4
+                    },
+                    "uuid": "2b6e8d57-acd8-4572-b9a3-a46f52d25a58"
+                },
+                {
+                    "description": "PCB текст 'ISOLATION BOUNDARY - NO COPPER / VIA / PAD' на F.Silkscreen",
+                    "pos": {
+                        "x": 122.5,
+                        "y": 60.0
+                    },
+                    "uuid": "dfad448b-6636-46f1-ba0c-060bdc1b427b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U6 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 68.4
+                    },
+                    "uuid": "2b6e8d57-acd8-4572-b9a3-a46f52d25a58"
+                },
+                {
+                    "description": "Поле посилання U6",
+                    "pos": {
+                        "x": 123.79,
+                        "y": 67.8
+                    },
+                    "uuid": "c68d2850-7a3f-4f15-93d1-5b2e6314d933"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання TP16",
+                    "pos": {
+                        "x": 115.8,
+                        "y": 77.502
+                    },
+                    "uuid": "2264724b-5998-4e69-a1ce-6ebdcb6958ab"
+                },
+                {
+                    "description": "Прямокутник з U6 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 68.4
+                    },
+                    "uuid": "2b6e8d57-acd8-4572-b9a3-a46f52d25a58"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U6 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 68.4
+                    },
+                    "uuid": "2b6e8d57-acd8-4572-b9a3-a46f52d25a58"
+                },
+                {
+                    "description": "Поле посилання FB4",
+                    "pos": {
+                        "x": 128.0,
+                        "y": 77.35
+                    },
+                    "uuid": "4542b63a-0180-43a5-b6fc-a3dcda73a5d8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з U6 на F.Silkscreen",
+                    "pos": {
+                        "x": 112.9,
+                        "y": 68.4
+                    },
+                    "uuid": "2b6e8d57-acd8-4572-b9a3-a46f52d25a58"
+                },
+                {
+                    "description": "Поле посилання C60",
+                    "pos": {
+                        "x": 133.0,
+                        "y": 77.32
+                    },
+                    "uuid": "337bd9e8-843c-4875-931a-a61ab72b37fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання U6",
+                    "pos": {
+                        "x": 123.79,
+                        "y": 67.8
+                    },
+                    "uuid": "c68d2850-7a3f-4f15-93d1-5b2e6314d933"
+                },
+                {
+                    "description": "PCB текст 'ISOLATION BOUNDARY - NO COPPER / VIA / PAD' на F.Silkscreen",
+                    "pos": {
+                        "x": 122.5,
+                        "y": 60.0
+                    },
+                    "uuid": "dfad448b-6636-46f1-ba0c-060bdc1b427b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J13 на F.Silkscreen",
+                    "pos": {
+                        "x": 152.62,
+                        "y": 35.54
+                    },
+                    "uuid": "5dfa111d-5406-45af-a051-f10dfc555279"
+                },
+                {
+                    "description": "PCB текст 'J13 ISOLATED B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 157.0,
+                        "y": 37.5
+                    },
+                    "uuid": "deb2cc3c-c912-48d5-8527-095dcc325a01"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C42",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 43.18
+                    },
+                    "uuid": "448e7141-70a1-4277-aa8f-060c6ee8e66d"
+                },
+                {
+                    "description": "Сегмент з C41 на F.Silkscreen",
+                    "pos": {
+                        "x": 141.761252,
+                        "y": 43.765
+                    },
+                    "uuid": "c8aa6891-40f5-45ce-b336-ca181a64e497"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "PCB текст 'PRIMARY / DGND' на F.Silkscreen",
+                    "pos": {
+                        "x": 88.0,
+                        "y": 97.0
+                    },
+                    "uuid": "be5625fe-be3e-4274-a197-3ceae7977d9b"
+                },
+                {
+                    "description": "PCB текст 'POWER ON/OFF' на F.Silkscreen",
+                    "pos": {
+                        "x": 88.0,
+                        "y": 98.0
+                    },
+                    "uuid": "f85ef2ba-4877-4217-bad2-0bb82dd7a782"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J2 на F.Silkscreen",
+                    "pos": {
+                        "x": 81.651767,
+                        "y": 25.09
+                    },
+                    "uuid": "28f1444e-7369-4e74-b0db-9f417615c5d2"
+                },
+                {
+                    "description": "PCB текст 'RUN' на F.Silkscreen",
+                    "pos": {
+                        "x": 82.0,
+                        "y": 25.0
+                    },
+                    "uuid": "7246150c-b3a9-4760-947a-52e106704b38"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C12 на F.Silkscreen",
+                    "pos": {
+                        "x": 84.738748,
+                        "y": 43.035
+                    },
+                    "uuid": "a7025d73-882b-439d-961e-d132b386de79"
+                },
+                {
+                    "description": "Поле посилання C13",
+                    "pos": {
+                        "x": 85.0,
+                        "y": 43.32
+                    },
+                    "uuid": "e625a11e-ae3e-45c5-8e2c-4ceb1c4513de"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "PCB текст 'J12 PRIMARY B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 104.0,
+                        "y": 49.0
+                    },
+                    "uuid": "64ac126b-141a-4f79-988e-3e53f89a4981"
+                },
+                {
+                    "description": "Сегмент з L2 на F.Silkscreen",
+                    "pos": {
+                        "x": 104.96,
+                        "y": 54.71
+                    },
+                    "uuid": "76b16bc3-ba1b-4dc6-b386-e6732343cc29"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "PCB текст 'J12 PRIMARY B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 104.0,
+                        "y": 49.0
+                    },
+                    "uuid": "64ac126b-141a-4f79-988e-3e53f89a4981"
+                },
+                {
+                    "description": "Сегмент з L2 на F.Silkscreen",
+                    "pos": {
+                        "x": 99.04,
+                        "y": 49.29
+                    },
+                    "uuid": "9b70bd6f-e0cd-40dc-97b0-127ce2633ff0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C24",
+                    "pos": {
+                        "x": 108.8,
+                        "y": 52.32
+                    },
+                    "uuid": "3e60489e-7ccb-4258-a0c7-28ed8aeca5df"
+                },
+                {
+                    "description": "Сегмент з C23 на F.Silkscreen",
+                    "pos": {
+                        "x": 108.538748,
+                        "y": 51.735
+                    },
+                    "uuid": "802d582b-f462-45e4-8f8c-ef6c3098df2f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання U8",
+                    "pos": {
+                        "x": 51.0,
+                        "y": 47.9
+                    },
+                    "uuid": "04caa702-f9d6-45d0-af71-6ccbff069588"
+                },
+                {
+                    "description": "Поле посилання C86",
+                    "pos": {
+                        "x": 50.47,
+                        "y": 47.05
+                    },
+                    "uuid": "e0633aee-12c0-449e-b0da-d70c613a0b63"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C80 на F.Silkscreen",
+                    "pos": {
+                        "x": 50.61,
+                        "y": 47.19058
+                    },
+                    "uuid": "45f4804c-24d9-4eeb-98f2-7c1b044692bd"
+                },
+                {
+                    "description": "Поле посилання C86",
+                    "pos": {
+                        "x": 50.47,
+                        "y": 47.05
+                    },
+                    "uuid": "e0633aee-12c0-449e-b0da-d70c613a0b63"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання R102",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 63.57
+                    },
+                    "uuid": "13dd8672-02a8-4118-b799-7cb2d56cf0b4"
+                },
+                {
+                    "description": "Сегмент з F3 на F.Silkscreen",
+                    "pos": {
+                        "x": 68.613748,
+                        "y": 63.21
+                    },
+                    "uuid": "6c6ea0d8-f26d-44c0-8208-00f331caeefd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C82",
+                    "pos": {
+                        "x": 59.15,
+                        "y": 43.5
+                    },
+                    "uuid": "67160207-b51f-4e0f-bb54-727214cdb392"
+                },
+                {
+                    "description": "Сегмент з C81 на F.Silkscreen",
+                    "pos": {
+                        "x": 58.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "df6f91a8-27fd-4ac0-b5e3-9d799e854898"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C83",
+                    "pos": {
+                        "x": 62.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5da8ae8c-fd8b-4d58-acf3-f8411357b2f3"
+                },
+                {
+                    "description": "Сегмент з C82 на F.Silkscreen",
+                    "pos": {
+                        "x": 61.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "c3ef82d8-a53b-4809-8c99-7dcd976b251c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C83 на F.Silkscreen",
+                    "pos": {
+                        "x": 64.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "14ea4b3e-c210-413d-81c6-8959a570b4c7"
+                },
+                {
+                    "description": "Поле посилання C84",
+                    "pos": {
+                        "x": 65.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5fb30d5a-d3f0-4222-9b7e-8ebe514c3c21"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Прямокутник з L1 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.4,
+                        "y": 40.2
+                    },
+                    "uuid": "5202497a-79f1-491a-b37a-d4a9232aa99c"
+                },
+                {
+                    "description": "Полігон з U1 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.14,
+                        "y": 42.75
+                    },
+                    "uuid": "74d63375-23cd-4474-b989-101f8836303e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C11",
+                    "pos": {
+                        "x": 71.37,
+                        "y": 42.0
+                    },
+                    "uuid": "07df280d-b019-41c9-a4e7-02b988d457c7"
+                },
+                {
+                    "description": "Сегмент з C85 на F.Silkscreen",
+                    "pos": {
+                        "x": 70.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "a2d0811e-e02f-4bb1-86d8-e1e09417ae72"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C85",
+                    "pos": {
+                        "x": 68.15,
+                        "y": 43.5
+                    },
+                    "uuid": "f0c77127-75f6-44de-8c66-6e0ed87bd21f"
+                },
+                {
+                    "description": "Сегмент з C84 на F.Silkscreen",
+                    "pos": {
+                        "x": 67.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "f7e57278-f68f-4cb1-bd70-a581f5d0c3ae"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Коло з TP38 на F.Silkscreen",
+                    "pos": {
+                        "x": 62.0,
+                        "y": 33.0
+                    },
+                    "uuid": "841b2c2e-2a81-4114-a111-9a8d4ea6e412"
+                },
+                {
+                    "description": "Поле посилання D7",
+                    "pos": {
+                        "x": 63.0,
+                        "y": 35.15
+                    },
+                    "uuid": "90b08de4-3ce0-4074-9b0f-373e63fa221c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання J12",
+                    "pos": {
+                        "x": 107.27,
+                        "y": 25.62
+                    },
+                    "uuid": "8aff70a0-e39a-4ba2-9a5a-7f0c10c2e569"
+                },
+                {
+                    "description": "Сегмент з J4 на F.Silkscreen",
+                    "pos": {
+                        "x": 108.935,
+                        "y": 25.09
+                    },
+                    "uuid": "be906fad-dceb-4f69-8a79-fa0a34e8bb6f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C108 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.288748,
+                        "y": 66.91
+                    },
+                    "uuid": "41982487-f735-4a28-b6b5-9c3918e9d8d5"
+                },
+                {
+                    "description": "Поле посилання TP40",
+                    "pos": {
+                        "x": 78.0,
+                        "y": 67.502
+                    },
+                    "uuid": "723bc6d6-7baa-47bd-9eb2-0bc8d37fa13f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання J7",
+                    "pos": {
+                        "x": 29.175,
+                        "y": 33.0
+                    },
+                    "uuid": "1d56df47-0e29-402b-81ad-e2140c86c25e"
+                },
+                {
+                    "description": "Поле посилання TP32",
+                    "pos": {
+                        "x": 29.2,
+                        "y": 33.65
+                    },
+                    "uuid": "b36bea3d-b0aa-446c-8335-352adc248c96"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Коло з TP33 на F.Silkscreen",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 28.0
+                    },
+                    "uuid": "acbc4b42-8b27-4f6b-9e73-fb6860ec11cb"
+                },
+                {
+                    "description": "Поле посилання TP21",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 29.502
+                    },
+                    "uuid": "e7f59d90-4f1f-4628-8adb-c54dd8a005de"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C101",
+                    "pos": {
+                        "x": 41.65,
+                        "y": 49.4
+                    },
+                    "uuid": "296de40b-1eed-4c4c-8c04-3f0fbbc9048d"
+                },
+                {
+                    "description": "Сегмент з C102 на F.Silkscreen",
+                    "pos": {
+                        "x": 41.41,
+                        "y": 50.111252
+                    },
+                    "uuid": "abb86f41-4fca-4c2d-8c9a-1e67c7767058"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C79 на F.Silkscreen",
+                    "pos": {
+                        "x": 38.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "71efa09f-dd10-4d13-be7c-257f6949b9bb"
+                },
+                {
+                    "description": "Поле посилання C78",
+                    "pos": {
+                        "x": 39.15,
+                        "y": 43.5
+                    },
+                    "uuid": "db46333b-0fa4-41e6-a3a2-1b6d55814eea"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання C77",
+                    "pos": {
+                        "x": 42.15,
+                        "y": 43.5
+                    },
+                    "uuid": "6651ac60-e093-463d-9406-2f0438da3b57"
+                },
+                {
+                    "description": "Сегмент з C78 на F.Silkscreen",
+                    "pos": {
+                        "x": 41.91,
+                        "y": 44.211252
+                    },
+                    "uuid": "b216a9aa-8743-452e-bd7f-82245186c073"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "PCB текст 'H1 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 35.0,
+                        "y": 30.2
+                    },
+                    "uuid": "b233f245-5415-470b-a03e-1ce9b82db5a9"
+                },
+                {
+                    "description": "Поле посилання U10",
+                    "pos": {
+                        "x": 33.0,
+                        "y": 29.67
+                    },
+                    "uuid": "c83ad4a3-9793-4045-9a02-a5d86ef7c4bf"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання U10",
+                    "pos": {
+                        "x": 33.0,
+                        "y": 29.67
+                    },
+                    "uuid": "c83ad4a3-9793-4045-9a02-a5d86ef7c4bf"
+                },
+                {
+                    "description": "Коло з H1 на F.Silkscreen",
+                    "pos": {
+                        "x": 35.0,
+                        "y": 25.5
+                    },
+                    "uuid": "da3d3e8c-2583-421e-b369-81154df1c7be"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з J9 на F.Silkscreen",
+                    "pos": {
+                        "x": 58.435,
+                        "y": 15.97
+                    },
+                    "uuid": "3c3892d9-4a86-4d14-9914-1b065f331f36"
+                },
+                {
+                    "description": "Поле посилання TP33",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 25.502
+                    },
+                    "uuid": "8a13c086-b2b0-49c0-af1f-2c71b737da77"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання TP33",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 25.502
+                    },
+                    "uuid": "8a13c086-b2b0-49c0-af1f-2c71b737da77"
+                },
+                {
+                    "description": "Сегмент з J9 на F.Silkscreen",
+                    "pos": {
+                        "x": 58.435,
+                        "y": 25.09
+                    },
+                    "uuid": "f4120b37-dd81-4d42-ad29-cc315606f61c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'SERVICE IN 6-12V' на F.Silkscreen",
+                    "pos": {
+                        "x": 22.0,
+                        "y": 54.0
+                    },
+                    "uuid": "ed68e57e-d347-43de-ac8c-3851e4505c21"
+                },
+                {
+                    "description": "NPTH конт. площадка з J1",
+                    "pos": {
+                        "x": 22.68,
+                        "y": 53.5
+                    },
+                    "uuid": "64bb7132-0ce6-4a65-b5e4-c529e1001d9e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'H3 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 25.5,
+                        "y": 89.8
+                    },
+                    "uuid": "e41fada8-0c88-4515-a931-25c98bb01a47"
+                },
+                {
+                    "description": "Конт. площадка 1 [Q1_GATE] з R1 на F.Cu",
+                    "pos": {
+                        "x": 24.175,
+                        "y": 89.0
+                    },
+                    "uuid": "e5549bcd-3a13-46af-9880-40e8c5cec20c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'H3 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 25.5,
+                        "y": 89.8
+                    },
+                    "uuid": "e41fada8-0c88-4515-a931-25c98bb01a47"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з R1 на F.Cu",
+                    "pos": {
+                        "x": 25.825,
+                        "y": 89.0
+                    },
+                    "uuid": "1696f3c6-9b15-4afe-ae7e-eb746898a2dd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання TP26",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.002
+                    },
+                    "uuid": "a28f5dbc-15e2-4d00-95d1-c72da0eb3622"
+                },
+                {
+                    "description": "Конт. площадка 1 [DGND] з R95 на F.Cu",
+                    "pos": {
+                        "x": 62.675,
+                        "y": 67.95
+                    },
+                    "uuid": "c30e6b2e-281c-4e91-97c2-c2ef7044665c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання TP26",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.002
+                    },
+                    "uuid": "a28f5dbc-15e2-4d00-95d1-c72da0eb3622"
+                },
+                {
+                    "description": "Конт. площадка 2 [BMS_SRN_FILT] з R95 на F.Cu",
+                    "pos": {
+                        "x": 64.325,
+                        "y": 67.95
+                    },
+                    "uuid": "c41981fe-a010-4bf3-bccf-43900ef66476"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Коло з Q1 на F.Silkscreen",
+                    "pos": {
+                        "x": 26.65,
+                        "y": 82.95
+                    },
+                    "uuid": "f7ced3ff-813b-44b6-8bac-5d9b4399e019"
+                },
+                {
+                    "description": "Конт. площадка 2 [SERVICE_IN_REV] з Q1 на F.Cu",
+                    "pos": {
+                        "x": 26.35,
+                        "y": 83.095
+                    },
+                    "uuid": "84954829-fe7b-44cc-af39-738f3990a7ef"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання U9",
+                    "pos": {
+                        "x": 65.5,
+                        "y": 73.9
+                    },
+                    "uuid": "f923b7f2-f262-44b5-aa99-626c35c41f13"
+                },
+                {
+                    "description": "Конт. площадка 2 [BMS_SRP_FILT] з R94 на F.Cu",
+                    "pos": {
+                        "x": 64.325,
+                        "y": 74.05
+                    },
+                    "uuid": "b83022af-8315-4dee-b02a-1e3b721f917c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'J13 ISOLATED B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 157.0,
+                        "y": 37.5
+                    },
+                    "uuid": "deb2cc3c-c912-48d5-8527-095dcc325a01"
+                },
+                {
+                    "description": "PTH конт. площадка 10 [GND_ISO] на J13",
+                    "pos": {
+                        "x": 156.54,
+                        "y": 34.16
+                    },
+                    "uuid": "2ebbce2c-508b-4753-ab04-f4913b8fabd6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'J13 ISOLATED B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 157.0,
+                        "y": 37.5
+                    },
+                    "uuid": "deb2cc3c-c912-48d5-8527-095dcc325a01"
+                },
+                {
+                    "description": "PTH конт. площадка 8 [GND_ISO] на J13",
+                    "pos": {
+                        "x": 156.54,
+                        "y": 31.62
+                    },
+                    "uuid": "f9db6447-0875-4330-8f6e-e7e3f953f9b5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 7 [EN_3V3_A_ISO] з U4 на F.Cu",
+                    "pos": {
+                        "x": 146.35,
+                        "y": 42.25
+                    },
+                    "uuid": "b274bdaa-5ae5-4f4f-9e0f-e09beab24665"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 8 [+5V_ISO_A] з U4 на F.Cu",
+                    "pos": {
+                        "x": 146.35,
+                        "y": 42.75
+                    },
+                    "uuid": "33d38bb0-b64e-4ddf-8f53-f175ec433ac2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 5 [ADM7150_REF] з U4 на F.Cu",
+                    "pos": {
+                        "x": 146.35,
+                        "y": 41.25
+                    },
+                    "uuid": "8279ec72-2242-451d-bc88-01a6dfbcaa07"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 6 [ADM7150_REF] з U4 на F.Cu",
+                    "pos": {
+                        "x": 146.35,
+                        "y": 41.75
+                    },
+                    "uuid": "99bcffbc-a215-47b0-97fa-356ac44bbbe7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 1 [N$13] з U4 на F.Cu",
+                    "pos": {
+                        "x": 143.65,
+                        "y": 42.75
+                    },
+                    "uuid": "7ceea5f1-6a2a-4fd7-b7cd-cf4f2056d28b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 2 [+3V3_A_ISO] з U4 на F.Cu",
+                    "pos": {
+                        "x": 143.65,
+                        "y": 42.25
+                    },
+                    "uuid": "8da3edb8-f5f3-46a9-a91b-c7212429c970"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 3 [N$14] з U4 на F.Cu",
+                    "pos": {
+                        "x": 143.65,
+                        "y": 41.75
+                    },
+                    "uuid": "a0f2ccb6-edb7-44d2-9324-2358f7ca8d9c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з U4 на F.Silkscreen",
+                    "pos": {
+                        "x": 143.45,
+                        "y": 40.45
+                    },
+                    "uuid": "42b0d2f2-4b75-46e2-82df-a44a94381905"
+                },
+                {
+                    "description": "Конт. площадка 4 [GND_ISO] з U4 на F.Cu",
+                    "pos": {
+                        "x": 143.65,
+                        "y": 41.25
+                    },
+                    "uuid": "677f58a2-d547-4640-b621-1bc9952c4dae"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'H3 M3' на F.Silkscreen",
+                    "pos": {
+                        "x": 25.5,
+                        "y": 89.8
+                    },
+                    "uuid": "e41fada8-0c88-4515-a931-25c98bb01a47"
+                },
+                {
+                    "description": "Конт. площадка 1 [Q1_GATE] з D2 на F.Cu",
+                    "pos": {
+                        "x": 27.35,
+                        "y": 89.0
+                    },
+                    "uuid": "2d927e24-d5eb-4528-a937-cdf517472683"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Коло з Q4 на F.Silkscreen",
+                    "pos": {
+                        "x": 69.65,
+                        "y": 67.95
+                    },
+                    "uuid": "31120f78-81f4-499f-8302-c00a670786b9"
+                },
+                {
+                    "description": "Конт. площадка 2 [VSYS_PROT] з Q4 на F.Cu",
+                    "pos": {
+                        "x": 69.35,
+                        "y": 68.095
+                    },
+                    "uuid": "78c27ef6-4f92-4555-ace8-19b7e07c6daa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'RUN' на F.Silkscreen",
+                    "pos": {
+                        "x": 82.0,
+                        "y": 25.0
+                    },
+                    "uuid": "7246150c-b3a9-4760-947a-52e106704b38"
+                },
+                {
+                    "description": "PTH конт. площадка 4 [DGND] на J2",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 24.0
+                    },
+                    "uuid": "ad2faa54-abb4-4f87-b2c7-ca6b539a93b6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C13",
+                    "pos": {
+                        "x": 85.0,
+                        "y": 43.32
+                    },
+                    "uuid": "e625a11e-ae3e-45c5-8e2c-4ceb1c4513de"
+                },
+                {
+                    "description": "Конт. площадка 1 [+3V3_D] з C12 на F.Cu",
+                    "pos": {
+                        "x": 84.05,
+                        "y": 42.3
+                    },
+                    "uuid": "f37993fd-3511-4b7d-9a8b-85727637f4ee"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з L1 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.4,
+                        "y": 40.2
+                    },
+                    "uuid": "5202497a-79f1-491a-b37a-d4a9232aa99c"
+                },
+                {
+                    "description": "Конт. площадка 2 [+3V3_D] з L1 на F.Cu",
+                    "pos": {
+                        "x": 81.95,
+                        "y": 42.3
+                    },
+                    "uuid": "3c7adc82-7fe0-40c1-bf16-77ed2106c15d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C13",
+                    "pos": {
+                        "x": 85.0,
+                        "y": 43.32
+                    },
+                    "uuid": "e625a11e-ae3e-45c5-8e2c-4ceb1c4513de"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C12 на F.Cu",
+                    "pos": {
+                        "x": 85.95,
+                        "y": 42.3
+                    },
+                    "uuid": "ec2082ba-fa08-4f0a-9f17-56d0b7af7e8b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'J12 PRIMARY B2B' на F.Silkscreen",
+                    "pos": {
+                        "x": 104.0,
+                        "y": 49.0
+                    },
+                    "uuid": "64ac126b-141a-4f79-988e-3e53f89a4981"
+                },
+                {
+                    "description": "Конт. площадка 2 [+5V_PREISO] з L2 на F.Cu",
+                    "pos": {
+                        "x": 104.25,
+                        "y": 52.0
+                    },
+                    "uuid": "2cd9627b-a11d-4554-863c-b514ec3b6c1b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C24",
+                    "pos": {
+                        "x": 108.8,
+                        "y": 52.32
+                    },
+                    "uuid": "3e60489e-7ccb-4258-a0c7-28ed8aeca5df"
+                },
+                {
+                    "description": "Конт. площадка 1 [+5V_PREISO] з C23 на F.Cu",
+                    "pos": {
+                        "x": 107.85,
+                        "y": 51.0
+                    },
+                    "uuid": "ea69cc4b-e1ef-4337-ad43-51a345a36942"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C24",
+                    "pos": {
+                        "x": 108.8,
+                        "y": 52.32
+                    },
+                    "uuid": "3e60489e-7ccb-4258-a0c7-28ed8aeca5df"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C23 на F.Cu",
+                    "pos": {
+                        "x": 109.75,
+                        "y": 51.0
+                    },
+                    "uuid": "7bdc1644-7d00-4861-8490-23082468fb17"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C86",
+                    "pos": {
+                        "x": 50.47,
+                        "y": 47.05
+                    },
+                    "uuid": "e0633aee-12c0-449e-b0da-d70c613a0b63"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHG_PMID] з C80 на F.Cu",
+                    "pos": {
+                        "x": 50.1,
+                        "y": 47.825
+                    },
+                    "uuid": "82ed540f-0940-4b26-b2fc-214b47eac99a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C86",
+                    "pos": {
+                        "x": 50.47,
+                        "y": 47.05
+                    },
+                    "uuid": "e0633aee-12c0-449e-b0da-d70c613a0b63"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C80 на F.Cu",
+                    "pos": {
+                        "x": 50.1,
+                        "y": 46.275
+                    },
+                    "uuid": "688b944c-aa4d-4d94-aeec-91b4ed348f2d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C107",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 63.57
+                    },
+                    "uuid": "085966be-dea2-4fd3-9362-b6a64cb3583d"
+                },
+                {
+                    "description": "Конт. площадка 2 [VSYS_PROT] з F3 на F.Cu",
+                    "pos": {
+                        "x": 72.225,
+                        "y": 61.5
+                    },
+                    "uuid": "4c137931-96be-48f1-ab64-a66da460b4cb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання TP40",
+                    "pos": {
+                        "x": 78.0,
+                        "y": 67.502
+                    },
+                    "uuid": "723bc6d6-7baa-47bd-9eb2-0bc8d37fa13f"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_MAIN] з C108 на F.Cu",
+                    "pos": {
+                        "x": 77.525,
+                        "y": 66.0
+                    },
+                    "uuid": "49aea659-bb21-4e91-a104-238d080f3c88"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R102",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 63.57
+                    },
+                    "uuid": "13dd8672-02a8-4118-b799-7cb2d56cf0b4"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з F3 на F.Cu",
+                    "pos": {
+                        "x": 67.775,
+                        "y": 61.5
+                    },
+                    "uuid": "553707ad-51db-4842-9cf5-4af61c324035"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'CHG' на F.Silkscreen",
+                    "pos": {
+                        "x": 59.0,
+                        "y": 37.0
+                    },
+                    "uuid": "84e70e99-23cb-4511-97a3-ac7ae9594739"
+                },
+                {
+                    "description": "Конт. площадка 2 [CHARGE_LED_A] з D5 на F.Cu",
+                    "pos": {
+                        "x": 59.7875,
+                        "y": 37.0
+                    },
+                    "uuid": "6ec8ce84-718a-4aa6-bad0-d60559fa9c1b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C82",
+                    "pos": {
+                        "x": 59.15,
+                        "y": 43.5
+                    },
+                    "uuid": "67160207-b51f-4e0f-bb54-727214cdb392"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C81 на F.Cu",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 42.025
+                    },
+                    "uuid": "a08ff954-651b-445b-9195-6618cabd8f21"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C82",
+                    "pos": {
+                        "x": 59.15,
+                        "y": 43.5
+                    },
+                    "uuid": "67160207-b51f-4e0f-bb54-727214cdb392"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з C81 на F.Cu",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 44.975
+                    },
+                    "uuid": "9d466a61-31c1-42cc-b6bc-be63364630cb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C83",
+                    "pos": {
+                        "x": 62.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5da8ae8c-fd8b-4d58-acf3-f8411357b2f3"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з C82 на F.Cu",
+                    "pos": {
+                        "x": 61.0,
+                        "y": 44.975
+                    },
+                    "uuid": "9f601eff-fcd8-41c0-a982-a2dd48abd001"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C83",
+                    "pos": {
+                        "x": 62.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5da8ae8c-fd8b-4d58-acf3-f8411357b2f3"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C82 на F.Cu",
+                    "pos": {
+                        "x": 61.0,
+                        "y": 42.025
+                    },
+                    "uuid": "c081d11a-b336-444e-9e19-a32f93bfe352"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C84",
+                    "pos": {
+                        "x": 65.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5fb30d5a-d3f0-4222-9b7e-8ebe514c3c21"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C83 на F.Cu",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 42.025
+                    },
+                    "uuid": "80c18cfb-7909-4d23-9e5c-c15375785953"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C84",
+                    "pos": {
+                        "x": 65.15,
+                        "y": 43.5
+                    },
+                    "uuid": "5fb30d5a-d3f0-4222-9b7e-8ebe514c3c21"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з C83 на F.Cu",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 44.975
+                    },
+                    "uuid": "d7590534-c366-4145-9a4c-a74fdf2e7544"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Полігон з U1 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.14,
+                        "y": 42.75
+                    },
+                    "uuid": "74d63375-23cd-4474-b989-101f8836303e"
+                },
+                {
+                    "description": "Конт. площадка 1 [SW_3V3] з L1 на F.Cu",
+                    "pos": {
+                        "x": 79.05,
+                        "y": 42.3
+                    },
+                    "uuid": "5383783a-686f-4ea8-bf61-16294f07d5dc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Прямокутник з L1 на F.Silkscreen",
+                    "pos": {
+                        "x": 78.4,
+                        "y": 40.2
+                    },
+                    "uuid": "5202497a-79f1-491a-b37a-d4a9232aa99c"
+                },
+                {
+                    "description": "Конт. площадка 1 [SW_3V3] з L1 на F.Cu",
+                    "pos": {
+                        "x": 79.05,
+                        "y": 42.3
+                    },
+                    "uuid": "5383783a-686f-4ea8-bf61-16294f07d5dc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C11",
+                    "pos": {
+                        "x": 71.37,
+                        "y": 42.0
+                    },
+                    "uuid": "07df280d-b019-41c9-a4e7-02b988d457c7"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C85 на F.Cu",
+                    "pos": {
+                        "x": 70.0,
+                        "y": 42.025
+                    },
+                    "uuid": "123ec5fb-e03d-4ed9-a711-29d81f4c03d3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C85",
+                    "pos": {
+                        "x": 68.15,
+                        "y": 43.5
+                    },
+                    "uuid": "f0c77127-75f6-44de-8c66-6e0ed87bd21f"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C84 на F.Cu",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 42.025
+                    },
+                    "uuid": "c5a29c11-7bc7-4156-8785-cbe748a839c0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C85",
+                    "pos": {
+                        "x": 68.15,
+                        "y": 43.5
+                    },
+                    "uuid": "f0c77127-75f6-44de-8c66-6e0ed87bd21f"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з C84 на F.Cu",
+                    "pos": {
+                        "x": 67.0,
+                        "y": 44.975
+                    },
+                    "uuid": "facc2649-c96e-4ea1-bd58-e36d4d110809"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'CHG' на F.Silkscreen",
+                    "pos": {
+                        "x": 59.0,
+                        "y": 37.0
+                    },
+                    "uuid": "84e70e99-23cb-4511-97a3-ac7ae9594739"
+                },
+                {
+                    "description": "Конт. площадка 1 [BQ_STAT_RAW] з D5 на F.Cu",
+                    "pos": {
+                        "x": 58.2125,
+                        "y": 37.0
+                    },
+                    "uuid": "dd820ec4-0c6d-42fb-a027-2d20913a5684"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання TP21",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 29.502
+                    },
+                    "uuid": "e7f59d90-4f1f-4628-8adb-c54dd8a005de"
+                },
+                {
+                    "description": "PTH конт. площадка 1 [USB_VBUS_PROT] на TP33",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 28.0
+                    },
+                    "uuid": "c69f24e3-c742-4efa-b58f-086267f3dade"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C101",
+                    "pos": {
+                        "x": 41.65,
+                        "y": 49.4
+                    },
+                    "uuid": "296de40b-1eed-4c4c-8c04-3f0fbbc9048d"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C102 на F.Cu",
+                    "pos": {
+                        "x": 40.5,
+                        "y": 47.925
+                    },
+                    "uuid": "942d8311-480b-4999-8d2a-51359f4abd03"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C78",
+                    "pos": {
+                        "x": 39.15,
+                        "y": 43.5
+                    },
+                    "uuid": "db46333b-0fa4-41e6-a3a2-1b6d55814eea"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C79 на F.Cu",
+                    "pos": {
+                        "x": 38.0,
+                        "y": 42.025
+                    },
+                    "uuid": "5a0ec6a7-5dba-4ea0-b3e5-8d84423212d5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C78",
+                    "pos": {
+                        "x": 39.15,
+                        "y": 43.5
+                    },
+                    "uuid": "db46333b-0fa4-41e6-a3a2-1b6d55814eea"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHG_PMID] з C79 на F.Cu",
+                    "pos": {
+                        "x": 38.0,
+                        "y": 44.975
+                    },
+                    "uuid": "08d004e2-3015-4e4b-b9f9-bb43af24dbfc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C77",
+                    "pos": {
+                        "x": 42.15,
+                        "y": 43.5
+                    },
+                    "uuid": "6651ac60-e093-463d-9406-2f0438da3b57"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHG_PMID] з C78 на F.Cu",
+                    "pos": {
+                        "x": 41.0,
+                        "y": 44.975
+                    },
+                    "uuid": "0ee1e556-f8d9-4859-a08a-23b09a07d81b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C77",
+                    "pos": {
+                        "x": 42.15,
+                        "y": 43.5
+                    },
+                    "uuid": "6651ac60-e093-463d-9406-2f0438da3b57"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C78 на F.Cu",
+                    "pos": {
+                        "x": 41.0,
+                        "y": 42.025
+                    },
+                    "uuid": "04a30567-da77-4d6c-9b29-9bc06bb1dd4b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C102",
+                    "pos": {
+                        "x": 38.65,
+                        "y": 49.4
+                    },
+                    "uuid": "8ee0996f-8b9b-4b25-93bc-5fe4f14bbbc9"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C103 на F.Cu",
+                    "pos": {
+                        "x": 37.5,
+                        "y": 47.925
+                    },
+                    "uuid": "24256464-177c-47f0-a7b8-c1e1eaab4231"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C102",
+                    "pos": {
+                        "x": 38.65,
+                        "y": 49.4
+                    },
+                    "uuid": "8ee0996f-8b9b-4b25-93bc-5fe4f14bbbc9"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHARGER_IN] з C103 на F.Cu",
+                    "pos": {
+                        "x": 37.5,
+                        "y": 50.875
+                    },
+                    "uuid": "28e88dee-f5ed-47b2-a290-43581c69fb6f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB текст 'USB-C' на F.Silkscreen",
+                    "pos": {
+                        "x": 22.0,
+                        "y": 27.0
+                    },
+                    "uuid": "d2986a37-613e-42a8-a574-957216f0c8f8"
+                },
+                {
+                    "description": "PTH конт. площадка SH [USB_SHIELD] на J7",
+                    "pos": {
+                        "x": 22.6,
+                        "y": 28.68
+                    },
+                    "uuid": "3bcb75aa-b926-4ded-8180-370b2e685a80"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання TP33",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 25.502
+                    },
+                    "uuid": "8a13c086-b2b0-49c0-af1f-2c71b737da77"
+                },
+                {
+                    "description": "PTH конт. площадка 2 [DGND] на J9",
+                    "pos": {
+                        "x": 55.0,
+                        "y": 24.0
+                    },
+                    "uuid": "4f766a69-0274-4cd5-a962-99ad36c017dc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C101",
+                    "pos": {
+                        "x": 41.65,
+                        "y": 49.4
+                    },
+                    "uuid": "296de40b-1eed-4c4c-8c04-3f0fbbc9048d"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHARGER_IN] з C102 на F.Cu",
+                    "pos": {
+                        "x": 40.5,
+                        "y": 50.875
+                    },
+                    "uuid": "2a6bff6d-b0fb-4ea0-bf63-a40a1436ec7c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання U8",
+                    "pos": {
+                        "x": 51.0,
+                        "y": 47.9
+                    },
+                    "uuid": "04caa702-f9d6-45d0-af71-6ccbff069588"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHG_PMID] з C80 на F.Cu",
+                    "pos": {
+                        "x": 50.1,
+                        "y": 47.825
+                    },
+                    "uuid": "82ed540f-0940-4b26-b2fc-214b47eac99a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання U8",
+                    "pos": {
+                        "x": 51.0,
+                        "y": 47.9
+                    },
+                    "uuid": "04caa702-f9d6-45d0-af71-6ccbff069588"
+                },
+                {
+                    "description": "Конт. площадка 1 [VSYS_RAW] з C86 на F.Cu",
+                    "pos": {
+                        "x": 51.9,
+                        "y": 47.825
+                    },
+                    "uuid": "c0bf052c-f3da-4723-973b-5e7d108c69a9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C88",
+                    "pos": {
+                        "x": 57.65,
+                        "y": 49.4
+                    },
+                    "uuid": "b9510d9b-10be-4ee3-a790-ee6f33e0eb47"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C87 на F.Cu",
+                    "pos": {
+                        "x": 56.5,
+                        "y": 47.925
+                    },
+                    "uuid": "8170da93-2df4-40bb-acad-5a13f9956c3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C88",
+                    "pos": {
+                        "x": 57.65,
+                        "y": 49.4
+                    },
+                    "uuid": "b9510d9b-10be-4ee3-a790-ee6f33e0eb47"
+                },
+                {
+                    "description": "Конт. площадка 1 [PACK_POS] з C87 на F.Cu",
+                    "pos": {
+                        "x": 56.5,
+                        "y": 50.875
+                    },
+                    "uuid": "935efb20-1747-4203-a4e9-645ff24a4cb2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C27 на B.Silkscreen",
+                    "pos": {
+                        "x": 116.35942,
+                        "y": 45.99
+                    },
+                    "uuid": "1c10a5fe-6699-4755-99af-b15624f91ee6"
+                },
+                {
+                    "description": "Поле посилання C26",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 45.68
+                    },
+                    "uuid": "2f75bfb4-898f-4097-a954-de736dcc233c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C29 на B.Silkscreen",
+                    "pos": {
+                        "x": 116.35942,
+                        "y": 70.49
+                    },
+                    "uuid": "9896a9ac-798e-4ab5-b484-3721752a381d"
+                },
+                {
+                    "description": "Поле посилання C28",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 70.18
+                    },
+                    "uuid": "c6b18101-4627-4ecf-86f2-13452c2290ff"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з R21 на B.Silkscreen",
+                    "pos": {
+                        "x": 94.262742,
+                        "y": 48.6775
+                    },
+                    "uuid": "3d389979-7640-4e71-a61b-91edf95b5eea"
+                },
+                {
+                    "description": "Поле посилання C25",
+                    "pos": {
+                        "x": 94.5,
+                        "y": 48.43
+                    },
+                    "uuid": "ae2bd383-f55d-4a3e-8643-2408033b90bd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання R74",
+                    "pos": {
+                        "x": 55.0,
+                        "y": 54.07
+                    },
+                    "uuid": "60f37726-5976-48e6-996f-348ef53d8103"
+                },
+                {
+                    "description": "Сегмент з C75 на B.Silkscreen",
+                    "pos": {
+                        "x": 54.14058,
+                        "y": 54.31
+                    },
+                    "uuid": "b71ecf2c-dae5-495f-835c-de510de0f315"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання R78",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 57.43
+                    },
+                    "uuid": "6746d79f-42c2-44f9-b747-85ac1263e3b7"
+                },
+                {
+                    "description": "Поле посилання R79",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 56.57
+                    },
+                    "uuid": "7fd27b3e-aff9-44a1-9689-c61cfea5d512"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з R79 на B.Silkscreen",
+                    "pos": {
+                        "x": 66.237258,
+                        "y": 57.4775
+                    },
+                    "uuid": "123b3a74-f8bb-4d53-97e2-2ce90dc59da3"
+                },
+                {
+                    "description": "Поле посилання R78",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 57.43
+                    },
+                    "uuid": "6746d79f-42c2-44f9-b747-85ac1263e3b7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Поле посилання R79",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 56.57
+                    },
+                    "uuid": "7fd27b3e-aff9-44a1-9689-c61cfea5d512"
+                },
+                {
+                    "description": "Сегмент з R78 на B.Silkscreen",
+                    "pos": {
+                        "x": 65.762742,
+                        "y": 56.5225
+                    },
+                    "uuid": "9f42454b-2e46-403c-b503-84419a46078d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Сегмент з C70 на B.Silkscreen",
+                    "pos": {
+                        "x": 23.85942,
+                        "y": 41.99
+                    },
+                    "uuid": "7cfee044-4f9e-4bc7-8450-aac396dc4489"
+                },
+                {
+                    "description": "Поле посилання R72",
+                    "pos": {
+                        "x": 24.0,
+                        "y": 41.43
+                    },
+                    "uuid": "af29a993-9f77-4aef-8098-af11dc0b2dd9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C26",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 45.68
+                    },
+                    "uuid": "2f75bfb4-898f-4097-a954-de736dcc233c"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C27 на B.Cu",
+                    "pos": {
+                        "x": 117.275,
+                        "y": 46.5
+                    },
+                    "uuid": "9c768239-939a-4ecc-b5e4-e992a40685a5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C26",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 45.68
+                    },
+                    "uuid": "2f75bfb4-898f-4097-a954-de736dcc233c"
+                },
+                {
+                    "description": "Конт. площадка 1 [+5V_PREISO_ADS] з C27 на B.Cu",
+                    "pos": {
+                        "x": 115.725,
+                        "y": 46.5
+                    },
+                    "uuid": "f3ce2277-91ca-4dd2-9c83-5152236bd90d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C28",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 70.18
+                    },
+                    "uuid": "c6b18101-4627-4ecf-86f2-13452c2290ff"
+                },
+                {
+                    "description": "Конт. площадка 1 [+5V_PREISO_INA] з C29 на B.Cu",
+                    "pos": {
+                        "x": 115.725,
+                        "y": 71.0
+                    },
+                    "uuid": "6c624f85-1024-4f46-817f-390d641c069f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C29",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 72.43
+                    },
+                    "uuid": "d35f8de1-9713-4fcc-9f7e-4b5efe71f70d"
+                },
+                {
+                    "description": "PTH конт. площадка 1 [DGND] на U6",
+                    "pos": {
+                        "x": 114.9,
+                        "y": 73.0
+                    },
+                    "uuid": "c7979211-d7b2-4ce1-9eed-28170fd3f81c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C28",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 70.18
+                    },
+                    "uuid": "c6b18101-4627-4ecf-86f2-13452c2290ff"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C29 на B.Cu",
+                    "pos": {
+                        "x": 117.275,
+                        "y": 71.0
+                    },
+                    "uuid": "b2766872-b100-451d-b791-acb3d3b20fb8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C29",
+                    "pos": {
+                        "x": 116.5,
+                        "y": 72.43
+                    },
+                    "uuid": "d35f8de1-9713-4fcc-9f7e-4b5efe71f70d"
+                },
+                {
+                    "description": "PTH конт. площадка 2 [+5V_PREISO_INA] на U6",
+                    "pos": {
+                        "x": 117.44,
+                        "y": 73.0
+                    },
+                    "uuid": "d75d2bc3-9d37-4f7a-b1f0-f3b75d549527"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C25",
+                    "pos": {
+                        "x": 94.5,
+                        "y": 48.43
+                    },
+                    "uuid": "ae2bd383-f55d-4a3e-8643-2408033b90bd"
+                },
+                {
+                    "description": "Конт. площадка 1 [+5V_PREISO] з R21 на B.Cu",
+                    "pos": {
+                        "x": 93.675,
+                        "y": 49.2
+                    },
+                    "uuid": "eac6ea5a-3335-4776-9c30-4b13ef66e996"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C25",
+                    "pos": {
+                        "x": 94.5,
+                        "y": 48.43
+                    },
+                    "uuid": "ae2bd383-f55d-4a3e-8643-2408033b90bd"
+                },
+                {
+                    "description": "Конт. площадка 2 [FB_5V] з R21 на B.Cu",
+                    "pos": {
+                        "x": 95.325,
+                        "y": 49.2
+                    },
+                    "uuid": "33018765-77aa-4921-b537-9f00b9155c9b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R73",
+                    "pos": {
+                        "x": 46.43,
+                        "y": 28.2
+                    },
+                    "uuid": "ace81f31-4267-4c97-9ba3-e1889b463ebe"
+                },
+                {
+                    "description": "Конт. площадка 1 [USB_VBUS_PROT] з C71 на B.Cu",
+                    "pos": {
+                        "x": 47.525,
+                        "y": 29.0
+                    },
+                    "uuid": "5d1d235d-8982-4b51-9cd1-8f23ee4dea2d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C3",
+                    "pos": {
+                        "x": 47.5,
+                        "y": 39.85
+                    },
+                    "uuid": "bf96fa77-38b6-4e2e-b5f3-e461b8494450"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з C4 на B.Cu",
+                    "pos": {
+                        "x": 46.775,
+                        "y": 40.0
+                    },
+                    "uuid": "4a91eb67-b989-4771-b8a0-5a0f5bd1f9db"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання C72",
+                    "pos": {
+                        "x": 42.5,
+                        "y": 28.27
+                    },
+                    "uuid": "5dad8e6f-1ce4-402e-a4c9-8b20bb550169"
+                },
+                {
+                    "description": "Конт. площадка 1 [USB_VBUS_PROT] з R85 на B.Cu",
+                    "pos": {
+                        "x": 40.825,
+                        "y": 28.0
+                    },
+                    "uuid": "55a084d1-a829-4cff-a6f2-7f573c8bab33"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R74",
+                    "pos": {
+                        "x": 55.0,
+                        "y": 54.07
+                    },
+                    "uuid": "60f37726-5976-48e6-996f-348ef53d8103"
+                },
+                {
+                    "description": "Конт. площадка 1 [N$8] з C75 на B.Cu",
+                    "pos": {
+                        "x": 54.775,
+                        "y": 53.8
+                    },
+                    "uuid": "dc3ad618-2185-4b41-af72-28b6ab1a8e73"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R74",
+                    "pos": {
+                        "x": 55.0,
+                        "y": 54.07
+                    },
+                    "uuid": "60f37726-5976-48e6-996f-348ef53d8103"
+                },
+                {
+                    "description": "Конт. площадка 2 [CHG_SW2] з C75 на B.Cu",
+                    "pos": {
+                        "x": 53.225,
+                        "y": 53.8
+                    },
+                    "uuid": "5d19feb9-7aeb-44ef-b110-f11efa33c35b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R79",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 56.57
+                    },
+                    "uuid": "7fd27b3e-aff9-44a1-9689-c61cfea5d512"
+                },
+                {
+                    "description": "Конт. площадка 1 [CHG_REGN] з R78 на B.Cu",
+                    "pos": {
+                        "x": 65.175,
+                        "y": 56.0
+                    },
+                    "uuid": "9919332e-5622-4402-a98f-2de2f4e07bc6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R78",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 57.43
+                    },
+                    "uuid": "6746d79f-42c2-44f9-b747-85ac1263e3b7"
+                },
+                {
+                    "description": "Конт. площадка 2 [DGND] з R79 на B.Cu",
+                    "pos": {
+                        "x": 65.175,
+                        "y": 58.0
+                    },
+                    "uuid": "fd3e7e53-b3fc-49fd-903b-d53a86d56186"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R78",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 57.43
+                    },
+                    "uuid": "6746d79f-42c2-44f9-b747-85ac1263e3b7"
+                },
+                {
+                    "description": "Конт. площадка 1 [NTC_CHG] з R79 на B.Cu",
+                    "pos": {
+                        "x": 66.825,
+                        "y": 58.0
+                    },
+                    "uuid": "f4c70f5a-abad-4fdb-b6d8-b539529c7a10"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Поле посилання R79",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 56.57
+                    },
+                    "uuid": "7fd27b3e-aff9-44a1-9689-c61cfea5d512"
+                },
+                {
+                    "description": "Конт. площадка 2 [NTC_CHG] з R78 на B.Cu",
+                    "pos": {
+                        "x": 66.825,
+                        "y": 56.0
+                    },
+                    "uuid": "7a2ab561-ea62-4614-9a29-43e264a15ac7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}

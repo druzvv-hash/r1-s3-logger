@@ -9,6 +9,7 @@ ap=argparse.ArgumentParser()
 ap.add_argument('--drc',default='routing_checkpoint_A0_drc.json')
 ap.add_argument('--allow-a-service-move',action='store_true',help='Accept documented SW2 relocation only')
 ap.add_argument('--allow-d-usb-correction',action='store_true',help='Accept GCT drawing-corrected outward J7 only')
+ap.add_argument('--filled-planes',action='store_true',help='Require filled domain planes at E/F')
 args=ap.parse_args()
 
 scratch=ROOT/'tmp'/'invariant_baseline.kicad_pcb'
@@ -37,7 +38,7 @@ checks={
     'upper_board_envelope_unchanged':outline(before,k.Dwgs_User)==outline(after,k.Dwgs_User),
     'four_copper_layers':after.GetCopperLayerCount()==4,
     'ground_nets_distinct':after.FindNet('DGND').GetNetCode()!=after.FindNet('GND_ISO').GetNetCode(),
-    'no_copper_zones_yet':not any(not z.GetIsRuleArea() for z in after.Zones()),
+    'plane_stage_matches':(any(not z.GetIsRuleArea() for z in after.Zones())==args.filled_planes),
 }
 report={'baseline':BASELINE,'checks':checks,'fixed_locations_mm':locations,
         'tracks':sum(not isinstance(t,k.PCB_VIA) for t in after.GetTracks()),

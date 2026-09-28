@@ -19,6 +19,9 @@ views={
     'all_layers':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(18,0,164,107)),
     'isolation':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(108,0,33,105)),
 }
+if args.checkpoint in ('E','F'):
+    views['inner1']=('In1.Cu,F.Fab,Edge.Cuts',(18,0,164,107))
+    views['inner2']=('In2.Cu,F.Fab,Edge.Cuts',(18,0,164,107))
 for name,(layers,box) in views.items():
     out=ROOT/'reports'/f'R3_power_{args.checkpoint}_{name}.svg'
     subprocess.run([str(cli),'pcb','export','svg','--layers',layers,
@@ -35,13 +38,14 @@ for name,(layers,box) in views.items():
         fill='#c71b68',opacity='.30',stroke='#ff83ae',**{'stroke-width':'.18'}))
     title=E.SubElement(root,f'{{{ns}}}text',dict(x=str(x+1),y='4.5',fill='white',
         **{'font-size':'1.15','font-family':'Arial'}))
-    title.text=f'{args.checkpoint} INCOMPLETE - {name.upper()} - NOT FOR FABRICATION'
+    title.text=f'{args.checkpoint} PROTOTYPE CHECKPOINT - {name.upper()} - NOT FOR FABRICATION'
     sub=E.SubElement(root,f'{{{ns}}}text',dict(x=str(x+1),y='7.5',fill='#cddbe0',
         **{'font-size':'.85','font-family':'Arial'}))
-    sub.text=f'No planes yet. {unrouted} unrouted connections. Corridor 121-124 mm: NO COPPER.'
+    stage='Filled domain planes.' if args.checkpoint in ('E','F') else 'No planes yet.'
+    sub.text=f'{stage} {unrouted} unrouted connections. Corridor 121-124 mm: NO COPPER.'
     if name=='isolation':
         title.text=f'{args.checkpoint} / ISOLATION CHECK'
-        sub.text='Pads/tracks only; no planes yet.'
+        sub.text=stage+' Corridor 121-124 mm: NO COPPER.'
     E.ElementTree(root).write(out,encoding='utf-8',xml_declaration=True)
     out.write_text('\n'.join(s.rstrip() for s in out.read_text(encoding='utf-8').splitlines())+'\n',encoding='utf-8')
     js="const sharp=require(process.argv[1]); sharp(process.argv[2]).png().toFile(process.argv[3]);"

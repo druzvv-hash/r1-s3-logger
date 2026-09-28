@@ -7,7 +7,7 @@
     "upper_board_envelope_unchanged": true,
     "four_copper_layers": true,
     "ground_nets_distinct": true,
-    "no_copper_zones_yet": true,
+    "plane_stage_matches": true,
     "no_via_drills_in_capacitor_lands": true
   },
   "fixed_locations_mm": {
@@ -132,8 +132,8 @@
       0.0
     ]
   },
-  "tracks": 1335,
-  "vias": 310,
+  "tracks": 1342,
+  "vias": 342,
   "via_holes_in_cap_lands": [],
   "critical_local_nets_without_unconnected_findings": {
     "CHG_SW1": true,
