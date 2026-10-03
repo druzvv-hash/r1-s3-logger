@@ -543,45 +543,45 @@
 	)
 	(global_label "SYS_LOAD_GATE"
 		(shape bidirectional)
-		(at 179.92 105 180)
+		(at 185 110.08 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "62fa1c9e-2231-58e2-989a-357a9f09ae97")
 	)
 	(global_label "POWER_CTRL"
 		(shape bidirectional)
-		(at 190.08 105 0)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify left)
-		)
-		(uuid "3c2022c3-ae00-533c-a079-ebb8c53188a6")
-	)
-	(global_label "POWER_CTRL"
-		(shape bidirectional)
-		(at 219.92 105 180)
+		(at 185 99.92 270)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify right)
 		)
-		(uuid "4ff4c694-ffe7-554d-a27c-ada43d355ee0")
+		(uuid "3c2022c3-ae00-533c-a079-ebb8c53188a6")
 	)
-	(global_label "DGND"
+	(global_label "POWER_CTRL"
 		(shape bidirectional)
-		(at 230.08 105 0)
+		(at 225 110.08 90)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
+		)
+		(uuid "4ff4c694-ffe7-554d-a27c-ada43d355ee0")
+	)
+	(global_label "DGND"
+		(shape bidirectional)
+		(at 225 99.92 270)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
 		)
 		(uuid "49b7c590-088f-5a3e-86db-9c5d87fa7fab")
 	)
@@ -666,7 +666,7 @@
       (uuid 53d8597f-171b-5f8a-96d8-66fc02ce1172))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "Q4")
           (unit 1)))))
   (symbol
@@ -715,7 +715,7 @@
       (uuid be7d3039-93d6-5fc9-b22a-463b39f99171))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "R102")
           (unit 1)))))
   (symbol
@@ -765,12 +765,12 @@
       (uuid c7a52b5b-ac3a-59ae-9a3c-75f2a477765e))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "C107")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:R")
-    (at 185 105 0)
+    (at 185 105 90)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -779,31 +779,31 @@
     (fields_autoplaced yes)
     (uuid 389382a2-f4c9-5f89-be9c-f2af5b78dadb)
     (property "Reference" "R103"
-      (at 185 102.46 0)
+      (at 185 102.46 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "10k GATE SERIES"
-      (at 185 107.54 0)
+      (at 185 107.54 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-      (at 185 105 0)
+      (at 185 105 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 185 105 0)
+      (at 185 105 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 185 105 0)
+      (at 185 105 90)
       (effects
         (font
           (size 0.9 0.9))
@@ -814,12 +814,12 @@
       (uuid 82761de6-9795-58d5-8773-d9b211afcf57))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "R103")
           (unit 1)))))
   (symbol
     (lib_id "Switch:SW_SPST")
-    (at 225 105 0)
+    (at 225 105 90)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -828,31 +828,31 @@
     (fields_autoplaced yes)
     (uuid abc1bf4a-e18f-56ae-b6cd-688e84fd2782)
     (property "Reference" "SW1"
-      (at 225 102.46 0)
+      (at 225 102.46 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "C&K RS282G05A3 / POWER ON"
-      (at 225 107.54 0)
+      (at 225 107.54 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Button_Switch_SMD:SW_SPST_CK_RS282G05A3"
-      (at 225 105 0)
+      (at 225 105 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 225 105 0)
+      (at 225 105 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" "Single Pole Single Throw (SPST) switch"
-      (at 225 105 0)
+      (at 225 105 90)
       (effects
         (font
           (size 0.9 0.9))
@@ -863,7 +863,7 @@
       (uuid da5114d4-b076-54b1-bb7f-3fcacaf2b256))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "SW1")
           (unit 1)))))
   (symbol
@@ -912,7 +912,7 @@
       (uuid 1a190fe3-6fda-5a6a-97a2-ede5659d78a1))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "C108")
           (unit 1)))))
   (symbol
@@ -959,7 +959,7 @@
       (uuid 9096a30e-1eda-555a-970c-a5312c4148b9))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/a9caf0ad-ee07-5321-84f1-7681c239e759"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/a9caf0ad-ee07-5321-84f1-7681c239e759"
           (reference "TP40")
           (unit 1)))))
 

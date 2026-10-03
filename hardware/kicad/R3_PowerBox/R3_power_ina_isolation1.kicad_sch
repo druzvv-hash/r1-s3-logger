@@ -431,6 +431,77 @@
               (font
                 (size 0.889 0.889))))))
       (embedded_fonts no))
+    (symbol "R3_POWER_GEN:R"
+      (pin_numbers
+        (hide yes))
+      (pin_names
+        (offset 0))
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "R"
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Value" "R"
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27))))
+      (property "Footprint" ""
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (property "Datasheet" "~"
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27))
+          (hide yes)))
+      (symbol "R_0_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none))))
+      (symbol "R_1_1"
+        (rectangle
+          (start -2.54 1.143)
+          (end 2.54 -1.143)
+          (stroke
+            (width 0.3048)
+            (type solid))
+          (fill
+            (type none)))
+        (pin passive line
+          (at -5.08 0 0)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "1"
+            (effects
+              (font
+                (size 0.889 0.889)))))
+        (pin passive line
+          (at 5.08 0 180)
+          (length 2.54)
+          (name "~"
+            (effects
+              (font
+                (size 0.889 0.889))))
+          (number "2"
+            (effects
+              (font
+                (size 0.889 0.889))))))
+      (embedded_fonts no))
     (symbol "R3_POWER_GEN:TP"
       (pin_numbers
         (hide yes))
@@ -699,6 +770,50 @@
 	)
 	(global_label "+5V_INA"
 		(shape bidirectional)
+		(at 203.08 105 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "e1e60a4e-9dfc-52eb-8ccf-c0d548d11a77")
+	)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 192.92 105 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "54e4e4da-ad90-5665-8258-b90b2a49cb29")
+	)
+	(global_label "-5V_INA"
+		(shape bidirectional)
+		(at 203.08 180 0)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify left)
+		)
+		(uuid "d3d8975b-c3d1-5c6f-ac43-81b4a08290f2")
+	)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 192.92 180 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
+		(uuid "02040f7d-c8a8-5b6e-903d-08d1061e2799")
+	)
+	(global_label "+5V_INA"
+		(shape bidirectional)
 		(at 245 45.81 90)
 		(effects
 			(font
@@ -763,7 +878,7 @@
       (uuid d89ef0bf-41b9-5f4b-85d9-888de068ed3b))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "#FLG0401")
           (unit 1)))))
   (symbol
@@ -822,7 +937,7 @@
       (uuid a2d1ecb2-181a-5848-a4d4-fef8b0816fc9))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "U6")
           (unit 1)))))
   (symbol
@@ -842,13 +957,13 @@
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Value" "FB_INA_P / FB-or-0R"
+    (property "Value" "0R / FB / L BENCH SELECT"
       (at 155 80.54 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+    (property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
       (at 155 78 180)
       (effects
         (font
@@ -872,7 +987,7 @@
       (uuid bac7e1ba-0516-596a-8120-f023e5f5b51d))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "FB4")
           (unit 1)))))
   (symbol
@@ -891,13 +1006,13 @@
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Value" "FB_INA_N / FB-or-0R"
+    (property "Value" "0R / FB / L BENCH SELECT"
       (at 155 147.54 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
-    (property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+    (property "Footprint" "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder"
       (at 155 145 0)
       (effects
         (font
@@ -921,7 +1036,7 @@
       (uuid c8645728-e111-5336-93cf-19088b0ae898))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "FB5")
           (unit 1)))))
   (symbol
@@ -970,7 +1085,7 @@
       (uuid a0b8bb86-c9d5-5ac9-8837-18c2df6e8864))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C60")
           (unit 1)))))
   (symbol
@@ -1019,7 +1134,7 @@
       (uuid 8bb2c74e-3065-582a-a263-a58a281d6e58))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C61")
           (unit 1)))))
   (symbol
@@ -1068,7 +1183,7 @@
       (uuid 6e278ea1-c737-5a2f-9f40-3554ee66df0b))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C62")
           (unit 1)))))
   (symbol
@@ -1117,8 +1232,108 @@
       (uuid 001fc06c-5db3-5265-b22f-f7d9015f94e3))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C63")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 198 105 180)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp yes)
+    (fields_autoplaced yes)
+    (uuid 1cddcd64-41c1-5ec0-89ea-31edbe84d062)
+    (property "Reference" "R107"
+      (at 198 102.46 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "DNP PRELOAD / BENCH SELECT"
+      (at 198 107.54 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+      (at 198 105 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 105 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 105 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid 6836e8f7-aef3-51fb-8253-c5c2b5e812a3))
+    (pin "2"
+      (uuid df32e0b7-c733-5bc8-849f-083730552fc6))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+          (reference "R107")
+          (unit 1)))))
+  (symbol
+    (lib_id "R3_POWER_GEN:R")
+    (at 198 180 180)
+    (mirror x)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp yes)
+    (fields_autoplaced yes)
+    (uuid 08e09b86-a1ab-5695-9342-7c1e199faf7f)
+    (property "Reference" "R108"
+      (at 198 177.46 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Value" "DNP PRELOAD / BENCH SELECT"
+      (at 198 182.54 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (justify left)))
+    (property "Footprint" "Resistor_SMD:R_2512_6332Metric"
+      (at 198 180 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Datasheet" "~"
+      (at 198 180 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (property "Description" ""
+      (at 198 180 180)
+      (effects
+        (font
+          (size 0.9 0.9))
+        (hide yes)))
+    (pin "1"
+      (uuid be3e92b5-9221-59a3-a168-007f04a3a863))
+    (pin "2"
+      (uuid d2641bde-47df-5a2d-b35f-e2ec352f461b))
+    (instances
+      (project "SKiDL-Generated"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+          (reference "R108")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:TP")
@@ -1164,7 +1379,7 @@
       (uuid 6278353c-d1e1-5fbc-9bed-b3c2b64888c4))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "TP13")
           (unit 1)))))
   (symbol
@@ -1211,9 +1426,11 @@
       (uuid ecda8408-4638-5510-937a-7e3d9ccd121e))
     (instances
       (project "SKiDL-Generated"
-        (path "/7d40ec76-f97b-4a90-b5ea-ddf1628062b5/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "TP14")
           (unit 1)))))
+
+
 
 
 

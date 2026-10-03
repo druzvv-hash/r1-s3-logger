@@ -47,6 +47,38 @@ does NOT reject an unwanted factory20V contract: its turn-on qualification
 must include approved voltage/window logic, and a connector-side13V TVS would
 still avalanche at20V. Do not describe a generic enable switch as a complete fix.
 
+## Charger / passive routing checkpoint (2026-10-03)
+
+Local PCB corrections now have 0 DRC errors, 0 unconnected and 0 schematic
+parity findings (41 library-copy warnings, not yet individually re-qualified).
+This is an intermediate checkpoint, not final acceptance.
+
+L3 moved from (51,41) to (51,42); the enlarged local bypass/courtyard geometry
+limits further movement without another component-placement redesign. C77 and
+C81 now sit horizontally beside C80/C86, with explicit short local power
+connections and paired ground vias. C100 moved to (47.5,49.4). C87 moved to
+(57.2,50.7); its returns no longer use stretched old fanouts. SW under-package
+links widened from 0.35 to 0.70mm; PMID/SYS flare from package escape to 0.40mm.
+SW1 inner route avoids the relocated STAT via. TI Rev.C Fig8-21 expressly uses
+inner-layer SW fanout so same-layer PMID/SYS capacitors can remain closest.
+This is a documented exception to the review's blanket top-layer preference,
+not a claim that the hot loops are fully optimized or physically validated.
+
+The first over-packed trial failed DRC (shorts and courtyard overlaps). Only
+that trial's named charger nets/placements were locally recovered; no board
+reset, no rerun of A-F and no changes to main. Follow-up local routes replaced
+the stretched capacitor fanouts. The authoritative PCB is the committed board;
+the review1_* one-shot scripts are an engineering change log, not a replay chain.
+
+The USB F2 2920 footprint and R106 fit on B.Cu. Allow at least the F2 maximum
+1.8mm component height under the board, plus enclosure/assembly clearance.
+C23/C24/C40/C41/C42 are 1210 GRM32ER71E226KE15L, not the originally suggested
+1206: do not substitute package/MPN on nominal capacitance alone. Their exact
+bias/temperature/aging acceptance remains open pending manufacturer curves.
+INA FB4/FB5 are configurable 1206 positions; R107/R108 are DNP 2512 preload
+positions. No preload value or filter inductance is fixed without measurements.
+The previous +3V3_D 0.2mm trunk segment is now 1.0mm.
+
 ## Not yet completed in this checkpoint
 
 PCB local routing/DRC following the ECO, charger hot-loop rebuild, bulk/DC-bias

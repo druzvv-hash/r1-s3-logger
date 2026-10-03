@@ -122,6 +122,7 @@ LAYOUTS = {
         "U6": (92, 110), "FB4": (155, 78), "FB5": (155, 145),
         "C60": (198, 68), "C61": (230, 68),
         "C62": (198, 150), "C63": (230, 150),
+        "R107": (198, 105), "R108": (198, 180),
         "TP13": (245, 42), "TP14": (245, 178),
     },
     "R3_power_outputs1.kicad_sch": {
@@ -303,7 +304,7 @@ def arrange_child(path: Path, target_positions, connectivity):
         )
         # SKiDL 2.3 does not serialize Part.dnp into the KiCad instance flag.
         # Preserve the approved Rev.A assembly options in PDF/BOM/parity checks.
-        if ref in {"U11", "J5", "J6", "J12", "J13"}:
+        if ref in {"U11", "J5", "J6", "J12", "J13", "R107", "R108"}:
             moved_symbol = moved_symbol.replace("(dnp no)", "(dnp yes)")
         symbol_replacements.append((start, end, moved_symbol))
 

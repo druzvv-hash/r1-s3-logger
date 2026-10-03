@@ -455,8 +455,8 @@ def preiso_buck(vsys_main, v5pre, v5pre_ads, v5pre_ina, dgnd):
     c("C20", "10uF/25V", vsys_main, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     c("C21", "100nF/25V", vsys_main, dgnd)
     c("C22", "100nF BOOT", u["BOOT"], sw)
-    c("C23", "22uF/10V", v5pre, dgnd, "Capacitor_SMD:C_0805_2012Metric")
-    c("C24", "22uF/10V", v5pre, dgnd, "Capacitor_SMD:C_0805_2012Metric")
+    c("C23", "22uF/25V GRM32ER71E226KE15L", v5pre, dgnd, "Capacitor_SMD:C_1210_3225Metric")
+    c("C24", "22uF/25V GRM32ER71E226KE15L", v5pre, dgnd, "Capacitor_SMD:C_1210_3225Metric")
     fb += u["FB"]
     r("R21", "100k 1%", v5pre, fb)
     r("R22", "13.3k 1%", fb, dgnd)
@@ -530,9 +530,11 @@ def isolated_ldos(v5iso_a, v5iso_d, v3a, v3di, gndiso):
     v3a += u4["VOUT"]
     gndiso += u4["GND", "EP"]
     ref += u4["REF", "REF_SENSE"]
-    c("C40", "10uF VIN", v5iso_a, gndiso, "Capacitor_SMD:C_0805_2012Metric")
-    c("C41", "10uF VREG", u4["VREG"], gndiso, "Capacitor_SMD:C_0805_2012Metric")
-    c("C42", "10uF VOUT", v3a, gndiso, "Capacitor_SMD:C_0805_2012Metric")
+    # Larger 1210 X7R parts selected to allow DC-bias margin. Ceff/ESR evidence
+    # remains an explicit acceptance gate, not an inference from voltage rating.
+    c("C40", "22uF/25V GRM32ER71E226KE15L", v5iso_a, gndiso, "Capacitor_SMD:C_1210_3225Metric")
+    c("C41", "22uF/25V GRM32ER71E226KE15L", u4["VREG"], gndiso, "Capacitor_SMD:C_1210_3225Metric")
+    c("C42", "22uF/25V GRM32ER71E226KE15L", v3a, gndiso, "Capacitor_SMD:C_1210_3225Metric")
     c("C43", "1uF REF", ref, gndiso)
     c("C44", "1uF BYP", u4["BYP"], gndiso)
     u5 = comp("TPS7A20", "U5", "TPS7A2033PDBVR", "Package_TO_SOT_SMD:SOT-23-5", "https://www.ti.com/lit/ds/symlink/tps7a20.pdf")
@@ -557,16 +559,22 @@ def ina_isolation(v5pre_ina, v5ina, v5ina_n, dgnd, gndiso):
     v5p_raw += u[6]
     gndiso += u[7]
     v5n_raw += u[8]
-    fbp = comp("FERRITE", "FB4", "FB_INA_P / FB-or-0R", "Resistor_SMD:R_0805_2012Metric")
+    fbp = comp("FERRITE", "FB4", "0R / FB / L BENCH SELECT", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
     v5p_raw += fbp[1]
     v5ina += fbp[2]
-    fbn = comp("FERRITE", "FB5", "FB_INA_N / FB-or-0R", "Resistor_SMD:R_0805_2012Metric")
+    fbn = comp("FERRITE", "FB5", "0R / FB / L BENCH SELECT", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
     v5n_raw += fbn[1]
     v5ina_n += fbn[2]
     c("C60", "10uF +5V bulk", v5ina, gndiso, "Capacitor_SMD:C_0805_2012Metric")
     c("C61", "100nF +5V", v5ina, gndiso)
     c("C62", "10uF -5V bulk", gndiso, v5ina_n, "Capacitor_SMD:C_0805_2012Metric")
     c("C63", "100nF -5V", gndiso, v5ina_n)
+    # Do not populate until dual-output regulation/noise tests select the load.
+    # 2512 allows a suitably rated preload resistor, not a mandatory value.
+    for ref, rail in (("R107", v5ina), ("R108", v5ina_n)):
+        preload = comp("R", ref, "DNP PRELOAD / BENCH SELECT", "Resistor_SMD:R_2512_6332Metric")
+        across(preload, rail, gndiso)
+        preload.dnp = True
     tp("TP13", v5ina)
     tp("TP14", v5ina_n)
 
