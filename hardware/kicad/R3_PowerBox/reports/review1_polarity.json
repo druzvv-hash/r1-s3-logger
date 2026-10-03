@@ -1,0 +1,22 @@
+{
+  "pass_check": true,
+  "checked": [
+    "D1.1=SERVICE_IN_REV",
+    "D1.2=DGND",
+    "D2.1=SERVICE_IN_REV",
+    "D2.2=Q1_GATE",
+    "D3.1=USB_VBUS_PROT",
+    "D3.2=DGND",
+    "D4.1=USB_CC1",
+    "D4.2=USB_CC2",
+    "D4.3=DGND",
+    "D5.1=BQ_STAT_RAW",
+    "D5.2=CHARGE_LED_A",
+    "D6.1=DGND",
+    "D6.2=RUN_LED_A",
+    "D7.1=BQ_STAT_RAW",
+    "D7.2=CHARGE_STATUS"
+  ],
+  "issues": [],
+  "scope": "Physical footprint pad numbers AND editable-source logical nets. D4 is dual AAC, not a two-pin cathode-1 part. Not an assembly inspection."
+}

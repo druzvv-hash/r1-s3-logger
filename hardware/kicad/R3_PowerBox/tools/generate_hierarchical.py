@@ -106,7 +106,7 @@ def input_protection(service_raw, service_prot, dgnd):
     vin_rev += d1["K"]
     c("C1", "47uF/25V low-ESR", vin_rev, dgnd, "Capacitor_SMD:CP_Elec_6.3x5.8")
     c("C2", "100nF/25V", vin_rev, dgnd)
-    fb = comp("FERRITE", "FB1", "BLM31PG601SN1", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
+    fb = comp("FERRITE", "FB1", "BLM31KN121SN1L / 6A", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
     vin_rev += fb[1]
     service_prot += fb[2]
     c("C3", "22uF/25V", service_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
@@ -184,8 +184,8 @@ def battery_management(pack_pos, bat_pos, cell_mid, bat_neg, ntc_bms, ntc_chg,
     srp_f += u["SRP"]
     srn_f += u["SRN"]
     c("C94", "100nF SHUNT DIFF", srp_f, srn_f)
-    r("R96", "10k I2C", pm_scl, v3d)
-    r("R97", "10k I2C", pm_sda, v3d)
+    r("R96", "4.7k I2C", pm_scl, v3d)
+    r("R97", "4.7k I2C", pm_sda, v3d)
 
     # FOOTPRINT-SPACE RESERVATION ONLY. This unconnected DNP land pattern is
     # not a functional secondary-OV circuit and must never be populated as-is.
@@ -215,7 +215,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     """Autonomous USB-C PD sink, protected input mux and 2S NVDC charger."""
     usb_raw, usb_prot, charger_in = Net("USB_VBUS_RAW"), Net("USB_VBUS_PROT"), Net("CHARGER_IN")
     cc1, cc2, shield = Net("USB_CC1"), Net("USB_CC2"), Net("USB_SHIELD")
-    j7 = comp("USB_C_PWR", "J7", "USB-C POWER INPUT", "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal")
+    j7 = comp("USB_C_PWR", "J7", "USB4105-GF-A", "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal")
     usb_raw += j7["VBUS"]
     dgnd += j7["GND"]
     cc1 += j7["CC1"]
@@ -224,14 +224,15 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     j7.circuit.NC += j7["D+", "D-", "SBU1", "SBU2"]
     r("R72", "1M SHIELD", shield, dgnd)
     c("C70", "4.7nF SHIELD", shield, dgnd)
-    f2 = comp("FUSE", "F2", "MF-MSMF260/16X-2 2.6A/16V PPTC", "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder", "https://www.bourns.com/docs/product-datasheets/mf-msmf.pdf")
+    f2 = comp("FUSE", "F2", "2920L260/33DR 2.6A/33V", "Fuse:Fuse_2920_7451Metric", "https://www.littelfuse.com/~/media/electronics/datasheets/resettable_ptcs/littelfuse_ptc_2920l_datasheet.pdf.pdf")
     usb_raw += f2[1]
     usb_prot += f2[2]
     d3 = comp("DIODE", "D3", "SMBJ13A / 13V VRWM USB VBUS", "Diode_SMD:D_SMB")
     d3.datasheet = "https://www.bourns.com/data/global/pdfs/SMBJ.pdf"
     dgnd += d3["A"]
     usb_prot += d3["K"]
-    c("C71", "10uF/25V USB", usb_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
+    # 4.7uF + 1uF nominal, <=6.84uF at +20% tolerance before the mux.
+    c("C71", "4.7uF/25V USB", usb_prot, dgnd, "Capacitor_SMD:C_1206_3216Metric")
 
     # STUSB4500QTR autonomous sink. CCxDB-to-CCx enables documented dead-
     # battery Rd presentation; VDD is supplied from connector-side VBUS.
@@ -240,7 +241,9 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     cc1 += u10["CC1", "CC1DB"]
     cc2 += u10["CC2", "CC2DB"]
     pd_vdd = Net("PD_VDD")
-    usb_prot += u10["VBUS_VS_DISCH"]
+    pd_vbus_sense = Net("PD_VBUS_SENSE_DISCH")
+    r("R106", "1k VBUS DISCH LIMIT", usb_prot, pd_vbus_sense)
+    pd_vbus_sense += u10["VBUS_VS_DISCH"]
     r("R85", "0R PD VDD FEED", usb_prot, pd_vdd)
     pd_vdd += u10["VDD"]
     # RESET is active high; hold it directly at DGND for autonomous operation.
@@ -254,7 +257,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     pd_v27 += u10["VREG_2V7"]
     c("C104", "1uF VREG_1V2", pd_v12, dgnd)
     c("C105", "1uF VREG_2V7", pd_v27, dgnd)
-    c("C106", "4.7uF/25V PD VDD", pd_vdd, dgnd)
+    c("C106", "1uF/25V PD VDD", pd_vdd, dgnd)
     r("R83", "10k ALERT PU", pd_alert, v3d)
     r("R84", "10k PDO3 OK PU", pd_contract, v3d)
     u10.circuit.NC += u10["NC", "DISCH", "ATTACH", "POWER_OK2", "GPIO", "VBUS_EN_SNK", "A_B_SIDE"]
@@ -316,7 +319,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     c("C86", "100nF SYS", vsys_raw, dgnd)
     c("C87", "10uF/16V BAT", pack_pos, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     c("C88", "10uF/16V BAT", pack_pos, dgnd, "Capacitor_SMD:C_1206_3216Metric")
-    c("C89", "1nF SDRV", u8["SDRV"], dgnd)
+    c("C89", "1nF/50V C0G SDRV", u8["SDRV"], dgnd)
     # BQ25798 Rev.C Figure 10-1 / layout guidance: 100nF immediately at VBUS,
     # plus three 10uF ceramics. C73 remains TPS2121 output bulk and is not
     # counted as charger-local bypass.
@@ -439,7 +442,10 @@ def digital_buck(vsys_main, v3d, pg3d, dgnd):
 @subcircuit
 def preiso_buck(vsys_main, v5pre, v5pre_ads, v5pre_ina, dgnd):
     u = comp("TPS54302", "U2", "TPS54302DDCR", "Package_TO_SOT_SMD:SOT-23-6", "https://www.ti.com/lit/ds/symlink/tps54302.pdf")
-    vsys_main += u["VIN", "EN"]
+    vsys_main += u["VIN"]
+    # TI TPS54302 Rev.C: EN may float (internal pull-up). Never expose
+    # this 7V-absolute-maximum pin to the 8.4V/8.6V system rail.
+    u.circuit.NC += u["EN"]
     dgnd += u["GND"]
     sw, fb = Net("SW_5V"), Net("FB_5V")
     sw += u["SW"]
@@ -456,18 +462,18 @@ def preiso_buck(vsys_main, v5pre, v5pre_ads, v5pre_ina, dgnd):
     r("R22", "13.3k 1%", fb, dgnd)
     c("C25", "75pF C0G", v5pre, fb)
     # The previous 511k/105k divider was the 8-V reference design and blocked
-    # startup over part of the fixed 2S range. EN now follows VSYS_PROT; the
+    # startup over part of the fixed 2S range. EN now floats per TI; the
     # BMS owns cell undervoltage cutoff and TPS54302 retains its internal UVLO.
     # Separate primary filters prevent the two isolated converters from sharing
     # one filtered node. Full-load input current at the 4.5 V converter limit is
     # about 0.89 A; the selected bead class must be rated >=1.5 A to retain
     # useful saturation/temperature margin.
-    fb_ads = comp("FERRITE", "FB6", "BLM31KN601B family / 2A", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
+    fb_ads = comp("FERRITE", "FB6", "BLM31KN601SH1L", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
     v5pre += fb_ads[1]
     v5pre_ads += fb_ads[2]
     c("C26", "10uF/10V ADS IN", v5pre_ads, dgnd, "Capacitor_SMD:C_0805_2012Metric")
     c("C27", "100nF ADS IN", v5pre_ads, dgnd)
-    fb_ina = comp("FERRITE", "FB7", "BLM31KN601B family / 2A", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
+    fb_ina = comp("FERRITE", "FB7", "BLM31KN601SH1L", "Inductor_SMD:L_1206_3216Metric_Pad1.22x1.90mm_HandSolder")
     v5pre += fb_ina[1]
     v5pre_ina += fb_ina[2]
     c("C28", "10uF/10V INA IN", v5pre_ina, dgnd, "Capacitor_SMD:C_0805_2012Metric")
