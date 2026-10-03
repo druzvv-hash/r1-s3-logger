@@ -1,5 +1,15 @@
 # Current memory entry point
 
+## 2026-10-03 — Logo and owner-authorized prototype Gerbers
+
+Added F.SilkS Garage Logic Lab artwork only; all existing board records remain
+identical to 5d3da52. Prototype Gerber/drill ZIP and partial GLB exported locally.
+See PowerBox docs/BRANDING_AND_3D.md. DRC 0 errors/0 unconnected/0 parity, 41
+existing warnings. Export authorization supersedes earlier no-export restriction,
+NOT qualification gates or ordering approval. No remote push in this work item.
+Missing 3D bodies must not be interpreted as mechanical clearance. Owner review2
+untracked file preserved unchanged. Schematics/BOM unchanged.
+
 ## 2026-10-03 — PowerBox Review1 CAD repair, fabrication blocked
 
 Active worktree `C:/Projects/r3-powerbox-routing`, branch

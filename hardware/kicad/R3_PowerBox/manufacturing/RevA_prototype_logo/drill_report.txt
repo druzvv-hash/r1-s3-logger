@@ -1,0 +1,32 @@
+Drill report for R3_power.kicad_pcb
+Created on 2026-10-03T08:17:45
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  In1.Cu                    in1
+    L3 :  In2.Cu                    in2
+    L4 :  B.Cu                      back
+
+
+Drill file 'R3_power-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (359 holes))
+    T2  0.600mm  0.0236"  (4 holes)  (with 4 slots)
+    T3  0.900mm  0.0354"  (2 holes))
+    T4  1.000mm  0.0394"  (40 holes))
+    T5  1.020mm  0.0402"  (48 holes))
+    T6  2.000mm  0.0787"  (33 holes))
+
+    Total plated holes count 486
+
+
+Drill file 'R3_power-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  0.650mm  0.0256"  (2 holes))
+    T2  3.000mm  0.1181"  (14 holes))
+    T3  3.200mm  0.1260"  (6 holes))
+
+    Total unplated holes count 22

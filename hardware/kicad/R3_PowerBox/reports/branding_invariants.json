@@ -1,0 +1,12 @@
+{
+  "baseline": "5d3da52ab329b53ea38b7bcaf85b82c3c93354e6",
+  "board_sha256": "f1cc618b274fae46e68432f66f089f505c7378a0eb8d68889083c54bba1eaa61",
+  "existing_board_records_unchanged": true,
+  "added_records": {
+    "gr_poly": 2,
+    "gr_line": 87,
+    "gr_circle": 4,
+    "gr_text": 2,
+    "group": 1
+  }
+}

@@ -1,5 +1,18 @@
 # r1-s3-logger — work reports
 
+## 2026-10-03 — Logo / prototype fabrication / 3D
+
+Added reproducible monochrome native logo group, no electrical edits. Initial
+placement conflicted with J13 silk; corrected and repeated DRC: zero errors,
+zero unconnected/parity, only 41 historical library-copy warnings. Token-level
+board comparison proves all pre-existing records unchanged. Generated nine
+Gerbers, separate PTH/NPTH drills/maps, manifest/ZIP, partial GLB and native 3D
+preview. Render command initially rejected unquoted negative angle; positive
+quoted camera angle succeeded. KiCad model export reports missing library bodies;
+no fabricated mechanical acceptance. Export README retains qualification gates.
+No ordering, main change or remote push. Owner review2 file not modified.
+Shared owner workflow updated in sibling manual; see BRANDING_AND_3D.md.
+
 ## 2026-10-03 — PowerBox independent review repair
 
 IMPLEMENTED / HOST TESTED only. Started from owner-authoritative clean cf7ea7c,
