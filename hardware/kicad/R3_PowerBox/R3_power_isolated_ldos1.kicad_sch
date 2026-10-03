@@ -708,7 +708,7 @@
 	)
 	(global_label "+5V_ISO_A"
 		(shape bidirectional)
-		(at 72 128.81 90)
+		(at 75.81 125 0)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -719,7 +719,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 72 121.19 270)
+		(at 68.19 125 180)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -730,7 +730,7 @@
 	)
 	(global_label "N$13"
 		(shape bidirectional)
-		(at 104.19 178 180)
+		(at 104.19 160 180)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -741,7 +741,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 111.81 178 0)
+		(at 111.81 160 0)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -752,29 +752,29 @@
 	)
 	(global_label "+3V3_A_ISO"
 		(shape bidirectional)
-		(at 205 116.19 270)
-		(effects
-			(font
-				(size 0.8 0.8)
-			)
-			(justify right)
-		)
-		(uuid "d18eb32d-2330-501e-bda4-ebfc0a50de7f")
-	)
-	(global_label "GND_ISO"
-		(shape bidirectional)
-		(at 205 123.81 90)
+		(at 208.81 120 0)
 		(effects
 			(font
 				(size 0.8 0.8)
 			)
 			(justify left)
 		)
+		(uuid "d18eb32d-2330-501e-bda4-ebfc0a50de7f")
+	)
+	(global_label "GND_ISO"
+		(shape bidirectional)
+		(at 201.19 120 180)
+		(effects
+			(font
+				(size 0.8 0.8)
+			)
+			(justify right)
+		)
 		(uuid "56f497ca-4d9d-5e61-91e6-ffa9a98161b6")
 	)
 	(global_label "ADM7150_REF"
 		(shape bidirectional)
-		(at 155 181.81 90)
+		(at 155 103.81 90)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -785,7 +785,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 155 174.19 270)
+		(at 155 96.19 270)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -866,7 +866,7 @@
 	)
 	(global_label "+5V_ISO_D"
 		(shape bidirectional)
-		(at 90 71.81 90)
+		(at 93.81 68 0)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -877,7 +877,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 90 64.19 270)
+		(at 86.19 68 180)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -888,7 +888,7 @@
 	)
 	(global_label "+3V3_D_ISO"
 		(shape bidirectional)
-		(at 195 64.19 270)
+		(at 191.19 68 180)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -899,7 +899,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 195 71.81 90)
+		(at 198.81 68 0)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -974,7 +974,7 @@
       (uuid 3c19aeb9-ef4c-5769-80e4-419d1d841c83))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "#FLG0301")
           (unit 1)))))
   (symbol
@@ -1021,7 +1021,7 @@
       (uuid ffad87f2-a5ea-536a-891e-d3d820936539))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "#FLG0302")
           (unit 1)))))
   (symbol
@@ -1084,7 +1084,7 @@
       (uuid 11810ecd-2a10-510d-8c4a-53524d18d7a3))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "U4")
           (unit 1)))))
   (symbol
@@ -1133,13 +1133,12 @@
       (uuid af057daf-e7ec-5980-b23d-50dff65961ec))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "R40")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 72 125 0)
-    (mirror x)
+    (at 72 125 270)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1148,31 +1147,31 @@
     (fields_autoplaced yes)
     (uuid 8d7879be-f4cc-5fb4-9d21-2d58192a5dc9)
     (property "Reference" "C40"
-      (at 72 122.46 0)
+      (at 72 122.46 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "22uF/25V GRM32ER71E226KE15L"
-      (at 72 127.54 0)
+      (at 72 127.54 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
-      (at 72 125 0)
+      (at 72 125 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 72 125 0)
+      (at 72 125 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 72 125 0)
+      (at 72 125 270)
       (effects
         (font
           (size 0.9 0.9))
@@ -1183,12 +1182,12 @@
       (uuid 13f264f0-da6c-5a41-aff9-0acd556f9457))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C40")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 108 178 90)
+    (at 108 160 90)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1197,31 +1196,31 @@
     (fields_autoplaced yes)
     (uuid 6abfc141-1026-560b-95f1-2b0695cad09f)
     (property "Reference" "C41"
-      (at 108 175.46 90)
+      (at 108 157.46 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "22uF/25V GRM32ER71E226KE15L"
-      (at 108 180.54 90)
+      (at 108 162.54 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
-      (at 108 178 90)
+      (at 108 160 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 108 178 90)
+      (at 108 160 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 108 178 90)
+      (at 108 160 90)
       (effects
         (font
           (size 0.9 0.9))
@@ -1232,12 +1231,12 @@
       (uuid 1e10be2d-5c3d-5761-a33d-337919d78660))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C41")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 205 120 0)
+    (at 205 120 270)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1246,31 +1245,31 @@
     (fields_autoplaced yes)
     (uuid 8bb7150c-942d-5c4d-90c7-37e70ed69019)
     (property "Reference" "C42"
-      (at 205 117.46 0)
+      (at 205 117.46 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "22uF/25V GRM32ER71E226KE15L"
-      (at 205 122.54 0)
+      (at 205 122.54 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
-      (at 205 120 0)
+      (at 205 120 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 205 120 0)
+      (at 205 120 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 205 120 0)
+      (at 205 120 270)
       (effects
         (font
           (size 0.9 0.9))
@@ -1281,12 +1280,12 @@
       (uuid 8dc9585b-44a4-5ccc-9947-5c0898328c77))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C42")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 155 178 0)
+    (at 155 100 0)
     (mirror x)
     (unit 1)
     (exclude_from_sim no)
@@ -1296,31 +1295,31 @@
     (fields_autoplaced yes)
     (uuid 8b447aeb-b3d3-5b3c-a5b0-c72e4d7a420f)
     (property "Reference" "C43"
-      (at 155 175.46 0)
+      (at 155 97.46 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "1uF REF"
-      (at 155 180.54 0)
+      (at 155 102.54 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 155 178 0)
+      (at 155 100 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 155 178 0)
+      (at 155 100 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 155 178 0)
+      (at 155 100 0)
       (effects
         (font
           (size 0.9 0.9))
@@ -1331,7 +1330,7 @@
       (uuid a6c50689-d6eb-5813-b0ae-8a4ba0e4eac1))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C43")
           (unit 1)))))
   (symbol
@@ -1380,7 +1379,7 @@
       (uuid 8241777d-76e3-554a-bab1-673db259b08a))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C44")
           (unit 1)))))
   (symbol
@@ -1435,13 +1434,12 @@
       (uuid 3ccb64c1-f365-53a8-b965-a33dacf80710))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "U5")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 90 68 0)
-    (mirror x)
+    (at 90 68 270)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1450,31 +1448,31 @@
     (fields_autoplaced yes)
     (uuid e33ead40-7b01-58a9-bde9-1e2ba78d9c19)
     (property "Reference" "C50"
-      (at 90 65.46 0)
+      (at 90 65.46 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "2.2uF IN"
-      (at 90 70.54 0)
+      (at 90 70.54 270)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 90 68 0)
+      (at 90 68 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 90 68 0)
+      (at 90 68 270)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 90 68 0)
+      (at 90 68 270)
       (effects
         (font
           (size 0.9 0.9))
@@ -1485,12 +1483,12 @@
       (uuid 451d4869-97fc-5702-bc40-fd66ed4e26fc))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C50")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:C")
-    (at 195 68 0)
+    (at 195 68 90)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1499,31 +1497,31 @@
     (fields_autoplaced yes)
     (uuid cb4a44e3-0bd6-541f-82df-b269031f8d94)
     (property "Reference" "C51"
-      (at 195 65.46 0)
+      (at 195 65.46 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "4.7uF OUT"
-      (at 195 70.54 0)
+      (at 195 70.54 90)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 195 68 0)
+      (at 195 68 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 195 68 0)
+      (at 195 68 90)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 195 68 0)
+      (at 195 68 90)
       (effects
         (font
           (size 0.9 0.9))
@@ -1534,7 +1532,7 @@
       (uuid 135a5e33-9480-55ca-b506-ad52582491bd))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "C51")
           (unit 1)))))
   (symbol
@@ -1581,7 +1579,7 @@
       (uuid 388eeb00-bf63-52f7-9700-fae25a490ce7))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "TP11")
           (unit 1)))))
   (symbol
@@ -1628,10 +1626,9 @@
       (uuid 022b3850-df46-5426-9e06-6953b7226e82))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/851a1ce1-50e3-53b2-8137-9c4e81a721ef"
           (reference "TP12")
           (unit 1)))))
-
 
 
 

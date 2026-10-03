@@ -1,9 +1,13 @@
 # R3 PowerBox 2S battery and power architecture
 
-Date: 2026-09-28
-Status: checkpoint F prototype routing complete on `routing/r3-powerbox-reva`.
-Architecture and current-limit policies unchanged. Bench validation is still
-required; this is not a production release. Current evidence: `docs/ROUTING_F.md`.
+Date: 2026-10-03
+Status: Review1 repair on `fix/r3-powerbox-reva-review1`; same approved power
+architecture, not production-ready. Current evidence/gates:
+[REVIEW1_FIXES](docs/REVIEW1_FIXES.md). F is historical evidence only.
+Unknown-source startup is now ~0.30 A nominal, not the former nominal 0.50 A;
+confirmed-source ceilings are unchanged. ST VSYS now uses +3V3_D so the common
+PM bus can operate on battery alone. First programming MUST use 5 V-only
+non-PD power because factory ST NVM may request 20 V.
 
 L3 selection: Bourns SRP7028A-1R0M, 1 uH, 11 A Irms / 22 A Isat,
 10 mOhm maximum DCR at 25 C. Existing 6.04 kOhm PROG selects 2S / 1.5 MHz.
@@ -30,7 +34,10 @@ The official datasheet specifies 3-17 V input, 3 A output and 100% duty-cycle op
 
 The official datasheet specifies 4.5-28 V input, 3 A, 400 kHz operation and internal VIN UVLO of 4.1 V typical. At 6.0 V input, an ideal 5 V output requires 83.3% duty cycle. This is within a normal buck operating region, but TI's published reference design is characterized from 8 V and the datasheet does not give a guaranteed dropout curve at 5 V/3 A. Direct 2S operation is retained, with a required bench test at 6.0 V under load and transient conditions.
 
-The old 511 kOhm / 105 kOhm external EN divider was copied from the 8-28 V reference design and would block part of the required 2S range. It has been removed; EN follows the switched `VSYS_MAIN` rail. Battery undervoltage protection is owned by the BMS and TPS54302 retains internal UVLO.
+The old 511 kOhm / 105 kOhm EN divider blocked part of the 2S range. Review1
+also removes the subsequent direct VSYS connection: TPS54302 EN has only a
+7 V absolute maximum. It is now intentionally floating, using the documented
+internal pull-up. BMS owns battery cutoff; U2 retains internal UVLO.
 
 ## Implemented architecture
 
@@ -185,8 +192,10 @@ active-low only after a successful PDO3 contract and PS_READY, so it is valid
 as `PD_CONTRACT_12V_N`; `ALERT` is exported as `PD_ALERT_N`. The exact NVM record,
 programming and recovery procedure are in `docs/STUSB4500_PD_CONFIG.md`.
 
-Before any confirmed contract/source capability, the BQ25798 243 kOhm/100 kOhm
-ILIM_HIZ divider enforces about 0.50 A. Firmware may clear `EN_EXTILIM` and
+Before confirmed source capability, BQ25798 R76/R77=28.7k/10k (0.1%) gives
+about 0.30 A nominal ILIM_HIZ startup; estimated adverse bound 0.446 A before
+uncharacterized low-current error. See the PD record for assumptions and bench
+gate. Firmware may clear `EN_EXTILIM` and
 increase IINDPM only after reading the STUSB4500 state: 1.35 A for confirmed
 5 V/1.5 A, 2.25 A for confirmed 5 V/3 A, and 1.80 A for 9 V/2 A or 12 V/2 A.
 The 2.25 A cap deliberately stays below the approximately 2.5 A TPS2121 ILIM
@@ -299,8 +308,8 @@ Based on expected peak rather than only regulator nameplates:
 - TPS2121 input mux: 2.5 A typical current-limit target in current draft;
 - F1 service input: Bourns `MF-R250-0-10`, 30 V, 2.50 A hold/5.00 A trip at
   23 C, 1.70 A hold at 60 C, radial 5.1 mm pitch;
-- F2 USB input: Bourns `MF-MSMF260/16X-2`, 16 V, 2.60 A hold/5.00 A trip at
-  23 C, 2.00 A hold at 60 C, 1812;
+- F2 USB input: Littelfuse `2920L260/33DR`, 33 V, 2.60 A hold/5.00 A trip
+  at 20 C, 2.24 A at 40 C / 2.02 A at 50 C / 1.81 A at 60 C; 2920 on B.Cu;
 - F3 system rail: Bourns `MF-MSMF250/16X-2`, 16 V, 2.50 A hold/5.00 A trip at
   23 C, 1.85 A hold at 60 C, 1812;
 - charge/input connector and protection: minimum 3 A if 5 V fallback is used near its useful limit.
@@ -327,7 +336,7 @@ but cannot maintain a full 2 A near 8.4 V or during the 8 W system peak. Input
 DPM must reduce charge current; battery supplement may carry brief system peaks.
 At 9 V/2 A with a 1.80 A policy limit, only 16.2 W is available, so 2 A charge
 is not sustainable and even 1 A charge must be power-managed at peak load.
-Unknown 5 V starts at 0.50 A (2.5 W), which may require battery supplement and
+Unknown 5 V starts near 0.30 A nominal (1.5 W), which may require battery supplement and
 does not guarantee charging. Confirmed 5 V/1.5 A or 3 A may use the documented
 1.35 A or 2.25 A limits, respectively.
 
@@ -419,7 +428,8 @@ header/socket guidance are maintained in
    thermal-copper implementation at 5 A/hot conditions.
 3. Validate both 103AT-2 harness locations and temperature thresholds.
 4. Freeze battery chemistry/capacity and program/validate BQ28Z610 protection, balancing, recovery and gauge parameters.
-5. Validate BQ25798/BQ28Z610/STUSB4500 shared-bus interoperability and the boot-safe 0.50 A charger default.
+5. Validate shared-bus interoperability (ST VSYS now +3V3_D) and the conservative
+   startup clamp; do not infer a guaranteed batteryless boot from the resistor calculation.
 6. Bench-test TPS54302 5 V regulation and transients at VSYS = 6.0 V.
 7. Resolve RS3-0505D/H3 light-load and rail-balance behavior for INA851.
 8. Measure expected/peak loads and hot ambient, then validate the fixed

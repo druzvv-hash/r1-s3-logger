@@ -1,5 +1,50 @@
 # r1-s3-logger — work reports
 
+## 2026-10-03 — PowerBox independent review repair
+
+IMPLEMENTED / HOST TESTED only. Started from owner-authoritative clean cf7ea7c,
+created fix/r3-powerbox-reva-review1, preserved review input (ba8c09e), pushed
+schematic/component correction ce12ca9 and local charger checkpoint 653dcbf.
+Final verification/source/generated/docs commit contains this entry. No main
+changes, no rewritten A-F history, no baseline regeneration, no Gerbers.
+
+Corrected physical D1-D3 mapping, unsafe U2 EN, ST discharge path, USB PPTC
+voltage rating, local capacitance/footprints, I2C pull-ups and exact parts.
+Reworked charger/U2/USB local copper, paired high-current transitions, preserved
+Kelvin/mechanics/isolation. Extended full battery/feed graph identified a
+0.50 mm F3-to-Q4 bridge; widened only that segment to 0.80 mm, DRC remained clean.
+ST datasheet exposed a battery-only common-bus
+blocker (unpowered SCL/SDA pulldowns): supplied VSYS from +3V3_D and added C109.
+Recomputed ILIM with leakage/REGN tolerance: 28.7k/10k0.1%, nominal0.30A.
+Added polarity, selected abs-max, actual widest copper-path/parallel-via checks
+and deliberate-fault tests. Regenerated schematic/PDF/BOM/ERC and native plots.
+All electrical DRC/parity/unconnected errors zero, 41 visible historical
+footprint-copy warnings. ERC warning ledger retains generator artifacts,
+including newly reported C101 generated-symbol warning; no hidden electrical waiver.
+
+Failures and recovery: overly compact local charger/PD trials failed DRC and
+were corrected locally, not by board reset. KiCad Flip-before-Add crashed;
+parity caught the unsaved capacitor, then Add-before-Flip repaired it. Stale
+zone fills can reassign nearby vias; invalidate/refill before audits. Guarded
+all one-shot trial recipes against ordinary replay. A single deliberately
+thinned redundant trace still had an alternate valid path; negative control
+now thins the full tested rail and correctly fails. Documentation records
+what these checks do NOT establish.
+
+Open: exact-MPN effective MLCC capacitance could not be validated from the
+accessible manufacturer curve data; selected MPN is not purchasing approval.
+F2 2.25A hot continuous operation not qualified. Factory PD NVM interlock,
+startup accuracy/attach/inrush, charger/SW thermal/EMI, 6V U2 operation,
+INA light-load noise and battery protection require powered validation.
+Detailed evidence/next actions: hardware/kicad/R3_PowerBox/docs/REVIEW1_FIXES.md.
+Shared owner manual updated/committed locally in lily-logger-r3 (22d1641),
+isolated docs branch; no firmware changes or unrelated remote publication.
+
+Resources: KiCad10 CLI/Python, SKiDL, manufacturer datasheets, native vector
+plots and PDF rendering. No subagents, generic autorouter, bench instrument
+or hardware tests used. Accurate full-session elapsed time/token/cost records
+are unavailable here; no numerical resource claim is inferred from commit times.
+
 ## 2026-09-28 — Routing D/E preservation and F completion
 
 IMPLEMENTED / HOST CHECKED only. D/E commits were pushed to

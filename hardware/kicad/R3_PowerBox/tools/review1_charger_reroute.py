@@ -3,6 +3,7 @@
 This is NOT a generic router and never loads an old PCB. The changed hot-loop
 region is checked by DRC after applying these named pads/waypoints.
 """
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec,pad,point,line,via
 b=k.LoadBoard(str(BOARD));ts=b.GetTracks()

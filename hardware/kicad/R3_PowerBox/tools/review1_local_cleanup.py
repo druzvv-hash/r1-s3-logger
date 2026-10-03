@@ -1,4 +1,5 @@
 """One-shot cleanup after first ECO; current PCB only."""
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import ROOT,BOARD,vec,pad,point,line,via
 b=k.LoadBoard(str(BOARD))

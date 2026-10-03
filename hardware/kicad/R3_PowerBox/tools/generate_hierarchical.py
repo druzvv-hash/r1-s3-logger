@@ -236,7 +236,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
 
     # STUSB4500QTR autonomous sink. CCxDB-to-CCx enables documented dead-
     # battery Rd presentation; VDD is supplied from connector-side VBUS.
-    # VSYS is grounded when unused, preventing back-power into +3V3_D.
+    # VSYS follows switched 3V3 for battery-only PM I2C availability.
     u10 = stdcomp("Interface_USB", "STUSB4500QTR", "U10", "STUSB4500QTR")
     cc1 += u10["CC1", "CC1DB"]
     cc2 += u10["CC2", "CC2DB"]
@@ -247,7 +247,10 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     r("R85", "0R PD VDD FEED", usb_prot, pd_vdd)
     pd_vdd += u10["VDD"]
     # RESET is active high; hold it directly at DGND for autonomous operation.
-    dgnd += u10["GND", "VSYS", "RESET", "ADDR0", "ADDR1"]
+    # ST DS12499 Rev8 section 2.2.4: SCL/SDA are pulled down with neither
+    # VDD nor VSYS present. Battery-only common-bus operation needs VSYS.
+    v3d += u10["VSYS"]
+    dgnd += u10["GND", "RESET", "ADDR0", "ADDR1"]
     pm_scl += u10["SCL"]
     pm_sda += u10["SDA"]
     pd_alert += u10["ALERT"]
@@ -258,6 +261,7 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     c("C104", "1uF VREG_1V2", pd_v12, dgnd)
     c("C105", "1uF VREG_2V7", pd_v27, dgnd)
     c("C106", "1uF/25V PD VDD", pd_vdd, dgnd)
+    c("C109", "1uF/10V PD VSYS", v3d, dgnd, "Capacitor_SMD:C_0402_1005Metric")
     r("R83", "10k ALERT PU", pd_alert, v3d)
     r("R84", "10k PDO3 OK PU", pd_contract, v3d)
     u10.circuit.NC += u10["NC", "DISCH", "ATTACH", "POWER_OK2", "GPIO", "VBUS_EN_SNK", "A_B_SIDE"]
@@ -329,11 +333,12 @@ def charger_powerpath(service_prot, pack_pos, ntc_chg, pm_scl, pm_sda,
     r("R75", "6.04k PROG / 2S PROFILE", u8["PROG"], dgnd)
     ilim = Net("BQ25798_ILIM")
     ilim += u8["ILIM_HIZ"]
-    # REGN ~=4.8V, VILIM = 1V + 0.8ohm*IIN. 243k/100k produces about
-    # 1.40V, so the hardware/default clamp is approximately 0.50A until the
-    # host confirms Type-C/PD capability and clears EN_EXTILIM via I2C.
-    r("R76", "243k ILIM TOP / DEFAULT 0.50A", regn, ilim)
-    r("R77", "100k ILIM BOT", ilim, dgnd)
+    # VILIM=1V+0.8ohm*IIN. Lower divider impedance limits the specified
+    # +/-1.5uA ILIM leakage error. Conservative ~0.30A at REGN=4.8V;
+    # ~0.45A upper estimate at 5.2V including 0.1% R and leakage, before
+    # unspecified ADC/low-current regulation error (bench acceptance gate).
+    r("R76", "28.7k 0.1% ILIM TOP / SAFE START", regn, ilim)
+    r("R77", "10k 0.1% ILIM BOT", ilim, dgnd)
     ntc_chg += u8["TS"]
     r("R78", "5.24k TS TOP", regn, ntc_chg)
     r("R79", "30.31k TS BOT", ntc_chg, dgnd)
@@ -427,6 +432,9 @@ def digital_buck(vsys_main, v3d, pg3d, dgnd):
     l = comp("L", "L1", "2.2uH XFL4020-222ME", "R3_Power:L_Coilcraft_XFL4020")
     sw += l[1]
     v3d += l[2], u["VOS"]
+    # DC power is delivered through L1 (passive). U10 VSYS is now a real
+    # power-input consumer on this rail; mark the physical source after L1.
+    power_flag(v3d, "#FLG0103")
     dgnd += u["AGND", "PGND", "EP", "FSW", "DEF", "FB"]
     c("C10", "10uF/25V", vsys_main, dgnd, "Capacitor_SMD:C_1206_3216Metric")
     c("C11", "100nF/25V", vsys_main, dgnd)

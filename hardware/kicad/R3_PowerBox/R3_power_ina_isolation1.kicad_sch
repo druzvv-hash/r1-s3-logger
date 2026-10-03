@@ -792,7 +792,7 @@
 	)
 	(global_label "-5V_INA"
 		(shape bidirectional)
-		(at 203.08 180 0)
+		(at 250.08 110 0)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -803,7 +803,7 @@
 	)
 	(global_label "GND_ISO"
 		(shape bidirectional)
-		(at 192.92 180 180)
+		(at 239.92 110 180)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -825,7 +825,7 @@
 	)
 	(global_label "-5V_INA"
 		(shape bidirectional)
-		(at 245 181.81 90)
+		(at 95 168.81 90)
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -878,7 +878,7 @@
       (uuid d89ef0bf-41b9-5f4b-85d9-888de068ed3b))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "#FLG0401")
           (unit 1)))))
   (symbol
@@ -937,7 +937,7 @@
       (uuid a2d1ecb2-181a-5848-a4d4-fef8b0816fc9))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "U6")
           (unit 1)))))
   (symbol
@@ -987,7 +987,7 @@
       (uuid bac7e1ba-0516-596a-8120-f023e5f5b51d))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "FB4")
           (unit 1)))))
   (symbol
@@ -1036,7 +1036,7 @@
       (uuid c8645728-e111-5336-93cf-19088b0ae898))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "FB5")
           (unit 1)))))
   (symbol
@@ -1085,7 +1085,7 @@
       (uuid a0b8bb86-c9d5-5ac9-8837-18c2df6e8864))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C60")
           (unit 1)))))
   (symbol
@@ -1134,7 +1134,7 @@
       (uuid 8bb2c74e-3065-582a-a263-a58a281d6e58))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C61")
           (unit 1)))))
   (symbol
@@ -1183,7 +1183,7 @@
       (uuid 6e278ea1-c737-5a2f-9f40-3554ee66df0b))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C62")
           (unit 1)))))
   (symbol
@@ -1232,7 +1232,7 @@
       (uuid 001fc06c-5db3-5265-b22f-f7d9015f94e3))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "C63")
           (unit 1)))))
   (symbol
@@ -1282,12 +1282,12 @@
       (uuid df32e0b7-c733-5bc8-849f-083730552fc6))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "R107")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:R")
-    (at 198 180 180)
+    (at 245 110 180)
     (mirror x)
     (unit 1)
     (exclude_from_sim no)
@@ -1297,31 +1297,31 @@
     (fields_autoplaced yes)
     (uuid 08e09b86-a1ab-5695-9342-7c1e199faf7f)
     (property "Reference" "R108"
-      (at 198 177.46 180)
+      (at 245 107.46 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "DNP PRELOAD / BENCH SELECT"
-      (at 198 182.54 180)
+      (at 245 112.54 180)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-      (at 198 180 180)
+      (at 245 110 180)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 198 180 180)
+      (at 245 110 180)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 198 180 180)
+      (at 245 110 180)
       (effects
         (font
           (size 0.9 0.9))
@@ -1332,7 +1332,7 @@
       (uuid d2641bde-47df-5a2d-b35f-e2ec352f461b))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "R108")
           (unit 1)))))
   (symbol
@@ -1379,12 +1379,12 @@
       (uuid 6278353c-d1e1-5fbc-9bed-b3c2b64888c4))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "TP13")
           (unit 1)))))
   (symbol
     (lib_id "R3_POWER_GEN:TP")
-    (at 245 178 0)
+    (at 95 165 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
@@ -1393,31 +1393,31 @@
     (fields_autoplaced yes)
     (uuid c31ac371-eb3a-5ae1-8076-394763298d82)
     (property "Reference" "TP14"
-      (at 245 175.46 0)
+      (at 95 162.46 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Value" "-5V_INA"
-      (at 245 180.54 0)
+      (at 95 167.54 0)
       (effects
         (font
           (size 0.9 0.9))
         (justify left)))
     (property "Footprint" "TestPoint:TestPoint_Plated_Hole_D2.0mm"
-      (at 245 178 0)
+      (at 95 165 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Datasheet" "~"
-      (at 245 178 0)
+      (at 95 165 0)
       (effects
         (font
           (size 0.9 0.9))
         (hide yes)))
     (property "Description" ""
-      (at 245 178 0)
+      (at 95 165 0)
       (effects
         (font
           (size 0.9 0.9))
@@ -1426,7 +1426,7 @@
       (uuid ecda8408-4638-5510-937a-7e3d9ccd121e))
     (instances
       (project "SKiDL-Generated"
-        (path "/2b0a7443-ac4c-4207-8273-267cee2a0847/d91cf1f0-873d-54fc-820a-13085f35721e"
+        (path "/9d9979b9-42ef-4da5-ae7f-11c414f8c896/d91cf1f0-873d-54fc-820a-13085f35721e"
           (reference "TP14")
           (unit 1)))))
 

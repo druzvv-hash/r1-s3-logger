@@ -1,5 +1,12 @@
 # Bill of materials
 
+Review1 (2026-10-03): schematic BOM fixes exact J7=USB4105-GF-A,
+F2=2920L260/33DR, FB1=BLM31KN121SN1L, FB6/7=BLM31KN601SH1L,
+C23/C24/C40/C41/C42=GRM32ER71E226KE15L (1210, not 1206), and R76/R77
+28.7k/10k 0.1%. The capacitor MPN is a selected implementation candidate,
+NOT a completed DC-bias qualification. No purchasing approval.
+R107/R108 preload and INA FB4/FB5 population remain bench-selectable.
+
 - `R3_power_kicad_bom.csv` is generated directly from the current KiCad
   schematic and is the sole reference for schematic quantities, values,
   footprints and designators.

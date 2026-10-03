@@ -1,0 +1,8 @@
+{
+  "pass_check": true,
+  "schematic_nodes": 550,
+  "pcb_numbered_pads": 552,
+  "issues": [],
+  "extra_connected_pads": [],
+  "scope": "Exact named net/pin parity both directions; board-only mounting excluded; explicit NC handled by ERC/DRC."
+}

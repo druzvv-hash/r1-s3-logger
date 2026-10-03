@@ -1,9 +1,21 @@
 # R3 PowerBox review
 
-Review date: 2026-09-28
-Status: **checkpoint F routed Rev.A prototype; NOT production-ready**.
+Review date: 2026-10-03
+Status: **Review1 repair / HOST CHECKED Rev.A prototype; fabrication blocked**.
 
-Current acceptance and limitations: `docs/ROUTING_F.md` and
+Current authority: [Review1 fixes and gates](docs/REVIEW1_FIXES.md), branch
+`fix/r3-powerbox-reva-review1`, based on immutable `cf7ea7c`. This supersedes
+F-era component/startup statements below. Exact MLCC effective capacitance,
+PPTC hot envelope, factory-NVM commissioning and powered validation remain
+open. No main merge, Gerbers or manufacturing release.
+
+Implemented: D1/D2/D3 physical cathode mapping, floating U2 EN, R106 discharge
+limiter, 33 V F2, pre-mux bulk reduction, local charger/U2/LDO capacitor routing,
+USB/current-path widening and via pairs, configurable INA positions, 4.7k PM
+pull-ups, ST VSYS battery-only bus correction and conservative ILIM divider.
+Q4/SW1/SW2/STAT/J11, BMS topology, connector pinouts and isolation unchanged.
+
+Historical F acceptance and limitations: `docs/ROUTING_F.md` and
 `docs/VERIFICATION.md`. D/E were pushed at `b42e73f` before F modifications.
 F continues that board, not a regenerated PCB. All nets are connected; the
 3 mm isolation corridor and mounting/B2B geometry are preserved. Main is not
@@ -59,8 +71,9 @@ The editable electrical source is `tools/generate_hierarchical.py`. Generated Ki
 - Added `STUSB4500QTR` autonomous PD sink, documented dead-battery CC wiring,
   ESDA25W CC protection, 5/9/12 V PDO record, PD test points and J10 PD status.
 - Removed legacy independent 5.1 kOhm CC Rd resistors.
-- Changed BQ25798 ILIM_HIZ divider to 243 kOhm/100 kOhm for approximately
-  0.50 A hardware default until a source contract is confirmed.
+- Review1: R76/R77 = 28.7 kOhm/10 kOhm, 0.1%, approximately 0.30 A
+  nominal startup clamp. The former 243k/100k nominal-0.50 A setting is
+  superseded because of REGN tolerance and pin leakage; see the PD record.
 - Marked U11 explicitly as an unconnected DNP footprint-space reservation,
   not a functional BQ294502 secondary-overvoltage circuit.
 - Tied STUSB4500 RESET directly to `DGND`; PDO3 remains 12 V/2 A and
@@ -79,7 +92,9 @@ correction list.
 - Added provisional BQ28Z610 1-2S gauge/protector with per-cell monitoring, internal balancing, CHG/DSG high-side FET control and a 10 mOhm Kelvin shunt.
 - Added primary-side I2C and charger/status telemetry connector J10.
 - Preserved the existing TPS62132, TPS54302, independent ADS/INA pre-isolation filters, RS3E, RS3 dual, ADM7150 and TPS7A20 architecture.
-- Removed the TPS54302 8-V reference-design EN divider because it blocked the 6-8.4 V 2S range; EN now follows `VSYS_PROT` and battery cutoff belongs to the BMS.
+- Removed the TPS54302 8-V reference divider; Review1 also removes the unsafe
+  direct EN-to-VSYS connection. EN is intentionally floating per TI Rev.C
+  (internal pull-up); its absolute maximum is only 7 V. BMS owns battery cutoff.
 - Added battery, cell, NTC, shunt, charger-input and VSYS test points.
 - Added a reproducible preliminary placement inside the DIRTY -> PRIMARY ->
   ISOLATION -> CLEAN floorplan and retained the isolation copper/via/pad
@@ -88,7 +103,7 @@ correction list.
   3.0 mm isolation keepout across every copper layer and the entire board
   height. U3/U6 primary pins face DGND and secondary pins face GND_ISO.
 - Fixed Rev.A protection/temperature choices: F1 `MF-R250-0-10`, F2
-  `MF-MSMF260/16X-2`, F3 `MF-MSMF250/16X-2`, and two independent SEMITEC
+  `2920L260/33DR` (Review1 replacement), F3 `MF-MSMF250/16X-2`, and two independent SEMITEC
   `103AT-2` NTC probes.
 
 ## Current power tree
@@ -177,7 +192,7 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
 
 | Confirmed source | BQ25798 input limit | Available input power | Charging consequence with expected 4.4 W system load |
 |---|---:|---:|---|
-| unknown 5 V / no PD | 0.50 A hardware | 2.5 W | system may need battery supplement; charging not guaranteed |
+| unknown 5 V / no PD | ~0.30 A nominal hardware | ~1.5 W nominal | full batteryless startup NOT guaranteed; do not override before source confirmation |
 | confirmed 5 V/1.5 A | 1.35 A | 6.75 W | slow charging only |
 | confirmed 5 V/3 A | 2.25 A | 11.25 W policy cap | reduced charging; kept below TPS2121/F2 approximately 2.5 A hardware class |
 | 9 V/2 A PD | 1.80 A | 16.2 W | 1 A charge expected; 2 A not sustainable |
@@ -205,12 +220,11 @@ and TP37/TP38 PM I2C. All existing primary and isolated test points remain.
 7. **BMS hardware fault signal:** BQ28Z610 has autonomous FET protection and I2C status but no general alert pin. Add an external supervisor only if the MCU requires a dedicated fault wire.
 8. **PPTC temperature:** F1/F2/F3 are fixed for Rev.A placement and BOM, but
    their hold current derates with ambient. At 60 C F1 is 1.70 A, F2 is
-   2.00 A and F3 is 1.85 A. The 5 V/3 A firmware policy remains 2.25 A, so
+   1.81 A and F3 is 1.85 A. The 5 V/3 A firmware policy remains 2.25 A, so
    sustained hot operation must invoke charger thermal/DPM derating or use a
    separately reviewed non-resettable-fuse option.
-   MF-MSMF250/16X-2, MF-MSMF260/16X-2 and MF-R250-0-10 were stocked at
-   authorized distributors on 2026-09-28; purchasing must preserve the exact
-   F1 5.1 mm lead-style suffix.
+   Earlier 2026-09-28 stock notes are historical, not fresh availability.
+   Recheck the new F2 and preserve the exact F1 5.1 mm lead-style suffix.
 
 ## USER POWER AND INDICATION
 

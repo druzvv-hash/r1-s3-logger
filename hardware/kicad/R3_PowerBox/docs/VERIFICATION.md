@@ -1,8 +1,25 @@
 # Verification status
 
-Status: **CHECKPOINT F / ROUTED REV.A PROTOTYPE / NOT PRODUCTION-READY**.
+Status: **REVIEW1 / HOST CHECKED PROTOTYPE / FABRICATION BLOCKED**.
 
-## Current routing-branch evidence (2026-09-28)
+## Current Review1 evidence (2026-10-03)
+
+Authoritative detailed ledger: [REVIEW1_FIXES.md](REVIEW1_FIXES.md).
+`reports/review1_work_drc.json`: 0 errors, 0 unconnected, 0 parity findings;
+41 visible library-copy warnings, each matched by footprint UUID to F.
+`reports/review1_erc.json` and `review1_verification.json` retain every ERC
+warning and its disposition. No electrical error is waived.
+Exact bidirectional net/pin parity, actual filled-zone isolation/mounting
+intersection, invariant mechanics/Kelvin, selected SW/quiet projections and
+three semantic checks pass. Negative controls deliberately detect reversed
+diode, EN overvoltage connection, thin power network and forbidden barrier
+track/via/pad in scratch copies only.
+
+This does not qualify effective MLCC capacitance, inrush/USB compliance,
+transient clamping, thermal performance, converter stability or INA noise.
+No physical validation occurred. See the open fabrication gates, not only DRC.
+
+## Historical routing-branch evidence (2026-09-28; superseded by Review1)
 
 See `ROUTING_F.md` for the final scope and limitations. The current board has
 1343 segments, 337 vias, 14 filled domain/thermal zones and 199 footprints.
@@ -80,7 +97,8 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
 ## Datasheet checks
 
 - TPS62132: 3-17 V input, 100% duty mode, fixed-output FB connected to AGND/DGND.
-- TPS54302: 4.5-28 V recommended VIN, internal UVLO about 4.1 V typical, EN tied to `VSYS_PROT`; 6 V/5 V full-load dropout still requires bench validation.
+- TPS54302: 4.5-28 V VIN; Review1 EN intentionally floating with internal pull-up,
+  never tied to VSYS (7 V EN absolute maximum). 6 V/5 V dropout remains a bench gate.
 - TPS2121RUXR: verified RUX VQFN-HR-12 pinout and 2.8-22 V/4.5 A operating class.
 - BQ25798RQM: verified all 29 pins against TI Table 5-1; 3.6-24 V, 1-4S, 5 A charge and NVDC power path.
 - BQ28Z610DRZR: verified all 12 pins plus EP; 1-2S monitoring, protection, current measurement, NTC, high-side FET drive and internal balancing.
@@ -90,7 +108,8 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
   resistors, 10 MOhm gate-source bias and 100 nF drain-source capacitors
   remain as reviewed against the EVM.
 - STUSB4500QTR: verified QFN-24 pinout, 4.1-22 V VDD, 3.0-5.5 V VSYS, CC1DB/CC2DB dead-battery connections, 1 uF regulator bypass and autonomous three-PDO operation.
-- BQ25798 Rev.C: charger-local VBUS bypass is 100 nF plus three 10 uF ceramics; ILIM_HIZ default is approximately 0.50 A using 243 kOhm/100 kOhm.
+- BQ25798 Rev.C: local VBUS 100 nF plus three 10 uF; Review1 ILIM_HIZ
+  28.7k/10k, 0.1%, ~0.30 A nominal (estimated adverse 0.446 A, not full accuracy guarantee).
 - BQ25798 QON is connected to momentary SW2 and J11.4. The internal pull-up is
   retained; the service contact only pulls QON to DGND.
 - BQ25798 STAT is `BQ_STAT_RAW`. D5/R104 remain entirely on REGN/raw STAT.
@@ -108,7 +127,8 @@ Checked on 2026-09-28 with KiCad 10.0.0 and SKiDL 2.3.0.
   gate charge. BQ28Z610 on-drive is 8.75-10.25 V, so the 10 V rating is the
   relevant comparison point.
 - F1 `MF-R250-0-10`: 30 V, 2.50 A hold/5.00 A trip at 23 C, 1.70 A hold at 60 C.
-- F2 `MF-MSMF260/16X-2`: 16 V, 2.60 A hold/5.00 A trip at 23 C, 2.00 A hold at 60 C.
+- F2 Review1 `2920L260/33DR`: 33 V, 2.60 A hold/5.00 A trip at 20 C,
+  1.81 A hold at 60 C. 2.25 A continuous input is not hot-qualified.
 - F3 `MF-MSMF250/16X-2`: 16 V, 2.50 A hold/5.00 A trip at 23 C, 1.85 A hold at 60 C.
 - Separate SEMITEC `103AT-2` probes are fixed for NTC_BMS and NTC_CHG:
   10.0 kOhm at 25 C, B25/85=3435 K, 1%.

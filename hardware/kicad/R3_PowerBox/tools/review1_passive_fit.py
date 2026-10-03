@@ -1,4 +1,5 @@
 """Fit enlarged passive parts without moving functional block anchors."""
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec,pad,point,line,via
 b=k.LoadBoard(str(BOARD));ts=b.GetTracks()

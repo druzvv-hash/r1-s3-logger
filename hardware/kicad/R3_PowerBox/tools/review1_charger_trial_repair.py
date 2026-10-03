@@ -5,6 +5,7 @@ DRC. Recover ONLY its eight changed power/bootstrap nets, then improve locally.
 Not a board reset or a replay of an earlier routing stage.
 """
 import subprocess
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec
 scratch=BOARD.parent/'tmp/review1_charger_reference.kicad_pcb'

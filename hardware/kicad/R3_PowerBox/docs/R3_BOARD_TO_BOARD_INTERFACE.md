@@ -2,6 +2,13 @@
 
 Status: **mounting/B2B reference preserved through F prototype routing**.
 
+Review1 (2026-10-03) independently confirms unchanged J12/J13 and all six
+mounting coordinates against cf7ea7c. 15 mm stack baseline remains. New F2
+2920L260/33DR is on B.Cu, maximum body height 1.8 mm: allow additional bottom
+enclosure/assembly clearance, not only the upper-board standoff distance.
+Pinouts are unchanged; follow the updated ST first-power programming procedure
+before using a PD source. See [Review1](REVIEW1_FIXES.md).
+
 `reports/routing_invariants.json` verifies J12/J13, all six mounting holes,
 board outline and future-R3 envelope against the approved baseline. Their
 coordinates/pinouts below are unchanged. J7 has a documented outward-facing

@@ -1,6 +1,17 @@
 # R3 PowerBox preliminary placement
 
-Status: **F prototype routing complete; domain planes filled**.
+Status: **Review1 local ECO; domain planes filled; prototype only**.
+
+2026-10-03: [Review1](REVIEW1_FIXES.md) supersedes the historical placement
+statement below. Charger L3=(51,42), C77=(46.6,46.9), C81=(56,46.9),
+C100=(47.5,49.4), C87=(57.2,50.7). C20 B=(100,49.2), C21 F=(97.2,49.3).
+F2 enlarged to 2920 B=(43.8,23.5), R106 B=(37.5,33.6), C109 B=(32.75,31.2).
+C40/C41/C42 enlarged to 1210 and locally repositioned with new fanouts.
+No board/connector/module/mounting/keepout anchor moved. Native copper images:
+`reports/R3_power_review1_*.png`. No generic autorouter or A-F replay was used.
+The USB edge channel uses paired 0.9 mm B/In2 conductors with paired vias;
+elsewhere USB trunk is 1 mm. Charger SW inner fanout follows TI Fig8-21 intent,
+not a claim of zero inductance. Verify actual stackup/current temperature rise.
 
 Current details/exceptions: `ROUTING_F.md`, `ROUTING_D.md`, and
 `reports/routing_invariants.json`. Six mounting holes, J12/J13, isolation

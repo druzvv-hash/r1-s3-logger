@@ -1,6 +1,7 @@
 """Bounded second charger refinement after the failed courtyard trial.
 TI Fig8-21 inner-layer SW arrangement retained. Never replay.
 """
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec,pad,point,line,via
 b=k.LoadBoard(str(BOARD));ts=b.GetTracks()

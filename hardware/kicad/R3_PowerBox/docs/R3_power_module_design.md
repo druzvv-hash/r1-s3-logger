@@ -1,6 +1,7 @@
 # R3 PowerBox design notes
 
-Status: unified 2S architecture review; not ready for PCB routing.
+Status: Review1 routed prototype, NOT for fabrication. Current changes,
+verification and unresolved hardware gates: [REVIEW1_FIXES.md](REVIEW1_FIXES.md).
 
 Authoritative documents:
 
@@ -42,9 +43,10 @@ No 2S-to-9 V stage is used. `DGND` and `GND_ISO` remain galvanically separate. `
 - Use four copper layers: L1 critical loops/components, L2 primary DGND, L3
   power/quiet routing and L4 clean/secondary routing. The full-height 3.0 mm
   isolation rule area blocks pads, vias, tracks and pours on every copper layer.
-- Rev.A protection parts are F1 `MF-R250-0-10`, F2 `MF-MSMF260/16X-2` and F3
+- Rev.A protection parts are F1 `MF-R250-0-10`, F2 `2920L260/33DR` and F3
   `MF-MSMF250/16X-2`. NTC_BMS and NTC_CHG are separate `103AT-2` probes.
 - Four layers are recommended; no final stackup is approved yet.
 
-The current PCB file contains the floorplan/keepout and a preliminary
-component placement. It intentionally contains no routing or vias.
+The current PCB is routed with filled domain planes. Do not regenerate it
+from preliminary placement. Board/connector/mounting anchors and isolation
+are preserved. Exact MLCC and hot-PPTC qualification remain open.

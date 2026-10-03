@@ -1,0 +1,5 @@
+{
+  "pass_check": true,
+  "projection_overlaps": [],
+  "scope": "Track projections on all layers; not field simulation or plane-return impedance."
+}

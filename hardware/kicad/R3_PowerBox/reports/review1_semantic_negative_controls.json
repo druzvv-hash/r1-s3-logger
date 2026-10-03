@@ -1,0 +1,20 @@
+{
+  "pass_check": true,
+  "tests": [
+    {
+      "fault": "reversed_D3",
+      "detected": true,
+      "exit_code": 1
+    },
+    {
+      "fault": "EN_to_VSYS",
+      "detected": true,
+      "exit_code": 1
+    },
+    {
+      "fault": "thin_3V3_trunk",
+      "detected": true,
+      "exit_code": 1
+    }
+  ]
+}

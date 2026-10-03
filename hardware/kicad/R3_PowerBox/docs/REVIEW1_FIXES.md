@@ -1,4 +1,4 @@
-# Review1 repair - work in progress, NOT FOR FABRICATION
+# Review1 repair - CAD checkpoint, NOT FOR FABRICATION
 
 Base cf7ea7c2a540037fdbbc916575e068ce5bee85fc is retained in history.
 Branch: fix/r3-powerbox-reva-review1. Main and A-F history are untouched.
@@ -79,13 +79,123 @@ INA FB4/FB5 are configurable 1206 positions; R107/R108 are DNP 2512 preload
 positions. No preload value or filter inductance is fixed without measurements.
 The previous +3V3_D 0.2mm trunk segment is now 1.0mm.
 
-## Not yet completed in this checkpoint
+## Final CAD checkpoint (2026-10-03)
 
-PCB local routing/DRC following the ECO, charger hot-loop rebuild, bulk/DC-bias
-capacitor qualification, configurable INA filtering, semantic abs-max/current
-checks, final derived files and parity/isolation/visual validation. Work DRC
-findings are visible, not waived. Previous F acceptance is historical only and
-does NOT certify this modified work-in-progress PCB.
+IMPLEMENTED / HOST TESTED only. Schematic/PDF/BOM regenerated from SKiDL plus
+the explicit arranger, never a baseline PCB generator. 203 footprints,
+1747 track/via objects and 14 filled zones. No main merge or production output.
+The final commit is the commit containing this record; consult Git for its SHA.
+
+Additional verified electrical corrections:
+
+- STUSB4500 VSYS now uses +3V3_D, C109=1 uF/10 V local bypass. ST DS12499
+  section 2.2.4 explicitly pulls SCL/SDA down if both supplies are absent;
+  grounding VSYS therefore broke the approved common I2C bus on battery-only
+  operation. USB-side VDD/dead-battery negotiation is retained. Battery-only,
+  system-OFF/USB-ON and detach bus behavior still need powered validation.
+- ILIM R76/R77 is now 28.7k/10k, 0.1%, rather than 243k/100k. Nominal
+  0.300 A at REGN=4.8 V; adverse REGN=5.2 V, resistor tolerance and 1.5 uA
+  leakage estimate 0.446 A. This does not include unspecified ADC/low-current
+  regulation errors. Confirmed limits stay 1.35/2.25/1.80/1.80 A. Full R3
+  batteryless boot from unknown 5 V is NOT guaranteed. Firmware is policy,
+  not implemented/deployed MCU code in this repository.
+- U10 VSYS exposed a genuine ERC power-driver issue after passive L1.
+  A power flag was added at the physical +3V3_D source; no IC pin type was
+  weakened. The arranger explicitly places/connects that flag.
+
+Routing evidence:
+
+- USB power trunk >=1 mm except the edge/M3 channel: two actual parallel
+  0.9 mm B/In2 tracks, tied by paired vias. Short connector/mux/QFN escapes
+  are explicitly listed in the graph report, not hidden by nominal net classes.
+- Charger VBUS/PACK_POS transitions now use pairs of 0.70/0.30 mm vias.
+  SW1/SW2 use paired vias and 0.70 mm inner copper; PMID/SYS bulk routes flare
+  to 0.8 mm after short package escapes. +3V3_D trunk is 1 mm.
+- Extending the path audit through connector/FET/shunt feeds found a 0.50 mm
+  F3-to-Q4 bridge. That single 1.74 mm segment is now 0.80 mm; Q4 topology and
+  position unchanged. Battery positive/negative force, common-drain and PACK_POS
+  paths also pass the configured geometry tests, not a 5 A thermal qualification.
+- C20 10 uF now on B.Cu immediately behind the U2 VIN area, C21 100 nF
+  on F.Cu at VIN, with explicit short power link. C20 ground reaches the
+  primary plane through its local via; still inspect loop impedance on hardware.
+- Native charger view reviewed against TI Rev.C Fig8-21: local C80/C86,
+  nearby C77/C81 and C100/C87, local EP/return vias and inner SW fanout.
+  L3 is closer but not claimed equivalent to the TI EVM or fully optimized.
+  No measured switching overshoot, EMI or thermal acceptance exists.
+- Exact baseline comparison preserves all J1/J2/J3/J4/J7-J13, H1-H6,
+  U3/U6 geometry, board/zone outlines, shunt pickups and cell-sense copper.
+  No selected I2C/CC/NTC/cell/Kelvin trace projects over SW track copper.
+- D1/D2/D3 pad1-cathode orientations and outward-facing USB opening checked
+  against actual pad/net coordinates and native plots. This is not an assembly
+  inspection of real parts.
+
+### Acceptance results and warning ledger
+
+| Test | Result / evidence |
+|---|---|
+| DRC + schematic parity | 0 errors, 0 unconnected, 0 parity findings; `reports/review1_work_drc.json` |
+| DRC warnings | 41 library-copy mismatches; each footprint UUID already present in F; not waived electrical errors |
+| ERC | 0 errors, 423 warnings: 211 off-grid endpoint + 212 symbol-copy artifacts |
+| ERC accounting | `review1_verification.json` records each warning; includes added symbols, remapped diode pin UUIDs and newly reported C101 generated-symbol artifact; not a claim all 423 existed verbatim in F |
+| Exact bidirectional pin/net parity | 550 schematic nodes, 552 PCB pads including NC; `review1_net_parity.json` |
+| Polarity / selected abs-max / widest copper paths | PASS; `review1_polarity.json`, `review1_abs_max.json`, `review1_current_paths.json` |
+| Semantic negative controls | reversed D3, EN-to-VSYS and deliberately thinned 3V3 network all rejected |
+| Isolation/mounting filled copper | zero intrusions; `review1_domain_audit.json`; separate mounting audit PASS |
+| Isolation negative control | scratch track/via/pad produce all 3 expected forbidden-item findings |
+| Mechanics / Kelvin / SW projection | `review1_verification.json`, `review1_projection.json` PASS |
+
+The current-path check uses actual pad/track/via contacts, a widest-path search
+and connected parallel vias on both layers. It excludes filled-zone shortcuts.
+It tests selected source-to-load paths, not every branch, trace ampacity or
+IPC-2152 thermal rise. Thinning just one redundant segment did not fail because
+an alternate qualifying path existed; the negative control therefore thins the
+whole tested rail. This is expected path behavior, not a global min-width test.
+
+### Intentionally unresolved fabrication / bench gates
+
+1. **Exact MLCC effective capacitance is NOT closed.** Selected 22 uF/25 V
+   GRM32ER71E226KE15L fits the 1210 footprints. ADI Table2 requires >7 uF
+   effective CIN/CREG/COUT over conditions, ESR 0.001-0.2 ohm. A nominal label
+   is insufficient. For 10% tolerance, X7R -15% and an illustrative additional
+   5% aging allowance, bias retention must exceed 43.8% to retain 7 uF.
+   This is an acceptance threshold, NOT measured retention. Obtain a dated
+   exact-MPN Murata SimSurfing curve/export at each actual VIN/VREG/VOUT and
+   5 V U2 output condition, then qualify tolerance/temperature/aging. Official
+   spec/model lists confirmed nominal/package; curve endpoints returned errors
+   in this session. Distributor estimates were not substituted as authority.
+   U2 transient/loop behavior with two biased caps also remains unmeasured.
+2. F2 thermal/current envelope and board copper/via temperature rise. 2.25 A
+   is a cool maximum only; hot continuous use is not approved. Confirm FB6/7
+   manufacturer temperature-current table for the exact SH1 suffix before purchase.
+3. First-power 5 V-only programming/readback, validated 5/9/12 V contracts,
+   detach/status behavior, mux inrush and source-current limits. POWER_OK3
+   alone is not live attach proof. Unprogrammed boards are not safe on arbitrary PD.
+4. RS3 light load/rail balance/ripple: FB4/FB5 0R/FB/L options and R107/R108
+   DNP preload are deliberate tuning positions. No inductance or preload is
+   approved before spectrum and INA851 shorted-input noise testing. No Y-cap
+   was added and no intentional isolation crossing exists.
+5. U2 6 V dropout/startup, ADM7150 noise/stability, charger full-load thermal
+   and overshoot, 5 A battery/shunt/FET heating, NTC/protection recovery,
+   BMS/gauge commissioning, enclosure/stack access and EMC remain bench gates.
+   U11 remains only a DNP space reservation, NOT active secondary OV protection.
+
+### Reproduction and negative knowledge
+
+Use KiCad10 Python for PCB checks, Python/SKiDL for schematic generation.
+Run `generate_hierarchical.py` then `arrange_schematic.py` once on fresh output;
+export netlist, `sync_review1_metadata.py`, PDF/BOM/ERC, refill + DRC, audits.
+Do not run historical A-F or `review1_*` mutation recipes on this board.
+Mutation recipes now refuse ordinary execution: they record trial ECOs, not
+an idempotent reconstruction pipeline. Current routed PCB is authoritative.
+
+Failed local PD/C109 fits produced shorts/courtyard clashes and were rejected
+by DRC; final alert routing uses a local In1 detour, retaining live PM bus.
+KiCad requires attaching a new footprint to BOARD before Flip; the contrary
+order crashed without saving. Exact parity caught the missing C109 afterward.
+Zone fills must be invalidated before saving after net/footprint changes and
+refilled before acceptance; stale fills previously reassigned a nearby via.
+The PDF visual pass moved footer-conflicting labels/components on the drawing
+only. No electrical error or unexpected new DRC warning was suppressed.
 
 ## Primary evidence
 

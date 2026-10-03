@@ -1,0 +1,107 @@
+{
+  "board": "R3_power.kicad_pcb",
+  "footprints": 203,
+  "track_via_objects": 1747,
+  "filled_zones": [
+    {
+      "name": "DGND_F.Cu_RETURN",
+      "net": "DGND",
+      "layer": "F.Cu",
+      "outlines": 2,
+      "area_mm2": 6197.318
+    },
+    {
+      "name": "GND_ISO_F.Cu_RETURN",
+      "net": "GND_ISO",
+      "layer": "F.Cu",
+      "outlines": 1,
+      "area_mm2": 3748.263
+    },
+    {
+      "name": "VSYS_PROT_F.Cu_RETURN",
+      "net": "VSYS_PROT",
+      "layer": "F.Cu",
+      "outlines": 1,
+      "area_mm2": 13.242
+    },
+    {
+      "name": "BMS_FET_COMMON_F.Cu_RETURN",
+      "net": "BMS_FET_COMMON",
+      "layer": "F.Cu",
+      "outlines": 1,
+      "area_mm2": 33.249
+    },
+    {
+      "name": "VSYS_MAIN_F.Cu_RETURN",
+      "net": "VSYS_MAIN",
+      "layer": "F.Cu",
+      "outlines": 1,
+      "area_mm2": 20.29
+    },
+    {
+      "name": "GND_ISO_B.Cu_RETURN",
+      "net": "GND_ISO",
+      "layer": "B.Cu",
+      "outlines": 3,
+      "area_mm2": 3694.132
+    },
+    {
+      "name": "VSYS_PROT_B.Cu_RETURN",
+      "net": "VSYS_PROT",
+      "layer": "B.Cu",
+      "outlines": 1,
+      "area_mm2": 13.256
+    },
+    {
+      "name": "DGND_B.Cu_RETURN",
+      "net": "DGND",
+      "layer": "B.Cu",
+      "outlines": 2,
+      "area_mm2": 6084.493
+    },
+    {
+      "name": "BMS_FET_COMMON_B.Cu_RETURN",
+      "net": "BMS_FET_COMMON",
+      "layer": "B.Cu",
+      "outlines": 1,
+      "area_mm2": 33.38
+    },
+    {
+      "name": "VSYS_MAIN_B.Cu_RETURN",
+      "net": "VSYS_MAIN",
+      "layer": "B.Cu",
+      "outlines": 1,
+      "area_mm2": 15.283
+    },
+    {
+      "name": "GND_ISO_In1.Cu_RETURN",
+      "net": "GND_ISO",
+      "layer": "In1.Cu",
+      "outlines": 1,
+      "area_mm2": 3972.398
+    },
+    {
+      "name": "DGND_In1.Cu_RETURN",
+      "net": "DGND",
+      "layer": "In1.Cu",
+      "outlines": 3,
+      "area_mm2": 6239.543
+    },
+    {
+      "name": "DGND_In2.Cu_RETURN",
+      "net": "DGND",
+      "layer": "In2.Cu",
+      "outlines": 2,
+      "area_mm2": 6332.518
+    },
+    {
+      "name": "GND_ISO_In2.Cu_RETURN",
+      "net": "GND_ISO",
+      "layer": "In2.Cu",
+      "outlines": 1,
+      "area_mm2": 3728.854
+    }
+  ],
+  "issues": [],
+  "scope": "Pads/tracks/vias by physical domain; actual filled polygons intersected with corridor and six conservative 8 mm mounting envelopes. Does not certify EMC or functional safety."
+}

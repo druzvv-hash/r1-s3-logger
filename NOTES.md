@@ -1,5 +1,28 @@
 # Current memory entry point
 
+## 2026-10-03 — PowerBox Review1 CAD repair, fabrication blocked
+
+Active worktree `C:/Projects/r3-powerbox-routing`, branch
+`fix/r3-powerbox-reva-review1`, based on `cf7ea7c2a540037fdbbc916575e068ce5bee85fc`.
+Main and A-F history untouched. Pushed schematic checkpoint ce12ca9 and charger
+checkpoint 653dcbf; final verification commit contains this record (use Git SHA).
+Authority: `hardware/kicad/R3_PowerBox/docs/REVIEW1_FIXES.md` and Review1 reports.
+D1-D3 mapping, U2 floating EN, discharge resistor, 33V F2, local power copper,
+capacitor footprints, common-bus ST VSYS supply, conservative ILIM corrected.
+ST factory NVM first power MUST be 5V-only/non-PD before 5/9/12V programming.
+Unknown-source clamp ~0.30A nominal replaces unsafe tolerance assumptions of
+the former nominal 0.50A divider; confirmed source ceilings remain unchanged.
+DRC0errors/0unconnected/0parity, 41 identified library-copy warnings; ERC0errors
+with explicit generator-warning ledger. Semantics/negative-controls/isolation,
+filled mounting envelopes, unchanged mechanics/Kelvin all host checked.
+NOT bench tested. Exact MLCC DC-bias qualification and PPTC hot-current envelope
+remain blockers; INA filter/preload DNP bench-selectable, no Y-cap added.
+Never replay historical review1 mutation recipes or A-F on the routed PCB.
+New recipe guard prevents ordinary replay. Schematic generator then arranger
+only on fresh source output. No production Gerbers, order or main merge.
+Shared owner manual updated on separate local docs branch in lily-logger-r3,
+commit 22d1641; no unrelated remote push. Firmware policy is not deployed code.
+
 ## 2026-09-28 — Routing F complete, prototype only
 
 Active worktree `C:/Projects/r3-powerbox-routing`, branch

@@ -1,3 +1,4 @@
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec,pad,point,line
 b=k.LoadBoard(str(BOARD));ts=b.GetTracks()

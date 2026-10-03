@@ -1,4 +1,5 @@
 """Correct DRC-proven conflicts from the larger F2 and R106 local ECO."""
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import BOARD,vec,pad,point,line,via
 b=k.LoadBoard(str(BOARD))

@@ -19,7 +19,7 @@ views={
     'all_layers':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(18,0,164,107)),
     'isolation':('F.Cu,In1.Cu,In2.Cu,B.Cu,F.SilkS,Edge.Cuts',(108,0,33,105)),
 }
-if args.checkpoint in ('E','F'):
+if args.checkpoint in ('E','F','review1'):
     views['inner1']=('In1.Cu,Edge.Cuts',(18,0,164,107))
     views['inner2']=('In2.Cu,Edge.Cuts',(18,0,164,107))
 for name,(layers,box) in views.items():
@@ -41,7 +41,7 @@ for name,(layers,box) in views.items():
     title.text=f'{args.checkpoint} PROTOTYPE CHECKPOINT - {name.upper()} - NOT FOR FABRICATION'
     sub=E.SubElement(root,f'{{{ns}}}text',dict(x=str(x+1),y='7.5',fill='#cddbe0',
         **{'font-size':'.85','font-family':'Arial'}))
-    stage='Filled domain planes.' if args.checkpoint in ('E','F') else 'No planes yet.'
+    stage='Filled domain planes.' if args.checkpoint in ('E','F','review1') else 'No planes yet.'
     sub.text=f'{stage} {unrouted} unrouted connections. Corridor 121-124 mm: NO COPPER.'
     if name=='isolation':
         title.text=f'{args.checkpoint} / ISOLATION CHECK'

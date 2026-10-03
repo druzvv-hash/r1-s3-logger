@@ -1,0 +1,92 @@
+{
+  "pass_check": true,
+  "checks": [
+    {
+      "pin": "U7.7",
+      "net": "USB_VBUS_PROT",
+      "operating_max_V": 12.6,
+      "abs_max_V": 24,
+      "recommended_max_V": 22,
+      "pass_check": true
+    },
+    {
+      "pin": "U7.2",
+      "net": "SERVICE_IN_PROT",
+      "operating_max_V": 12.6,
+      "abs_max_V": 24,
+      "recommended_max_V": 22,
+      "pass_check": true
+    },
+    {
+      "pin": "U8.2",
+      "net": "CHARGER_IN",
+      "operating_max_V": 12.6,
+      "abs_max_V": 30,
+      "recommended_max_V": 24,
+      "pass_check": true
+    },
+    {
+      "pin": "U8.3",
+      "net": "CHARGER_IN",
+      "operating_max_V": 12.6,
+      "abs_max_V": 30,
+      "recommended_max_V": 24,
+      "pass_check": true
+    },
+    {
+      "pin": "U8.1",
+      "net": "BQ_STAT_RAW",
+      "operating_max_V": 5.2,
+      "abs_max_V": 6,
+      "recommended_max_V": 6,
+      "pass_check": true
+    },
+    {
+      "pin": "U10.24",
+      "net": "PD_VDD",
+      "operating_max_V": 12.6,
+      "abs_max_V": 28,
+      "recommended_max_V": 22,
+      "pass_check": true
+    },
+    {
+      "pin": "U10.18",
+      "net": "PD_VBUS_SENSE_DISCH",
+      "operating_max_V": 12.6,
+      "abs_max_V": 28,
+      "recommended_max_V": 22,
+      "pass_check": true
+    },
+    {
+      "pin": "U10.22",
+      "net": "+3V3_D",
+      "operating_max_V": 3.465,
+      "abs_max_V": 6,
+      "recommended_max_V": 5.5,
+      "pass_check": true
+    },
+    {
+      "pin": "U2.5",
+      "net": "unconnected-(U2-EN-Pad5)",
+      "abs_max_V": 7,
+      "recommended_max_V": 5.5,
+      "pass_check": true,
+      "rationale": "TPS54302 RevC internal EN pull-up, explicitly permitted floating. No VSYS connection."
+    }
+  ],
+  "discharge_upper_mA": 12.6,
+  "discharge_limit_mA": 50,
+  "startup_divider_upper_estimate_A": 0.44598397612735846,
+  "scope": "Selected reviewed DC operating pin limits only. Normal programmed PD <=12V(+5%). No claim to cover every IC pin, negative transients, ringing or firmware faults.",
+  "open": [
+    "Factory ST NVM may request 20V: initial 5V-only programming/readback mandatory; D3 is not continuous-20V rated.",
+    "SMBJ13A 21.5V specified clamp is below TPS2121 24V absolute max, but actual surge waveform/current and lead inductance need validation.",
+    "ILIM estimate includes resistor tolerance and pin leakage, NOT unspecified ADC/5V low-current regulation error. Measure before unrestricted source use."
+  ],
+  "sources": [
+    "https://www.ti.com/lit/ds/symlink/tps54302.pdf",
+    "https://www.ti.com/lit/ds/symlink/tps2121.pdf",
+    "https://www.ti.com/lit/ds/symlink/bq25798.pdf",
+    "https://www.st.com/resource/en/datasheet/stusb4500.pdf"
+  ]
+}

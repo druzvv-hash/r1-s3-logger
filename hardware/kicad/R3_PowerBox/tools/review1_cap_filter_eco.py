@@ -1,5 +1,6 @@
 """Apply explicitly approved passive-footprint ECOs to the current routes."""
 import xml.etree.ElementTree as E
+import review1_eco_guard  # Prevent accidental replay over the accepted board.
 import pcbnew as k
 from route_reva import ROOT,BOARD,vec,pad,point,line
 from generate_preliminary_placement import footprint_from_id

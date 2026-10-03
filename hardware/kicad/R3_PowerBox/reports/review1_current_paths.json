@@ -1,0 +1,667 @@
+{
+  "pass_check": true,
+  "results": [
+    {
+      "net": "USB_VBUS_RAW",
+      "source": [
+        "J7",
+        "A4"
+      ],
+      "target": [
+        "F2",
+        "1"
+      ],
+      "current_A": 2.25,
+      "required_width_mm": 1.0,
+      "widest_effective_width_mm": 1.0,
+      "pass_check": true,
+      "path": [
+        "J7.A4",
+        "via:(28.2, 30.6)",
+        "In2.Cu:(28.2, 30.6)->(29.2, 29.6)",
+        "In2.Cu:(29.2, 29.6)->(29.7, 22.5)",
+        "via:(29.7, 23.4)",
+        "B.Cu:(29.7, 23.4)->(29.2, 20.98)",
+        "B.Cu:(29.2, 20.98)->(40.775, 20.98)",
+        "F2.1"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [
+        "B.Cu:(29.7, 23.4)->(29.2, 20.98)",
+        "B.Cu:(29.2, 20.98)->(40.775, 20.98)"
+      ],
+      "via_transitions": [
+        {
+          "at": [
+            28.2,
+            30.6
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            29.7,
+            23.4
+          ],
+          "layers": [
+            "B.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "USB_VBUS_PROT",
+      "source": [
+        "F2",
+        "2"
+      ],
+      "target": [
+        "U7",
+        "7"
+      ],
+      "current_A": 2.25,
+      "required_width_mm": 1.0,
+      "widest_effective_width_mm": 1.0,
+      "pass_check": true,
+      "path": [
+        "F2.2",
+        "via:(47.525, 26.15)",
+        "B.Cu:(47.525, 27.0)->(47.8, 29.0)",
+        "B.Cu:(47.8, 29.0)->(47.8, 32.8)",
+        "via:(47.4, 33.35)",
+        "F.Cu:(45.675, 33.35)->(46.85, 33.35)",
+        "U7.7"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(45.675, 33.35)->(46.85, 33.35)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            47.4,
+            33.35
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "+3V3_D",
+      "source": [
+        "L1",
+        "2"
+      ],
+      "target": [
+        "J2",
+        "1"
+      ],
+      "current_A": 3.0,
+      "required_width_mm": 1.0,
+      "widest_effective_width_mm": 1.0,
+      "pass_check": true,
+      "path": [
+        "L1.2",
+        "F.Cu:(81.95, 42.3)->(84.05, 42.3)",
+        "F.Cu:(84.05, 38.0)->(84.05, 42.3)",
+        "F.Cu:(84.05, 38.0)->(89.0, 38.0)",
+        "F.Cu:(88.7, 37.7)->(88.7, 31.0)",
+        "F.Cu:(88.7, 31.0)->(76.5, 31.0)",
+        "F.Cu:(76.5, 31.0)->(75.0, 29.5)",
+        "F.Cu:(75.0, 29.5)->(75.0, 24.0)",
+        "F.Cu:(72.0, 24.0)->(75.0, 24.0)",
+        "J2.1"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": []
+    },
+    {
+      "net": "CHG_SW1",
+      "source": [
+        "U8",
+        "28"
+      ],
+      "target": [
+        "L3",
+        "1"
+      ],
+      "current_A": 3.3,
+      "required_width_mm": 0.7,
+      "widest_effective_width_mm": 0.7,
+      "pass_check": true,
+      "path": [
+        "U8.28",
+        "F.Cu:(50.55, 49.3)->(50.55, 50.0)",
+        "F.Cu:(50.55, 50.0)->(50.8, 50.6)",
+        "via:(50.8, 50.6)",
+        "In2.Cu:(50.8, 50.6)->(50.8, 48.8)",
+        "In2.Cu:(50.8, 48.8)->(48.3, 46.3)",
+        "In2.Cu:(48.3, 46.3)->(48.3, 42.0)",
+        "via:(48.3, 41.5)",
+        "L3.1"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(50.55, 49.3)->(50.55, 50.0)",
+        "F.Cu:(50.55, 50.0)->(50.8, 50.6)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            50.8,
+            50.6
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            48.3,
+            41.5
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "CHG_SW2",
+      "source": [
+        "U8",
+        "26"
+      ],
+      "target": [
+        "L3",
+        "2"
+      ],
+      "current_A": 3.3,
+      "required_width_mm": 0.7,
+      "widest_effective_width_mm": 0.7,
+      "pass_check": true,
+      "path": [
+        "U8.26",
+        "F.Cu:(51.45, 49.3)->(51.45, 50.0)",
+        "F.Cu:(51.45, 50.0)->(51.7, 50.6)",
+        "via:(51.7, 50.6)",
+        "In2.Cu:(51.7, 50.6)->(53.7, 48.0)",
+        "In2.Cu:(53.7, 48.0)->(53.7, 41.0)",
+        "via:(53.7, 41.5)",
+        "L3.2"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(51.45, 49.3)->(51.45, 50.0)",
+        "F.Cu:(51.45, 50.0)->(51.7, 50.6)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            51.7,
+            50.6
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            53.7,
+            41.5
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "CHG_PMID",
+      "source": [
+        "U8",
+        "29"
+      ],
+      "target": [
+        "C77",
+        "1"
+      ],
+      "current_A": 2.25,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 0.8,
+      "pass_check": true,
+      "path": [
+        "U8.29",
+        "F.Cu:(50.1, 48.8)->(50.1, 47.825)",
+        "F.Cu:(48.4, 47.825)->(50.1, 47.825)",
+        "C77.1"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(50.1, 48.8)->(50.1, 47.825)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": []
+    },
+    {
+      "net": "VSYS_RAW",
+      "source": [
+        "U8",
+        "25"
+      ],
+      "target": [
+        "F3",
+        "1"
+      ],
+      "current_A": 3.3,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 0.8,
+      "pass_check": true,
+      "path": [
+        "U8.25",
+        "F.Cu:(51.9, 48.8)->(51.9, 47.825)",
+        "F.Cu:(54.0, 47.825)->(51.9, 47.825)",
+        "F.Cu:(54.525, 46.9)->(54.0, 47.825)",
+        "F.Cu:(54.525, 46.9)->(54.525, 45.4)",
+        "F.Cu:(54.525, 45.4)->(70.0, 45.4)",
+        "F.Cu:(69.0, 45.4)->(69.0, 46.2)",
+        "via:(69.0, 46.2)",
+        "In2.Cu:(69.0, 46.2)->(69.0, 54.3)",
+        "TP22.1",
+        "F.Cu:(69.0, 54.3)->(67.775, 56.225)",
+        "F.Cu:(67.775, 56.225)->(67.775, 61.5)",
+        "F3.1"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(51.9, 48.8)->(51.9, 47.825)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            69.0,
+            46.2
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 3
+        }
+      ]
+    },
+    {
+      "net": "CHARGER_IN",
+      "source": [
+        "U7",
+        "1"
+      ],
+      "target": [
+        "U8",
+        "2"
+      ],
+      "current_A": 2.25,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 0.8,
+      "pass_check": true,
+      "path": [
+        "U7.1",
+        "F.Cu:(44.325, 32.65)->(45.675, 32.65)",
+        "F.Cu:(45.675, 32.65)->(46.2, 32.65)",
+        "F.Cu:(46.2, 32.65)->(46.65, 32.2)",
+        "via:(46.65, 32.0)",
+        "In1.Cu:(46.65, 32.0)->(48.3, 32.0)",
+        "In1.Cu:(48.3, 32.0)->(48.3, 38.9)",
+        "In1.Cu:(48.3, 38.9)->(42.525, 38.9)",
+        "via:(42.525, 38.9)",
+        "B.Cu:(42.525, 38.9)->(33.5, 38.9)",
+        "B.Cu:(33.5, 38.9)->(33.5, 50.875)",
+        "B.Cu:(33.5, 50.875)->(35.9, 50.875)",
+        "via:(35.9, 50.875)",
+        "F.Cu:(35.9, 50.875)->(37.5, 50.875)",
+        "F.Cu:(37.5, 51.7)->(45.0, 51.7)",
+        "F.Cu:(45.0, 51.7)->(46.3, 50.5)",
+        "F.Cu:(46.3, 50.5)->(47.5, 49.88)",
+        "F.Cu:(48.1, 50.0)->(47.5, 49.88)",
+        "F.Cu:(49.1, 49.8)->(48.5, 49.8)",
+        "U8.2"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(44.325, 32.65)->(45.675, 32.65)",
+        "F.Cu:(45.675, 32.65)->(46.2, 32.65)",
+        "F.Cu:(46.2, 32.65)->(46.65, 32.2)",
+        "F.Cu:(49.1, 49.8)->(48.5, 49.8)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            46.65,
+            32.0
+          ],
+          "layers": [
+            "F.Cu",
+            "In1.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            42.525,
+            38.9
+          ],
+          "layers": [
+            "B.Cu",
+            "In1.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            35.9,
+            50.875
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "PACK_POS",
+      "source": [
+        "C87",
+        "1"
+      ],
+      "target": [
+        "U8",
+        "22"
+      ],
+      "current_A": 3.3,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 0.8,
+      "pass_check": true,
+      "path": [
+        "C87.1",
+        "via:(57.5, 53.0)",
+        "In1.Cu:(57.5, 50.0)->(57.5, 53.0)",
+        "In1.Cu:(54.0, 50.0)->(57.5, 50.0)",
+        "via:(54.0, 50.0)",
+        "F.Cu:(52.9, 50.2)->(54.0, 50.0)",
+        "U8.22"
+      ],
+      "short_package_escapes": [
+        "F.Cu:(52.9, 50.2)->(54.0, 50.0)"
+      ],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            57.5,
+            53.0
+          ],
+          "layers": [
+            "F.Cu",
+            "In1.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            54.0,
+            50.0
+          ],
+          "layers": [
+            "F.Cu",
+            "In1.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "VSYS_MAIN",
+      "source": [
+        "C20",
+        "1"
+      ],
+      "target": [
+        "U2",
+        "3"
+      ],
+      "current_A": 2.0,
+      "required_width_mm": 0.5,
+      "widest_effective_width_mm": 0.5,
+      "pass_check": true,
+      "path": [
+        "C20.1",
+        "via:(98.2, 50.35)",
+        "F.Cu:(97.1375, 51.05)->(98.2, 50.35)",
+        "U2.3"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            98.2,
+            50.35
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 1
+        }
+      ]
+    },
+    {
+      "net": "BAT_POS_RAW",
+      "source": [
+        "J8",
+        "1"
+      ],
+      "target": [
+        "Q3",
+        "2"
+      ],
+      "current_A": 5.0,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 1.2,
+      "pass_check": true,
+      "path": [
+        "J8.1",
+        "B.Cu:(29.0, 78.0)->(29.0, 88.5)",
+        "B.Cu:(29.0, 88.5)->(54.0, 88.5)",
+        "B.Cu:(54.0, 88.5)->(54.0, 81.5)",
+        "B.Cu:(54.0, 81.5)->(55.55, 79.95)",
+        "via:(55.55, 79.45)",
+        "F.Cu:(55.55, 77.75)->(55.55, 79.45)",
+        "F.Cu:(54.44, 78.33)->(55.55, 78.33)",
+        "Q3.2"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            55.55,
+            79.45
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 2
+        }
+      ]
+    },
+    {
+      "net": "BAT_NEG_RAW",
+      "source": [
+        "J8",
+        "3"
+      ],
+      "target": [
+        "R93",
+        "1"
+      ],
+      "current_A": 5.0,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 1.0,
+      "pass_check": true,
+      "path": [
+        "J8.3",
+        "In2.Cu:(29.0, 72.0)->(34.0, 72.0)",
+        "In2.Cu:(34.0, 72.0)->(39.0, 64.5)",
+        "In2.Cu:(39.0, 64.5)->(54.0, 64.5)",
+        "In2.Cu:(54.0, 64.5)->(56.0, 66.5)",
+        "In2.Cu:(56.0, 66.5)->(56.0, 71.0)",
+        "In2.Cu:(56.0, 71.0)->(58.5, 74.2)",
+        "In2.Cu:(58.5, 74.2)->(59.1, 75.4)",
+        "via:(60.0, 75.4)",
+        "F.Cu:(60.0, 74.05)->(60.0, 75.4)",
+        "R93.1"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            60.0,
+            75.4
+          ],
+          "layers": [
+            "F.Cu",
+            "In2.Cu"
+          ],
+          "parallel_count": 3
+        }
+      ]
+    },
+    {
+      "net": "PACK_POS",
+      "source": [
+        "Q2",
+        "2"
+      ],
+      "target": [
+        "C87",
+        "1"
+      ],
+      "current_A": 5.0,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 1.2,
+      "pass_check": true,
+      "path": [
+        "Q2.2",
+        "F.Cu:(46.56, 77.67)->(45.4, 77.67)",
+        "via:(45.4, 78.4)",
+        "B.Cu:(45.4, 78.4)->(45.4, 73.5)",
+        "B.Cu:(45.4, 73.5)->(42.5, 70.6)",
+        "B.Cu:(42.5, 70.6)->(42.5, 63.5)",
+        "B.Cu:(42.5, 63.5)->(45.4, 60.6)",
+        "B.Cu:(45.4, 60.0)->(55.0, 60.0)",
+        "B.Cu:(55.0, 60.0)->(57.5, 57.5)",
+        "B.Cu:(57.5, 57.5)->(57.5, 53.0)",
+        "via:(57.5, 53.0)",
+        "C87.1"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": [
+        {
+          "at": [
+            45.4,
+            78.4
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 2
+        },
+        {
+          "at": [
+            57.5,
+            53.0
+          ],
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "parallel_count": 3
+        }
+      ]
+    },
+    {
+      "net": "BMS_FET_COMMON",
+      "source": [
+        "Q3",
+        "3"
+      ],
+      "target": [
+        "Q2",
+        "3"
+      ],
+      "current_A": 5.0,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 2.0,
+      "pass_check": true,
+      "path": [
+        "Q3.3",
+        "F.Cu:(48.385, 78.0)->(52.615, 78.0)",
+        "Q2.3"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": []
+    },
+    {
+      "net": "VSYS_PROT",
+      "source": [
+        "F3",
+        "2"
+      ],
+      "target": [
+        "Q4",
+        "2"
+      ],
+      "current_A": 3.3,
+      "required_width_mm": 0.8,
+      "widest_effective_width_mm": 0.8,
+      "pass_check": true,
+      "path": [
+        "F3.2",
+        "F.Cu:(72.225, 62.4)->(70.225, 64.4)",
+        "F.Cu:(70.225, 65.0)->(69.35, 66.5)",
+        "F.Cu:(69.35, 66.5)->(69.35, 68.095)",
+        "Q4.2"
+      ],
+      "short_package_escapes": [],
+      "verified_parallel_edge_segments": [],
+      "via_transitions": []
+    }
+  ],
+  "limitations": "Geometric copper graph. Package escapes explicit, not thermal signoff. No DC current sharing simulation, no filled-zone shortcut, no impedance/EMC claim."
+}
