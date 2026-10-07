@@ -1,0 +1,88 @@
+{
+  "pass_cad": true,
+  "errors": [],
+  "native_position_rows": 160,
+  "placement_changes": [
+    {
+      "ref": "C42",
+      "old_xy": [
+        140.0,
+        41.0
+      ],
+      "new_xy": [
+        140.0,
+        43.0
+      ],
+      "old_rotation": 180.0,
+      "new_rotation": 180.0
+    },
+    {
+      "ref": "C41",
+      "old_xy": [
+        140.5,
+        45.2
+      ],
+      "new_xy": [
+        140.5,
+        38.8
+      ],
+      "old_rotation": 180.0,
+      "new_rotation": 180.0
+    },
+    {
+      "ref": "C44",
+      "old_xy": [
+        142.0,
+        37.0
+      ],
+      "new_xy": [
+        142.0,
+        47.0
+      ],
+      "old_rotation": 90.0,
+      "new_rotation": -90.0
+    },
+    {
+      "ref": "C40",
+      "old_xy": [
+        149.5,
+        45.2
+      ],
+      "new_xy": [
+        149.5,
+        38.8
+      ],
+      "old_rotation": 0.0,
+      "new_rotation": 0.0
+    },
+    {
+      "ref": "C43",
+      "old_xy": [
+        148.8,
+        38.3
+      ],
+      "new_xy": [
+        148.8,
+        45.7
+      ],
+      "old_rotation": 90.0,
+      "new_rotation": -90.0
+    },
+    {
+      "ref": "R40",
+      "old_xy": [
+        148.0,
+        47.5
+      ],
+      "new_xy": [
+        148.0,
+        36.5
+      ],
+      "old_rotation": 0.0,
+      "new_rotation": 0.0
+    }
+  ],
+  "changed_track_via_records": 50,
+  "board_sha256": "b97675a2f1d249f53b645572c5bd6f37c896afa56bb287ec21101c447e56bb48",
+  "supplier_release": "BLOCKED: accepted LCSC/MPN list, C1 exact part and J7 supplier-library centroid/orientation unavailable. Native angle parity is not JLC assembly acceptance."
+}

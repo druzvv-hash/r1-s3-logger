@@ -1,5 +1,9 @@
 # R3 PowerBox Rev.A — prototype fabrication export
 
+**OBSOLETE — DO NOT MANUFACTURE (2026-10-07).** This export contains the old
+mirrored U4 physical numbering. It is retained as historical evidence, not a
+valid manufacturing release. See `../../docs/JLC_ORIENTATION_FINAL_AUDIT.md`.
+
 2026-10-03. Export authorized by owner; NOT production/hardware acceptance.
 Source: review branch fix/r3-powerbox-reva-review1, pre-logo commit 5d3da52.
 Board SHA256: f1cc618b274fae46e68432f66f089f505c7378a0eb8d68889083c54bba1eaa61

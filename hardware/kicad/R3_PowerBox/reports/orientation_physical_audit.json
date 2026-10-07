@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "checks": 675,
+  "errors": [],
+  "negative_controls_rejected": {
+    "U4_mirror": true,
+    "D3_reverse": true,
+    "Q4_gate_source": true,
+    "J7_CC_swap": true
+  },
+  "board_sha256": "b97675a2f1d249f53b645572c5bd6f37c896afa56bb287ec21101c447e56bb48",
+  "scope": "Physical pin order, explicit pin/net/source contracts, selected package IDs and mechanical USB mapping. Not supplier model/centroid acceptance, SMT qualification or full production release."
+}

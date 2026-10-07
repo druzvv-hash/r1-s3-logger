@@ -1,5 +1,65 @@
 # r1-s3-logger — work reports
 
+## 2026-10-07 — U4 physical correction and bounded orientation audit
+
+Read the pasted final-audit request and current review worktree, not routing
+baseline. Confirmed U4 local physical pin ordering was vertically mirrored.
+Corrected project .kicad_mod and embedded footprint; reflected six bypass/enable
+components and local copper, retained U4 origin and external trunk anchors.
+Initial input-feed reflection crossed thermal ground vias (7 DRC findings);
+detoured local feed and refilled. Final DRC zero errors/unconnected/parity, 42
+library-footprint mismatch warnings. Domain/corridor/mounting audit has no issues.
+Added physical marker/reference repairs without moving critical devices.
+
+Added independent critical pin/net/symbol/order contracts: 675 checks PASS; four
+in-memory fault injections rejected. New native coordinate export verified for
+160 position-eligible references; 203 footprints preserve pad/net identities.
+Only C40–44/R40 anchors changed; 50 changed copper UUID records are local to U4
+plus its retained output anchor. Initial comparator hit KiCad's via GetWidth
+API assertion; stopped and corrected via/track overload use, then PASS.
+GCT original drawing confirms J7 CAD contacts/shell/center; no guessed shift.
+Supplier BOM/centroid absence remains unresolved, as does exact C1 selection.
+AO4407A user selection documented; no unapproved substitute or BOM rollback.
+
+Saved actual KiCad renders, DRC, inventory, domain and export audit reports and
+docs/JLC_ORIENTATION_FINAL_AUDIT.md. Old fabrication/quote files explicitly marked
+obsolete. No new manufacturing release while acceptance gates fail; no order,
+remote push, main modification or claim of hardware acceptance. Read-only ST PDF
+download timed out; don't claim its unavailable graphical check passed.
+Shared owner manual receives the same HOLD notice. Work is local and incomplete
+at the supplier-data gate; no reliable elapsed-time/resource total was captured.
+
+## 2026-10-06 — Bottom assembly stop condition verified
+
+Read current PCB using pcbnew: 54 bottom footprints, 50 non-DNP components
+including C74/C75, 2 DNP preload resistors, 2 test pads. Enumerated 48 additional
+parts in JLC quote report. User's explicit stop condition applies; no assembly
+file generation/upload, circuit/placement edit or order. First diagnostic JSON
+serialization failed on KiCad UTF8 footprint string; rerun with ordinary
+reference/value/DNP fields succeeded. Current HEAD remains 0aeaea77.
+
+## 2026-10-06 — JLCONE continuation, partial PCB quote
+
+Used installed JLCONE on owner request. Uploaded previously verified ZIP;
+confirmed 160x80mm/4L, 5 PCB, 1.6mm. Selected inner 1oz matching outer 1oz:
+PCB $49.97 ($7.90 board+$25 engineering+$17.07 inner copper). HASL lead default.
+2-unit PCBA selection available, but Economic both sides disabled. Reached
+BOM/CPL upload gate; no assembly files or substitutions uploaded/accepted.
+Shipping widget $23.21 has unverified destination, not Czech delivered quote.
+Captured five screenshots and retained native app at BOM/CPL page. No order,
+cart submission, payment, PCB edits or remote push. Scope decision needed for
+bottom assembly and exact sourcing before defensible total PCBA price.
+
+## 2026-10-06 — JLC quotation preflight and browser blocker
+
+Read current memory and checked HEAD/status. Verified Gerber ZIP manifest,
+board export hash, 4 layers/1.6 mm and 197 BOM references/values against PCB.
+Found no CPL; no complete factory/manual or exact-part mapping in current BOM.
+Opened JLC calculator and attempted authorized ZIP upload; browser extension
+denied file access. Stopped without changing browser permissions, ordering,
+substituting parts or reporting default prices as an R3 quote. Saved screenshot
+and detailed dry-run report. User review2 untouched; no source/PCB edits or push.
+
 ## 2026-10-03 — Logo / prototype fabrication / 3D
 
 Added reproducible monochrome native logo group, no electrical edits. Initial

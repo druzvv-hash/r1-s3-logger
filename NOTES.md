@@ -1,5 +1,48 @@
 # Current memory entry point
 
+## 2026-10-07 — Orientation audit / manufacturing HOLD
+
+Current local review worktree repaired U4 mirrored physical numbering in its
+library and PCB; bounded U4 bypass reroute, six bypass component moves only.
+203 pad/net inventories preserved; 160 native position rows verified. DRC zero
+errors/unconnected/parity, 42 library-copy warnings; domain audit PASS and 675
+critical pin/net/order checks PASS with four rejected negative controls.
+This does NOT close supplier orientation: accepted JLC LCSC/MPN export, C1 exact
+part and J7 supplier centroid are missing. AO4407A is owner-selected for Q1/Q4;
+physical G/S/D compatibility checked, source still DMP pending explicit sourcing
+record. No guessed rotations/substitutions. Full release remains BLOCKED.
+Old Gerber ZIP and quote A/B files obsolete after U4 ECO: do not use/upload.
+Authority: PowerBox docs/JLC_ORIENTATION_FINAL_AUDIT.md. No new production exports
+or push. User review2 preserved. Never replay one-shot routing ECO scripts.
+
+The earlier bottom-component stop below was superseded by owner-authorized A/B
+quote comparison: 92 Top versus 142 Top+Bottom intended placements, R107/108 DNP.
+Only partial prices were observed; no complete PCBA quote or order resulted.
+
+## 2026-10-06 — Economic approval, explicit inventory stop
+
+Owner approved top factory/bottom manual but requires stopping for bottom parts
+beyond C74/C75. Fresh unchanged-board inspection finds 48 additional non-DNP
+parts, plus R107/R108 DNP and TP27/28 pads. Full list in PowerBox JLC quote report.
+Stopped before generating/uploading assembly files; await inventory approval.
+
+## 2026-10-06 — JLCONE partial quote
+
+Owner's installed JLCONE uploaded Gerber: correct 160x80/4L. Five PCB,
+1.6mm/1oz outer+inner/HASL lead = $49.97 before shipping/tax. Two assembled
+selectable, three bare. Economic both-side disabled; full PCBA quote blocked
+by missing audited CPL and exact assembly/MPN mapping. No order/cart submission,
+no substitutions. PowerBox docs/JLC_QUOTE_2026-10-06.md has evidence/screenshots.
+Chrome file-permission blocker below is now historical; continue via JLCONE.
+
+## 2026-10-06 — JLC dry-run blocked before upload
+
+Owner requested 5 PCB / 2 PCBA / 3 bare, no ordering or substitutions.
+Revision/ZIP/BOM preflight passed at 0aeaea7; no CPL found, BOM lacks complete
+MPN/assembly mapping and contains bottom-side parts. Chrome upload requires
+user enabling extension file-URL access. No real quote or order obtained.
+Resume from docs/JLC_QUOTE_2026-10-06.md under PowerBox, not default website prices.
+
 ## 2026-10-03 — Logo and owner-authorized prototype Gerbers
 
 Added F.SilkS Garage Logic Lab artwork only; all existing board records remain
