@@ -1,5 +1,16 @@
 # Current memory entry point
 
+## 2026-10-07 — Prototype release freeze authorization
+
+Owner supersedes export HOLD: J7 centroid is manual JLC alignment, not blocker;
+C1 manual populate/not DNP; R107/108 DNP; no substitutions or ordering. Freeze
+unchanged corrected PCB, export fresh Gerber/drill and A Top/B Both assembly
+from one source SHA. Manufacturing policy is bom/prototype_assembly_policy.json.
+Factory counts expected A91/B141; 50 Bottom manual in A, factory candidates in B.
+All factory LCSC codes absent remain UNRESOLVED. Source-level CAD PASS is not
+JLC library orientation or powered/thermal/EMI qualification. New release
+manifest in manufacturing/RevA_PROTOTYPE_<source-sha> supersedes prior HOLD notes.
+
 ## 2026-10-07 — C1 exact sourcing identified
 
 Owner selected Panasonic EEE-FK1E470P, catalog EEEFK1E470P = LCSC C178545.

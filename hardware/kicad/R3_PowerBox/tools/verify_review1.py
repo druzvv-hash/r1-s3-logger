@@ -1,8 +1,9 @@
 """Review ECO invariants against cf7ea7c, plus explicit warning accounting."""
-import json,subprocess,collections,re
+import json,subprocess,collections,re,argparse
 import pcbnew as k
 from route_reva import ROOT,BOARD
 BASE='cf7ea7c2a540037fdbbc916575e068ce5bee85fc'
+ap=argparse.ArgumentParser();ap.add_argument('--prototype-release',action='store_true');args=ap.parse_args()
 scratch=ROOT/'tmp/review1_authoritative.kicad_pcb'
 scratch.write_bytes(subprocess.check_output(['git','show',BASE+':hardware/kicad/R3_PowerBox/R3_power.kicad_pcb'],cwd=ROOT))
 a=k.LoadBoard(str(scratch));b=k.LoadBoard(str(BOARD));ats=a.GetTracks();bts=b.GetTracks()
@@ -21,14 +22,15 @@ checks['Kelvin_cell_sense_and_local_shunt_copper_unchanged']=records(ats)==recor
 for num,y in [('1',74.05),('2',67.95)]:
     p=next(p for p in b.FindFootprintByReference('R93').Pads() if p.GetNumber()==num)
     checks['R93_'+num+'_Kelvin_root_inside_pad']=p.HitTest(k.VECTOR2I(k.FromMM(61.4),k.FromMM(y)))
-d=json.loads((ROOT/'reports/review1_work_drc.json').read_text(encoding='utf8'))
+d=json.loads((ROOT/('reports/release_prototype_drc.json' if args.prototype_release else 'reports/review1_work_drc.json')).read_text(encoding='utf8'))
 checks['DRC_no_errors']=not any(v['severity']=='error' for v in d['violations'])
 checks['DRC_zero_unconnected']=not d['unconnected_items'];checks['DRC_exact_parity']=not d.get('schematic_parity')
-old_d=json.loads(subprocess.check_output(['git','show',BASE+':hardware/kicad/R3_PowerBox/reports/routing_checkpoint_F_drc.json'],cwd=ROOT))
+warning_base='f7d5015ade2b919d4c04d0292dec8ebfc8cb2c4b:hardware/kicad/R3_PowerBox/reports/orientation_drc.json' if args.prototype_release else BASE+':hardware/kicad/R3_PowerBox/reports/routing_checkpoint_F_drc.json'
+old_d=json.loads(subprocess.check_output(['git','show',warning_base],cwd=ROOT))
 old_warn={i['uuid'] for v in old_d['violations'] if v['type']=='lib_footprint_mismatch' for i in v['items']}
 warning_ledger=[dict(type=v['type'],severity=v['severity'],description=v['description'],items=v['items'],previously_present=all(i['uuid'] in old_warn for i in v['items'])) for v in d['violations']]
-checks['all_DRC_warnings_individually_present_in_F']=all(v['type']=='lib_footprint_mismatch' and v['previously_present'] for v in warning_ledger)
-erc=json.loads((ROOT/'reports/review1_erc.json').read_text(encoding='utf8'))
+checks['all_DRC_warnings_individually_present_in_approved_checkpoint']=all(v['type']=='lib_footprint_mismatch' and v['previously_present'] for v in warning_ledger)
+erc=json.loads((ROOT/('reports/release_prototype_erc.json' if args.prototype_release else 'reports/review1_erc.json')).read_text(encoding='utf8'))
 ev=[v for s in erc['sheets'] for v in s['violations']]
 checks['ERC_no_errors']=not any(v['severity']=='error' for v in ev)
 checks['ERC_only_known_generator_warning_types']=all(v['type'] in ['endpoint_off_grid','lib_symbol_mismatch'] for v in ev)
@@ -46,5 +48,5 @@ checks['ERC_every_warning_accounted']=all(v['previously_present'] or v['review1_
 report=dict(base=BASE,pass_check=all(checks.values()),checks=checks,DRC_warning_ledger=warning_ledger,
     ERC_warning_ledger=ev,ERC_counts=dict(collections.Counter(v['type'] for v in ev)),
     limitation='Warning types/references accounted individually; not a claim that the stock-library warnings have been suppressed. No physical thermal, EMC, capacitance or USB compliance test.')
-(ROOT/'reports/review1_verification.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
+(ROOT/('reports/release_review1_verification.json' if args.prototype_release else 'reports/review1_verification.json')).write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
 print(json.dumps(checks,indent=2));raise SystemExit(not report['pass_check'])

@@ -7,7 +7,20 @@ comparison and no changes to main.
 Base: `0aeaea77a38e7b103af06dd491d3ec8ec9fd85f6`, branch
 `fix/r3-powerbox-reva-review1`; corrected PCB is preserved in the U4 checkpoint.
 
-## Release status: BLOCKED, audit not fully closed
+## Current release policy: Rev.A PROTOTYPE export authorized, 2026-10-07
+
+Latest owner instruction supersedes the historical export HOLD below. J7 library
+centroid is a mandatory manual JLC placement review, not an export blocker.
+C1 is MANUAL_POPULATE / NOT DNP, Panasonic EEE-FK1E470P / C178545, excluded from
+factory A and B. D4 machine pin/net audit passes; visual JLC confirmation remains
+pending. No supplier-zero-angle approval is implied by native-CPL PASS.
+Generate only from the frozen source commit with `tools/release_prototype.py`
+and `tools/release_assembly.mjs`; unknown exact MPN/LCSC remains UNRESOLVED.
+J7 geometry/position/angle and all source CAD remain unchanged in this release.
+See the new manufacturing directory's MANUFACTURING_RELEASE_REVA_PROTOTYPE.md
+for final commit, hashes and remaining pre-order checklist. Older ZIPs stay stale.
+
+## Historical release HOLD (superseded only for prototype export)
 
 ### C1 sourcing update, 2026-10-07
 

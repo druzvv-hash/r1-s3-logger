@@ -1,12 +1,6 @@
 {
-  "baseline": "5d3da52ab329b53ea38b7bcaf85b82c3c93354e6",
-  "board_sha256": "f1cc618b274fae46e68432f66f089f505c7378a0eb8d68889083c54bba1eaa61",
+  "baseline": "9ee68f99c076ce2cbe418341bfd187153f55645e",
+  "board_sha256": "b97675a2f1d249f53b645572c5bd6f37c896afa56bb287ec21101c447e56bb48",
   "existing_board_records_unchanged": true,
-  "added_records": {
-    "gr_poly": 2,
-    "gr_line": 87,
-    "gr_circle": 4,
-    "gr_text": 2,
-    "group": 1
-  }
+  "added_records": {}
 }

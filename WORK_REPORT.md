@@ -1,5 +1,21 @@
 # r1-s3-logger — work reports
 
+## 2026-10-07 — Prototype manufacturing source freeze
+
+Confirmed 9ee68f9 and no tracked uncommitted CAD changes in same review worktree.
+User explicitly permits prototype export with J7 manual placement alignment and
+C1 manual/not DNP. No schematic/PCB changes performed. Fresh DRC: zero errors,
+zero unconnected/parity, 42 known library-copy warnings. Fresh ERC: zero errors,
+423 accounted warnings (212 symbol mismatch, 211 off-grid). Review1 checker now
+accepts explicit release report inputs and compares warnings with U4 checkpoint,
+not outdated pre-U4 warning inventory; mechanics/Kelvin checks still independent.
+Physical/bottom/native-position/current-path/absolute-rating/polarity/domain/
+mounting/branding checks and semantic/isolation negative controls passed.
+Historic A-F baseline preservation scripts are stage-specific, superseded by
+Review1 and U4 bounded-ECO comparisons, not replayed on the repaired design.
+Added frozen-source export recipe and A/B assembly policy. Output remains
+prototype-only with unresolved sourcing and mandatory manual JLC review.
+
 ## 2026-10-07 — Exact C1 catalog match
 
 Searched hyphenated and normalized owner MPN. Panasonic and LCSC identify
