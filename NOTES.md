@@ -1,5 +1,16 @@
 # Current memory entry point
 
+## 2026-10-07 — U4 checkpoint pushed; Bottom audit continued
+
+Repair checkpoint f7d5015ade2b919d4c04d0292dec8ebfc8cb2c4b pushed to existing
+fix/r3-powerbox-reva-review1 branch before continuation. Main untouched.
+Fresh fail-closed Bottom inventory verifies 54 footprints (50 parts, 2 DNP,
+2 TP); F2/C109 nonpolar; Q1/Q4 physical1 is logical Source pad2, U10 physical1
+CC1DB anchor verified. No additional PCB changes/rotations justified.
+Full supplier CPL acceptance remains unresolved (C1 exact part, J7 selected
+library centroid, accepted sourcing export). Production generation still gated;
+do not mark a native-coordinate check as supplier orientation PASS.
+
 ## 2026-10-07 — Orientation audit / manufacturing HOLD
 
 Current local review worktree repaired U4 mirrored physical numbering in its

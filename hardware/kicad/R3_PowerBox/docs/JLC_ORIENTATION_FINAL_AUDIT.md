@@ -1,8 +1,11 @@
 # JLC orientation audit — R3 PowerBox Rev.A
 
 Date: 2026-10-07. Evidence: HOST TESTED, not assembled/bench tested.
+U4 checkpoint: `f7d5015ade2b919d4c04d0292dec8ebfc8cb2c4b`, committed and pushed
+to the existing review branch before continuing. No return to the price
+comparison and no changes to main.
 Base: `0aeaea77a38e7b103af06dd491d3ec8ec9fd85f6`, branch
-`fix/r3-powerbox-reva-review1`; corrections are local working-tree changes.
+`fix/r3-powerbox-reva-review1`; corrected PCB is preserved in the U4 checkpoint.
 
 ## Release status: BLOCKED, audit not fully closed
 
@@ -16,7 +19,8 @@ centroid remain unknown. No guessed JLC rotations/offsets were applied.
 Do not upload the old prototype ZIP or the quote files under
 `manufacturing/jlc_quote_0aeaea7`: they predate the U4 correction.
 No replacement manufacturing ZIP/BOM/CPL is released until the missing gates
-below pass. No order, substitution, remote push or main-branch modification.
+below pass. No order, substitution or main-branch modification. The U4 repair
+checkpoint has now been pushed; earlier local-only status is superseded.
 
 ## Critical component chain
 
@@ -153,6 +157,48 @@ Run the tools with KiCad's Python. Generate the native CSV using `pcb export pos
 --format csv --units mm --side both`; do not treat it as a factory assembly list.
 One-shot correction recipes are historical ECO records, not a replacement for
 the current routed PCB. Do not replay them on the corrected board.
+
+## Continued Bottom and physical-anchor audit
+
+`tools/audit_bottom_orientation.py` is fail-closed for unknown Bottom footprint
+classes and verifies all 54 Bottom footprints: 50 non-DNP components, R107/R108
+DNP, and TP27/TP28 PCB pads. Detailed reference-by-reference results, sides,
+coordinates, values and pad nets are in `reports/orientation_bottom_audit.json`.
+
+- F2: Littelfuse 2920L260/33DR, 2920 two-terminal PPTC, nonpolar. Native 0°,
+  center (43.8,23.5). No cathode or positive terminal to invent. Hot-current and
+  exact supplier availability qualification remain separate from orientation.
+- C109: 1uF/10V ceramic, 0402 (1005 metric), nonpolar. Native -90°,
+  center (32.75,31.2). No polarity correction required; exact MPN unresolved.
+- D4: SOT-323 three-terminal array, Bottom 180°. Actual pad1=(30.0875,32.35)
+  USB_CC1; pad2=(30.0875,33.65) USB_CC2; pad3=(28.3125,33) DGND. Bottom mirror
+  is already in the PCB transform: do not negate X or add another mirror blindly.
+  Manufacturer graphical polarity review remains open: two direct original-ST
+  download routes timed out, and the web text does not expose diode symbols.
+- All remaining Bottom C/R/FB footprints are nonpolar ceramic/resistor/bead
+  classes; no additional electrolytic, MOSFET, IC or connector appears there.
+  Exact purchasing substitutions must still be checked, not inferred from class.
+
+Physical anchor checks (absolute PCB mm, distinct from CPL Y-up convention):
+
+| Component | Physical anchor | Native angle | PCB anchor XY | Meaning |
+|---|---|---:|---|---|
+| Q1 | SO-8 physical pin1, logical pad2 | 0 | 26.35,83.095 | Source, SERVICE_IN_REV |
+| Q4 | SO-8 physical pin1, logical pad2 | 0 | 69.35,68.095 | Source, VSYS_PROT |
+| U10 | QFN physical pin1, pad1 | 0 | 31.0375,31.75 | CC1DB, USB_CC1 |
+| C1 | positive terminal, pad1 | 0 | 31.3,59 | SERVICE_IN_REV |
+
+Q1/Q4 physical pin1 external silk dots and fab dots point at these Source
+corners, not their Gate/logical1. U10's existing upper-left fab chamfer and left
+silk pointer correspond to physical1; no component rotation is needed.
+C1 currently has only a generic 6.3x5.8mm aluminum-electrolytic land pattern:
+that is not evidence for a particular capacitor's lead geometry, polarity stripe
+or supplier zero-angle. Its component-level result remains UNRESOLVED.
+
+No new component rotation or routing change was justified in this continuation.
+C43/C44 native 90° to -90° changes belong to the preceding local U4 repair and
+must be reflected by the eventual fresh CPL. JLC-specific orientation PASS cannot
+be asserted while the selected part/zero-angle records are unavailable.
 
 ## Release gates / files to re-upload after closing them
 

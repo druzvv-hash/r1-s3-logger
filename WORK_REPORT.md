@@ -1,5 +1,20 @@
 # r1-s3-logger — work reports
 
+## 2026-10-07 — Continued audit and requested Git checkpoint
+
+Committed all scoped U4 repair/source/report/render changes as f7d5015 and pushed
+existing review branch before further edits. Unrelated quote files and owner
+review2 remain outside the commit. Added Bottom classification/physical-anchor
+audit: PASS for 54 Bottom footprints, F2 PPTC and C109 ceramic nonpolar, all
+visible Bottom fields mirrored, DNP R107/R108 preserved. Exact physical anchors
+verified for Q1/Q4 (logical2 Source), U10, C1 positive and D4 pad1.
+Re-ran physical mapping (675 PASS, four negative controls rejected) and native
+position/ECO parity PASS. No new routing or component placement changes.
+Repeated original-ST PDF download routes timed out; no fabricated graphical
+polarity approval. Detailed audit records remaining supplier-dependent gates.
+No production ZIP/BOM/CPL generated because requested complete orientation PASS
+is not established; unknown MPNs remain unresolved rather than substituted.
+
 ## 2026-10-07 — U4 physical correction and bounded orientation audit
 
 Read the pasted final-audit request and current review worktree, not routing
