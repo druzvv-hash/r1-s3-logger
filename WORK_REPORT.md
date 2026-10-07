@@ -1,5 +1,14 @@
 # r1-s3-logger — work reports
 
+## 2026-10-07 — Exact C1 catalog match
+
+Searched hyphenated and normalized owner MPN. Panasonic and LCSC identify
+EEEFK1E470P, C178545, 47uF/25V FK 6.3x5.8mm body; LCSC lists 6.1mm maximum
+seated height. Public LCSC page showed 10,915 stock; no reservation or purchase.
+Direct JLC page unavailable and no verified JLC assembly stock/zero-angle found.
+Saved sourcing JSON and updated audit: no substitute; manual hold/exclude factory
+A/B until assembly verification, not DNP. No PCB/schematic/production file edits.
+
 ## 2026-10-07 — Continued audit and requested Git checkpoint
 
 Committed all scoped U4 repair/source/report/render changes as f7d5015 and pushed

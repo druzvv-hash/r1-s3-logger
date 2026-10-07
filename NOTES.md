@@ -1,5 +1,13 @@
 # Current memory entry point
 
+## 2026-10-07 — C1 exact sourcing identified
+
+Owner selected Panasonic EEE-FK1E470P, catalog EEEFK1E470P = LCSC C178545.
+PowerBox bom/C1_sourcing.json is the canonical sourcing decision. Do not use a
+generic replacement. JLC PCBA availability/rotation not confirmed: C1 manual
+hold, excluded from factory A and B until verified (not DNP). LCSC stock is not
+JLC assembly stock. Earlier "C1 MPN unknown" notes are superseded; PCB unchanged.
+
 ## 2026-10-07 — U4 checkpoint pushed; Bottom audit continued
 
 Repair checkpoint f7d5015ade2b919d4c04d0292dec8ebfc8cb2c4b pushed to existing

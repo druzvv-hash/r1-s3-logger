@@ -9,6 +9,24 @@ Base: `0aeaea77a38e7b103af06dd491d3ec8ec9fd85f6`, branch
 
 ## Release status: BLOCKED, audit not fully closed
 
+### C1 sourcing update, 2026-10-07
+
+Owner now specifies **Panasonic EEE-FK1E470P**. Exact catalog identity found as
+**EEEFK1E470P / LCSC C178545** (hyphen normalization, not a substitution).
+[Panasonic product specifications](https://na.industrial.panasonic.com/products/capacitors/lineup/aluminum-electrolytic-capacitors/series/88994/model/89507)
+confirm 47uF/25V, polarized FK, diameter 6.3mm/body length 5.8mm.
+[LCSC listing](https://www.lcsc.com/product-detail/C178545.html) additionally lists
+6.1mm maximum seated height and showed 10,915 pieces; this is not reserved stock
+or proof of JLC PCBA availability. Direct JLC product lookup was inaccessible;
+no verified JLC assembly availability or part-specific orientation obtained.
+
+Canonical sourcing record: `../bom/C1_sourcing.json`. Until JLC availability and
+orientation are verified, exclude C1 from BOTH factory assembly variants and
+retain it as manual/unresolved, not DNP. No generic replacement permitted.
+Earlier statements that the preferred C1 MPN is unknown are superseded by this
+entry; full land-pattern/polarity-marker and supplier-orientation acceptance
+remain separate checks. PCB, schematic and old manufacturing files unchanged.
+
 The U4 physical numbering defect is corrected in both the project footprint and
 PCB, with a bounded local reroute. Critical CAD pin/net/order checks pass.
 This is **not** a completed JLC assembly-orientation acceptance or production
@@ -50,7 +68,7 @@ and native position-file parity. It does not certify the selected JLC part.
 | D5 | CHG LED, exact accepted part pending | Cathode | K | K BQ_STAT_RAW; A CHARGE_LED_A | 0 | 0 | No | No | CAD polarity PASS; supplier LED marking pending |
 | D6 | RUN LED, exact accepted part pending | Cathode | K | K DGND; A RUN_LED_A | 0 | 0 | No | No | CAD polarity PASS; supplier LED marking pending |
 | D7 | BAT54WS | Cathode band | K | K BQ_STAT_RAW; A CHARGE_STATUS | 0 | 0 | No | No | CAD polarity PASS; supplier identity pending |
-| C1 | 47uF/25V low-ESR, exact MPN missing | Positive terminal | + | 1 SERVICE_IN_REV; 2 DGND | 0 | 0 | No | No | CAD polarity PASS; component-level gate BLOCKED |
+| C1 | Panasonic EEE-FK1E470P / EEEFK1E470P, C178545 | Positive terminal | + | 1 SERVICE_IN_REV; 2 DGND | 0 | 0 | No | No | Catalog identity resolved; JLC availability/orientation unresolved, manual hold |
 | J7 | GCT USB4105-GF-A design | A/B contacts per GCT top-view drawing | Alphanumeric, not generic pin1 | All 16 contacts + shell checked; CC1 A5 / CC2 B5 | -90 | -90 | No | No | GCT CAD PASS; JLC centroid/selected model BLOCKED |
 
 ## Actual error and local ECO

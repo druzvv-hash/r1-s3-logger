@@ -1,0 +1,20 @@
+{
+  "reference": "C1",
+  "manufacturer": "Panasonic",
+  "owner_preferred_mpn": "EEE-FK1E470P",
+  "manufacturer_catalog_mpn": "EEEFK1E470P",
+  "lcsc": "C178545",
+  "identity_status": "EXACT_CATALOG_MATCH_HYPHEN_NORMALIZED",
+  "checked_date": "2026-10-07",
+  "manufacturer_url": "https://na.industrial.panasonic.com/products/capacitors/lineup/aluminum-electrolytic-capacitors/series/88994/model/89507",
+  "lcsc_url": "https://www.lcsc.com/product-detail/C178545.html",
+  "specification": "47uF, 25V, +/-20%, polarized SMD FK, body diameter 6.3mm, body length 5.8mm; seated maximum 6.1mm per LCSC",
+  "lcsc_stock_observed": 10915,
+  "stock_note": "Public page observation, not reserved inventory and not JLC assembly stock",
+  "jlc_assembly_availability": "UNRESOLVED",
+  "jlc_orientation": "UNRESOLVED",
+  "assembly_disposition_until_verified": "MANUAL_HOLD_EXCLUDE_FROM_FACTORY_A_AND_B",
+  "automatic_substitutions_allowed": false,
+  "pcb_change": "NONE; existing positive pad1 SERVICE_IN_REV, negative pad2 DGND, native 0 degrees",
+  "scope": "Sourcing identity record, not released BOM or supplier orientation acceptance"
+}
