@@ -1,0 +1,82 @@
+{
+  "pass": true,
+  "source_commit": "0d6da576168b8284664dffa865b99ebe71e1d3c4",
+  "pcb_sha256": "b97675a2f1d249f53b645572c5bd6f37c896afa56bb287ec21101c447e56bb48",
+  "results": [
+    {
+      "file": "R3_RevA_A_TOP_BOM.xlsx",
+      "rows": 91,
+      "pass": true,
+      "fields": [
+        "Comment",
+        "Designator",
+        "Footprint",
+        "LCSC Part #",
+        "MPN",
+        "Qty",
+        "Side",
+        "Sourcing status"
+      ]
+    },
+    {
+      "file": "R3_RevA_A_TOP_CPL.xlsx",
+      "rows": 91,
+      "pass": true,
+      "fields": [
+        "Designator",
+        "Mid X",
+        "Mid Y",
+        "Layer",
+        "Rotation",
+        "Footprint",
+        "MPN",
+        "LCSC Part #"
+      ]
+    },
+    {
+      "file": "R3_RevA_B_BOTH_BOM.xlsx",
+      "rows": 141,
+      "pass": true,
+      "fields": [
+        "Comment",
+        "Designator",
+        "Footprint",
+        "LCSC Part #",
+        "MPN",
+        "Qty",
+        "Side",
+        "Sourcing status"
+      ]
+    },
+    {
+      "file": "R3_RevA_B_BOTH_CPL.xlsx",
+      "rows": 141,
+      "pass": true,
+      "fields": [
+        "Designator",
+        "Mid X",
+        "Mid Y",
+        "Layer",
+        "Rotation",
+        "Footprint",
+        "MPN",
+        "LCSC Part #"
+      ]
+    },
+    {
+      "file": "R3_RevA_MANUAL_DNP_BOM.xlsx",
+      "rows": 62,
+      "pass": true,
+      "fields": [
+        "Designator",
+        "Value",
+        "Footprint",
+        "MPN",
+        "LCSC Part #",
+        "Disposition",
+        "Side"
+      ]
+    }
+  ],
+  "scope": "RefDes, side, X/Y, native rotation, footprint, MPN and LCSC exactly match frozen inventory; UNRESOLVED is preserved, not procurement acceptance."
+}

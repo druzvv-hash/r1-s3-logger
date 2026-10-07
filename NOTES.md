@@ -1,5 +1,14 @@
 # Current memory entry point
 
+## 2026-10-07 — Fresh prototype artifacts completed
+
+Frozen source: 0d6da576168b8284664dffa865b99ebe71e1d3c4, review repair branch.
+Release: hardware/kicad/R3_PowerBox/manufacturing/RevA_PROTOTYPE_0d6da57/.
+Read MANUFACTURING_RELEASE_REVA_PROTOTYPE.md and SHA256SUMS.txt there.
+A has 91 Top candidates; B has 141 including 50 Bottom. C1 is manual/not DNP.
+Factory LCSC sourcing remains UNRESOLVED; JLC physical placement acceptance is
+pending. No order or factory qualification. PCB unchanged by export.
+
 ## 2026-10-07 — Prototype release freeze authorization
 
 Owner supersedes export HOLD: J7 centroid is manual JLC alignment, not blocker;

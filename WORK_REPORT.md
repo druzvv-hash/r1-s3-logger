@@ -1,5 +1,19 @@
 # r1-s3-logger — work reports
 
+## 2026-10-07 — Fresh prototype package generated
+
+Source 0d6da576168b8284664dffa865b99ebe71e1d3c4 pushed on repair branch.
+Fresh Gerbers/drills, 5 assembly/manual XLSX workbooks and source manifest generated
+from that frozen state. Saved workbooks re-imported and every cell compared;
+all five previews visually checked. Native CPL parity includes reference, side,
+XY, angle, footprint, MPN and LCSC. A91/B141; no automatic substitutions.
+All factory LCSC codes unresolved; C1 exact C178545 is manual/not DNP.
+DRC 0 errors/0 unconnected/0 parity findings, 42 warnings; ERC 0 errors/423
+warnings. Polarity, physical mapping, Review1 regressions and isolation PASS.
+Release directory disables Git text conversion to preserve hashed raw bytes.
+Removed only temporary dependency junction; dependency target untouched.
+Old quote/user-review files excluded. No JLC visit, order or further CAD edit.
+
 ## 2026-10-07 — Prototype manufacturing source freeze
 
 Confirmed 9ee68f9 and no tracked uncommitted CAD changes in same review worktree.
