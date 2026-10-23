@@ -1,3 +1,15 @@
+## 2026-10-23 — PowerBox now has its own R3 repository
+
+Canonical project: [GLL R3 PowerBox](https://github.com/druzvv-hash/r3-powerbox),
+branch **main**, local **C:/Projects/r3-powerbox**. Its README distinguishes Rev.A,
+Rev.B candidate and user-reported physical checks. Existing hardware files were
+copied byte-for-byte; PowerBox history was filtered with an original/new commit
+map. Previously local RevB/manufacturing evidence is now tracked privately.
+No circuit change, new hardware test or manufacturing approval is implied.
+The old r3-powerbox-routing worktree and R1 branch remain historical references;
+do not start new PowerBox development there. This supersedes older location and
+local-only status below. See the new repository's docs/MIGRATION_2026-10-23.md.
+
 <!-- External project memory audit - 2026-10-23 -->
 **Current technical handoff:** [NOTES](NOTES.md) · [WORK_REPORT](WORK_REPORT.md) ·
 [evidence and open issues](docs/PROJECT_MEMORY.md). Read [AGENTS](AGENTS.md)
