@@ -64,11 +64,13 @@ void updateOled() {
     static bool filterValid=false;
     const auto& config=appliedSettings();
     const uint32_t tick=millis();
+    double meanVolts=reading.busVolts,meanAmps=reading.currentAmps;
+    takeDisplayAverage(meanVolts,meanAmps);
     if (reading.valid) {
         const double alpha=filterValid && config.display_filter_tau_ms
             ? -std::expm1(-double(uint32_t(tick-lastDisplay))/config.display_filter_tau_ms) : 1.0;
-        shownVolts+=alpha*(reading.busVolts-shownVolts);
-        shownAmps+=alpha*(reading.currentAmps-shownAmps);
+        shownVolts+=alpha*(meanVolts-shownVolts);
+        shownAmps+=alpha*(meanAmps-shownAmps);
         filterValid=true;
     } else filterValid=false;
     lastDisplay=tick;

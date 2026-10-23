@@ -5,11 +5,13 @@
 #include "settings.h"
 #include "sample_clock.h"
 #include "live_history.h"
+#include "display_average.h"
 #include "recorder.h"
 #include <esp_timer.h>
 
 namespace {
 Ina228Reading latest;
+DisplayAverage displayAverage;
 bool restoreFailed = false;
 constexpr uint8_t address = 0x40;
 constexpr int32_t signed20(uint32_t word) {
@@ -129,6 +131,11 @@ const char* testIna228() {
 }
 
 const Ina228Reading& latestIna228Reading() { return latest; }
+bool takeDisplayAverage(double& volts,double& amps) {
+    if(!displayAverage.count)return false;
+    volts=displayAverage.volts;amps=displayAverage.amps;
+    displayAverage.clear();return true;
+}
 
 
 bool applyInaSettings(const settings::Config& c) {
@@ -168,6 +175,7 @@ void completed(const char* status,bool valid,uint8_t quality=0,uint64_t observed
     pending=false;sampleStatus=status;
     if(valid)++stats.valid;else ++stats.invalid;
     ++windowSamples;
+    displayAverage.add(latest.busVolts,latest.currentAmps,settingsRevision(),uint8_t(quality|sampleQuality|(valid?0:1)));
     if(now-windowAt>=2000000){stats.measuredHz=windowSamples*1000000.0/(now-windowAt);windowAt=now;windowSamples=0;}
     liveHistoryPush({sequence,now,valid?latest.busVolts:0,valid?latest.currentAmps:0,settingsRevision(),uint8_t(quality|sampleQuality|(valid?0:1))});
     recording::Sample s{};s.seq=sequence;s.t_us=now;s.config_revision=settingsRevision();

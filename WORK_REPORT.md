@@ -291,3 +291,37 @@ projects. See NOTES for project-specific negative knowledge.
 Documentation only; no device changes. Workspace audit at
 C:/Projects/PROJECT_MEMORY.md records repository classification and commit status.
 Maintain checkpoints after substantial work; resolve the open tasks in NOTES.
+
+## 2026-09-23 — presentation window averaging
+
+IMPLEMENTED / HOST TESTED: 0.37 averages acquisition samples between OLED
+frames, then applies the existing optional EMA. Web numeric U/I/P uses device-
+time windows at applied Live Hz; P is mean instantaneous power. Invalid data,
+gaps and revision boundaries discard the preceding window. Raw chart history,
+Live payloads and recorder path are unchanged; no config schema migration.
+
+Validation: C++ accumulator host assertions and JS window tests PASS (20-sample
+mean, mean power, revision/gap reset, low-rate input); nine panel tests PASS.
+Initial bundle check caught stale generated HTML during an ongoing edit;
+regenerated assets and reran successfully. PlatformIO USB build PASS.
+No hardware flash, OLED visual inspection or noise/recording bench claimed.
+Next: deploy when testing the logger, compare numeric stability under load.
+
+## 2026-09-23 — 0.37 OTA deployment
+
+BENCH TESTED: user-authorized Wi-Fi OTA to 192.168.0.149 accepted the built
+0.37-display-average-dev image; verified reboot and app1 -> app0 slot change.
+Full configuration and EEPROM generation preserved; READY after restart.
+Two live reads advanced sample ID 2661 -> 2999 with quality 0; measured cadence
+99.791 Hz at requested 100 Hz. Earlier state snapshots reported 0 Hz before a
+fresh rate publication. OLED appearance and perceived noise reduction require
+owner observation; this test verifies deployment and ongoing acquisition only.
+
+
+## 2026-10-23 — checkpoint existing display averaging
+
+Reviewed and retained the existing uncommitted OLED/Web averaging implementation.
+Fresh PlatformIO esp32-s3-usb build PASS; C++ accumulator, JS averaging, panel and
+INA chart browser tests PASS. No logger was flashed. Original working files were
+SHA-256 verified in the pre-update GLL-NAS snapshot. Hardware/KiCad workspace and
+unrelated ignore-file edits remain uncommitted and preserved for separate review.

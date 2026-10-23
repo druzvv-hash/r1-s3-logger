@@ -1,5 +1,13 @@
 # Device control UI and task ownership
 
+2026-09-23: presentation averaging (0.37) consumes valid acquisition samples
+between actual OLED frames; the browser averages numeric U/I and per-sample
+power in non-overlapping device-time windows at applied live_hz. Graph points,
+live transport and recorder samples remain raw. OLED EMA follows averaging.
+Gaps/invalid samples/config revisions reset accumulation; no synthetic samples
+are generated at low acquisition rates. Browser windows add bounded nominal
+window latency plus transport latency. See uk/DISPLAY_AVERAGING.md.
+
 Update 2026-09-15 (0.30): native USB Serial/JTAG PANEL TX runs at low priority on the setup/USB-ISR core to avoid the HWCDC cross-core race. UART profiles, HTTP and JSON publication retain core 0. See [CANBox stability update](CANBOX_FALLBACK.md).
 
 Implementation update, 2026-09-08: PANEL v0.22 provides USB/AP control, integer 1–300 Hz acquisition and batched live preview. See [rate profiles](MEASUREMENT_RATES.md). Core 0 handles UART/HTTP and snapshot JSON; core 1 owns INA/OLED/RTC I2C and the separate SD recorder task. Local encoder menus remain pending hardware.

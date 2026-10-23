@@ -328,7 +328,7 @@ let lastReceived=0,polling=false,stopped=false;
 let liveCursor=0,liveBoot='',lastLiveAt=0,clockAt=0,clockDevice=0,streamGaps=0,frameCount=0,fps=0,fpsAt=performance.now(),lastFrame=0;
 let nextBreak=false;
 const chartNav=new ChartNavigation();
-function resetStream(boot=''){points=[];liveCursor=0;liveBoot=boot;clockAt=0;lastLiveAt=0;nextBreak=true;chartNav.live(Number($('chart-window').value)*1000);}
+function resetStream(boot=''){meterAverage.reset();points=[];liveCursor=0;liveBoot=boot;clockAt=0;lastLiveAt=0;nextBreak=true;chartNav.live(Number($('chart-window').value)*1000);}
 function meters(u,i){$('volts').textContent=number(u,4);$('amps').textContent=number(i,4);$('watts').textContent=number(Number.isFinite(u)&&Number.isFinite(i)?u*i:null,3);}
 
 function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
@@ -745,6 +745,22 @@ async function downloadFile(entry){
   finally{fileBusy=false;}
 }
 
+// Non-overlapping device-time windows; packet boundaries do not change averages.
+class MeterAverage {
+  reset(){this.key=null;this.n=0;this.u=0;this.i=0;this.p=0;}
+  constructor(){this.reset();}
+  add(t,u,i,revision,hz,broken){
+    const scope=revision+':'+hz+':';
+    const key=scope+Math.floor(t*hz/1e6);
+    if(broken || (this.key&&!this.key.startsWith(scope)))this.reset();
+    let result=null;
+    if(this.key!==key){if(this.n)result=[this.u/this.n,this.i/this.n,this.p/this.n];this.reset();this.key=key;}
+    if(Number.isFinite(u)&&Number.isFinite(i)){this.n++;this.u+=u;this.i+=i;this.p+=u*i;}
+    else this.reset();
+    return result;
+  }
+}
+const meterAverage=new MeterAverage();
 function acceptLive(batch){
   if(!state || batch.boot!==state.boot)return; // State/configuration must belong to this boot.
   if(liveBoot!==batch.boot)resetStream(batch.boot);
@@ -762,7 +778,13 @@ function acceptLive(batch){
     if(tUs/1000>clockDevice || !clockAt){clockDevice=tUs/1000;clockAt=performance.now();}
     lastLiveAt=performance.now();
     const recent=((state.uptime_ms-Math.floor(tUs/1000))|0)<2500;
-    if(online)meters((q&5)||!recent?null:u,(q&5)||!recent?null:i);
+    let hz=base?.live_hz||5;
+    try{hz=decodeConfig(state.config_hex,REGISTRY).live_hz;}catch{}
+    const mean=meterAverage.add(tUs,u,i,revision,hz,gap||!!(q&5)||!recent);
+    if(online){
+      if((q&5)||!recent){meterAverage.reset();meters(null,null);}
+      else if(mean){meters(mean[0],mean[1]);$('watts').textContent=number(mean[2],3);}
+    }
   }
   if(points.length){const cutoff=points.at(-1).t-CHART_HISTORY_MS;let first=0;while(first<points.length&&points[first].t<cutoff)first++;
     first=Math.max(first,points.length-CHART_MAX_POINTS);if(first>0)points.splice(0,first);}

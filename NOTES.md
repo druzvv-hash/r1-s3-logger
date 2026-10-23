@@ -67,6 +67,9 @@ Shared CAN assets deployed by OTA alongside existing0.37 owner changes.
 R1↔R3 unchanged; CANBox UTC invalid/service adapter missing.
 See [deployment report](docs/CAN_LIVE_FIXES_2026-09-23.md).
 
+2026-09-23: 0.37 presentation-only averaging implemented for OLED and web
+numeric meters. Raw graph/live/SD samples preserved. Host tests/build and OTA deployment verified; See docs/uk/DISPLAY_AVERAGING.md and WORK_REPORT.md.
+
 ## 2026-09-22 — shared CAN workspace
 
 0.36-can-live-dev deployed via native COM9 to verified active app1 at 0x490000;
@@ -145,3 +148,12 @@ R3 timezone distribution remain deferred. See docs/uk/TIME_SETTINGS.md.
 
 R1 0.35 includes browser OTA (/update); see docs/OTA.md and the physical acceptance
 in WORK_REPORT.md. Keep OTA idle-only and preserve storage/acquisition ownership.
+
+
+## 2026-10-23 — checkpoint existing display averaging
+
+Reviewed and retained the existing uncommitted OLED/Web averaging implementation.
+Fresh PlatformIO esp32-s3-usb build PASS; C++ accumulator, JS averaging, panel and
+INA chart browser tests PASS. No logger was flashed. Original working files were
+SHA-256 verified in the pre-update GLL-NAS snapshot. Hardware/KiCad workspace and
+unrelated ignore-file edits remain uncommitted and preserved for separate review.

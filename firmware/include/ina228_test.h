@@ -20,6 +20,8 @@ struct Ina228Reading {
     uint32_t sampledAt = 0;
 };
 const Ina228Reading& latestIna228Reading();
+// Consume all valid samples since the preceding OLED frame (same owner task).
+bool takeDisplayAverage(double& volts,double& amps);
 void acquisitionBegin();
 void acquisitionStep();
 bool acquisitionIdle();
