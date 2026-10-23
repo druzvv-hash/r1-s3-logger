@@ -1,3 +1,18 @@
+## 2026-10-23 addendum — physical user checks performed 2026-10-22
+
+**USER-REPORTED, preliminary; not full hardware acceptance.** After U10
+programming the owner reported PD 12 V operation, SYS 7.594/7.327 V and outputs
+3.3062/4.9965 V. Earlier isolated readings were +5.037/-5.037 V; their chronology
+must not be relabelled as a repeat under PD 12 V. Earlier TP5 static 5.0 V and
+later with/without-resistor scope observations are recorded separately;
+numeric load/ripple values are unavailable in the retrieved text, not invented.
+Converter/capacitor interference and difficult ground-contact soldering are
+reported physical issues. Load/thermal, power control, charger/BMS, isolation
+and mechanical acceptance remain open; U11/C1 explanations remain unverified.
+See [dated evidence and limitations](docs/POWERBOX_REVA_USER_CHECKS_2026-10-22.md).
+This supersedes any reading of the older audit as saying no physical 12-V
+operation was ever reported; its machine-captured 5-V test scope stays unchanged.
+
 ## External project memory audit - 2026-10-23
 
 Current handoff: **R3 PowerBox Rev.A / Rev.B candidate**; branch `fix/r3-powerbox-reva-review1`; version **Rev.A frozen + local Rev.B candidate**.
