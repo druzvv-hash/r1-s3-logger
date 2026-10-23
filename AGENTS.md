@@ -1,3 +1,22 @@
+## External project memory audit - 2026-10-23
+
+This is the durable technical memory for Astra/ChatGPT, not device storage.
+At the start of every new task or after context loss, read this AGENTS.md,
+NOTES.md, the newest relevant WORK_REPORT.md entry and docs/PROJECT_MEMORY.md;
+check the actual branch, HEAD and dirty state before relying on older reports.
+If accessible, also read C:/Projects/AGENTS.md and C:/Projects/PROJECT_MEMORY.md.
+If those workspace files are unavailable, use the repository files and explicit
+GitHub branch/ref links; do not assume another chat's context was loaded.
+
+After EACH substantial milestone, update the current NOTES summary and add a
+dated WORK_REPORT entry with changes, exact evidence/test scope, failures,
+deployment status, unresolved issues and next steps. Update affected canonical
+docs/README and the workspace index when its facts change. Preserve history;
+mark superseded conclusions rather than silently erasing them. Record commit/push
+and backup status in the final handoff. Commit only the intended files and respect
+the user's authorization; no secrets, private captures or raw device dumps.
+Memory updates occur during authorized work; no unattended two-way sync exists.
+
 # External-memory bootstrap
 
 Before substantial work: read NOTES.md, then the newest relevant WORK_REPORT.md
