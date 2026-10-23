@@ -37,7 +37,9 @@ do not substitute 4.7740 V for the later 4.9965-V user reading.
 On Oct 22 the owner supplied two scope images and clarified “Обидва тп5”
 (both TP5), then six images with “Перших 3 без резистора” (first three without
 the resistor). This establishes a preliminary TP5 comparison with/without a
-resistor. The returned history omits image pixels. Resistor value, current,
+resistor. On Oct 23 the owner explicitly clarified **100 ohms**. This value is
+user-reported; resistor power rating is not given. The returned history omits
+image pixels. Measured load current,
 loaded voltage, ripple amplitude, transient depth and scope settings cannot be
 verified from that text; numeric load/ripple results remain **UNCONFIRMED** until
 the original images or explicit values are available. The earlier 5.0-V TP5
