@@ -1,3 +1,9 @@
+<!-- External project memory audit - 2026-10-23 -->
+**Current technical handoff:** [NOTES](NOTES.md) · [WORK_REPORT](WORK_REPORT.md) ·
+[evidence and open issues](docs/PROJECT_MEMORY.md). Read [AGENTS](AGENTS.md)
+before work. Version/status text below may describe older milestones; the dated
+memory entry distinguishes current source, reported deployment and untested work.
+
 # R1-S3 Logger
 
 **[Посібник екосистеми: схеми, підключення та інструкції](../lily-logger-r3/docs/manual/README.uk.md)** — актуальний спільний вхід для R3, R1, CANBox і Viewer.

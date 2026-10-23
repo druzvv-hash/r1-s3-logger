@@ -1,4 +1,176 @@
+## External project memory audit - 2026-10-23
+
+Documentation-only continuity repair requested by the owner. Read repository
+memory, actual Git branch/status/history and the linked technical evidence.
+Updated AGENTS milestone obligations, current NOTES, README entry point and
+docs/PROJECT_MEMORY.md; preserved older reports and unrelated working files.
+Pre-memory source/branch anchor: `9ad492a7febef3f72f6920bc6350b5c1a50d6bda` / `fix/r3-powerbox-reva-review1`.
+
+Evidence reconciliation: PowerBox has progressed beyond the September pre-routing baseline. Rev.A
+prototype source 0d6da576168b8284664dffa865b99ebe71e1d3c4 / release commit
+9ad492a7febef3f72f6920bc6350b5c1a50d6bda remains the frozen reference.
+The Oct 8 package audit reported a U9 DRZ land mismatch on that frozen source;
+its assembly HOLD recommendation superseded the earlier bounded CAM approval.
+The separate RevB_PACKAGE_FIX_2026-10-08 candidate was consolidated under
+hardware/kicad/R3_PowerBox/manufacturing/ on Oct 9. Its existing report records
+DRC 0 errors / 0 unconnected / 0 parity, 39 warnings; ERC 0 errors / 423 warnings.
+These are historical HOST CHECKED results, not new runs or factory approval.
+RevB is local/untracked; do not reuse RevA CPL for its moved U9, promote it to
+Rev.A, or change the paid order. J7 placement and thermal/assembly acceptance
+remain unresolved in the retained reports.
+
+Oct 22 private report REPORT-5V9V12V.uk.txt records physical U10 NVM write,
+40/40 readback and 5V-only power-cycle/runtime reload for board R3-REVA-001.
+Actual active sink profile: 5 V / 1 A, 9 V / 1.5 A, 12 V / 1.5 A; current CRC32
+1AFF7140, factory CRC32 1B043764. This differs from older provisional design
+currents 3 A / 2 A / 2 A. Candidate 12454B47 was superseded. Preserve the existing
+U10 configuration; no repeat programming is needed. This evidence does NOT prove
+a physical 9/12 V PD contract, charger/load, BMS or whole-board acceptance.
+Oct 23 PD 1.2.0 tests were performed with U10 disconnected and did not rewrite it.
+
+
+Validation in THIS task: memory-file presence, Git tracking/branch comparison,
+new-link and documentation diff checks; final commit/push and NAS SHA-256 results
+are recorded in EXTERNAL_PROJECT_MEMORY_AUDIT.md. Runtime/build/bench results
+quoted above are from the named prior reports, not rerun here. No firmware,
+device configuration, hardware access, orders or deployment changed.
+Remaining work: Existing manufacturing/CAD files remain dirty/untracked. This pass commits reviewed memory only; factory source, order status and physical charger/BMS acceptance require separate work.
+
 # r1-s3-logger — work reports
+
+## 2026-10-09 — Consolidated RevB repository location
+
+Owner requested one repository location visible under manufacturing. Moved the
+entire71-file RevB project from revisions/RevB_PACKAGE_FIX_2026-10-08 to
+manufacturing/RevB_PACKAGE_FIX_2026-10-08; before/after SHA256 equality checked for
+every moved file. Moved the original task delivery ZIP intact into its delivery_snapshot/
+folder; removed two task-output copies only after exact hash equality with repository
+README/closeup. Updated entry-point documentation and current memory paths; preserved
+historical reports and all RevA archives. Refreshed the current checksum manifest.
+Project-local library paths use KIPRJMOD and continue resolving after the move.
+No PCB geometry, schematic semantics, BOM, CPL, JLC order or payment changes.
+No new DRC/bench acceptance claimed for this file-organization task.
+
+## 2026-10-08 — Separate RevB package correction candidate
+
+Created revisions/RevB_PACKAGE_FIX_2026-10-08 as an independent KiCad project with
+local libraries and schematics. Corrected U9 DRZ copper/EP/fab and shifted origin
+X+0.55mm to retain left fanout; rerouted six right-side fanout elbows. Enlarged/
+reshaped U1/U4 EP with windowed paste; removed Q2/Q3 same-drain aperture overlaps.
+Updated project-local footprint assignments and universal stencil A1/A3/B3/C2.
+Regenerated Gerbers/drills, reference positions and stencil ZIP. Preserved RevA.
+
+Initial pad-only movement caused local shorts; not accepted. Relocated footprint
+and rerouted fanout until DRC0 errors/0 unconnected/0 schematic-parity issues,
+39 preexisting library mismatch warnings. ERC0 errors/423 baseline warnings.
+All pad-net/reference sets retained; only U9 position changes; all sides/angles
+retained. Source RevA SHA256 remains b97675a2f1d249f53b645572c5bd6f37c896afa56bb287ec21101c447e56bb48.
+Full-board paste intersection screening confirms Q2/Q3 correction; only intentional
+J7 duplicate power/ground pads remain. Closeups visually inspected. No thermal or
+physical qualification; remaining J7 placement and Q1/Q4/SW1 vendor checks recorded.
+
+Owner explicitly requested no JLC changes: none performed. Candidate does not fix
+already paid RevA order. Filtered factory BOM/CPL must be regenerated before later
+upload because U9 origin and footprint names changed. No manufacturing approval.
+
+
+## 2026-10-08 — Component package audit after JLC U9 rejection
+
+Compared all140 factory BOM references to actual embedded copper geometry and
+saved selected-part catalog metadata.134 signatures match installed KiCad pads;
+six custom references inspected separately. Read primary TI/ADI/ST/GCT/Bourns/
+E-Switch drawings. U9 confirmed source land-pattern defect:2.70mm row separation
+instead of3.80mm; incorrect EP. U4/U1 EP proportions/size and Q2/Q3 original paste
+overlap require engineering review; J7 XY pattern fits but placement warning remains.
+131 bounded PASS,8 WARN,1 FAIL. Q1/Q4/SW1 independent drawing review incomplete,
+explicitly WARN. No fresh live-order identity verification or thermal/bench tests.
+
+Created per-reference HTML/JSON report and same-scale U9 comparison in task outputs;
+canonical technical report PACKAGE_FIT_AUDIT_2026-10-08.md includes Ukrainian owner
+actions. Superseded prior CAM-only approval advice; universal B3 shares source error.
+Verified board SHA256 unchanged. No BOM/CPL/CAD/release/production order edits,
+messages, payments or confirmation clicks. Manufacturer download timeouts and
+threaded PDF rendering were bypassed with bounded curl and serial local rendering;
+some exact vendor drawings remain unverified, not silently accepted.
+
+
+## 2026-10-08 — Paid JLC production files reviewed
+
+Owner reported payment, then inner copper upgrade payment on Oct7. JLC production
+metadata now confirms 1 oz outer AND inner / 4 layers / 1.6 mm. Final board160x80;
+160x90 includes two5mm rails. Source archive12files matches frozen release.
+Stencil431apertures/20patterns retained; factory boundary differences <0.002mm.
+See hardware/kicad/R3_PowerBox/docs/JLC_PRODUCTION_REVIEW_2026-10-08.md for bounded
+geometry checks, nonfunctional inner-pad removal and limitations. No blocking fab
+mismatch found; PCBA J7 placement warning remains separate. No Confirm clicked.
+This supersedes earlier local notes saying the order was only in cart/unpaid.
+
+
+## 2026-10-07 — Universal IC stencil created and added to JLC cart
+
+Read active project inventory and hardware declarations, excluding duplicate PowerBox
+backups and donor snapshots. Cross-checked package families with primary manufacturer
+references (linked in package README). Created an independent 200x200 mm KiCad stencil
+layout from 11 embedded PowerBox patterns plus 9 library patterns for R1/R3/CANBox.
+ADS131M08 includes both package alternatives. FRAM generic 208mil and EEPROM SO8 are
+explicit fit-check variants, not recovered module CAD. Unidentified module chips excluded.
+
+Geometry screening found source CSD17577 paste-window overlap; trimmed two right drain
+windows in the stencil only. Windowed U4 EP and removed its original paste aperture.
+Final 431 apertures: no polygon intersections/containment; minimum gap 0.14 mm and
+area ratio 0.778 at 0.10 mm. Rendered and visually reviewed SVG. Verified source PCB
+SHA256 unchanged. This is HOST CHECKED geometry, not physical paste transfer acceptance.
+
+Uploaded paste/outline-only ZIP to owner's JLCONE and added 1 frameless electropolished
+0.10 mm stencil to existing cart, $12.19 excluding shipping. Verified Product Details:
+custom 200x200, Top, qty1, exact paste1:1, production-file confirmation. Base Dimension
+field still reads380x280 alongside correct Custom size200x200; check final factory CAM
+outline. Disabled automatic production-file confirmation. No checkout/order/payment.
+Cart screenshots retained only in local task outputs, not project memory. Package README,
+Ukrainian use instructions, map, reproducible source, geometry and cart status are under
+manufacturing/Universal_IC_Stencil_2026-10-07. Frozen release and unrelated edits preserved.
+
+
+## 2026-10-07 — Read-only live JLC orientation review
+
+Inspected owner's JLCONE Component Placements in 2D, both sides and magnified
+critical regions, against frozen CAD renders and pin/net orientation audit.
+Critical IC, MOSFET and diode markers visually agree; Bottom D4 direction agrees.
+J7 contact row appears left of PCB lands; exact correction/cause unresolved.
+Recorded bounded findings in docs/JLC_LIVE_ORIENTATION_2026-10-07.md and five
+screenshots in reports/jlc_live_orientation_2026-10-07. Passive groups received
+overview checks, not independent enumeration of all JLC placements. No rotations,
+translations, source/export edits, order or payment; left J7 enlarged for review.
+
+## 2026-10-07 — Assembly deliverables copied into repository
+
+On owner request, saved the five current deliverables in manufacturing/
+RevA_JLC_L1_MANUAL_2026-10-07 under hardware/kicad/R3_PowerBox. Verified all
+copies against local outputs by SHA256; added README and canonical report link.
+No changes to frozen release, CAD or unrelated owner files; no commit or push.
+
+## 2026-10-07 — L1 moved to manual assembly on owner request
+
+Updated both delivered factory CSVs to remove only L1. Added L1 to the manual/
+DNP CSV as MANUAL_POPULATE, and updated the HTML and validation snapshot.
+Independent CSV re-read confirmed exact equality to prior tables minus L1,
+140 unique matching references, 90 Top/50 Bottom and manual L1 disposition.
+Remaining sourcing/placement warnings persist; no CAD or frozen-release edits.
+
+## 2026-10-07 — JLC BOM/CPL sourcing draft checked
+
+Read the supplied JLC recognition workbook and frozen RevA assembly source.
+Created two CSV drafts and a full 141-row HTML review in the Codex task outputs.
+Independently re-read CSVs: 141 unique references, BOM/CPL reference parity,
+quantity 1 per position, 91 Top/50 Bottom and all native XY/rotation values PASS.
+Compared against frozen XLSX and verified source PCB SHA256. Previewed both
+CSV table renders. Public JLC component metadata checked on 2026-10-07; 62
+selected codes cover 140 positions with enough orderable stock for two boards.
+L1 remains unavailable. Stock is not reserved and process losses must be
+rechecked in the actual order. Proposed substitutions and TS-divider sensitivity
+are documented in docs/JLC_SOURCING_2026-10-07.md and the HTML review.
+No CAD/frozen-release modifications, order, upload, model alignment acceptance,
+or electrical/thermal qualification. Existing unrelated untracked files preserved.
 
 ## 2026-10-07 — Fresh prototype package generated
 
